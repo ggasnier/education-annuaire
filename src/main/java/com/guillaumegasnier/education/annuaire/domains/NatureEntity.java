@@ -19,7 +19,7 @@ import lombok.Setter;
 public class NatureEntity {
 
     @Id
-    @Column(columnDefinition = "CHAR(2)", length = 2, unique = true)
+    @Column(columnDefinition = "CHAR(3)", length = 3, unique = true)
     private String code;
 
     @NotBlank

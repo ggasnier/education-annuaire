@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.annuaire.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.guillaumegasnier.education.annuaire.enums.EtatEtablissement;
 import com.guillaumegasnier.education.annuaire.validations.ValidSiret;
 import com.guillaumegasnier.education.annuaire.validations.ValidUai;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,12 +26,16 @@ public class EtablissementRequestDto {
 
     protected String complement;
 
+    @JsonProperty(value = "code_postal")
     protected String codePostal;
 
+    @JsonProperty(value = "nature_code")
     protected String codeNature;
 
-    protected String codeEtat;
+    @JsonProperty(value = "etat_code")
+    protected EtatEtablissement codeEtat;
 
+    @JsonProperty(value = "commune_code")
     protected String codeCommune;
 
 }

@@ -18,7 +18,7 @@ public interface IApiEtablissementController {
             summary = "Recherche d'un établissement",
             tags = {"Etablissement"}
     )
-    ResponseEntity<Page<EtablissementDto>> serachEtablissement(@RequestParam int page, @RequestParam int size);
+    ResponseEntity<Page<EtablissementDto>> searchEtablissement(@RequestParam(required = false, defaultValue = "0") int page);
 
     @Operation(
             summary = "Obtenir un établissement par son UAI",
