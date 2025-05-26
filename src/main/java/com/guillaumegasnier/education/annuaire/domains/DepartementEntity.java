@@ -1,0 +1,28 @@
+package com.guillaumegasnier.education.annuaire.domains;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "departements")
+public class DepartementEntity {
+
+    @Id
+    @Column(columnDefinition = "CHAR(3)", length = 3, unique = true)
+    private String code;
+
+    @NotBlank
+    private String nom;
+
+    @ManyToOne
+    @JoinColumn(name = "region_code")
+    private RegionEntity region;
+
+    @ManyToOne
+    @JoinColumn(name = "academie_code")
+    private AcademieEntity academie;
+}
