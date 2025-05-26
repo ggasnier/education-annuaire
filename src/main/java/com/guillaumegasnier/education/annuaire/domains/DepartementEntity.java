@@ -19,10 +19,10 @@ public class DepartementEntity {
     private String nom;
 
     @ManyToOne
-    @JoinColumn(name = "region_code")
+    @JoinColumn(name = "region_code", foreignKey = @ForeignKey(name = "fk_departements_regions"))
     private RegionEntity region;
 
     @ManyToOne
-    @JoinColumn(name = "academie_code")
+    @JoinColumn(name = "academie_code", foreignKey = @ForeignKey(name = "fk_departements_academies"))
     private AcademieEntity academie;
 }

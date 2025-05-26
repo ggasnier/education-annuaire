@@ -1,13 +1,8 @@
 package com.guillaumegasnier.education.annuaire.domains;
 
-import com.guillaumegasnier.education.annuaire.validations.ValidUai;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 @Getter
 @Setter
@@ -31,18 +26,14 @@ public class IndicePositionSocialeEntity {
      * Ecart-type établissement
      */
     private Double ecartType;
+
+    public IndicePositionSocialeEntity() {
+        this.pk = new IndicePositionSocialePK();
+    }
+
+    public IndicePositionSocialeEntity(String uai, int annee) {
+        this.pk = new IndicePositionSocialePK(uai, annee);
+    }
 }
 
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@Embeddable
-class IndicePositionSocialePK implements Serializable {
-
-    @NotNull
-    private int annee;
-
-    @ValidUai
-    private String uai;
-}

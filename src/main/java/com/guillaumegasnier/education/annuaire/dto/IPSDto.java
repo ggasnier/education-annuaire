@@ -8,11 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(name = "IPS", description = "Informations sur l'IPS d'un établissement")
-public class IPSDto {
+public class IPSDto extends IPSRequestDto {
 
     @JsonProperty(required = true)
     private String uai;
 
-    @JsonProperty(required = true)
-    private Integer annee;
 }

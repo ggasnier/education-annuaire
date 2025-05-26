@@ -1,10 +1,23 @@
 package com.guillaumegasnier.education.annuaire.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+@JsonPropertyOrder(
+        {"uai", "nom", "siret",
+                "nature_code", "nature_nom",
+                "etat_code", "etat_nom",
+                "adresse", "complement", "code_postal",
+                "commune_code", "commune_nom",
+                "departement_code", "departement_nom",
+                "academie_code", "academie_nom",
+                "region_code", "region_nom",
+                "pays_code", "pays_nom"
+        }
+)
 @Getter
 @Setter
 @Schema(name = "Etablissement", description = "Informations sur un établissement")
@@ -33,4 +46,9 @@ public class EtablissementDto extends EtablissementRequestDto {
     protected String codeAcademie;
     @JsonProperty(value = "academie_nom")
     protected String nomAcademie;
+
+    @JsonProperty(value = "pays_code")
+    protected String codePays;
+    @JsonProperty(value = "pays_nom")
+    protected String nomPays;
 }

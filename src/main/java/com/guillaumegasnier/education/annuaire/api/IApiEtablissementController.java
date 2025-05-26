@@ -3,6 +3,7 @@ package com.guillaumegasnier.education.annuaire.api;
 import com.guillaumegasnier.education.annuaire.dto.EtablissementDto;
 import com.guillaumegasnier.education.annuaire.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.annuaire.dto.IPSDto;
+import com.guillaumegasnier.education.annuaire.dto.IPSRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public interface IApiEtablissementController {
             summary = "Ajout ou mise à jour d'un IPS",
             tags = {"Etablissement", "IPS"}
     )
-    ResponseEntity<IPSDto> createOrUpdateIndice(@PathVariable String uai, IPSDto ips);
+    ResponseEntity<IPSDto> createOrUpdateIndice(@PathVariable String uai, @RequestBody IPSRequestDto ips);
 
     @Operation(
             summary = "Liste des IPS d'un établissement",

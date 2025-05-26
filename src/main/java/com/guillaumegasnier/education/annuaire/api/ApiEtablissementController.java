@@ -3,6 +3,7 @@ package com.guillaumegasnier.education.annuaire.api;
 import com.guillaumegasnier.education.annuaire.dto.EtablissementDto;
 import com.guillaumegasnier.education.annuaire.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.annuaire.dto.IPSDto;
+import com.guillaumegasnier.education.annuaire.dto.IPSRequestDto;
 import com.guillaumegasnier.education.annuaire.services.EtablissementService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class ApiEtablissementController implements IApiEtablissementController {
 
     @PostMapping("/{uai}/ips")
     @Override
-    public ResponseEntity<IPSDto> createOrUpdateIndice(@PathVariable String uai, @RequestBody IPSDto ips) {
+    public ResponseEntity<IPSDto> createOrUpdateIndice(@PathVariable String uai, @RequestBody IPSRequestDto ips) {
         return etablissementService.createOrUpdateIndice(uai, ips)
                 .map(ipsDto -> ResponseEntity.status(HttpStatus.OK).body(ipsDto))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build());

@@ -19,10 +19,10 @@ public class CommuneEntity {
     private String nom;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "pays_code")
+    @JoinColumn(name = "pays_code", foreignKey = @ForeignKey(name = "fk_communes_pays"))
     private PaysEntity pays;
 
     @ManyToOne
-    @JoinColumn(name = "departement_code")
+    @JoinColumn(name = "departement_code", foreignKey = @ForeignKey(name = "fk_communes_departements"))
     private DepartementEntity departement;
 }
