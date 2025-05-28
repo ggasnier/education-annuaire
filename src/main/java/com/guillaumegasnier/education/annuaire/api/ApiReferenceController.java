@@ -27,6 +27,7 @@ public class ApiReferenceController implements IApiReferenceController {
             summary = "Création d'une commune",
             tags = {"Reference"}
     )
+    @Override
     @PostMapping("/communes")
     public ResponseEntity<CommuneDto> createCommune(@RequestBody CommuneRequestDto request) {
         return referenceService.createCommune(request).map(

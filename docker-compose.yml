@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:latest  # Utilise toujours la dernière version stable
+    container_name: education
+    restart: always
+    environment:
+      POSTGRES_USER: education
+      POSTGRES_PASSWORD: education
+      POSTGRES_DB: education
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:

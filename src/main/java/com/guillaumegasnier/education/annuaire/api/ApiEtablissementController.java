@@ -5,16 +5,16 @@ import com.guillaumegasnier.education.annuaire.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.annuaire.dto.IPSDto;
 import com.guillaumegasnier.education.annuaire.dto.IPSRequestDto;
 import com.guillaumegasnier.education.annuaire.services.EtablissementService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@Validated
 @RestController
 @RequestMapping("/api/v1/etablissements")
 public class ApiEtablissementController implements IApiEtablissementController {
@@ -28,7 +28,7 @@ public class ApiEtablissementController implements IApiEtablissementController {
 
     @PostMapping("")
     @Override
-    public ResponseEntity<EtablissementDto> createEtablissement(@RequestBody @Valid EtablissementRequestDto etablissement) {
+    public ResponseEntity<EtablissementDto> createEtablissement(@RequestBody EtablissementRequestDto etablissement) {
         return etablissementService.createEtablissement(etablissement)
                 .map(etablissementDto -> ResponseEntity.status(HttpStatus.CREATED).body(etablissementDto))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build());

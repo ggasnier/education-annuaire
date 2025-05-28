@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  */
 @Documented
 @Constraint(validatedBy = UaiValidator.class)
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidUai {
     String message() default "UAI invalide";
