@@ -7,6 +7,9 @@ import com.guillaumegasnier.education.annuaire.mappers.ReferenceMapper;
 import com.guillaumegasnier.education.annuaire.repositories.CommuneRepository;
 import com.guillaumegasnier.education.annuaire.repositories.PaysRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,5 +33,10 @@ public class ReferenceService {
         entity.setPays(paysRepository.getReferenceById(request.getCodePays()));
         communeRepository.save(entity);
         return Optional.of(referenceMapper.toDto(entity));
+    }
+
+    public Page<CommuneDto> searchCommune(int page) {
+        Pageable pageable = PageRequest.of(page, 100);
+        return communeRepository.findAll(pageable).map(referenceMapper::toDto);
     }
 }
