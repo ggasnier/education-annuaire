@@ -16,6 +16,7 @@ public class DepartementEntity {
     private String code;
 
     @NotBlank
+    @Column(columnDefinition = "VARCHAR(25)", length = 25, unique = true, nullable = false)
     private String nom;
 
     @ManyToOne

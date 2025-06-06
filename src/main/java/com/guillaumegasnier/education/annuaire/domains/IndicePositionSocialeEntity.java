@@ -15,6 +15,7 @@ public class IndicePositionSocialeEntity {
 
     @MapsId("uai")
     @ManyToOne
+    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_ips_etablissements"))
     private EtablissementEntity etablissement;
 
     /**

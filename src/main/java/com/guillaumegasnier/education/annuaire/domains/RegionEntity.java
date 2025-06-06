@@ -15,10 +15,11 @@ import lombok.Setter;
 public class RegionEntity {
 
     @Id
-    @Column(columnDefinition = "CHAR(2)", length = 2, unique = true)
+    @Column(columnDefinition = "CHAR(2)", length = 2, unique = true, nullable = false)
     private String code;
 
     @NotBlank
+    @Column(columnDefinition = "VARCHAR(50)", length = 50, unique = true, nullable = false)
     private String nom;
 
 }
