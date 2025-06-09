@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.annuaire.api;
 
-import com.guillaumegasnier.education.annuaire.dto.CommuneDto;
-import com.guillaumegasnier.education.annuaire.dto.CommuneRequestDto;
+import com.guillaumegasnier.education.annuaire.dto.*;
 import com.guillaumegasnier.education.annuaire.services.ReferenceService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/references")
@@ -40,5 +41,23 @@ public class ApiReferenceController implements IApiReferenceController {
     @GetMapping("/communes")
     public ResponseEntity<Page<CommuneDto>> searchCommunes(@RequestParam(required = false, defaultValue = "1") int page) {
         return ResponseEntity.ok().body(referenceService.searchCommune(page));
+    }
+
+    @Override
+    @GetMapping("/natures")
+    public ResponseEntity<List<NatureDto>> getNatures() {
+        return ResponseEntity.ok().body(referenceService.getNatures());
+    }
+
+    @Override
+    @GetMapping("/academies")
+    public ResponseEntity<List<AcademieDto>> getAcademies() {
+        return ResponseEntity.ok().body(referenceService.getAcademies());
+    }
+
+    @Override
+    @GetMapping("/departements")
+    public ResponseEntity<List<DepartementDto>> getDepartements() {
+        return ResponseEntity.ok().body(referenceService.getDepartements());
     }
 }

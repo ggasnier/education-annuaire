@@ -28,8 +28,12 @@ public class ApiConfiguration {
                                 .url("https://opensource.org/licenses/MIT")))
                 .servers(
                         List.of(new Server()
-                                .url("http://localhost:8080")
-                                .description("Serveur de développement"))
+                                        .url("http://localhost:8080")
+                                        .description("Serveur de développement"),
+                                new Server()
+                                        .url("https://annuaire.guillaumegasnier.com")
+                                        .description("Serveur de test")
+                        )
                 );
     }
 }

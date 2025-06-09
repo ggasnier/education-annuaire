@@ -2,9 +2,11 @@ package com.guillaumegasnier.education.annuaire.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Schema(name = "Departement")
 public class DepartementDto {
 
@@ -14,15 +16,15 @@ public class DepartementDto {
     @JsonProperty(required = true)
     private String nom;
 
-    @JsonProperty(value = "academie_code")
+    @JsonProperty(value = "code_academie")
     private String codeAcademie;
 
-    @JsonProperty(value = "academie_nom")
+    @JsonProperty(value = "nom_academie")
     private String nomAcademie;
 
-    @JsonProperty(value = "region_code")
+    @JsonProperty(value = "code_region")
     private String codeRegion;
 
-    @JsonProperty(value = "region_nom")
+    @JsonProperty(value = "nom_region")
     private String nomRegion;
 }

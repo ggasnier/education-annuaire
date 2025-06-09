@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-public interface IApiEtablissementController<T> {
+public interface IApiEtablissementController {
 
     @Operation(
             summary = "Recherche d'un établissement",
             tags = {"Etablissement"}
     )
-    ResponseEntity<Page<T>> searchEtablissement(@RequestParam(required = false, defaultValue = "0") int page);
+    ResponseEntity<Page<EtablissementDto>> searchEtablissement(@RequestParam(required = false, defaultValue = "0") int page);
 
     @Operation(
             summary = "Obtenir un établissement par son UAI",
@@ -44,19 +44,19 @@ public interface IApiEtablissementController<T> {
                     )
             }
     )
-    ResponseEntity<T> getEtablissementByUai(@PathVariable @ValidUai String uai);
+    ResponseEntity<EtablissementDto> getEtablissementByUai(@PathVariable @ValidUai String uai);
 
     @Operation(
             summary = "Création d'un établissement",
             tags = {"Etablissement"}
     )
-    ResponseEntity<T> createEtablissement(@RequestBody @Valid EtablissementRequestDto request);
+    ResponseEntity<EtablissementDto> createEtablissement(@RequestBody @Valid EtablissementRequestDto request);
 
     @Operation(
             summary = "Mise à jour d'un établissement",
             tags = {"Etablissement"}
     )
-    ResponseEntity<T> updateEtablissement(@PathVariable @ValidUai String uai, @RequestBody @Valid EtablissementRequestDto request);
+    ResponseEntity<EtablissementDto> updateEtablissement(@PathVariable @ValidUai String uai, @RequestBody @Valid EtablissementRequestDto request);
 
     @Operation(
             summary = "Ajout ou mise à jour d'un IPS",

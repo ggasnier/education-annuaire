@@ -33,11 +33,11 @@ public class EtablissementEntity {
     private EtatEtablissement etat;
 
     @ManyToOne
-    @JoinColumn(name = "nature_code", foreignKey = @ForeignKey(name = "fk_etablissements_natures"))
+    @JoinColumn(name = "code_nature", foreignKey = @ForeignKey(name = "fk_etablissements_natures"))
     private NatureEntity nature;
 
     @ManyToOne
-    @JoinColumn(name = "contrat_code", foreignKey = @ForeignKey(name = "fk_etablissements_contrats"))
+    @JoinColumn(name = "code_contrat", foreignKey = @ForeignKey(name = "fk_etablissements_contrats"))
     private ContratEntity contrat;
 
     private String adresse;
@@ -47,7 +47,7 @@ public class EtablissementEntity {
     private String codePostal;
 
     @ManyToOne
-    @JoinColumn(name = "commune_code", foreignKey = @ForeignKey(name = "fk_etablissements_communes"))
+    @JoinColumn(name = "code_commune", foreignKey = @ForeignKey(name = "fk_etablissements_communes"))
     private CommuneEntity commune;
 
     // Position (POSTGIS)

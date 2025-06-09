@@ -16,14 +16,14 @@ public class DepartementEntity {
     private String code;
 
     @NotBlank
-    @Column(columnDefinition = "VARCHAR(25)", length = 25, unique = true, nullable = false)
+    @Column(columnDefinition = "VARCHAR(50)", length = 50, unique = true, nullable = false)
     private String nom;
 
     @ManyToOne
-    @JoinColumn(name = "region_code", foreignKey = @ForeignKey(name = "fk_departements_regions"))
+    @JoinColumn(name = "code_region", foreignKey = @ForeignKey(name = "fk_departements_regions"))
     private RegionEntity region;
 
     @ManyToOne
-    @JoinColumn(name = "academie_code", foreignKey = @ForeignKey(name = "fk_departements_academies"))
+    @JoinColumn(name = "code_academie", foreignKey = @ForeignKey(name = "fk_departements_academies"))
     private AcademieEntity academie;
 }

@@ -1,11 +1,7 @@
 package com.guillaumegasnier.education.annuaire.api;
 
-import com.guillaumegasnier.education.annuaire.dto.CommuneDto;
-import com.guillaumegasnier.education.annuaire.dto.CommuneRequestDto;
-import com.guillaumegasnier.education.annuaire.dto.NatureDto;
-import com.guillaumegasnier.education.annuaire.dto.RegionDto;
+import com.guillaumegasnier.education.annuaire.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +14,7 @@ import static org.springframework.http.HttpStatus.NOT_IMPLEMENTED;
 
 public interface IApiReferenceController {
 
-    @Operation(
-            tags = {"Reference"}
-    )
-    default ResponseEntity<CommuneDto> createCommune(@RequestBody @Valid CommuneRequestDto request) {
-        return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
-    }
+    ResponseEntity<CommuneDto> createCommune(@RequestBody CommuneRequestDto request);
 
     @Operation(
             summary = "Liste des communes",
@@ -37,7 +28,7 @@ public interface IApiReferenceController {
             summary = "Obtenir une commune par son code",
             tags = {"Reference"}
     )
-    default ResponseEntity<CommuneDto> getCommune(@PathVariable(name = "commune_code") String codeCommune) {
+    default ResponseEntity<CommuneDto> getCommune(@PathVariable(name = "code") String codeCommune) {
         return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
     }
 
@@ -53,7 +44,7 @@ public interface IApiReferenceController {
             summary = "Obtenir une région par son code",
             tags = {"Reference"}
     )
-    default ResponseEntity<RegionDto> getRegion(@PathVariable(name = "region_code") String codeRegion) {
+    default ResponseEntity<RegionDto> getRegion(@PathVariable(name = "code") String code) {
         return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
     }
 
@@ -64,4 +55,21 @@ public interface IApiReferenceController {
     default ResponseEntity<List<NatureDto>> getNatures() {
         return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
     }
+
+    @Operation(
+            summary = "Liste des académies",
+            tags = {"Reference"}
+    )
+    default ResponseEntity<List<AcademieDto>> getAcademies() {
+        return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
+    }
+
+    @Operation(
+            summary = "Liste des départements",
+            tags = {"Reference"}
+    )
+    default ResponseEntity<List<DepartementDto>> getDepartements() {
+        return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
+    }
+
 }

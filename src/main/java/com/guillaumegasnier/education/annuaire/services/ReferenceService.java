@@ -1,17 +1,16 @@
 package com.guillaumegasnier.education.annuaire.services;
 
 import com.guillaumegasnier.education.annuaire.domains.CommuneEntity;
-import com.guillaumegasnier.education.annuaire.dto.CommuneDto;
-import com.guillaumegasnier.education.annuaire.dto.CommuneRequestDto;
+import com.guillaumegasnier.education.annuaire.dto.*;
 import com.guillaumegasnier.education.annuaire.mappers.ReferenceMapper;
-import com.guillaumegasnier.education.annuaire.repositories.CommuneRepository;
-import com.guillaumegasnier.education.annuaire.repositories.PaysRepository;
+import com.guillaumegasnier.education.annuaire.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,23 +19,41 @@ public class ReferenceService {
     private final PaysRepository paysRepository;
     private final CommuneRepository communeRepository;
     private final ReferenceMapper referenceMapper;
+    private final NatureRepository natureRepository;
+    private final AcademieRepository academieRepository;
+    private final DepartementRepository departementRepository;
 
     @Autowired
-    public ReferenceService(PaysRepository paysRepository, CommuneRepository communeRepository, ReferenceMapper referenceMapper) {
+    public ReferenceService(PaysRepository paysRepository, CommuneRepository communeRepository, ReferenceMapper referenceMapper, NatureRepository natureRepository, AcademieRepository academieRepository, DepartementRepository departementRepository) {
         this.paysRepository = paysRepository;
         this.communeRepository = communeRepository;
         this.referenceMapper = referenceMapper;
+        this.natureRepository = natureRepository;
+        this.academieRepository = academieRepository;
+        this.departementRepository = departementRepository;
     }
 
     public Optional<CommuneDto> createCommune(CommuneRequestDto request) {
-        CommuneEntity entity = referenceMapper.toEntity(request);
+        CommuneEntity entity = referenceMapper.toCommuneEntity(request);
         entity.setPays(paysRepository.getReferenceById(request.getCodePays()));
         communeRepository.save(entity);
-        return Optional.of(referenceMapper.toDto(entity));
+        return Optional.of(referenceMapper.toCommuneDto(entity));
     }
 
     public Page<CommuneDto> searchCommune(int page) {
         Pageable pageable = PageRequest.of(page, 100);
-        return communeRepository.findAll(pageable).map(referenceMapper::toDto);
+        return communeRepository.findAll(pageable).map(referenceMapper::toCommuneDto);
+    }
+
+    public List<NatureDto> getNatures() {
+        return referenceMapper.toNatureDto(natureRepository.findAllByOrderByCode());
+    }
+
+    public List<AcademieDto> getAcademies() {
+        return referenceMapper.toAcademieDto(academieRepository.findAllByOrderByCode());
+    }
+
+    public List<DepartementDto> getDepartements() {
+        return referenceMapper.toDepartementDto(departementRepository.findAllByOrderByCode());
     }
 }

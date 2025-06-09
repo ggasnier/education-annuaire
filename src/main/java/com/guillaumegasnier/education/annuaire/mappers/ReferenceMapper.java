@@ -3,31 +3,39 @@ package com.guillaumegasnier.education.annuaire.mappers;
 import com.guillaumegasnier.education.annuaire.domains.AcademieEntity;
 import com.guillaumegasnier.education.annuaire.domains.CommuneEntity;
 import com.guillaumegasnier.education.annuaire.domains.DepartementEntity;
-import com.guillaumegasnier.education.annuaire.dto.AcademieDto;
-import com.guillaumegasnier.education.annuaire.dto.CommuneDto;
-import com.guillaumegasnier.education.annuaire.dto.CommuneRequestDto;
-import com.guillaumegasnier.education.annuaire.dto.DepartementDto;
+import com.guillaumegasnier.education.annuaire.domains.NatureEntity;
+import com.guillaumegasnier.education.annuaire.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public abstract class ReferenceMapper {
 
     @Mapping(target = "pays", ignore = true)
     @Mapping(target = "departement", ignore = true)
-    public abstract CommuneEntity toEntity(CommuneRequestDto request);
+    public abstract CommuneEntity toCommuneEntity(CommuneRequestDto request);
 
     @Mapping(target = "libelleDepartement", ignore = true)
     @Mapping(target = "codePays", ignore = true)
     @Mapping(target = "codeDepartement", ignore = true)
-    public abstract CommuneDto toDto(CommuneEntity entity);
+    public abstract CommuneDto toCommuneDto(CommuneEntity entity);
 
-    public abstract AcademieDto toDto(AcademieEntity entity);
-
-    @Mapping(target = "nomRegion", source = "region.code")
+    @Mapping(target = "nomRegion", source = "region.nom")
     @Mapping(target = "nomAcademie", source = "academie.nom")
     @Mapping(target = "codeRegion", source = "region.code")
     @Mapping(target = "codeAcademie", source = "academie.code")
-    public abstract DepartementDto toDto(DepartementEntity entity);
+    public abstract DepartementDto toDepartementDto(DepartementEntity entity);
+
+    public abstract List<DepartementDto> toDepartementDto(List<DepartementEntity> entities);
+
+    public abstract NatureDto toNatureDto(NatureEntity entity);
+
+    public abstract AcademieDto toAcademieDto(AcademieEntity entity);
+
+    public abstract List<NatureDto> toNatureDto(List<NatureEntity> entities);
+
+    public abstract List<AcademieDto> toAcademieDto(List<AcademieEntity> entities);
 }

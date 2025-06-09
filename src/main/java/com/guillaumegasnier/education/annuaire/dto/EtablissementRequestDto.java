@@ -29,13 +29,13 @@ public class EtablissementRequestDto {
     @JsonProperty(value = "code_postal")
     protected String codePostal;
 
-    @JsonProperty(value = "nature_code")
+    @JsonProperty(value = "code_nature")
     protected String codeNature;
 
-    @JsonProperty(value = "etat_code")
+    @JsonProperty(value = "code_etat")
     protected EtatEtablissement codeEtat;
 
-    @JsonProperty(value = "commune_code")
+    @JsonProperty(value = "code_commune")
     protected String codeCommune;
 
 }

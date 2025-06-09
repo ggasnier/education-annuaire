@@ -8,14 +8,14 @@ import lombok.Setter;
 
 @JsonPropertyOrder(
         {"uai", "nom", "siret",
-                "nature_code", "nature_nom",
-                "etat_code", "etat_nom",
+                "code_nature", "nom_nature",
+                "code_etat", "nom_etat",
                 "adresse", "complement", "code_postal",
-                "commune_code", "commune_nom",
-                "departement_code", "departement_nom",
-                "academie_code", "academie_nom",
-                "region_code", "region_nom",
-                "pays_code", "pays_nom"
+                "code_commune", "nom_commune",
+                "code_departement", "nom_departement",
+                "code_academie", "nom_academie",
+                "code_region", "nom_region",
+                "code_pays", "nom_pays"
         }
 )
 @Getter
@@ -23,32 +23,32 @@ import lombok.Setter;
 @Schema(name = "Etablissement", description = "Informations sur un établissement")
 public class EtablissementDto extends EtablissementRequestDto {
 
-    @JsonProperty(value = "nature_nom")
+    @JsonProperty(value = "nom_nature")
     protected String nomNature;
 
-    @JsonProperty(value = "etat_nom")
+    @JsonProperty(value = "nom_etat")
     protected String nomEtat;
 
-    @JsonProperty(value = "commune_nom")
+    @JsonProperty(value = "nom_commune")
     protected String nomCommune;
 
-    @JsonProperty(value = "departement_code")
+    @JsonProperty(value = "code_departement")
     protected String codeDepartement;
-    @JsonProperty(value = "departement_nom")
+    @JsonProperty(value = "nom_departement")
     protected String nomDepartement;
 
-    @JsonProperty(value = "region_code")
+    @JsonProperty(value = "code_region")
     protected String codeRegion;
-    @JsonProperty(value = "region_nom")
+    @JsonProperty(value = "nom_region")
     protected String nomRegion;
 
-    @JsonProperty(value = "academie_code")
+    @JsonProperty(value = "code_academie")
     protected String codeAcademie;
-    @JsonProperty(value = "academie_nom")
+    @JsonProperty(value = "nom_academie")
     protected String nomAcademie;
 
-    @JsonProperty(value = "pays_code")
+    @JsonProperty(value = "code_pays")
     protected String codePays;
-    @JsonProperty(value = "pays_nom")
+    @JsonProperty(value = "nom_pays")
     protected String nomPays;
 }
