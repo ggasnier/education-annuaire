@@ -9,5 +9,6 @@ import lombok.Setter;
 @Schema(name = "Commune")
 public class CommuneDto extends CommuneRequestDto {
 
+    @JsonProperty(value = "libelle_departement")
     protected String libelleDepartement;
 }
