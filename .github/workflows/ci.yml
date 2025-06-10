@@ -1,5 +1,10 @@
 name: Java CI - Build & Package
 
+permissions:
+  contents: read
+  packages: read
+  artifacts: write
+
 on:
   push:
     branches: [ "main", "develop" ]
