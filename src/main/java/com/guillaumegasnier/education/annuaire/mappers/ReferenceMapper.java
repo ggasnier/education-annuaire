@@ -18,9 +18,9 @@ public abstract class ReferenceMapper {
     @Mapping(target = "departement", ignore = true)
     public abstract CommuneEntity toCommuneEntity(CommuneRequestDto request);
 
-    @Mapping(target = "libelleDepartement", ignore = true)
-    @Mapping(target = "codePays", ignore = true)
-    @Mapping(target = "codeDepartement", ignore = true)
+    @Mapping(target = "nomDepartement", source = "departement.nom")
+    @Mapping(target = "codePays", source = "pays.code")
+    @Mapping(target = "codeDepartement", source = "departement.code")
     public abstract CommuneDto toCommuneDto(CommuneEntity entity);
 
     @Mapping(target = "nomRegion", source = "region.nom")
