@@ -4,7 +4,7 @@ import com.guillaumegasnier.education.annuaire.domains.CommuneEntity;
 import com.guillaumegasnier.education.annuaire.dto.*;
 import com.guillaumegasnier.education.annuaire.mappers.ReferenceMapper;
 import com.guillaumegasnier.education.annuaire.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ReferenceService {
 
     private final PaysRepository paysRepository;
@@ -22,16 +23,7 @@ public class ReferenceService {
     private final NatureRepository natureRepository;
     private final AcademieRepository academieRepository;
     private final DepartementRepository departementRepository;
-
-    @Autowired
-    public ReferenceService(PaysRepository paysRepository, CommuneRepository communeRepository, ReferenceMapper referenceMapper, NatureRepository natureRepository, AcademieRepository academieRepository, DepartementRepository departementRepository) {
-        this.paysRepository = paysRepository;
-        this.communeRepository = communeRepository;
-        this.referenceMapper = referenceMapper;
-        this.natureRepository = natureRepository;
-        this.academieRepository = academieRepository;
-        this.departementRepository = departementRepository;
-    }
+    private final RegionRepository regionRepository;
 
     public Optional<CommuneDto> createCommune(CommuneRequestDto request) {
         CommuneEntity entity = referenceMapper.toCommuneEntity(request);
@@ -55,5 +47,13 @@ public class ReferenceService {
 
     public List<DepartementDto> getDepartements() {
         return referenceMapper.toDepartementDto(departementRepository.findAllByOrderByCode());
+    }
+
+    public Optional<CommuneDto> getCommune(String code) {
+        return communeRepository.findById(code).map(referenceMapper::toCommuneDto);
+    }
+
+    public List<RegionDto> getRegions() {
+        return referenceMapper.toRegionDto(regionRepository.findAllByOrderByCode());
     }
 }

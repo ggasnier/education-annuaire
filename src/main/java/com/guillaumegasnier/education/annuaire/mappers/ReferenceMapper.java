@@ -1,9 +1,6 @@
 package com.guillaumegasnier.education.annuaire.mappers;
 
-import com.guillaumegasnier.education.annuaire.domains.AcademieEntity;
-import com.guillaumegasnier.education.annuaire.domains.CommuneEntity;
-import com.guillaumegasnier.education.annuaire.domains.DepartementEntity;
-import com.guillaumegasnier.education.annuaire.domains.NatureEntity;
+import com.guillaumegasnier.education.annuaire.domains.*;
 import com.guillaumegasnier.education.annuaire.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -29,7 +26,7 @@ public abstract class ReferenceMapper {
     @Mapping(target = "codeAcademie", source = "academie.code")
     public abstract DepartementDto toDepartementDto(DepartementEntity entity);
 
-    public abstract List<DepartementDto> toDepartementDto(List<DepartementEntity> entities);
+    public abstract RegionDto toRegionDto(RegionEntity entity);
 
     public abstract NatureDto toNatureDto(NatureEntity entity);
 
@@ -38,4 +35,9 @@ public abstract class ReferenceMapper {
     public abstract List<NatureDto> toNatureDto(List<NatureEntity> entities);
 
     public abstract List<AcademieDto> toAcademieDto(List<AcademieEntity> entities);
+
+    public abstract List<RegionDto> toRegionDto(List<RegionEntity> entities);
+
+    public abstract List<DepartementDto> toDepartementDto(List<DepartementEntity> entities);
+
 }

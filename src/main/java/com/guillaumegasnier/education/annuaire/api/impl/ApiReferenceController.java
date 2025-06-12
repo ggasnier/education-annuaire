@@ -1,8 +1,8 @@
-package com.guillaumegasnier.education.annuaire.api;
+package com.guillaumegasnier.education.annuaire.api.impl;
 
+import com.guillaumegasnier.education.annuaire.api.IApiReferenceController;
 import com.guillaumegasnier.education.annuaire.dto.*;
 import com.guillaumegasnier.education.annuaire.services.ReferenceService;
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -22,41 +22,41 @@ public class ApiReferenceController implements IApiReferenceController {
         this.referenceService = referenceService;
     }
 
-    @Operation(
-            summary = "Création d'une commune",
-            tags = {"Reference"}
-    )
     @Override
-    @PostMapping("/communes")
     public ResponseEntity<CommuneDto> createCommune(@RequestBody CommuneRequestDto request) {
         return referenceService.createCommune(request).map(
                 communeDto -> ResponseEntity.status(HttpStatus.CREATED).body(communeDto)
         ).orElseGet(() -> ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build());
     }
 
-    @Operation(
-            summary = "Liste des communes",
-            tags = {"Reference"}
-    )
-    @GetMapping("/communes")
-    public ResponseEntity<Page<CommuneDto>> searchCommunes(@RequestParam(required = false, defaultValue = "1") int page) {
+    @Override
+    public ResponseEntity<CommuneDto> getCommune(@PathVariable String code) {
+        return referenceService.getCommune(code)
+                .map(communeDto -> ResponseEntity.status(HttpStatus.OK).body(communeDto))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @Override
+    public ResponseEntity<Page<CommuneDto>> getCommunes(@RequestParam(required = false, defaultValue = "0") int page) {
         return ResponseEntity.ok().body(referenceService.searchCommune(page));
     }
 
     @Override
-    @GetMapping("/natures")
     public ResponseEntity<List<NatureDto>> getNatures() {
         return ResponseEntity.ok().body(referenceService.getNatures());
     }
 
     @Override
-    @GetMapping("/academies")
     public ResponseEntity<List<AcademieDto>> getAcademies() {
         return ResponseEntity.ok().body(referenceService.getAcademies());
     }
 
     @Override
-    @GetMapping("/departements")
+    public ResponseEntity<List<RegionDto>> getRegions() {
+        return ResponseEntity.ok().body(referenceService.getRegions());
+    }
+
+    @Override
     public ResponseEntity<List<DepartementDto>> getDepartements() {
         return ResponseEntity.ok().body(referenceService.getDepartements());
     }

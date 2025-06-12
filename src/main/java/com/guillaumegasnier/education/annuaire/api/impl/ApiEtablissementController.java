@@ -1,5 +1,6 @@
-package com.guillaumegasnier.education.annuaire.api;
+package com.guillaumegasnier.education.annuaire.api.impl;
 
+import com.guillaumegasnier.education.annuaire.api.IApiEtablissementController;
 import com.guillaumegasnier.education.annuaire.dto.EtablissementDto;
 import com.guillaumegasnier.education.annuaire.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.annuaire.dto.IPSDto;
@@ -10,7 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -26,7 +30,6 @@ public class ApiEtablissementController implements IApiEtablissementController {
         this.etablissementService = etablissementService;
     }
 
-    @PostMapping("")
     @Override
     public ResponseEntity<EtablissementDto> createEtablissement(@RequestBody EtablissementRequestDto etablissement) {
         return etablissementService.createEtablissement(etablissement)
@@ -34,13 +37,11 @@ public class ApiEtablissementController implements IApiEtablissementController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build());
     }
 
-    @GetMapping("")
     @Override
     public ResponseEntity<Page<EtablissementDto>> searchEtablissement(int page) {
         return ResponseEntity.status(HttpStatus.OK).body(etablissementService.searchEtablissement(page));
     }
 
-    @GetMapping("/{uai}")
     @Override
     public ResponseEntity<EtablissementDto> getEtablissementByUai(@PathVariable String uai) {
         return etablissementService.getEtablissement(uai)
@@ -48,7 +49,6 @@ public class ApiEtablissementController implements IApiEtablissementController {
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @PatchMapping("/{uai}")
     @Override
     public ResponseEntity<EtablissementDto> updateEtablissement(@PathVariable String uai, EtablissementRequestDto etablissement) {
         return etablissementService.updateEtablissement(etablissement)
@@ -56,7 +56,6 @@ public class ApiEtablissementController implements IApiEtablissementController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build());
     }
 
-    @PostMapping("/{uai}/ips")
     @Override
     public ResponseEntity<IPSDto> createOrUpdateIndice(@PathVariable String uai, @RequestBody IPSRequestDto ips) {
         return etablissementService.createOrUpdateIndice(uai, ips)
@@ -64,9 +63,8 @@ public class ApiEtablissementController implements IApiEtablissementController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build());
     }
 
-    @GetMapping("/{uai}/ips")
     @Override
-    public ResponseEntity<List<IPSDto>> getEtablissementIPS(@PathVariable String uai) {
+    public ResponseEntity<List<IPSDto>> getEtablissementIPS(String uai) {
         return ResponseEntity.status(HttpStatus.OK).body(etablissementService.getEtablissementIPS(uai));
     }
 }
