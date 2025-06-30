@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+@Deprecated
 @Getter
 @Setter
 @Entity

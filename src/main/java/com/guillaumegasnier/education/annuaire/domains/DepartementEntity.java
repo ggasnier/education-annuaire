@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "departements")
-public class DepartementEntity {
+public class DepartementEntity extends AbstractEntity {
 
     @Id
     @Column(columnDefinition = "VARCHAR(3)", length = 3, unique = true)

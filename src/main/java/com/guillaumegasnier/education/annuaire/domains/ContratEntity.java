@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "contrats")
-public class ContratEntity {
+public class ContratEntity extends AbstractEntity {
 
     @Id
     @NotBlank

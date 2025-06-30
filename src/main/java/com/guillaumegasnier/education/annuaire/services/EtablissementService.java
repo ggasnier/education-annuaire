@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.annuaire.services;
 
+import com.guillaumegasnier.education.annuaire.datasets.EnEtablissementDataset;
 import com.guillaumegasnier.education.annuaire.domains.CommuneEntity;
 import com.guillaumegasnier.education.annuaire.domains.EtablissementEntity;
 import com.guillaumegasnier.education.annuaire.domains.IndicePositionSocialeEntity;
@@ -13,6 +14,7 @@ import com.guillaumegasnier.education.annuaire.repositories.CommuneRepository;
 import com.guillaumegasnier.education.annuaire.repositories.EtablissementRepository;
 import com.guillaumegasnier.education.annuaire.repositories.IndicePositionSocialeRepository;
 import com.guillaumegasnier.education.annuaire.repositories.NatureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Validated
 public class EtablissementService {
@@ -94,5 +97,32 @@ public class EtablissementService {
         Pageable pageable = PageRequest.of(page, 20);
 
         return etablissementRepository.findAll(pageable).map(etablissementMapper::toDto);
+    }
+
+
+    public String importEsrEtablissements(String path) {
+        return "Import Local ESR etabs";
+    }
+
+    public String importCarifEtablissements(String path) {
+        return "Import Local CARIF OREF etabs";
+
+    }
+
+    /**
+     * @param datasets
+     * @return
+     */
+    public String createOrUpdateEtablissement(@NonNull List<EnEtablissementDataset> datasets) {
+
+        var a = datasets.stream().map(
+                dataset ->
+                {
+                    log.info("{} : {}", dataset.getUai(), dataset.getNom());
+                    return dataset;
+                }
+        ).toList();
+
+        return String.valueOf(a.size());
     }
 }

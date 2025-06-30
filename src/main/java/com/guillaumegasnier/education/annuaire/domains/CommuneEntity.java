@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "communes")
-public class CommuneEntity {
+public class CommuneEntity extends AbstractEntity {
 
     @Id
     @Column(columnDefinition = "CHAR(5)", length = 5, unique = true)

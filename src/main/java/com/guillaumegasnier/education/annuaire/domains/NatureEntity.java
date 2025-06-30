@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "natures")
-public class NatureEntity {
+public class NatureEntity extends AbstractEntity {
 
     @Id
     @Column(columnDefinition = "CHAR(3)", length = 3, unique = true)

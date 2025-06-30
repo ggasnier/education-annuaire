@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "etablissements")
-public class EtablissementEntity {
+public class EtablissementEntity extends AbstractEntity {
 
     @Id
     @ValidUai

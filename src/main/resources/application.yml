@@ -4,3 +4,5 @@ spring:
   shell:
     interactive:
       enabled: true
+  profiles:
+    active: local

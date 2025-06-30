@@ -17,18 +17,29 @@ public class ImportShell {
         this.importService = importService;
     }
 
+    @ShellMethod(value = "Import régions")
+    public String importRegions() {
+        return importService.importRegions();
+    }
+
+    @ShellMethod(value = "Import départements")
+    public String importDepartements() {
+        return importService.importDepartements();
+    }
+
     @ShellMethod(value = "Import établissements (EN)")
     public String importEnEtablissements() {
-        return "Import des établissements de l'EN";
+        return importService.importEnEtablissements();
     }
 
-    @ShellMethod(value = "Import établissements (ESR)")
-    public String importEsrEtablissements() {
-        return "Import des établissements de l'ESR";
-    }
 
-    @ShellMethod(value = "Import établissements (Carif-Oref)")
-    public String importCarifEtablissements() {
-        return "Import des établissements du réseau Carif-Oref";
-    }
+//    @ShellMethod(value = "Import établissements (ESR)")
+//    public String importEsrEtablissements() {
+//        return importService.importEnEtablissements();
+//    }
+//
+//    @ShellMethod(value = "Import établissements (Carif-Oref)")
+//    public String importCarifEtablissements() {
+//        return importService.importCarifEtablissements();
+//    }
 }

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "academies")
-public class AcademieEntity {
+public class AcademieEntity extends AbstractEntity {
 
     @Id
     @Column(columnDefinition = "CHAR(2)", length = 2, unique = true)

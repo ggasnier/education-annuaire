@@ -85,6 +85,11 @@
             <groupId>org.springframework.shell</groupId>
             <artifactId>spring-shell-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.10</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
