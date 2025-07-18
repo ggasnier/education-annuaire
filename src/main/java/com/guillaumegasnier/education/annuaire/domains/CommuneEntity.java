@@ -18,9 +18,8 @@ public class CommuneEntity extends AbstractEntity {
     @NotBlank
     private String nom;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "code_pays", foreignKey = @ForeignKey(name = "fk_communes_pays"))
-    private PaysEntity pays;
+    @Column(columnDefinition = "CHAR(2)", length = 2, nullable = false)
+    private String codePays;
 
     @ManyToOne
     @JoinColumn(name = "code_departement", foreignKey = @ForeignKey(name = "fk_communes_departements"))

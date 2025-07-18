@@ -1,5 +1,7 @@
 package com.guillaumegasnier.education.annuaire.mappers;
 
+import com.guillaumegasnier.education.annuaire.datasets.etablissements.EtablissementDataset;
+import com.guillaumegasnier.education.annuaire.domains.ContactEntity;
 import com.guillaumegasnier.education.annuaire.domains.EtablissementEntity;
 import com.guillaumegasnier.education.annuaire.domains.IndicePositionSocialeEntity;
 import com.guillaumegasnier.education.annuaire.dto.EtablissementDto;
@@ -9,13 +11,15 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public abstract class EtablissementMapper {
 
-    @Mapping(target = "nomPays", source = "commune.pays.nom")
-    @Mapping(target = "codePays", source = "commune.pays.code")
+    //    @Mapping(target = "nomPays", source = "commune.pays.nom")
+    @Mapping(target = "nomPays", ignore = true)
+    @Mapping(target = "codePays", source = "commune.codePays")
     @Mapping(target = "nomRegion", source = "commune.departement.region.nom")
     @Mapping(target = "nomNature", source = "nature.nom")
     @Mapping(target = "nomEtat", source = "etat.nom")
@@ -42,4 +46,28 @@ public abstract class EtablissementMapper {
 
     public abstract List<IPSDto> toDto(List<IndicePositionSocialeEntity> entities);
 
+    @Mapping(target = "contrat", ignore = true)
+    @Mapping(target = "commune", ignore = true)
+    @Mapping(target = "nature", ignore = true)
+    @Mapping(target = "contacts", ignore = true)
+    @Mapping(target = "sources", ignore = true) // Ne pas mapper
+    @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
+    @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
+    public abstract EtablissementEntity toEntity(EtablissementDataset dataset);
+
+    protected List<ContactEntity> emptyContactList() {
+        return new ArrayList<>();
+    }
+
+//    @Mapping(target = "sources", ignore = true)
+//    @Deprecated
+//    @Mapping(target = "siret", ignore = true)
+//    @Mapping(target = "nature", ignore = true)
+//    @Mapping(target = "etat", ignore = true)
+//    @Mapping(target = "contrat", ignore = true)
+//    @Mapping(target = "commune", ignore = true)
+//
+//    @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
+//    @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
+//    public abstract EtablissementEntity toEntity(EsrEtablissementDataset dataset);
 }

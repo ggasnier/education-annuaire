@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.annuaire.datasets;
+package com.guillaumegasnier.education.annuaire.datasets.references;
 
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
@@ -9,12 +9,12 @@ import lombok.Setter;
 public class DepartementDataset {
 
     @CsvBindByName(column = "DEP")
-    private String code;
+    protected String code;
 
     @CsvBindByName(column = "LIBELLE")
-    private String nom;
+    protected String nom;
 
     @CsvBindByName(column = "REG")
-    private String codeRegion;
+    protected String codeRegion;
 
 }

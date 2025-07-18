@@ -10,4 +10,6 @@ import java.util.List;
 public interface AcademieRepository extends JpaRepository<AcademieEntity, String> {
 
     List<AcademieEntity> findAllByOrderByCode();
+
+    String code(String code);
 }

@@ -20,7 +20,7 @@ public class UaiValidator implements ConstraintValidator<ValidUai, String> {
     @Override
     public boolean isValid(String uai, ConstraintValidatorContext constraintValidatorContext) {
         if (uai == null || uai.isEmpty()) {
-            return true; // Champ optionnel
+            return false;
         }
 
         if (!uai.matches("\\d{7}[A-Z]")) {

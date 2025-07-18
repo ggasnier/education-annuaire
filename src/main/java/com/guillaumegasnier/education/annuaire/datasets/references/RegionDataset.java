@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.annuaire.datasets;
+package com.guillaumegasnier.education.annuaire.datasets.references;
 
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;

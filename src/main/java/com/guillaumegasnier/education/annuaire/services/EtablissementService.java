@@ -1,30 +1,34 @@
 package com.guillaumegasnier.education.annuaire.services;
 
-import com.guillaumegasnier.education.annuaire.datasets.EnEtablissementDataset;
-import com.guillaumegasnier.education.annuaire.domains.CommuneEntity;
-import com.guillaumegasnier.education.annuaire.domains.EtablissementEntity;
-import com.guillaumegasnier.education.annuaire.domains.IndicePositionSocialeEntity;
-import com.guillaumegasnier.education.annuaire.domains.NatureEntity;
+import com.guillaumegasnier.education.annuaire.datasets.etablissements.ContactEtablissementDataset;
+import com.guillaumegasnier.education.annuaire.datasets.etablissements.EtablissementDataset;
+import com.guillaumegasnier.education.annuaire.datasets.etablissements.IPSDataset;
+import com.guillaumegasnier.education.annuaire.domains.*;
 import com.guillaumegasnier.education.annuaire.dto.EtablissementDto;
 import com.guillaumegasnier.education.annuaire.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.annuaire.dto.IPSDto;
 import com.guillaumegasnier.education.annuaire.dto.IPSRequestDto;
 import com.guillaumegasnier.education.annuaire.mappers.EtablissementMapper;
-import com.guillaumegasnier.education.annuaire.repositories.CommuneRepository;
-import com.guillaumegasnier.education.annuaire.repositories.EtablissementRepository;
-import com.guillaumegasnier.education.annuaire.repositories.IndicePositionSocialeRepository;
-import com.guillaumegasnier.education.annuaire.repositories.NatureRepository;
+import com.guillaumegasnier.education.annuaire.repositories.*;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -36,14 +40,25 @@ public class EtablissementService {
     private final NatureRepository natureRepository;
     private final EtablissementMapper etablissementMapper;
     private final IndicePositionSocialeRepository indicePositionSocialeRepository;
+    private final Validator validator;
+    private final ContratRepository contratRepository;
 
     @Autowired
-    public EtablissementService(EtablissementRepository etablissementRepository, CommuneRepository communeRepository, NatureRepository natureRepository, EtablissementMapper etablissementMapper, IndicePositionSocialeRepository indicePositionSocialeRepository) {
+    public EtablissementService(EtablissementRepository etablissementRepository, CommuneRepository communeRepository, NatureRepository natureRepository, EtablissementMapper etablissementMapper, IndicePositionSocialeRepository indicePositionSocialeRepository, Validator validator, ContratRepository contratRepository) {
         this.etablissementRepository = etablissementRepository;
         this.communeRepository = communeRepository;
         this.natureRepository = natureRepository;
         this.etablissementMapper = etablissementMapper;
         this.indicePositionSocialeRepository = indicePositionSocialeRepository;
+        this.validator = validator;
+        this.contratRepository = contratRepository;
+    }
+
+    public static <T> void setIfChanged(Supplier<T> getter, Consumer<T> setter, T newValue) {
+        T current = getter.get();
+        if (newValue != null && (current == null || !newValue.equals(current))) {
+            setter.accept(newValue);
+        }
     }
 
     /**
@@ -99,30 +114,176 @@ public class EtablissementService {
         return etablissementRepository.findAll(pageable).map(etablissementMapper::toDto);
     }
 
-
-    public String importEsrEtablissements(String path) {
-        return "Import Local ESR etabs";
-    }
-
-    public String importCarifEtablissements(String path) {
-        return "Import Local CARIF OREF etabs";
-
-    }
-
     /**
      * @param datasets
      * @return
      */
-    public String createOrUpdateEtablissement(@NonNull List<EnEtablissementDataset> datasets) {
+    @Transactional
+    public String createOrUpdateEtablissement(@NonNull List<? extends EtablissementDataset> datasets, String source) {
+        AtomicInteger counter = new AtomicInteger(0);
+        int size = datasets.size();
+        int progressStep = Math.max(size / 10, 1);
 
-        var a = datasets.stream().map(
-                dataset ->
-                {
-                    log.info("{} : {}", dataset.getUai(), dataset.getNom());
-                    return dataset;
-                }
-        ).toList();
+        List<EtablissementEntity> entities = datasets
+                .stream()
+                .flatMap(dataset -> Arrays.stream(dataset.getUai().split(";"))
+                        .map(String::trim)
+                        .filter(uai -> !uai.isEmpty())
+                        .map(uai -> {
+                            EtablissementDataset copy = new EtablissementDataset();
+                            BeanUtils.copyProperties(dataset, copy);
+                            copy.setUai(uai);
+                            return copy;
+                        }))
+                .flatMap(dataset -> {
+                    String siretField = dataset.getSiret();
+                    if (siretField == null || siretField.isBlank()) {
+                        return Stream.of(dataset);
+                    }
 
-        return String.valueOf(a.size());
+                    return Arrays.stream(siretField.split(","))
+                            .map(String::trim)
+                            .filter(siret -> !siret.isEmpty())
+                            .distinct()
+                            .map(siret -> {
+                                EtablissementDataset copy = new EtablissementDataset();
+                                BeanUtils.copyProperties(dataset, copy);
+                                copy.setSiret(siret);
+                                return copy;
+                            });
+                })
+                .map(dataset -> {
+                    int count = counter.incrementAndGet();
+                    if (count % progressStep == 0) {
+                        var percent = (count * 100) / size;
+                        log.info("Avancement {}%", percent);
+                    }
+                    return toEtablissementEntity(dataset, source);
+                })
+                .filter(entity -> {
+                    Set<ConstraintViolation<EtablissementEntity>> violations = validator.validate(entity);
+                    if (!violations.isEmpty()) {
+                        // TODO : à enregister dans une autre table en JSONB
+                        violations.forEach(v -> {
+                                    if (v.getMessage().equals("SIRET invalide")) {
+                                        entity.setSiret(null);
+                                        if (violations.size() == 1) // Si c'est la seule erreur
+                                            violations.clear();
+                                    } else {
+                                        log.warn("Validation failed on {}.{}: {} ({})", entity.getClass().getSimpleName(), v.getPropertyPath(), v.getMessage(), v.getInvalidValue());
+                                    }
+                                }
+                        );
+                    }
+                    return violations.isEmpty();
+                })
+                .toList();
+
+        saveInChunks(new ArrayList<>(entities), 1000);
+        return "OK";
+    }
+
+    @Transactional
+    protected <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, String source) {
+
+        EtablissementEntity entity = etablissementRepository.findById(dataset.getUai()).orElseGet(() -> etablissementMapper.toEntity(dataset));
+
+        entity.setSiret(dataset.getSiret());
+        entity.setAdresse(dataset.getAdresse());
+        entity.setComplement(dataset.getComplement());
+
+        // contacts
+        entity.setContacts(this.mergeContacts(entity, dataset.getContacts()));
+
+        // siret (seulement si une valeur est renseignée)
+        if (dataset.getSiret() != null)
+            entity.setSiret(dataset.getSiret());
+
+        // etat (seulement si une valeur est renseignée)
+        if (dataset.getEtat() != null)
+            entity.setEtat(dataset.getEtat());
+
+//        communeRepository.findById(dataset.getCodeCommune()).ifPresent(commune ->
+//                setIfChanged(entity::getCommune, entity::setCommune, commune)
+//        );
+//        natureRepository.findById(dataset.getCodeNature()).ifPresent(nature ->
+//                setIfChanged(entity::getNature, entity::setNature, nature)
+//        );
+//        contratRepository.findById(dataset.getCodeContrat()).ifPresent(contrat ->
+//                setIfChanged(entity::getContrat, entity::setContrat, contrat)
+//        );
+
+        if (dataset.getCodeCommune() != null) {
+            communeRepository.findById(dataset.getCodeCommune()).ifPresent(entity::setCommune);
+        }
+        if (dataset.getCodeNature() != null) {
+            natureRepository.findById(dataset.getCodeNature()).ifPresent(entity::setNature);
+        }
+        if (dataset.getCodeContrat() != null) {
+            contratRepository.findById(dataset.getCodeContrat()).ifPresent(entity::setContrat);
+        }
+
+        // Sources
+        entity.addSource(source);
+
+        return entity;
+    }
+
+    @Transactional
+    protected List<ContactEntity> mergeContacts(EtablissementEntity entity, List<ContactEtablissementDataset> contacts) {
+        if (entity.getContacts() == null) {
+            entity.setContacts(new ArrayList<>());
+        }
+
+        Set<ContactPk> existingPks = entity.getContacts()
+                .stream()
+                .map(ContactEntity::getPk)
+                .collect(Collectors.toSet());
+
+        List<ContactEntity> nouveaux = toContactEntityList(entity, contacts).stream()
+                .filter(c -> !existingPks.contains(c.getPk()))
+                .toList();
+
+        entity.getContacts().addAll(nouveaux);
+
+        return entity.getContacts();
+    }
+
+    @Transactional
+    protected List<ContactEntity> toContactEntityList(@NonNull EtablissementEntity entity, @NonNull List<ContactEtablissementDataset> contacts) {
+
+        List<ContactEntity> contactEntityList = new ArrayList<>();
+
+        for (ContactEtablissementDataset contact : contacts) {
+            ContactEntity contactEntity = new ContactEntity();
+            contactEntity.setPk(new ContactPk(entity.getUai(), contact.getClef(), contact.getValeur()));
+            contactEntity.setEtablissement(entity);
+            contactEntityList.add(contactEntity);
+        }
+
+        return contactEntityList;
+    }
+
+    public void saveInChunks(List<EtablissementEntity> entities, int chunkSize) {
+        try {
+            for (int i = 0; i < entities.size(); i += chunkSize) {
+                int end = Math.min(i + chunkSize, entities.size());
+                List<EtablissementEntity> sublist = entities.subList(i, end);
+                etablissementRepository.saveAll(sublist);
+                etablissementRepository.flush();
+            }
+        } catch (Exception e) {
+            log.error("Erreur JPA : {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public String createOrUpdateIPS(List<? extends IPSDataset> datasets) {
+
+        for (IPSDataset dataset : datasets) {
+            log.info(dataset.toString());
+        }
+
+        return "TODO";
     }
 }

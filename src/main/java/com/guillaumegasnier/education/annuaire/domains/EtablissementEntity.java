@@ -5,13 +5,17 @@ import com.guillaumegasnier.education.annuaire.validations.ValidSiret;
 import com.guillaumegasnier.education.annuaire.validations.ValidUai;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.lang.NonNull;
+
+import java.util.*;
 
 @Getter
 @Setter
 @Entity
+@DynamicUpdate
 @Table(name = "etablissements")
 public class EtablissementEntity extends AbstractEntity {
 
@@ -27,8 +31,7 @@ public class EtablissementEntity extends AbstractEntity {
     @NotBlank
     private String nom;
 
-    @NotNull
-    @Column(columnDefinition = "CHAR(1)", length = 1, nullable = false)
+    @Column(columnDefinition = "CHAR(1)", length = 1)
     @Enumerated(EnumType.STRING)
     private EtatEtablissement etat;
 
@@ -50,6 +53,29 @@ public class EtablissementEntity extends AbstractEntity {
     @JoinColumn(name = "code_commune", foreignKey = @ForeignKey(name = "fk_etablissements_communes"))
     private CommuneEntity commune;
 
-    // Position (POSTGIS)
+    @OneToMany(mappedBy = "etablissement", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ContactEntity> contacts = new ArrayList<>();
+
+    @Column(name = "sources")
+    private String sources;
+
+    public Set<String> getSources() {
+        if (sources == null || sources.isBlank()) return new HashSet<>();
+        return new HashSet<>(Arrays.asList(sources.split("\\|")));
+    }
+
+    public void setSources(Set<String> sources) {
+        this.sources = String.join("|", sources);
+    }
+
+    public void addSource(@NonNull String source) {
+        Set<String> sourcesSet = getSources();
+        sourcesSet.add(source);
+        this.sources = String.join("|", sourcesSet);
+    }
+
+    public String getSourcesAsString() {
+        return this.sources;
+    }
 
 }

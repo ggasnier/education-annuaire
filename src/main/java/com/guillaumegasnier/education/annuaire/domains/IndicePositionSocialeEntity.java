@@ -18,6 +18,9 @@ public class IndicePositionSocialeEntity {
     @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_ips_etablissements"))
     private EtablissementEntity etablissement;
 
+    @Column(columnDefinition = "CHAR(1)")
+    private String categorie;
+
     /**
      * IPS de l'établissement
      */

@@ -11,12 +11,14 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public abstract class ReferenceMapper {
 
-    @Mapping(target = "pays", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "codePays", ignore = true)
     @Mapping(target = "departement", ignore = true)
     public abstract CommuneEntity toCommuneEntity(CommuneRequestDto request);
 
     @Mapping(target = "nomDepartement", source = "departement.nom")
-    @Mapping(target = "codePays", source = "pays.code")
+    @Mapping(target = "codePays", source = "codePays")
     @Mapping(target = "codeDepartement", source = "departement.code")
     public abstract CommuneDto toCommuneDto(CommuneEntity entity);
 

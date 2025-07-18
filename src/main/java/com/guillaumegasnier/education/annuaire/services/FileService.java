@@ -1,12 +1,5 @@
 package com.guillaumegasnier.education.annuaire.services;
 
-import com.guillaumegasnier.education.annuaire.datasets.DepartementDataset;
-import com.guillaumegasnier.education.annuaire.datasets.EnEtablissementDataset;
-import com.guillaumegasnier.education.annuaire.datasets.RegionDataset;
-import com.guillaumegasnier.education.annuaire.domains.DepartementEntity;
-import com.guillaumegasnier.education.annuaire.domains.EtablissementEntity;
-import com.guillaumegasnier.education.annuaire.domains.RegionEntity;
-import com.guillaumegasnier.education.annuaire.mappers.ImportMapper;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.ByteOrderMark;
@@ -14,33 +7,32 @@ import org.apache.commons.io.input.BOMInputStream;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 public class FileService {
 
-    private final ImportMapper importMapper;
-
-    @Deprecated
-    private final Map<Class<?>, Function<?, ?>> mappers = new HashMap<>();
-
-    public FileService(ImportMapper importMapper) {
-        this.importMapper = importMapper;
-        mappers.put(EnEtablissementDataset.class, (Function<EnEtablissementDataset, EtablissementEntity>) importMapper::toEtablissementEntity);
-        mappers.put(RegionDataset.class, (Function<RegionDataset, RegionEntity>) importMapper::toRegionEntity);
-        mappers.put(DepartementDataset.class, (Function<DepartementDataset, DepartementEntity>) importMapper::toDepartementEntity);
-    }
+//    private final ImportMapper importMapper;
+//
+//    @Deprecated
+//    private final Map<Class<?>, Function<?, ?>> mappers = new HashMap<>();
+//
+//    public FileService(ImportMapper importMapper) {
+//        this.importMapper = importMapper;
+//        mappers.put(EnEtablissementDataset.class, (Function<EnEtablissementDataset, EtablissementEntity>) importMapper::toEtablissementEntity);
+//        mappers.put(RegionDataset.class, (Function<RegionDataset, RegionEntity>) importMapper::toRegionEntity);
+//        mappers.put(DepartementDataset.class, (Function<DepartementDataset, DepartementEntity>) importMapper::toDepartementEntity);
+//    }
 
     /**
      * Ouvre un fichier local ou distant avec l'encodage spécifié, en filtrant le BOM si nécessaire.
@@ -56,13 +48,38 @@ public class FileService {
             InputStream rawInputStream;
 
             if (filePathOrUrl.startsWith("http://") || filePathOrUrl.startsWith("https://")) {
+                // GET simple
                 URL url = new URL(filePathOrUrl);
-                rawInputStream = url.openStream(); // Peut lancer IOException
+                rawInputStream = url.openStream();
+            } else if (filePathOrUrl.startsWith("https.post://")) {
+                // Appel POST simplifié, sans config avancée
+                String url = filePathOrUrl.replaceFirst("https.post://", "https://");
+                log.info("Méthode POST : {}", url);
+                HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+                conn.setRequestProperty("Content-Type", "application/json");
+
+                // Exemple de charge utile (à adapter)
+                String payload = "{\"size\":1000,\"query\":{\"bool\":{\"must\":[{\"bool\":{\"must\":[{\"term\":{\"published\":\"true\"}},{\"match_all\":{}}]}}]}}}";
+
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = payload.getBytes(charset);
+                    os.write(input, 0, input.length);
+                }
+
+                int status = conn.getResponseCode();
+                int contentLength = conn.getContentLength();
+                String contentType = conn.getContentType();
+
+                log.info("HTTP POST → [{}]: Code: {}, Taille: {}, Type: {}", url, status, contentLength, contentType);
+                
+                rawInputStream = conn.getInputStream();
             } else {
+                // Lecture fichier local
                 rawInputStream = Files.newInputStream(Paths.get(filePathOrUrl));
             }
 
-            // Gère UTF-8 avec BOM si nécessaire
             InputStream filteredInputStream = charset.equals(StandardCharsets.UTF_8)
                     ? BOMInputStream.builder()
                     .setInputStream(rawInputStream)
@@ -71,15 +88,13 @@ public class FileService {
                     .get()
                     : rawInputStream;
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(filteredInputStream, charset));
-            return Optional.of(reader);
+            return Optional.of(new BufferedReader(new InputStreamReader(filteredInputStream, charset)));
 
         } catch (IOException e) {
             log.error("Erreur lors de l'ouverture du fichier/URL [{}] : {}", filePathOrUrl, e.getMessage(), e);
             return Optional.empty();
         }
     }
-
 
     /**
      * Importe un fichier CSV et le convertit en objets via un mapper.
@@ -92,13 +107,6 @@ public class FileService {
      */
     public <T> List<T> importCSV(String filePath, Class<? extends T> type, char separator, @NonNull Charset charset) {
         log.info("Début import {}", filePath);
-
-//        @SuppressWarnings("unchecked")
-//        Function<T, R> mapper = (Function<T, R>) mappers.get(type);
-
-//        if (mapper == null) {
-//            throw new IllegalArgumentException("Mapper non défini pour le type : " + type.getSimpleName());
-//        }
 
         List<T> result = new ArrayList<>();
 
@@ -120,4 +128,5 @@ public class FileService {
         log.info("Fin import {}, lignes importées : {}", filePath, result.size());
         return result;
     }
+
 }
