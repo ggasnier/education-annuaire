@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.web.configuration;
 
-import com.guillaumegasnier.education.annuaire.dto.ApiError;
+import com.guillaumegasnier.education.web.ApiError;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;

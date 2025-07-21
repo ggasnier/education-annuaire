@@ -1,6 +1,21 @@
 package com.guillaumegasnier.education.web.api;
 
 
+import com.guillaumegasnier.education.core.etablissements.validations.ValidUai;
+import com.guillaumegasnier.education.web.ApiError;
+import com.guillaumegasnier.education.web.dto.EtablissementDto;
+import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
+import com.guillaumegasnier.education.web.dto.IPSDto;
+import com.guillaumegasnier.education.web.dto.IPSRequestDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 public interface IApiEtablissementController {

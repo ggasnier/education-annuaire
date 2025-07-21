@@ -50,9 +50,6 @@ public class EtablissementService {
         return natureRepository.getReferenceById(codeNature);
     }
 
-//    public Optional<EtablissementDto> getEtablissement(@NonNull String uai) {
-//        return etablissementRepository.findById(uai).map(etablissementMapper::toDto);
-//    }
 
 //    public Optional<EtablissementDto> updateEtablissement(@NonNull EtablissementRequestDto dto) {
 //        return Optional.empty();
