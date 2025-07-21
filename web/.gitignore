@@ -32,5 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 application-*.yml
-datasets/
+/shell/datasets/
 /src/main/frontend/node_modules/
