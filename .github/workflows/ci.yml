@@ -26,14 +26,17 @@ jobs:
           java-version: '21'
           cache: maven
 
-      - name: Build and run tests
-        run: mvn clean verify
+      - name: Build, test & package all modules
+        run: mvn clean verify -DskipTests=false
 
-      - name: Package executable JAR
-        run: mvn package -DskipTests
-
-      - name: Upload packaged JAR
+      - name: Upload shell module JAR
         uses: actions/upload-artifact@v4
         with:
-          name: app
-          path: target/*.jar
+          name: shell-app
+          path: shell/target/*.jar
+
+      - name: Upload web module JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-app
+          path: web/target/*.jar
