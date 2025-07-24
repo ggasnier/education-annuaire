@@ -1,17 +1,216 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
+import com.guillaumegasnier.education.core.etablissements.entities.ContactEntity;
+import com.guillaumegasnier.education.core.etablissements.entities.ContactPk;
+import com.guillaumegasnier.education.core.etablissements.entities.EtablissementEntity;
+import com.guillaumegasnier.education.core.etablissements.entities.IndicePositionSocialeEntity;
 import com.guillaumegasnier.education.core.etablissements.services.EtablissementService;
+import com.guillaumegasnier.education.core.references.services.ReferenceService;
+import com.guillaumegasnier.education.shell.datasets.etablissements.ContactEtablissementDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
+import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
+import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.services.IImportEtablissementService;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+@Slf4j
 @Service
 public class ImportEtablissementService implements IImportEtablissementService {
 
     private final EtablissementService etablissementService;
+    private final EtablissementMapper etablissementMapper;
+    private final ReferenceService referenceService;
+    private final Validator validator;
 
     @Autowired
-    public ImportEtablissementService(EtablissementService etablissementService) {
+    public ImportEtablissementService(EtablissementService etablissementService, EtablissementMapper etablissementMapper, ReferenceService referenceService, Validator validator) {
         this.etablissementService = etablissementService;
+        this.etablissementMapper = etablissementMapper;
+        this.referenceService = referenceService;
+        this.validator = validator;
+    }
+
+    @Transactional
+    public String createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source) {
+        AtomicInteger counter = new AtomicInteger(0);
+        int size = datasets.size();
+        int progressStep = Math.max(size / 10, 1);
+
+        List<EtablissementEntity> etablissements = datasets.stream()
+                .flatMap(dataset -> Arrays.stream(dataset.getUai().split(";"))
+                        .map(String::trim)
+                        .filter(uai -> !uai.isEmpty())
+                        .map(uai -> {
+                            EtablissementDataset copy = new EtablissementDataset();
+                            BeanUtils.copyProperties(dataset, copy);
+                            copy.setUai(uai);
+                            return copy;
+                        }))
+                .flatMap(dataset -> {
+                    String siretField = dataset.getSiret();
+                    if (siretField == null || siretField.isBlank()) {
+                        return Stream.of(dataset);
+                    }
+
+                    return Arrays.stream(siretField.split(","))
+                            .map(String::trim)
+                            .filter(siret -> !siret.isEmpty())
+                            .distinct()
+                            .map(siret -> {
+                                EtablissementDataset copy = new EtablissementDataset();
+                                BeanUtils.copyProperties(dataset, copy);
+                                copy.setSiret(siret);
+                                return copy;
+                            });
+                })
+                .map(dataset -> {
+                            int count = counter.incrementAndGet();
+                            if (count % progressStep == 0) {
+                                var percent = (count * 100) / size;
+                                log.info("Avancement {}%", percent);
+                            }
+                            return this.toEtablissementEntity(dataset, source);
+                        }
+                )
+                .filter(entity -> {
+                    Set<ConstraintViolation<EtablissementEntity>> violations = validator.validate(entity);
+                    if (!violations.isEmpty()) {
+                        // TODO : à enregister dans une autre table en JSONB
+                        violations.forEach(v -> {
+                                    if (v.getMessage().equals("SIRET invalide")) {
+                                        entity.setSiret(null);
+                                        if (violations.size() == 1) // Si c'est la seule erreur
+                                            violations.clear();
+                                    } else {
+                                        log.warn("Validation failed on {}.{}: {} ({})", entity.getClass().getSimpleName(), v.getPropertyPath(), v.getMessage(), v.getInvalidValue());
+                                    }
+                                }
+                        );
+                    }
+                    return violations.isEmpty();
+                })
+                .toList();
+
+
+        etablissementService.saveEtablissements(etablissements);
+
+        return String.format("Import terminé : %d établissements(s) enregistrée(s).", datasets.size());
+    }
+
+    @Transactional
+    protected <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, String source) {
+
+        EtablissementEntity entity = etablissementService.findEtablissement(dataset.getUai()).orElseGet(() -> etablissementMapper.toEntity(dataset));
+
+        if (dataset.getCodeCommune() != null) {
+            referenceService.findCommune(dataset.getCodeCommune()).ifPresent(entity::setCommune);
+        }
+        if (dataset.getCodeNature() != null) {
+            etablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
+        }
+        if (dataset.getCodeContrat() != null) {
+            etablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
+        }
+
+        entity.setContacts(mergeContacts(entity, dataset.getContacts()));
+
+        entity.addSource(source);
+
+        return entity;
+    }
+
+    @Transactional
+    protected List<ContactEntity> mergeContacts(EtablissementEntity entity, List<ContactEtablissementDataset> contacts) {
+        if (entity.getContacts() == null) {
+            entity.setContacts(new ArrayList<>());
+        }
+
+        Set<ContactPk> existingPks = entity.getContacts()
+                .stream()
+                .map(ContactEntity::getPk)
+                .collect(Collectors.toSet());
+
+        List<ContactEntity> nouveaux = toContactEntityList(entity, contacts).stream()
+                .filter(c -> !existingPks.contains(c.getPk()))
+                .toList();
+
+        entity.getContacts().addAll(nouveaux);
+
+        return entity.getContacts();
+    }
+
+    @Transactional
+    protected List<ContactEntity> toContactEntityList(@NonNull EtablissementEntity entity, @NonNull List<ContactEtablissementDataset> contacts) {
+
+        List<ContactEntity> contactEntityList = new ArrayList<>();
+
+        for (ContactEtablissementDataset contact : contacts) {
+            ContactEntity contactEntity = new ContactEntity();
+            contactEntity.setPk(new ContactPk(entity.getUai(), contact.getClef(), contact.getValeur()));
+            contactEntity.setEtablissement(entity);
+            contactEntityList.add(contactEntity);
+        }
+
+        return contactEntityList;
+    }
+
+    public String createOrUpdateNatures(@NonNull List<NatureDataset> datasets) {
+        etablissementService.saveNatures(datasets.stream()
+                .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
+                .map(etablissementMapper::toNatureEntity)
+                .toList());
+        return String.format("Import terminé : %d natures(s) enregistrée(s).", datasets.size());
+    }
+
+    public String createOrUpdateContrats(@NonNull List<ContratDataset> datasets) {
+        etablissementService.saveContrats(datasets.stream()
+                .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
+                .map(etablissementMapper::toContratEntity)
+                .toList());
+        return String.format("Import terminé : %d contrat(s) enregistrée(s).", datasets.size());
+    }
+
+    public String createOrUpdateIPSColleges(@NonNull List<? extends IPSDataset> datasets) {
+
+        List<IndicePositionSocialeEntity> entities = datasets.stream()
+                .map(this::toIndicePositionSocialeEntity)
+                .filter(Objects::nonNull)
+                .toList();
+
+        etablissementService.saveIPS(entities);
+
+        return String.format("Import terminé : %d ips enregistrée(s).", datasets.size());
+    }
+
+    @Nullable
+    private IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset) {
+
+        IndicePositionSocialeEntity ips = etablissementService.getIPS(dataset.getUai(), dataset.getAnnee()).orElseGet(() -> etablissementMapper.toIndicePositionSocialeEntity(dataset));
+
+        Optional<EtablissementEntity> etablissement = etablissementService.findEtablissement(dataset.getUai());
+
+        if (etablissement.isPresent()) {
+            ips.setEtablissement(etablissement.get());
+        } else {
+            log.error("Pas d'établissemenet avec UAI : {}", dataset.getUai());
+            return null;
+        }
+
+        return ips;
     }
 }

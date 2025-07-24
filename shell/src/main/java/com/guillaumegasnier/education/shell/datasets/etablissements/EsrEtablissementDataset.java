@@ -114,48 +114,40 @@ public class EsrEtablissementDataset extends EtablissementDataset {
 
     @CsvBindByName(column = "uai - identifiant")
     private String uai;
-
     @CsvBindByName(column = "siret")
     private String siret;
-
     @CsvBindByName(column = "libellé")
     private String nom;
-
     @CsvBindByName(column = "Adresse")
     private String adresse;
-
     @CsvBindByName(column = "Lieu dit")
     private String lieuDit;
-
     @CsvBindByName(column = "Boite postale")
     private String boitePostale;
-
     @CsvBindByName(column = "Code postal")
     private String codePostal;
-
     @CsvBindByName(column = "Code commune")
     private String codeCommune;
-
     @CsvBindByName(column = "Numéro de téléphone")
     private String contactTelephone;
-
     @CsvBindByName(column = "site internet")
     private String contactWeb;
-
     @CsvBindByName(column = "compte_facebook")
     private String contactFacebook;
-
     @CsvBindByName(column = "compte_twitter")
     private String contactTwitter;
-
     @CsvBindByName(column = "compte_linkedin")
     private String contactLinkedin;
-
     @CsvBindByName(column = "compte_youtube")
     private String contactYoutube;
-
     @CsvBindByName(column = "Page Wikipédia en français")
     private String contactWikipedia;
+
+    @Override
+    public String getUai() {
+        if (uai == null) return "";
+        return uai;
+    }
 
     // compte_flickr
     // compte_pinterest

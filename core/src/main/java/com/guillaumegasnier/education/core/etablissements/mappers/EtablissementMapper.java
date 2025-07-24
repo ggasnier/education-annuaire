@@ -3,8 +3,10 @@ package com.guillaumegasnier.education.core.etablissements.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
+
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public abstract class EtablissementMapper {
+
 
 //    //    @Mapping(target = "nomPays", source = "commune.pays.nom")
 //    @Mapping(target = "nomPays", ignore = true)

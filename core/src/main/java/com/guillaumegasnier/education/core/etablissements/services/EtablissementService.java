@@ -1,17 +1,21 @@
 package com.guillaumegasnier.education.core.etablissements.services;
 
-
+import com.guillaumegasnier.education.core.etablissements.entities.ContratEntity;
+import com.guillaumegasnier.education.core.etablissements.entities.EtablissementEntity;
+import com.guillaumegasnier.education.core.etablissements.entities.IndicePositionSocialeEntity;
 import com.guillaumegasnier.education.core.etablissements.entities.NatureEntity;
-import com.guillaumegasnier.education.core.etablissements.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.core.etablissements.repositories.ContratRepository;
 import com.guillaumegasnier.education.core.etablissements.repositories.EtablissementRepository;
 import com.guillaumegasnier.education.core.etablissements.repositories.IndicePositionSocialeRepository;
 import com.guillaumegasnier.education.core.etablissements.repositories.NatureRepository;
-import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -21,44 +25,44 @@ public class EtablissementService {
 
     private final EtablissementRepository etablissementRepository;
     private final NatureRepository natureRepository;
-    private final EtablissementMapper etablissementMapper;
-    private final IndicePositionSocialeRepository indicePositionSocialeRepository;
-    private final Validator validator;
     private final ContratRepository contratRepository;
+    private final IndicePositionSocialeRepository ipsRepository;
 
-//    /**
-//     * <p>Création d'un établissement</p>
-//     *
-//     * @param dto Données d'entrées, à valider
-//     * @return Le Dto de l'établissement créé
-//     */
-//    public Optional<EtablissementDto> createEtablissement(@NonNull EtablissementRequestDto dto) {
-//        EtablissementEntity entity = etablissementMapper.toEntity(dto);
-//        entity.setNature(this.getNature(dto.getCodeNature()));
-//        entity.setCommune(this.getCommune(dto.getCodeCommune()));
-//        etablissementRepository.save(entity);
-//        return Optional.of(etablissementMapper.toDto(entity));
-//    }
-
-//    private CommuneEntity getCommune(String codeCommune) {
-//        if (codeCommune == null) return null;
-//        return communeRepository.getReferenceById(codeCommune);
-//    }
-
-    private NatureEntity getNature(String codeNature) {
-        if (codeNature == null) return null;
-        return natureRepository.getReferenceById(codeNature);
+    public void saveEtablissements(List<EtablissementEntity> etablissements) {
+        etablissementRepository.saveAll(etablissements);
     }
 
+    public void saveNatures(List<NatureEntity> natures) {
+        natureRepository.saveAll(natures);
+    }
 
-//    public Optional<EtablissementDto> updateEtablissement(@NonNull EtablissementRequestDto dto) {
-//        return Optional.empty();
-//    }
+    public void saveContrats(List<ContratEntity> contrats) {
+        contratRepository.saveAll(contrats);
+    }
 
-//    public List<IPSDto> getEtablissementIPS(@NonNull String uai) {
-//        return etablissementMapper.toDto(indicePositionSocialeRepository.findAllByPkUaiOrderByPkAnneeDesc(uai));
-//    }
-//
+    public Optional<EtablissementEntity> findEtablissement(String uai) {
+        return etablissementRepository.findById(uai);
+    }
+
+    @Cacheable("nature")
+    public Optional<NatureEntity> findNature(String codeNature) {
+        return natureRepository.findById(codeNature);
+    }
+
+    @Cacheable("contrat")
+    public Optional<ContratEntity> findContrat(String codeContrat) {
+        return contratRepository.findById(codeContrat);
+    }
+
+    public Optional<IndicePositionSocialeEntity> getIPS(String uai, int annee) {
+        return ipsRepository.findByPkUaiAndPkAnnee(uai, annee);
+    }
+
+    public void saveIPS(List<IndicePositionSocialeEntity> entities) {
+        ipsRepository.saveAll(entities);
+    }
+
+    //
 //    public Optional<IPSDto> createOrUpdateIndice(@NonNull String uai, @NonNull IPSRequestDto dto) {
 //        var entity = indicePositionSocialeRepository.findByPkUaiAndPkAnnee(uai, dto.getAnnee())
 //                .orElseGet(() -> new IndicePositionSocialeEntity(uai, dto.getAnnee()));

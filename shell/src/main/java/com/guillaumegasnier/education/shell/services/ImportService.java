@@ -1,8 +1,6 @@
 package com.guillaumegasnier.education.shell.services;
 
 
-import com.guillaumegasnier.education.core.etablissements.services.EtablissementService;
-import com.guillaumegasnier.education.core.references.services.ReferenceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,9 +15,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ImportService {
 
-    private final EtablissementService etablissementService;
-    private final ReferenceService referenceService;
-    private final FileService fileService;
+//    private final EtablissementService etablissementService;
+//    private final ReferenceService referenceService;
+//    private final FileService fileService;
 
 //    @Value("${spring.profiles.active}")
 //    private String env;

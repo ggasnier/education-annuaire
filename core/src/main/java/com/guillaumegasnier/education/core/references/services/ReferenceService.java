@@ -1,21 +1,15 @@
 package com.guillaumegasnier.education.core.references.services;
 
 
-import com.guillaumegasnier.education.core.references.entities.AcademieEntity;
-import com.guillaumegasnier.education.core.references.entities.CommuneEntity;
-import com.guillaumegasnier.education.core.references.entities.DepartementEntity;
-import com.guillaumegasnier.education.core.references.entities.RegionEntity;
-import com.guillaumegasnier.education.core.references.mappers.ReferenceMapper;
+import com.guillaumegasnier.education.core.references.entities.*;
 import com.guillaumegasnier.education.core.references.repositories.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -28,24 +22,8 @@ public class ReferenceService implements IReferenceService {
     private final CommuneRepository communeRepository;
     private final AcademieRepository academieRepository;
 
-    private final ReferenceMapper referenceMapper;
-
-//    private final NatureRepository natureRepository;
-//    private final ContratRepository contratRepository;
-
-//    private final ImportMapper importMapper;
-
-    private final Map<Class<?>, Function<?, ?>> mappers = new HashMap<>();
-
-
-    public String createOrUpdateAcademies(@NonNull List<AcademieEntity> entities) {
-        academieRepository.saveAll(entities);
-        return "OK";
-    }
-
-    public String createOrUpdateRegions(@NonNull List<RegionEntity> entities) {
-        regionRepository.saveAll(entities);
-        return "OK";
+    public void savePays(List<PaysEntity> entities) {
+        paysRepository.saveAll(entities);
     }
 
     public void saveAcademies(List<AcademieEntity> entities) {
@@ -60,27 +38,28 @@ public class ReferenceService implements IReferenceService {
         departementRepository.saveAll(entities);
     }
 
-    public RegionEntity getRegion(String code) {
-        return regionRepository.findById(code).orElse(null);
-    }
-
-    public AcademieEntity getAcademie(String code) {
-        return academieRepository.findById(code).orElse(null);
-
-    }
-
-    /**
-     * à mettre en cache
-     *
-     * @param code
-     * @return
-     */
-    public DepartementEntity getDepartement(String code) {
-        return departementRepository.findById(code).orElse(null);
-    }
-
     public void saveCommunes(List<CommuneEntity> entities) {
         communeRepository.saveAll(entities);
+    }
+
+    @Cacheable("region")
+    public RegionEntity getRegion(String codeRegion) {
+        return regionRepository.findById(codeRegion).orElse(null);
+    }
+
+    @Cacheable("academie")
+    public AcademieEntity getAcademie(String codeAcademie) {
+        return academieRepository.findById(codeAcademie).orElse(null);
+    }
+
+    @Cacheable("departement")
+    public DepartementEntity getDepartement(String codeDepartement) {
+        return departementRepository.findById(codeDepartement).orElse(null);
+    }
+
+    @Cacheable("commune")
+    public Optional<CommuneEntity> findCommune(String codeCommune) {
+        return communeRepository.findById(codeCommune);
     }
 
 

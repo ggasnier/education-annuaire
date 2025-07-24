@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.services;
 
+import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -12,17 +13,11 @@ import java.util.Optional;
 @Service
 public interface FileService {
 
-
-//    Optional<BufferedReader> openFile(@NonNull String filePathOrUrl, @NonNull Charset charset);
-
     Optional<BufferedReader> openFile(@NonNull String url, @NonNull Charset charset, String httpMethod);
 
-//    @Deprecated
-//    default <T> List<T> importCSV(String filePath, Class<? extends T> type, char separator, @NonNull Charset charset) {
-//        return Collections.emptyList();
-//    }
-
     <T> List<T> importCSV(@NonNull SourcesDatasets source, Class<? extends T> type);
+
+    List<CarifEtablissementDataset> importJsonCarif(@NonNull SourcesDatasets source);
 
 
 //    private final ImportMapper importMapper;

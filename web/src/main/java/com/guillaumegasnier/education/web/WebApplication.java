@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
 @EnableCaching
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.guillaumegasnier.education"})
 //@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class WebApplication {
 

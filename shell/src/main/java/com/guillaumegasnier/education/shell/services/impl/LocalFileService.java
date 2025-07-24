@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
+import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -70,4 +71,10 @@ public class LocalFileService implements FileService {
         log.info("Fin import {}, lignes importées : {}", source.getLocalPath(), result.size());
         return result;
     }
+
+    @Override
+    public List<CarifEtablissementDataset> importJsonCarif(@NonNull SourcesDatasets source) {
+        return List.of();
+    }
+
 }

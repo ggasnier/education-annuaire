@@ -66,8 +66,6 @@ import java.util.List;
  * libelle_zone_animation_pedagogique
  * code_bassin_formation
  * libelle_bassin_formation
- * <p>
- * DTo pour {@link com.guillaumegasnier.education.annuaire.domains.EtablissementEntity}
  */
 @Getter
 @Setter
@@ -136,7 +134,7 @@ public class EnEtablissementDataset extends EtablissementDataset {
         }
     }
 
-    @Override
+    //    @Override
     public List<ContactEtablissementDataset> getContacts() {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 
