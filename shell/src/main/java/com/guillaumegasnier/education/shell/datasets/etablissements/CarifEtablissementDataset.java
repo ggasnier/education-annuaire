@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.guillaumegasnier.education.core.etablissements.enums.EtatEtablissement;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class CarifEtablissementDataset extends EtablissementDataset {
+public class CarifEtablissementDataset implements EtablissementDataset {
 
     @JsonProperty("siege_social")
     private Boolean siegeSocial;
@@ -238,6 +239,16 @@ public class CarifEtablissementDataset extends EtablissementDataset {
     @JsonProperty("opco_siren")
     private String opcoSiren;
 
+    @Override
+    public EtablissementDataset cloneWithUai(String uai) {
+        return null;
+    }
+
+    @Override
+    public EtablissementDataset cloneWithSiret(String siret) {
+        return null;
+    }
+
     public String getUai() {
         if (uai == null) return "";
         return uai.trim();
@@ -273,6 +284,31 @@ public class CarifEtablissementDataset extends EtablissementDataset {
 
 
         return sb.toString();
+    }
+
+    @Override
+    public String getCodePays() {
+        return "";
+    }
+
+    @Override
+    public String getCodeNature() {
+        return null;
+    }
+
+    @Override
+    public String getCodeContrat() {
+        return null;
+    }
+
+    @Override
+    public EtatEtablissement getEtat() {
+        return null;
+    }
+
+    @Override
+    public List<ContactEtablissementDataset> getContacts() {
+        return List.of();
     }
 
 }

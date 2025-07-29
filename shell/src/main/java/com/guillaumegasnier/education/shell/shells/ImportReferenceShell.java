@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.shell.shells;
 
-public interface IImportReferenceShell {
+public interface ImportReferenceShell {
 
     String importPays();
 

@@ -70,7 +70,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class EnEtablissementDataset extends EtablissementDataset {
+public class EnEtablissementDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "Identifiant_de_l_etablissement")
     private String uai;
@@ -102,6 +102,16 @@ public class EnEtablissementDataset extends EtablissementDataset {
     private String contactWeb;
 
     @Override
+    public EtablissementDataset cloneWithUai(String uai) {
+        return null;
+    }
+
+    @Override
+    public EtablissementDataset cloneWithSiret(String siret) {
+        return null;
+    }
+
+    @Override
     public String getSiret() {
         if (siret == null) return null;
         if (siret.isBlank()) return null;
@@ -113,6 +123,12 @@ public class EnEtablissementDataset extends EtablissementDataset {
         if (complement == null) return null;
         if (complement.isBlank()) return null;
         return complement;
+    }
+
+    // TODO
+    @Override
+    public String getCodePays() {
+        return "FR";
     }
 
     @Override
@@ -134,7 +150,7 @@ public class EnEtablissementDataset extends EtablissementDataset {
         }
     }
 
-    //    @Override
+    @Override
     public List<ContactEtablissementDataset> getContacts() {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 

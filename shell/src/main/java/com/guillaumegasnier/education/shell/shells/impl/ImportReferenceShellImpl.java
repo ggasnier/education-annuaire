@@ -2,8 +2,8 @@ package com.guillaumegasnier.education.shell.shells.impl;
 
 import com.guillaumegasnier.education.shell.datasets.references.*;
 import com.guillaumegasnier.education.shell.services.FileService;
-import com.guillaumegasnier.education.shell.services.impl.ImportReferenceService;
-import com.guillaumegasnier.education.shell.shells.IImportReferenceShell;
+import com.guillaumegasnier.education.shell.services.ImportReferenceService;
+import com.guillaumegasnier.education.shell.shells.ImportReferenceShell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -13,13 +13,13 @@ import java.util.HashMap;
 import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
 
 @ShellComponent
-public class ImportReferenceShell implements IImportReferenceShell {
+public class ImportReferenceShellImpl implements ImportReferenceShell {
 
     private final ImportReferenceService importReferenceService;
     private final FileService fileService;
 
     @Autowired
-    public ImportReferenceShell(ImportReferenceService importReferenceService, FileService fileService) {
+    public ImportReferenceShellImpl(ImportReferenceService importReferenceService, FileService fileService) {
         this.importReferenceService = importReferenceService;
         this.fileService = fileService;
     }

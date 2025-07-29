@@ -3,8 +3,8 @@ package com.guillaumegasnier.education.shell.services.impl;
 import com.guillaumegasnier.education.core.references.entities.DepartementEntity;
 import com.guillaumegasnier.education.core.references.services.ReferenceService;
 import com.guillaumegasnier.education.shell.datasets.references.*;
-import com.guillaumegasnier.education.shell.mappers.ImportMapper;
-import com.guillaumegasnier.education.shell.services.IImportReferenceService;
+import com.guillaumegasnier.education.shell.mappers.ReferenceMapper;
+import com.guillaumegasnier.education.shell.services.ImportReferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -13,15 +13,15 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class ImportReferenceService implements IImportReferenceService {
+public class ImportReferenceServiceImpl implements ImportReferenceService {
 
     private final ReferenceService referenceService;
-    private final ImportMapper importMapper;
+    private final ReferenceMapper referenceMapper;
 
     @Autowired
-    public ImportReferenceService(ReferenceService referenceService, ImportMapper importMapper) {
+    public ImportReferenceServiceImpl(ReferenceService referenceService, ReferenceMapper importMapper) {
         this.referenceService = referenceService;
-        this.importMapper = importMapper;
+        this.referenceMapper = importMapper;
     }
 
     /**
@@ -39,7 +39,7 @@ public class ImportReferenceService implements IImportReferenceService {
     public String createOrUpdateAcademies(@NonNull List<AcademieDataset> datasets) {
         referenceService.saveAcademies(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
-                .map(importMapper::toAcademieEntity)
+                .map(referenceMapper::toAcademieEntity)
                 .toList());
         return String.format("Import terminé : %d académie(s) enregistrée(s).", datasets.size());
     }
@@ -47,7 +47,7 @@ public class ImportReferenceService implements IImportReferenceService {
     @Override
     public String createOrUpdateRegions(@NonNull List<RegionDataset> datasets) {
         referenceService.saveRegions(datasets.stream()
-                .map(importMapper::toRegionEntity)
+                .map(referenceMapper::toRegionEntity)
                 .toList());
         return String.format("Import terminé : %d région(s) enregistrée(s).", datasets.size());
     }
@@ -56,7 +56,7 @@ public class ImportReferenceService implements IImportReferenceService {
     public String createOrUpdateDepartements(@NonNull List<DepartementDataset> datasets, @NonNull HashMap<String, String> codeAcademieMap) {
         List<DepartementEntity> departements = datasets.stream()
                 .map(dataset -> {
-                    DepartementEntity entity = importMapper.toDepartementEntity(dataset);
+                    DepartementEntity entity = referenceMapper.toDepartementEntity(dataset);
 
                     // Association à une région si le code est renseigné
                     String codeRegion = dataset.getCodeRegion();
@@ -82,7 +82,7 @@ public class ImportReferenceService implements IImportReferenceService {
     @Override
     public String createOrUpdateCommunes(@NonNull List<CommuneDataset> datasets) {
         referenceService.saveCommunes(datasets.stream().map(dataset -> {
-            var entity = importMapper.toCommuneEntity(dataset);
+            var entity = referenceMapper.toCommuneEntity(dataset);
             if (!dataset.getCodeDepartement().isEmpty()) {
                 entity.setDepartement(referenceService.getDepartement(dataset.getCodeDepartement()));
             } else {

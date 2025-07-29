@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.shell.shells;
 
-public interface IImportEtablissementShell {
+public interface ImportEtablissementShell {
 
     String importEsrEtablissements();
 

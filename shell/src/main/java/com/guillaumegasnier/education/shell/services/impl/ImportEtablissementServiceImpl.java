@@ -12,11 +12,10 @@ import com.guillaumegasnier.education.shell.datasets.etablissements.Etablissemen
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
-import com.guillaumegasnier.education.shell.services.IImportEtablissementService;
+import com.guillaumegasnier.education.shell.services.ImportEtablissementService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -30,7 +29,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Service
-public class ImportEtablissementService implements IImportEtablissementService {
+public class ImportEtablissementServiceImpl implements ImportEtablissementService {
 
     private final EtablissementService etablissementService;
     private final EtablissementMapper etablissementMapper;
@@ -38,13 +37,14 @@ public class ImportEtablissementService implements IImportEtablissementService {
     private final Validator validator;
 
     @Autowired
-    public ImportEtablissementService(EtablissementService etablissementService, EtablissementMapper etablissementMapper, ReferenceService referenceService, Validator validator) {
+    public ImportEtablissementServiceImpl(EtablissementService etablissementService, EtablissementMapper etablissementMapper, ReferenceService referenceService, Validator validator) {
         this.etablissementService = etablissementService;
         this.etablissementMapper = etablissementMapper;
         this.referenceService = referenceService;
         this.validator = validator;
     }
 
+    @Override
     @Transactional
     public String createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source) {
         AtomicInteger counter = new AtomicInteger(0);
@@ -52,31 +52,21 @@ public class ImportEtablissementService implements IImportEtablissementService {
         int progressStep = Math.max(size / 10, 1);
 
         List<EtablissementEntity> etablissements = datasets.stream()
-                .flatMap(dataset -> Arrays.stream(dataset.getUai().split(";"))
-                        .map(String::trim)
-                        .filter(uai -> !uai.isEmpty())
-                        .map(uai -> {
-                            EtablissementDataset copy = new EtablissementDataset();
-                            BeanUtils.copyProperties(dataset, copy);
-                            copy.setUai(uai);
-                            return copy;
-                        }))
+                .flatMap(dataset ->
+                        Arrays.stream(dataset.getUai().split(";"))
+                                .map(String::trim)
+                                .filter(uai -> !uai.isEmpty())
+                                .map(dataset::cloneWithUai))
                 .flatMap(dataset -> {
                     String siretField = dataset.getSiret();
                     if (siretField == null || siretField.isBlank()) {
                         return Stream.of(dataset);
                     }
-
                     return Arrays.stream(siretField.split(","))
                             .map(String::trim)
                             .filter(siret -> !siret.isEmpty())
                             .distinct()
-                            .map(siret -> {
-                                EtablissementDataset copy = new EtablissementDataset();
-                                BeanUtils.copyProperties(dataset, copy);
-                                copy.setSiret(siret);
-                                return copy;
-                            });
+                            .map(dataset::cloneWithSiret); // 👈 propre aussi
                 })
                 .map(dataset -> {
                             int count = counter.incrementAndGet();
@@ -105,7 +95,6 @@ public class ImportEtablissementService implements IImportEtablissementService {
                     return violations.isEmpty();
                 })
                 .toList();
-
 
         etablissementService.saveEtablissements(etablissements);
 
@@ -169,6 +158,8 @@ public class ImportEtablissementService implements IImportEtablissementService {
         return contactEntityList;
     }
 
+    @Override
+    @Transactional
     public String createOrUpdateNatures(@NonNull List<NatureDataset> datasets) {
         etablissementService.saveNatures(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
@@ -177,6 +168,8 @@ public class ImportEtablissementService implements IImportEtablissementService {
         return String.format("Import terminé : %d natures(s) enregistrée(s).", datasets.size());
     }
 
+    @Override
+    @Transactional
     public String createOrUpdateContrats(@NonNull List<ContratDataset> datasets) {
         etablissementService.saveContrats(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
@@ -185,6 +178,7 @@ public class ImportEtablissementService implements IImportEtablissementService {
         return String.format("Import terminé : %d contrat(s) enregistrée(s).", datasets.size());
     }
 
+    @Override
     public String createOrUpdateIPSColleges(@NonNull List<? extends IPSDataset> datasets) {
 
         List<IndicePositionSocialeEntity> entities = datasets.stream()
@@ -198,7 +192,7 @@ public class ImportEtablissementService implements IImportEtablissementService {
     }
 
     @Nullable
-    private IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset) {
+    protected IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset) {
 
         IndicePositionSocialeEntity ips = etablissementService.getIPS(dataset.getUai(), dataset.getAnnee()).orElseGet(() -> etablissementMapper.toIndicePositionSocialeEntity(dataset));
 

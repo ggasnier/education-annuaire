@@ -1,10 +1,13 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
+import com.guillaumegasnier.education.core.etablissements.enums.EtatEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.beanutils.BeanUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +113,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class EsrEtablissementDataset extends EtablissementDataset {
+public class EsrEtablissementDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "uai - identifiant")
     private String uai;
@@ -185,14 +188,34 @@ public class EsrEtablissementDataset extends EtablissementDataset {
     }
 
     @Override
+    public String getCodePays() {
+        return "";
+    }
+
+    @Override
+    public String getCodeNature() {
+        return null;
+    }
+
+    @Override
+    public String getCodeContrat() {
+        return null;
+    }
+
+    @Override
+    public EtatEtablissement getEtat() {
+        return null;
+    }
+
+    @Override
     public List<ContactEtablissementDataset> getContacts() {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 
         if (contactTelephone != null && !contactTelephone.isEmpty())
             contacts.add(new ContactEtablissementDataset("telephone", contactTelephone));
 
-        if (contactMail != null && !contactMail.isEmpty())
-            contacts.add(new ContactEtablissementDataset("email", contactMail));
+        //if (contactMail != null && !contactMail.isEmpty())
+        //    contacts.add(new ContactEtablissementDataset("email", contactMail));
 
         if (contactWeb != null && !contactWeb.isEmpty())
             contacts.add(new ContactEtablissementDataset("web", contactWeb));
@@ -213,5 +236,29 @@ public class EsrEtablissementDataset extends EtablissementDataset {
             contacts.add(new ContactEtablissementDataset("wikipedia", contactWikipedia));
 
         return contacts;
+    }
+
+    @Override
+    public EtablissementDataset cloneWithUai(String uai) {
+        EsrEtablissementDataset copy = new EsrEtablissementDataset();
+        try {
+            BeanUtils.copyProperties(this, copy);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+        copy.setUai(uai);
+        return copy;
+    }
+
+    @Override
+    public EtablissementDataset cloneWithSiret(String siret) {
+        EsrEtablissementDataset copy = new EsrEtablissementDataset();
+        try {
+            BeanUtils.copyProperties(this, copy);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+        copy.setSiret(siret);
+        return copy;
     }
 }

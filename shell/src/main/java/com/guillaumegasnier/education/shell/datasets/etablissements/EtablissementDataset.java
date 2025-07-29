@@ -1,37 +1,38 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.etablissements.enums.EtatEtablissement;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
-public class EtablissementDataset {
 
-    protected String uai;
-    protected String siret;
-    protected String nom;
+public interface EtablissementDataset extends Cloneable {
 
-    protected String adresse;
-    protected String complement;
-    protected String codePostal;
-    protected String codeCommune;
-    protected String codePays;
+    EtablissementDataset cloneWithUai(String uai);
 
-    protected String codeNature;
-    protected String codeContrat;
+    EtablissementDataset cloneWithSiret(String siret);
 
-    protected EtatEtablissement etat;
+    String getUai();
 
-    protected String contactTelephone;
-    protected String contactMail;
-    protected String contactWeb;
+    String getSiret();
 
-    protected List<ContactEtablissementDataset> contacts = new ArrayList<>();
+    String getNom();
+
+    String getAdresse();
+
+    String getComplement();
+
+    String getCodePostal();
+
+    String getCodeCommune();
+
+    String getCodePays();
+
+    String getCodeNature();
+
+    String getCodeContrat();
+
+    EtatEtablissement getEtat();
+
+    List<ContactEtablissementDataset> getContacts();
 
 }

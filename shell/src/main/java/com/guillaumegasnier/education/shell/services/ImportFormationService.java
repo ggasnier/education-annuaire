@@ -1,4 +1,4 @@
 package com.guillaumegasnier.education.shell.services;
 
-public interface IImportEtablissementService {
+public interface ImportFormationService {
 }

@@ -9,8 +9,8 @@ import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2022Dataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2023Dataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.services.FileService;
-import com.guillaumegasnier.education.shell.services.impl.ImportEtablissementService;
-import com.guillaumegasnier.education.shell.shells.IImportEtablissementShell;
+import com.guillaumegasnier.education.shell.services.ImportEtablissementService;
+import com.guillaumegasnier.education.shell.shells.ImportEtablissementShell;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
@@ -20,12 +20,12 @@ import java.util.List;
 import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
 
 @ShellComponent
-public class ImportEtablissementShell implements IImportEtablissementShell {
+public class ImportEtablissementShellImpl implements ImportEtablissementShell {
 
     private final ImportEtablissementService importEtablissementService;
     private final FileService fileService;
 
-    public ImportEtablissementShell(ImportEtablissementService importEtablissementService, FileService fileService) {
+    public ImportEtablissementShellImpl(ImportEtablissementService importEtablissementService, FileService fileService) {
         this.importEtablissementService = importEtablissementService;
         this.fileService = fileService;
     }

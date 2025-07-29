@@ -6,7 +6,7 @@ import org.springframework.lang.NonNull;
 import java.util.HashMap;
 import java.util.List;
 
-public interface IImportReferenceService {
+public interface ImportReferenceService {
 
     String createOrUpdatePays(@NonNull List<PaysDataset> datasets);
 
