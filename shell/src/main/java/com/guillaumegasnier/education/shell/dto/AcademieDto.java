@@ -1,0 +1,4 @@
+package com.guillaumegasnier.education.shell.dto;
+
+public class AcademieDto {
+}

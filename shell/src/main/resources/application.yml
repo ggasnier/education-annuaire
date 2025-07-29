@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: education-annuaire
+  shell:
+    interactive:
+      enabled: true
+  profiles:
+    active: local
+  main:
+    web-application-type: none
