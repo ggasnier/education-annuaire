@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.web.controllers;
 
-import com.guillaumegasnier.education.core.services.EtablissementService;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
+import com.guillaumegasnier.education.web.services.EtablissementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
