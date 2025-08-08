@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.etablissements.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 
 import java.util.List;
 

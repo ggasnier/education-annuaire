@@ -1,12 +1,8 @@
 package com.guillaumegasnier.education.web.api;
 
 
-import com.guillaumegasnier.education.core.etablissements.validations.ValidUai;
-import com.guillaumegasnier.education.web.ApiError;
-import com.guillaumegasnier.education.web.dto.EtablissementDto;
-import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
-import com.guillaumegasnier.education.web.dto.IPSDto;
-import com.guillaumegasnier.education.web.dto.IPSRequestDto;
+import com.guillaumegasnier.education.core.validations.ValidUai;
+import com.guillaumegasnier.education.web.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

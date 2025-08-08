@@ -1,13 +1,11 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.etablissements.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.commons.beanutils.BeanUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,9 +145,8 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     private String contactWikipedia;
 
     @Override
-    public String getUai() {
-        if (uai == null) return "";
-        return uai;
+    public String getNom() {
+        return nom;
     }
 
     // compte_flickr
@@ -165,6 +162,12 @@ public class EsrEtablissementDataset implements EtablissementDataset {
 
     // * Page Wikipédia en français
     // * Page Wikipédia en anglais
+
+    @Override
+    public String getUai() {
+        if (uai == null) return "";
+        return uai;
+    }
 
     @Override
     public String getSiret() {
@@ -240,25 +243,24 @@ public class EsrEtablissementDataset implements EtablissementDataset {
 
     @Override
     public EtablissementDataset cloneWithUai(String uai) {
-        EsrEtablissementDataset copy = new EsrEtablissementDataset();
         try {
-            BeanUtils.copyProperties(this, copy);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            EsrEtablissementDataset copy = (EsrEtablissementDataset) this.clone();
+            copy.setUai(uai);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
         }
-        copy.setUai(uai);
-        return copy;
     }
 
     @Override
     public EtablissementDataset cloneWithSiret(String siret) {
-        EsrEtablissementDataset copy = new EsrEtablissementDataset();
         try {
-            BeanUtils.copyProperties(this, copy);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            EsrEtablissementDataset copy = (EsrEtablissementDataset) this.clone();
+            copy.setSiret(siret);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
         }
-        copy.setSiret(siret);
-        return copy;
     }
+
 }

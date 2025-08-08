@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.guillaumegasnier.education.core.etablissements.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -241,14 +241,27 @@ public class CarifEtablissementDataset implements EtablissementDataset {
 
     @Override
     public EtablissementDataset cloneWithUai(String uai) {
-        return null;
+        try {
+            CarifEtablissementDataset copy = (CarifEtablissementDataset) this.clone();
+            copy.setUai(uai);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     @Override
     public EtablissementDataset cloneWithSiret(String siret) {
-        return null;
+        try {
+            CarifEtablissementDataset copy = (CarifEtablissementDataset) this.clone();
+            copy.setSiret(siret);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
+    @Override
     public String getUai() {
         if (uai == null) return "";
         return uai.trim();

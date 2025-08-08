@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.shell.mappers;
 
-import com.guillaumegasnier.education.core.etablissements.entities.*;
+import com.guillaumegasnier.education.core.domains.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;

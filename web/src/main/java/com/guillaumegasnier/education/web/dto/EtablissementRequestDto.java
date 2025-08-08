@@ -1,9 +1,9 @@
 package com.guillaumegasnier.education.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.guillaumegasnier.education.core.etablissements.enums.EtatEtablissement;
-import com.guillaumegasnier.education.core.etablissements.validations.ValidSiret;
-import com.guillaumegasnier.education.core.etablissements.validations.ValidUai;
+import com.guillaumegasnier.education.core.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.validations.ValidSiret;
+import com.guillaumegasnier.education.core.validations.ValidUai;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;

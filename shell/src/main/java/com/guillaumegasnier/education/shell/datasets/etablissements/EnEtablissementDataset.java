@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.etablissements.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -103,12 +103,24 @@ public class EnEtablissementDataset implements EtablissementDataset {
 
     @Override
     public EtablissementDataset cloneWithUai(String uai) {
-        return null;
+        try {
+            EnEtablissementDataset copy = (EnEtablissementDataset) this.clone();
+            copy.setUai(uai);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     @Override
     public EtablissementDataset cloneWithSiret(String siret) {
-        return null;
+        try {
+            EnEtablissementDataset copy = (EnEtablissementDataset) this.clone();
+            copy.setSiret(siret);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     @Override

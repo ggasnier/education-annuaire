@@ -153,7 +153,7 @@ public class ProductionFileService implements FileService {
                 response = restClient.post()
                         .uri(String.format(source.getUrl() + "scroll?scroll=%s&scroll_id=%s", scrollDuration, URLEncoder.encode(scrollId, StandardCharsets.UTF_8)))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .body(String.format("{\"scroll\": true,\"scroll_id\": \"%1$s\"\"activeQuery\":{\"scroll\": \"1m\"\"scroll_id\": \"%1$s\"}}", scrollId))
+                        .body(String.format("{\"scroll\": true,\"scroll_id\": \"%1$s\",\"activeQuery\":{\"scroll\": \"1m\",\"scroll_id\": \"%1$s\"}}", scrollId))
                         .retrieve()
                         .body(CarifEtablissementResponse.class);
             }

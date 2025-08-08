@@ -1,6 +1,4 @@
 package com.guillaumegasnier.education.shell.services;
 
-@Deprecated
-public interface ImportReferenceService {
-
+public interface FormationService {
 }

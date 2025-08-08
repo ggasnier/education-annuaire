@@ -1,12 +1,12 @@
 package com.guillaumegasnier.education.web.api.impl;
 
 
-import com.guillaumegasnier.education.core.etablissements.services.EtablissementService;
 import com.guillaumegasnier.education.web.api.IApiEtablissementController;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.web.dto.IPSDto;
 import com.guillaumegasnier.education.web.dto.IPSRequestDto;
+import com.guillaumegasnier.education.web.services.EtablissementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
