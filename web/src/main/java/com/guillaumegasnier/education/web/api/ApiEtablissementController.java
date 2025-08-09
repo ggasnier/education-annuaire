@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public interface IApiEtablissementController {
+public interface ApiEtablissementController {
 
     @Operation(
             summary = "Recherche d'un établissement",

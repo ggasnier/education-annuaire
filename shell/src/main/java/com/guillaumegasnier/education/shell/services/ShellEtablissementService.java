@@ -8,8 +8,7 @@ import org.springframework.lang.NonNull;
 
 import java.util.List;
 
-@Deprecated
-public interface ImportEtablissementService {
+public interface ShellEtablissementService {
 
     String createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source);
 
@@ -18,4 +17,5 @@ public interface ImportEtablissementService {
     String createOrUpdateContrats(@NonNull List<ContratDataset> datasets);
 
     String createOrUpdateIPSColleges(@NonNull List<? extends IPSDataset> datasets);
+
 }

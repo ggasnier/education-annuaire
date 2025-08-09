@@ -1,23 +1,21 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.domains.*;
-import com.guillaumegasnier.education.core.repositories.ContratRepository;
-import com.guillaumegasnier.education.core.repositories.EtablissementRepository;
-import com.guillaumegasnier.education.core.repositories.IndicePositionSocialeRepository;
-import com.guillaumegasnier.education.core.repositories.NatureRepository;
+import com.guillaumegasnier.education.core.domains.ContactEntity;
+import com.guillaumegasnier.education.core.domains.ContactPk;
+import com.guillaumegasnier.education.core.domains.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.IndicePositionSocialeEntity;
+import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContactEtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
-import com.guillaumegasnier.education.shell.services.EtablissementService;
-import com.guillaumegasnier.education.shell.services.ReferenceService;
+import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -30,67 +28,18 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Service
-public class EtablissementServiceImpl implements EtablissementService {
+public class ShellEtablissementServiceImpl implements ShellEtablissementService {
 
-    private final EtablissementRepository etablissementRepository;
-    private final NatureRepository natureRepository;
-    private final ContratRepository contratRepository;
-    private final IndicePositionSocialeRepository ipsRepository;
     private final Validator validator;
-    private final ReferenceService referenceService;
     private final EtablissementMapper etablissementMapper;
+    private final CoreEtablissementService coreEtablissementService;
+    private final CoreReferenceService coreReferenceService;
 
-    @Autowired
-    public EtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository ipsRepository, Validator validator, ReferenceService referenceService, EtablissementMapper etablissementMapper) {
-        this.etablissementRepository = etablissementRepository;
-        this.natureRepository = natureRepository;
-        this.contratRepository = contratRepository;
-        this.ipsRepository = ipsRepository;
+    public ShellEtablissementServiceImpl(Validator validator, EtablissementMapper etablissementMapper, CoreEtablissementService coreEtablissementService, CoreReferenceService coreReferenceService) {
         this.validator = validator;
-        this.referenceService = referenceService;
         this.etablissementMapper = etablissementMapper;
-    }
-
-    @Override
-    public void saveEtablissements(List<EtablissementEntity> etablissements) {
-        etablissementRepository.saveAll(etablissements);
-    }
-
-    @Override
-    public void saveNatures(List<NatureEntity> natures) {
-        natureRepository.saveAll(natures);
-    }
-
-    @Override
-    public void saveContrats(List<ContratEntity> contrats) {
-        contratRepository.saveAll(contrats);
-    }
-
-    @Override
-    public Optional<EtablissementEntity> findEtablissement(String uai) {
-        return etablissementRepository.findById(uai);
-    }
-
-    @Override
-    @Cacheable("nature")
-    public Optional<NatureEntity> findNature(String codeNature) {
-        return natureRepository.findById(codeNature);
-    }
-
-    @Override
-    @Cacheable("contrat")
-    public Optional<ContratEntity> findContrat(String codeContrat) {
-        return contratRepository.findById(codeContrat);
-    }
-
-    @Override
-    public Optional<IndicePositionSocialeEntity> getIPS(String uai, int annee) {
-        return ipsRepository.findByPkUaiAndPkAnnee(uai, annee);
-    }
-
-    @Override
-    public void saveIPS(List<IndicePositionSocialeEntity> entities) {
-        ipsRepository.saveAll(entities);
+        this.coreEtablissementService = coreEtablissementService;
+        this.coreReferenceService = coreReferenceService;
     }
 
     @Override
@@ -145,7 +94,7 @@ public class EtablissementServiceImpl implements EtablissementService {
                 })
                 .toList();
 
-        this.saveEtablissements(etablissements);
+        coreEtablissementService.saveEtablissements(etablissements);
 
         return String.format("Import terminé : %d établissements(s) enregistrée(s).", datasets.size());
     }
@@ -153,16 +102,16 @@ public class EtablissementServiceImpl implements EtablissementService {
     @Transactional
     protected <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, String source) {
 
-        EtablissementEntity entity = this.findEtablissement(dataset.getUai()).orElseGet(() -> etablissementMapper.toEntity(dataset));
+        EtablissementEntity entity = coreEtablissementService.findEtablissement(dataset.getUai()).orElseGet(() -> etablissementMapper.toEntity(dataset));
 
         if (dataset.getCodeCommune() != null) {
-            referenceService.findCommune(dataset.getCodeCommune()).ifPresent(entity::setCommune);
+            coreReferenceService.findCommune(dataset.getCodeCommune()).ifPresent(entity::setCommune);
         }
         if (dataset.getCodeNature() != null) {
-            this.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
+            coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
         }
         if (dataset.getCodeContrat() != null) {
-            this.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
+            coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
         }
 
         entity.setContacts(mergeContacts(entity, dataset.getContacts()));
@@ -173,7 +122,7 @@ public class EtablissementServiceImpl implements EtablissementService {
     }
 
     @Transactional
-    protected List<ContactEntity> mergeContacts(EtablissementEntity entity, List<ContactEtablissementDataset> contacts) {
+    protected List<ContactEntity> mergeContacts(@NonNull EtablissementEntity entity, List<ContactEtablissementDataset> contacts) {
         if (entity.getContacts() == null) {
             entity.setContacts(new ArrayList<>());
         }
@@ -210,7 +159,7 @@ public class EtablissementServiceImpl implements EtablissementService {
     @Override
     @Transactional
     public String createOrUpdateNatures(@NonNull List<NatureDataset> datasets) {
-        this.saveNatures(datasets.stream()
+        coreEtablissementService.saveNatures(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
                 .map(etablissementMapper::toNatureEntity)
                 .toList());
@@ -220,7 +169,7 @@ public class EtablissementServiceImpl implements EtablissementService {
     @Override
     @Transactional
     public String createOrUpdateContrats(@NonNull List<ContratDataset> datasets) {
-        this.saveContrats(datasets.stream()
+        coreEtablissementService.saveContrats(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
                 .map(etablissementMapper::toContratEntity)
                 .toList());
@@ -235,7 +184,7 @@ public class EtablissementServiceImpl implements EtablissementService {
                 .filter(Objects::nonNull)
                 .toList();
 
-        this.saveIPS(entities);
+        coreEtablissementService.saveIPS(entities);
 
         return String.format("Import terminé : %d ips enregistrée(s).", datasets.size());
     }
@@ -243,9 +192,9 @@ public class EtablissementServiceImpl implements EtablissementService {
     @Nullable
     protected IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset) {
 
-        IndicePositionSocialeEntity ips = this.getIPS(dataset.getUai(), dataset.getAnnee()).orElseGet(() -> etablissementMapper.toIndicePositionSocialeEntity(dataset));
+        IndicePositionSocialeEntity ips = coreEtablissementService.findIPS(dataset.getUai(), dataset.getAnnee()).orElseGet(() -> etablissementMapper.toIndicePositionSocialeEntity(dataset));
 
-        Optional<EtablissementEntity> etablissement = this.findEtablissement(dataset.getUai());
+        Optional<EtablissementEntity> etablissement = coreEtablissementService.findEtablissement(dataset.getUai());
 
         if (etablissement.isPresent()) {
             ips.setEtablissement(etablissement.get());

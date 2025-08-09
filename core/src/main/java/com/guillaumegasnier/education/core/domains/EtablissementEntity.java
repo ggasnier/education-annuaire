@@ -53,6 +53,7 @@ public class EtablissementEntity extends AbstractEntity {
     @JoinColumn(name = "code_commune", foreignKey = @ForeignKey(name = "fk_etablissements_communes"))
     private CommuneEntity commune;
 
+    // TODO : à passer en JSONB
     @OneToMany(mappedBy = "etablissement", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ContactEntity> contacts = new ArrayList<>();
 
