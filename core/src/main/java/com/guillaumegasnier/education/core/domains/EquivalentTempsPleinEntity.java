@@ -45,10 +45,11 @@ public class EquivalentTempsPleinEntity {
     private EquivalentTempsPleinPK pk;
 
     @MapsId("uai")
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_etp_etablissements"))
     private EtablissementEntity etablissement;
 
-    // ETP totat
+    // ETP total
     private Double etp;
 
     // ETP enseignants (hommes et femmes)
