@@ -1,9 +1,6 @@
 package com.guillaumegasnier.education.shell.shells.impl;
 
-import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.EnEtablissementDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.EsrEtablissementDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2021Dataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2022Dataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2023Dataset;
@@ -36,6 +33,12 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     @ShellMethod(value = "Import établissements (EN)")
     public String importEnEtablissements() {
         return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS, EnEtablissementDataset.class), "en");
+    }
+
+    @Override
+    @ShellMethod(value = "Import établissements (fermés)")
+    public String importEtablissementsFermes() {
+        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_FERMES, EtablissementFermeDataset.class), "en");
     }
 
     @Override

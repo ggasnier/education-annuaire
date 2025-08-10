@@ -6,6 +6,8 @@ public interface ImportEtablissementShell {
 
     String importEnEtablissements();
 
+    String importEtablissementsFermes();
+
     String importCarifEtablissements();
 
     String importNatures();

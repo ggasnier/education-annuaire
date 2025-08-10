@@ -5,7 +5,10 @@ import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.lang.Nullable;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,11 +147,8 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     @CsvBindByName(column = "Page Wikipédia en français")
     private String contactWikipedia;
 
-    @Override
-    public String getNom() {
-        return nom;
-    }
-
+    @CsvBindByName(column = "date_creation")
+    private String dateOuverture;
     // compte_flickr
     // compte_pinterest
     // flux_rss
@@ -176,6 +176,16 @@ public class EsrEtablissementDataset implements EtablissementDataset {
         return siret;
     }
 
+    @Nullable
+    @Override
+    public LocalDate getDateOuverture() {
+        try {
+            return LocalDate.parse(dateOuverture);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
+
     @Override
     public String getComplement() {
         if (lieuDit == null && boitePostale == null)
@@ -189,6 +199,7 @@ public class EsrEtablissementDataset implements EtablissementDataset {
 
         return null;
     }
+
 
     @Override
     public String getCodePays() {

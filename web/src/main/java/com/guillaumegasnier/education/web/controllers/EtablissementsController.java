@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.web.controllers;
 
-import com.guillaumegasnier.education.web.dto.EtablissementDto;
-import com.guillaumegasnier.education.web.services.EtablissementService;
+import com.guillaumegasnier.education.web.services.WebEtablissementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/etablissements")
 public class EtablissementsController {
 
-    private final EtablissementService etablissementService;
+    private final WebEtablissementService webEtablissementService;
 
     @Autowired
-    public EtablissementsController(EtablissementService etablissementService) {
-        this.etablissementService = etablissementService;
+    public EtablissementsController(WebEtablissementService webEtablissementService) {
+        this.webEtablissementService = webEtablissementService;
     }
 
 
-    @GetMapping("/{uai")
+    @GetMapping("/{uai}")
     public String getEtablissement(@PathVariable String uai, Model model) {
 
-        EtablissementDto etablissementDto = etablissementService.getEtablissementByUai(uai);
+        var etablissementDto = webEtablissementService.findEtablissementByUai(uai);
 
         return "etablissements/details";
     }

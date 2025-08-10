@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -34,5 +35,13 @@ public interface EtablissementDataset extends Cloneable {
     EtatEtablissement getEtat();
 
     List<ContactEtablissementDataset> getContacts();
+
+    default LocalDate getDateOuverture() {
+        return null;
+    }
+
+    default LocalDate getDateFermeture() {
+        return null;
+    }
 
 }

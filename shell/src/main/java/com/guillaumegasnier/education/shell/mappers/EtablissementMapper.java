@@ -14,6 +14,7 @@ import org.springframework.lang.NonNull;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public abstract class EtablissementMapper {
 
+    @Mapping(target = "pays", ignore = true)
     @Mapping(target = "contacts", ignore = true)
     @Mapping(target = "nature", ignore = true)
     @Mapping(target = "contrat", ignore = true)

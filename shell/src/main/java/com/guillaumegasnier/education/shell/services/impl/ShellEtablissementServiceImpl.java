@@ -101,21 +101,41 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     @Transactional
     protected <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, String source) {
+        EtablissementEntity entity;
+        Optional<EtablissementEntity> etablissementEntityOptional = coreEtablissementService.findEtablissement(dataset.getUai());
 
-        EtablissementEntity entity = coreEtablissementService.findEtablissement(dataset.getUai()).orElseGet(() -> etablissementMapper.toEntity(dataset));
+        // Etablissement existant (mise à jour de certains champs)
+        if (etablissementEntityOptional.isPresent()) {
+            entity = etablissementEntityOptional.get();
+            // uai : ne change pas
+            // siret : ne change pas
+            // nom : ne change pas
+            // nature : ne change pas (à vérifier)
+            // contrat : ne change pas (à vérifier)
+            // adresse
+            // complément
+            // codePostal
+            // commune
+            // pays
+            entity.setDateOuverture(dataset.getDateOuverture());
+            entity.setDateFermeture(dataset.getDateFermeture());
+            entity.setEtat(dataset.getEtat());
+        } else {
+            // Nouvel établissement
+            entity = etablissementMapper.toEntity(dataset);
 
-        if (dataset.getCodeCommune() != null) {
-            coreReferenceService.findCommune(dataset.getCodeCommune()).ifPresent(entity::setCommune);
-        }
-        if (dataset.getCodeNature() != null) {
-            coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
-        }
-        if (dataset.getCodeContrat() != null) {
-            coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
+            if (dataset.getCodeCommune() != null) {
+                coreReferenceService.findCommune(dataset.getCodeCommune()).ifPresent(entity::setCommune);
+            }
+            if (dataset.getCodeNature() != null) {
+                coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
+            }
+            if (dataset.getCodeContrat() != null) {
+                coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
+            }
         }
 
         entity.setContacts(mergeContacts(entity, dataset.getContacts()));
-
         entity.addSource(source);
 
         return entity;

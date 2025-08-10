@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.NOT_IMPLEMENTED;
 
-public interface IApiReferenceController {
+public interface ApiReferenceController {
 
     @Operation(
             summary = "Création d'une commune",

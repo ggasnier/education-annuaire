@@ -1,14 +1,15 @@
 package com.guillaumegasnier.education.web.api.impl;
 
 
-import com.guillaumegasnier.education.web.api.IApiEtablissementController;
+import com.guillaumegasnier.education.web.api.ApiEtablissementController;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.web.dto.IPSDto;
 import com.guillaumegasnier.education.web.dto.IPSRequestDto;
-import com.guillaumegasnier.education.web.services.EtablissementService;
+import com.guillaumegasnier.education.web.services.WebEtablissementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,13 +24,13 @@ import static org.springframework.http.HttpStatus.NOT_IMPLEMENTED;
 @Validated
 @RestController
 @RequestMapping("/api/v1/etablissements")
-public class ApiEtablissementController implements IApiEtablissementController {
+public class ApiEtablissementImpl implements ApiEtablissementController {
 
-    private final EtablissementService etablissementService;
+    private final WebEtablissementService webEtablissementService;
 
     @Autowired
-    public ApiEtablissementController(EtablissementService etablissementService) {
-        this.etablissementService = etablissementService;
+    public ApiEtablissementImpl(WebEtablissementService webEtablissementService) {
+        this.webEtablissementService = webEtablissementService;
     }
 
     @Override
@@ -50,11 +51,9 @@ public class ApiEtablissementController implements IApiEtablissementController {
 
     @Override
     public ResponseEntity<EtablissementDto> getEtablissementByUai(@PathVariable String uai) {
-//        return etablissementService.getEtablissement(uai)
-//                .map(etablissementDto -> ResponseEntity.status(HttpStatus.OK).body(etablissementDto))
-//                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-        return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
-
+        return webEtablissementService.findEtablissementByUai(uai)
+                .map(etablissementDto -> ResponseEntity.status(HttpStatus.OK).body(etablissementDto))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @Override

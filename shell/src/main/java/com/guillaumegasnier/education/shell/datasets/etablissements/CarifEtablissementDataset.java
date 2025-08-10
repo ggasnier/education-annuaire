@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -317,6 +318,11 @@ public class CarifEtablissementDataset implements EtablissementDataset {
     @Override
     public EtatEtablissement getEtat() {
         return null;
+    }
+
+    @Override
+    public LocalDate getDateFermeture() {
+        return LocalDate.parse(dateFermeture);
     }
 
     @Override

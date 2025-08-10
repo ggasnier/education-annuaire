@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,6 +101,14 @@ public class EnEtablissementDataset implements EtablissementDataset {
     private String contactMail;
     @CsvBindByName(column = "Web")
     private String contactWeb;
+
+    @CsvBindByName(column = "date_ouverture")
+    private String dateOuverture;
+
+    @Override
+    public LocalDate getDateOuverture() {
+        return LocalDate.parse(dateOuverture);
+    }
 
     @Override
     public EtablissementDataset cloneWithUai(String uai) {

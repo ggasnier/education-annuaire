@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.lang.NonNull;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Getter
@@ -35,6 +36,12 @@ public class EtablissementEntity extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private EtatEtablissement etat;
 
+    @Column
+    private LocalDate dateOuverture;
+
+    @Column
+    private LocalDate dateFermeture;
+
     @ManyToOne
     @JoinColumn(name = "code_nature", foreignKey = @ForeignKey(name = "fk_etablissements_natures"))
     private NatureEntity nature;
@@ -52,6 +59,10 @@ public class EtablissementEntity extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "code_commune", foreignKey = @ForeignKey(name = "fk_etablissements_communes"))
     private CommuneEntity commune;
+
+    @ManyToOne
+    @JoinColumn(name = "code_pays", foreignKey = @ForeignKey(name = "fk_etablissements_pays"))
+    private PaysEntity pays;
 
     // TODO : à passer en JSONB
     @OneToMany(mappedBy = "etablissement", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

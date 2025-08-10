@@ -6,7 +6,7 @@ CREATE TYPE resultat_recherche AS
 (
     id        UUID,
     nom       VARCHAR,
-    categorie CHAR(3),
+    categorie CHAR(20),
     infos     JSONB,
     score     REAL,
     total     BIGINT
