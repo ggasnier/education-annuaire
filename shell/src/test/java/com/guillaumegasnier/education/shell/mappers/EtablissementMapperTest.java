@@ -20,6 +20,7 @@ class EtablissementMapperTest {
         EsrEtablissementDataset dataset = new EsrEtablissementDataset();
         dataset.setUai("1234567A");
         dataset.setNom("Lorem Ipsum");
+        dataset.setDateOuverture("");
 
         // when
         EtablissementEntity entity = mapper.toEntity(dataset);
