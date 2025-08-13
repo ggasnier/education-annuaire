@@ -1,9 +1,9 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.domains.ContactEntity;
-import com.guillaumegasnier.education.core.domains.ContactPk;
-import com.guillaumegasnier.education.core.domains.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.IndicePositionSocialeEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.ContactEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.ContactPk;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.IndicePositionSocialeEntity;
 import com.guillaumegasnier.education.core.dto.InformationsDto;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;

@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.core.repositories;
 
-import com.guillaumegasnier.education.core.domains.NatureEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

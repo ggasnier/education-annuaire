@@ -1,9 +1,9 @@
 package com.guillaumegasnier.education.core.services.impl;
 
-import com.guillaumegasnier.education.core.domains.ContratEntity;
-import com.guillaumegasnier.education.core.domains.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.IndicePositionSocialeEntity;
-import com.guillaumegasnier.education.core.domains.NatureEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.IndicePositionSocialeEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
 import com.guillaumegasnier.education.core.repositories.ContratRepository;
 import com.guillaumegasnier.education.core.repositories.EtablissementRepository;
 import com.guillaumegasnier.education.core.repositories.IndicePositionSocialeRepository;

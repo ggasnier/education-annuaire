@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.shell.mappers;
 
-import com.guillaumegasnier.education.core.domains.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EsrEtablissementDataset;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

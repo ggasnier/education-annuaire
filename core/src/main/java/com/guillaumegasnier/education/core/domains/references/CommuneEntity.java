@@ -1,5 +1,6 @@
-package com.guillaumegasnier.education.core.domains;
+package com.guillaumegasnier.education.core.domains.references;
 
+import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

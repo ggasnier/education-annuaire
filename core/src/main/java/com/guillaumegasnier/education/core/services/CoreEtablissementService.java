@@ -1,9 +1,9 @@
 package com.guillaumegasnier.education.core.services;
 
-import com.guillaumegasnier.education.core.domains.ContratEntity;
-import com.guillaumegasnier.education.core.domains.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.IndicePositionSocialeEntity;
-import com.guillaumegasnier.education.core.domains.NatureEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.IndicePositionSocialeEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
 import org.springframework.lang.NonNull;
 
 import java.util.List;

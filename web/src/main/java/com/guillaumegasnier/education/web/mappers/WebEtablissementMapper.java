@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.web.mappers;
 
-import com.guillaumegasnier.education.core.domains.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

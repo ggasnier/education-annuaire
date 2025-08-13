@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.core.domains;
+package com.guillaumegasnier.education.core.domains.etablissements;
 
 import jakarta.persistence.*;
 import lombok.Getter;

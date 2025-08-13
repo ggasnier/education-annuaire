@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.core.domains;
+package com.guillaumegasnier.education.core.domains.references;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,13 +11,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "academies")
-public class AcademieEntity extends AbstractEntity {
+@Table(name = "pays")
+public class PaysEntity {
 
     @Id
-    @Column(columnDefinition = "CHAR(2)", length = 2, unique = true)
+    @Column(columnDefinition = "CHAR(2)", length = 2, unique = true, nullable = false)
     private String code;
 
     @NotBlank
+    @Column(columnDefinition = "VARCHAR(50)", length = 50, unique = true, nullable = false)
     private String nom;
 }

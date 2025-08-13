@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.core.services.impl;
 
-import com.guillaumegasnier.education.core.domains.*;
+import com.guillaumegasnier.education.core.domains.references.*;
 import com.guillaumegasnier.education.core.repositories.*;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import lombok.extern.slf4j.Slf4j;

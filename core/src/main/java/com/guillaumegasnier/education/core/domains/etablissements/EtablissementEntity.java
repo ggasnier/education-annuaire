@@ -1,5 +1,8 @@
-package com.guillaumegasnier.education.core.domains;
+package com.guillaumegasnier.education.core.domains.etablissements;
 
+import com.guillaumegasnier.education.core.domains.AbstractEntity;
+import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
+import com.guillaumegasnier.education.core.domains.references.PaysEntity;
 import com.guillaumegasnier.education.core.dto.InformationsDto;
 import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
@@ -53,10 +56,13 @@ public class EtablissementEntity extends AbstractEntity {
     @JoinColumn(name = "code_contrat", foreignKey = @ForeignKey(name = "fk_etablissements_contrats"))
     private ContratEntity contrat;
 
+    @Column(columnDefinition = "VARCHAR(50)", length = 50)
     private String adresse;
 
+    @Column(columnDefinition = "VARCHAR(50)", length = 50)
     private String complement;
 
+    @Column(columnDefinition = "CHAR(5)", length = 5)
     private String codePostal;
 
     @ManyToOne
@@ -75,7 +81,7 @@ public class EtablissementEntity extends AbstractEntity {
     @Column(columnDefinition = "jsonb")
     private InformationsDto informations = new InformationsDto();
 
-    @Column(name = "sources")
+    @Column(name = "sources", columnDefinition = "VARCHAR(12)", length = 12)
     private String sources;
 
     public Set<String> getSources() {

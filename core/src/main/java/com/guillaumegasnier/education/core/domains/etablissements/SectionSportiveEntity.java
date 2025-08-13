@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
-import com.guillaumegasnier.education.core.domains.EtablissementEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

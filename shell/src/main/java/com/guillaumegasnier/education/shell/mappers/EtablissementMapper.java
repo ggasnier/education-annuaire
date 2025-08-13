@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.shell.mappers;
 
-import com.guillaumegasnier.education.core.domains.*;
+import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
@@ -14,6 +14,7 @@ import org.springframework.lang.NonNull;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public abstract class EtablissementMapper {
 
+    @Mapping(target = "informations", ignore = true)
     @Mapping(target = "pays", ignore = true)
     @Mapping(target = "contacts", ignore = true)
     @Mapping(target = "nature", ignore = true)
