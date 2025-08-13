@@ -65,6 +65,12 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
         return shellEtablissementService.createOrUpdateContrats(fileService.importCSV(CONTRATS, ContratDataset.class));
     }
 
+    @Override
+    @ShellMethod(value = "Import sections sportives")
+    public String importSectionsSportives() {
+        return shellEtablissementService.createOrUpdateSectionsSportives(fileService.importCSV(SECTIONS_SPORTIVES, SectionSportiveDataset.class));
+    }
+
     @ShellMethod(value = "Import IPS Collèges")
     public String importIpsColleges() {
         List<IPSDataset> ipsColleges = new ArrayList<>();

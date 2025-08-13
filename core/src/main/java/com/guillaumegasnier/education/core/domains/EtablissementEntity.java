@@ -1,13 +1,16 @@
 package com.guillaumegasnier.education.core.domains;
 
+import com.guillaumegasnier.education.core.dto.InformationsDto;
 import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
 import com.guillaumegasnier.education.core.validations.ValidUai;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Type;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
@@ -67,6 +70,10 @@ public class EtablissementEntity extends AbstractEntity {
     // TODO : à passer en JSONB
     @OneToMany(mappedBy = "etablissement", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ContactEntity> contacts = new ArrayList<>();
+
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    private InformationsDto informations = new InformationsDto();
 
     @Column(name = "sources")
     private String sources;

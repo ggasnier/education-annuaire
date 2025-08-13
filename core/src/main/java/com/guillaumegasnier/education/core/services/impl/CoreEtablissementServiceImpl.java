@@ -76,4 +76,9 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     public Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee) {
         return indicePositionSocialeRepository.findByPkUaiAndPkAnnee(uai, annee);
     }
+
+    @Override
+    public void saveEtablissement(@NonNull Optional<EtablissementEntity> entity) {
+        entity.ifPresent(etablissementRepository::save);
+    }
 }

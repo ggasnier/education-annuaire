@@ -13,4 +13,6 @@ public interface ImportEtablissementShell {
     String importNatures();
 
     String importContrats();
+
+    String importSectionsSportives();
 }

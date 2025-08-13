@@ -30,6 +30,8 @@ public enum SourcesDatasets {
     IPS_COLLEGES_1("IPS Collèges (depuis 2023)", "https://www.data.gouv.fr/api/1/datasets/r/3c7fe02a-702b-4276-acfb-07d0572c18a2", "datasets/fr-en-ips-colleges-ap2023.csv", StandardCharsets.UTF_8, ';', "GET"),
     IPS_COLLEGES_2("IPS Collèges (2022)", "https://www.data.gouv.fr/api/1/datasets/r/28e511a7-af0d-48c7-a8bb-2f38ec003f49", "datasets/fr-en-ips-colleges-ap2022.csv", StandardCharsets.UTF_8, ';', "GET"),
     IPS_COLLEGES_3("IPS Collèges (2016 - 2021)", "https://www.data.gouv.fr/api/1/datasets/r/b63bd365-c589-48e4-b7d8-9e4f5db133c5", "datasets/fr-en-ips_colleges.csv", StandardCharsets.UTF_8, ';', "GET"),
+
+    SECTIONS_SPORTIVES("Sections Sportives Scolaires", "https://www.data.gouv.fr/api/1/datasets/r/c479b9b8-8224-46ef-b2f4-f6a3468726fc", null, StandardCharsets.UTF_8, ';', "GET"),
     NULL(null, null, null, null, ',', null);
 
     // Formations

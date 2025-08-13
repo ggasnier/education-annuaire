@@ -26,4 +26,6 @@ public interface CoreEtablissementService {
     Optional<ContratEntity> findContrat(String codeContrat);
 
     Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee);
+
+    void saveEtablissement(Optional<EtablissementEntity> entity);
 }
