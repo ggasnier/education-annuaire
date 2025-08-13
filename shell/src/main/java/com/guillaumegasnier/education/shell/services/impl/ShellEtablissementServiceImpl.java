@@ -218,6 +218,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             .stream()
                             .map(SectionSportiveDataset::getSectionList)
                             .flatMap(List::stream)
+                            .map(String::toLowerCase)
                             .distinct()
                             .toList();
 
