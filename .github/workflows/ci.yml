@@ -29,14 +29,14 @@ jobs:
       - name: Build, test & package all modules
         run: mvn clean verify -DskipTests=false
 
-      - name: Upload shell module JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: shell-app
-          path: shell/target/*.jar
-
-      - name: Upload web module JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: web-app
-          path: web/target/*.jar
+#      - name: Upload shell module JAR
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: shell-app
+#          path: shell/target/*.jar
+#
+#      - name: Upload web module JAR
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: web-app
+#          path: web/target/*.jar

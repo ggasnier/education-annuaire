@@ -34,3 +34,4 @@ build/
 application-*.yml
 /src/main/frontend/node_modules/
 *.log
+/.env
