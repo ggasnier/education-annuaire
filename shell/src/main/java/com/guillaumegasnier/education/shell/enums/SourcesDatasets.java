@@ -38,6 +38,7 @@ public enum SourcesDatasets {
     IPS_COLLEGES_3("IPS Collèges (2016 - 2021)", "https://www.data.gouv.fr/api/1/datasets/r/b63bd365-c589-48e4-b7d8-9e4f5db133c5", "datasets/fr-en-ips_colleges.csv", StandardCharsets.UTF_8, ';', "GET", IPSCollege2021Dataset.class),
 
     SECTIONS_SPORTIVES("Sections Sportives Scolaires", "https://www.data.gouv.fr/api/1/datasets/r/c479b9b8-8224-46ef-b2f4-f6a3468726fc", null, StandardCharsets.UTF_8, ';', "GET", SectionSportiveDataset.class),
+    SECTIONS_INTERNATIONALES("Sections internationales", "https://www.data.gouv.fr/api/1/datasets/r/877befc2-2b3c-4e27-902b-abcf7f1e800f", "datasets/fr-en-sections-internationales.csv", StandardCharsets.UTF_8, ';', "GET", SectionInternationaleDataset.class),
     LANGUES("Offre de langues dans les collèges et lycées", "https://www.data.gouv.fr/api/1/datasets/r/60ca51e3-05b7-4b90-9433-ebbd68803f8c", null, StandardCharsets.UTF_8, ';', "GET", LangueDataset.class),
     NULL(null, null, null, null, ',', null, null);
 

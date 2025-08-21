@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,9 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Type_etablissement
@@ -105,6 +108,9 @@ public class EnEtablissementDataset implements EtablissementDataset {
     @CsvBindByName(column = "date_ouverture")
     private String dateOuverture;
 
+    @CsvBindByName(column = "Restauration")
+    private String restauration;
+
     @Override
     public LocalDate getDateOuverture() {
         return LocalDate.parse(dateOuverture);
@@ -185,5 +191,17 @@ public class EnEtablissementDataset implements EtablissementDataset {
             contacts.add(new ContactEtablissementDataset("web", contactWeb));
 
         return contacts;
+    }
+
+    @Override
+    public Set<OptionEtablissement> getOptions() {
+
+        Set<OptionEtablissement> options = new HashSet<>();
+
+        if (restauration != null && restauration.equals("1")) {
+            options.add(OptionEtablissement.RESTAURATION);
+        }
+
+        return options;
     }
 }

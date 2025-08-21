@@ -132,6 +132,8 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
             }
         }
+        
+        entity.getInformations().getOptions().addAll(dataset.getOptions());
 
 //        entity.setContacts(mergeContacts(entity, dataset.getContacts()));
         entity.addSource(source);

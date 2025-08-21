@@ -78,9 +78,15 @@ public class EtablissementEntity extends AbstractEntity {
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private InformationsDto informations = new InformationsDto();
-
     @Column(name = "sources", columnDefinition = "VARCHAR(12)", length = 12)
     private String sources;
+
+    public InformationsDto getInformations() {
+        if (informations == null) {
+            informations = new InformationsDto();
+        }
+        return informations;
+    }
 
     public Set<String> getSources() {
         if (sources == null || sources.isBlank()) return new HashSet<>();
