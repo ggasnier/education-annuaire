@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.shell.shells.impl;
 
-import com.guillaumegasnier.education.shell.datasets.references.*;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.guillaumegasnier.education.shell.services.ShellReferenceService;
 import com.guillaumegasnier.education.shell.shells.ImportReferenceShell;
@@ -27,38 +26,38 @@ public class ImportReferenceShellImpl implements ImportReferenceShell {
     @Override
     @ShellMethod(value = "Import pays")
     public String importPays() {
-        return shellReferenceService.createOrUpdatePays(fileService.importCSV(PAYS, PaysDataset.class));
+        return shellReferenceService.createOrUpdatePays(fileService.importCSV(PAYS));
     }
 
     @Override
     @ShellMethod(value = "Import académies")
     public String importAcademies() {
-        return shellReferenceService.createOrUpdateAcademies(fileService.importCSV(ACADEMIES, AcademieDataset.class));
+        return shellReferenceService.createOrUpdateAcademies(fileService.importCSV(ACADEMIES));
     }
 
     @Override
     @ShellMethod(value = "Import régions")
     public String importRegions() {
-        return shellReferenceService.createOrUpdateRegions(fileService.importCSV(REGIONS, RegionDataset.class));
+        return shellReferenceService.createOrUpdateRegions(fileService.importCSV(REGIONS));
     }
 
     @Override
     @ShellMethod(value = "Import départements")
     public String importDepartements() {
-        HashMap<String, String> lienDepartementAcademie = shellReferenceService.setAcademieDepartement(fileService.importCSV(ACADEMIES_DEPARTEMENTS, AcademieDepartementDataset.class));
+        HashMap<String, String> lienDepartementAcademie = shellReferenceService.setAcademieDepartement(fileService.importCSV(ACADEMIES_DEPARTEMENTS));
 
         return shellReferenceService
-                .createOrUpdateDepartements(fileService.importCSV(DEPARTEMENTS, DepartementDataset.class), lienDepartementAcademie)
+                .createOrUpdateDepartements(fileService.importCSV(DEPARTEMENTS), lienDepartementAcademie)
                 + shellReferenceService
-                .createOrUpdateDepartements(fileService.importCSV(DEPARTEMENTS_COMER, DepartementOutreMerDataset.class), lienDepartementAcademie);
+                .createOrUpdateDepartements(fileService.importCSV(DEPARTEMENTS_COMER), lienDepartementAcademie);
     }
 
     @Override
     @ShellMethod(value = "Import communes")
     public String importCommunes() {
         return shellReferenceService
-                .createOrUpdateCommunes(fileService.importCSV(COMMUNES, CommuneDataset.class))
+                .createOrUpdateCommunes(fileService.importCSV(COMMUNES))
                 + "\n" + shellReferenceService
-                .createOrUpdateCommunes(fileService.importCSV(COMMUNES_COMER, CommuneOutreMerDataset.class));
+                .createOrUpdateCommunes(fileService.importCSV(COMMUNES_COMER));
     }
 }

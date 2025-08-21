@@ -2,12 +2,14 @@ package com.guillaumegasnier.education.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.guillaumegasnier.education.core.dto.InformationsDto;
 import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @JsonPropertyOrder(
         {"uai", "nom", "siret",
@@ -23,6 +25,7 @@ import lombok.Setter;
 )
 @Getter
 @Setter
+@ToString
 @Schema(name = "Etablissement", description = "Informations sur un établissement")
 public class EtablissementDto {
 
@@ -85,4 +88,6 @@ public class EtablissementDto {
     protected String codePays;
     @JsonProperty(value = "nom_pays")
     protected String nomPays;
+
+    protected InformationsDto informations;
 }

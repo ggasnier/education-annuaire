@@ -133,31 +133,31 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             }
         }
 
-        entity.setContacts(mergeContacts(entity, dataset.getContacts()));
+//        entity.setContacts(mergeContacts(entity, dataset.getContacts()));
         entity.addSource(source);
 
         return entity;
     }
 
-    @Transactional
-    protected List<ContactEntity> mergeContacts(@NonNull EtablissementEntity entity, List<ContactEtablissementDataset> contacts) {
-        if (entity.getContacts() == null) {
-            entity.setContacts(new ArrayList<>());
-        }
-
-        Set<ContactPk> existingPks = entity.getContacts()
-                .stream()
-                .map(ContactEntity::getPk)
-                .collect(Collectors.toSet());
-
-        List<ContactEntity> nouveaux = toContactEntityList(entity, contacts).stream()
-                .filter(c -> !existingPks.contains(c.getPk()))
-                .toList();
-
-        entity.getContacts().addAll(nouveaux);
-
-        return entity.getContacts();
-    }
+//    @Transactional
+//    protected List<ContactEntity> mergeContacts(@NonNull EtablissementEntity entity, List<ContactEtablissementDataset> contacts) {
+//        if (entity.getContacts() == null) {
+//            entity.setContacts(new ArrayList<>());
+//        }
+//
+//        Set<ContactPk> existingPks = entity.getContacts()
+//                .stream()
+//                .map(ContactEntity::getPk)
+//                .collect(Collectors.toSet());
+//
+//        List<ContactEntity> nouveaux = toContactEntityList(entity, contacts).stream()
+//                .filter(c -> !existingPks.contains(c.getPk()))
+//                .toList();
+//
+//        entity.getContacts().addAll(nouveaux);
+//
+//        return entity.getContacts();
+//    }
 
     @Transactional
     protected List<ContactEntity> toContactEntityList(@NonNull EtablissementEntity entity, @NonNull List<ContactEtablissementDataset> contacts) {
@@ -239,6 +239,38 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveEtablissements(entities);
 
         return String.format("Import terminé : %d sections sportives enregistrée(s).", datasets.size());
+    }
+
+    @Override
+    public String createOrUpdateLangues(@NonNull List<LangueDataset> datasets) {
+
+        List<EtablissementEntity> entities = new ArrayList<>();
+
+        datasets.stream().collect(Collectors.groupingBy(LangueDataset::getUai))
+                .forEach((uai, langueList) -> {
+
+                    List<InformationsDto.LangueDto> langues = langueList.stream().map(etablissementMapper::toLangueDto).toList();
+
+                    var entity = coreEtablissementService.findEtablissement(uai);
+                    if (entity.isPresent()) {
+                        InformationsDto informations = entity.get().getInformations();
+                        if (informations == null)
+                            informations = new InformationsDto();
+
+                        informations.setLangues(langues);
+                        entity.get().setInformations(informations);
+
+                        entities.add(entity.get());
+
+                    } else {
+                        log.error("Etablissement {} non trouvé", uai);
+                    }
+
+                });
+
+        coreEtablissementService.saveEtablissements(entities);
+
+        return String.format("Import terminé : %d langues enregistrée(s).", datasets.size());
     }
 
     @Nullable

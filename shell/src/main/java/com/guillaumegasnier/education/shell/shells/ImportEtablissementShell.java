@@ -2,17 +2,19 @@ package com.guillaumegasnier.education.shell.shells;
 
 public interface ImportEtablissementShell {
 
-    String importEsrEtablissements();
+    String importEtablissementsEsr();
 
-    String importEnEtablissements();
+    String importEtablissementsEnOuverts();
 
-    String importEtablissementsFermes();
+    String importEtablissementsEnFermes();
 
-    String importCarifEtablissements();
+    String importEtablissementsCarif();
 
     String importNatures();
 
     String importContrats();
 
     String importSectionsSportives();
+
+    String importLangues();
 }

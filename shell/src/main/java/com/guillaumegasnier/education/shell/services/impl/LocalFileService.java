@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
+import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import com.guillaumegasnier.education.shell.services.FileService;
@@ -48,15 +49,17 @@ public class LocalFileService implements FileService {
     }
 
     @Override
-    public <T> List<T> importCSV(@NonNull SourcesDatasets source, Class<? extends T> type) {
+    public <T extends Dataset> List<T> importCSV(@NonNull SourcesDatasets source) {
         log.info("Début import {}", source.getLocalPath());
 
         List<T> result = new ArrayList<>();
+        @SuppressWarnings("unchecked")
+        Class<T> clazz = (Class<T>) source.getDatasetClass();
 
         openFile(source.getLocalPath(), source.getCharset(), null).ifPresentOrElse(reader -> {
             try (reader) {
                 List<T> beans = new CsvToBeanBuilder<T>(reader)
-                        .withType(type)
+                        .withType(clazz)
                         .withSeparator(source.getSeparator())
                         .build()
                         .parse();

@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.ips;
 
+import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class IPSDataset {
+public class IPSDataset implements Dataset {
 
     @CsvBindByName(column = "UAI")
     protected String uai;

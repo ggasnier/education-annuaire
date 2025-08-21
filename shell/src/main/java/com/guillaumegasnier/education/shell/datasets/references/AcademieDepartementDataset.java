@@ -1,12 +1,13 @@
 package com.guillaumegasnier.education.shell.datasets.references;
 
+import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class AcademieDepartementDataset {
+public class AcademieDepartementDataset implements Dataset {
 
     @CsvBindByName(column = "DEPARTEMENT_INSEE_3")
     private String codeDepartement;

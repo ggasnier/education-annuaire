@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
+import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
 import com.guillaumegasnier.education.shell.dto.CarifEtablissementResponse;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
@@ -100,15 +101,17 @@ public class ProductionFileService implements FileService {
     }
 
     @Override
-    public <T> List<T> importCSV(@NonNull SourcesDatasets source, Class<? extends T> type) {
+    public <T extends Dataset> List<T> importCSV(@NonNull SourcesDatasets source) {
         log.info("Début import {}", source.getUrl());
 
         List<T> result = new ArrayList<>();
+        @SuppressWarnings("unchecked")
+        Class<T> clazz = (Class<T>) source.getDatasetClass();
 
         openFile(source.getUrl(), source.getCharset(), source.getHttpMethod()).ifPresentOrElse(reader -> {
             try (reader) {
                 List<T> beans = new CsvToBeanBuilder<T>(reader)
-                        .withType(type)
+                        .withType(clazz)
                         .withSeparator(source.getSeparator())
                         .build()
                         .parse();

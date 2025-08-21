@@ -1,8 +1,10 @@
 package com.guillaumegasnier.education.shell.mappers;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.dto.InformationsDto;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.LangueDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import org.mapstruct.Mapper;
@@ -16,7 +18,6 @@ public abstract class EtablissementMapper {
 
     @Mapping(target = "informations", ignore = true)
     @Mapping(target = "pays", ignore = true)
-    @Mapping(target = "contacts", ignore = true)
     @Mapping(target = "nature", ignore = true)
     @Mapping(target = "contrat", ignore = true)
     @Mapping(target = "commune", ignore = true)
@@ -44,5 +45,7 @@ public abstract class EtablissementMapper {
     public IndicePositionSocialePK toIndicePositionSocialePK(@NonNull IPSDataset dataset) {
         return new IndicePositionSocialePK(dataset.getUai(), dataset.getAnnee());
     }
+
+    public abstract InformationsDto.LangueDto toLangueDto(LangueDataset dataset);
 
 }

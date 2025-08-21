@@ -17,7 +17,9 @@ import org.hibernate.annotations.Type;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -73,10 +75,6 @@ public class EtablissementEntity extends AbstractEntity {
     @JoinColumn(name = "code_pays", foreignKey = @ForeignKey(name = "fk_etablissements_pays"))
     private PaysEntity pays;
 
-    // TODO : à passer en JSONB
-    @OneToMany(mappedBy = "etablissement", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ContactEntity> contacts = new ArrayList<>();
-
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private InformationsDto informations = new InformationsDto();
@@ -97,10 +95,6 @@ public class EtablissementEntity extends AbstractEntity {
         Set<String> sourcesSet = getSources();
         sourcesSet.add(source);
         this.sources = String.join("|", sourcesSet);
-    }
-
-    public String getSourcesAsString() {
-        return this.sources;
     }
 
 }

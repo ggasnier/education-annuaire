@@ -1,9 +1,6 @@
 package com.guillaumegasnier.education.shell.services;
 
-import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.SectionSportiveDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import org.springframework.lang.NonNull;
 
@@ -21,4 +18,5 @@ public interface ShellEtablissementService {
 
     String createOrUpdateSectionsSportives(@NonNull List<SectionSportiveDataset> datasets);
 
+    String createOrUpdateLangues(@NonNull List<LangueDataset> datasets);
 }

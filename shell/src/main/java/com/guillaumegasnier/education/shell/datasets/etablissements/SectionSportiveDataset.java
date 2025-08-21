@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
+import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class SectionSportiveDataset {
+public class SectionSportiveDataset implements Dataset {
 
     @CsvBindByName(column = "UAI")
     private String uai;

@@ -25,6 +25,11 @@ public class EtablissementsController {
 
         var etablissementDto = webEtablissementService.findEtablissementByUai(uai);
 
-        return "etablissements/details";
+        if (etablissementDto.isPresent()) {
+            model.addAttribute("etablissement", etablissementDto.get());
+            return "etablissements/details";
+        } else {
+            return "etablissements/404";
+        }
     }
 }

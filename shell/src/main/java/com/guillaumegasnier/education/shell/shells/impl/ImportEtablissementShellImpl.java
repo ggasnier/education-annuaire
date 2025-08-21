@@ -1,9 +1,5 @@
 package com.guillaumegasnier.education.shell.shells.impl;
 
-import com.guillaumegasnier.education.shell.datasets.etablissements.*;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2021Dataset;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2022Dataset;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2023Dataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
@@ -30,53 +26,59 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     }
 
     @Override
-    @ShellMethod(value = "Import établissements (EN)")
-    public String importEnEtablissements() {
-        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS, EnEtablissementDataset.class), "en");
+    @ShellMethod(value = "Import établissements (ouverts)")
+    public String importEtablissementsEnOuverts() {
+        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS), "en");
     }
 
     @Override
     @ShellMethod(value = "Import établissements (fermés)")
-    public String importEtablissementsFermes() {
-        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_FERMES, EtablissementFermeDataset.class), "en");
+    public String importEtablissementsEnFermes() {
+        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_FERMES), "en");
     }
 
     @Override
     @ShellMethod(value = "Import établissements (ESR)")
-    public String importEsrEtablissements() {
-        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ESR_ETABS_OUVERTS, EsrEtablissementDataset.class), "esr");
+    public String importEtablissementsEsr() {
+        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ESR_ETABS_OUVERTS), "esr");
     }
 
     @Override
     @ShellMethod(value = "Import établissements (CARIF OREF)")
-    public String importCarifEtablissements() {
+    public String importEtablissementsCarif() {
         return shellEtablissementService.createOrUpdateEtablissements(fileService.importJsonCarif(CARIF_ETABS_OUVERTS), "carif");
     }
 
     @Override
     @ShellMethod(value = "Import natures d'établissements")
     public String importNatures() {
-        return shellEtablissementService.createOrUpdateNatures(fileService.importCSV(NATURES, NatureDataset.class));
+        return shellEtablissementService.createOrUpdateNatures(fileService.importCSV(NATURES));
     }
 
     @Override
     @ShellMethod(value = "Import contrats d'établissements")
     public String importContrats() {
-        return shellEtablissementService.createOrUpdateContrats(fileService.importCSV(CONTRATS, ContratDataset.class));
+        return shellEtablissementService.createOrUpdateContrats(fileService.importCSV(CONTRATS));
     }
 
     @Override
     @ShellMethod(value = "Import sections sportives")
     public String importSectionsSportives() {
-        return shellEtablissementService.createOrUpdateSectionsSportives(fileService.importCSV(SECTIONS_SPORTIVES, SectionSportiveDataset.class));
+        return shellEtablissementService.createOrUpdateSectionsSportives(fileService.importCSV(SECTIONS_SPORTIVES));
+    }
+
+    @Override
+    @ShellMethod(value = "Import langues dans les collèges et lycées")
+    public String importLangues() {
+        return shellEtablissementService.createOrUpdateLangues(fileService.importCSV(LANGUES));
     }
 
     @ShellMethod(value = "Import IPS Collèges")
     public String importIpsColleges() {
         List<IPSDataset> ipsColleges = new ArrayList<>();
-        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_1, IPSCollege2023Dataset.class));
-        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_2, IPSCollege2022Dataset.class));
-        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3, IPSCollege2021Dataset.class));
+        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_1));
+        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_2));
+        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3));
         return shellEtablissementService.createOrUpdateIPSColleges(ipsColleges);
     }
 }
