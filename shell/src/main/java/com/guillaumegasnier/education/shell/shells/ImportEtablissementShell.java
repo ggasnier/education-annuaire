@@ -18,6 +18,8 @@ public interface ImportEtablissementShell {
 
     String importSectionsSportives();
 
+    String importSectionsInternationales();
+
     String importLangues();
 
     String importSpecialites();

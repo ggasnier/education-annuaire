@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "specialites")
+@Table(name = "etablissements_specialites")
 public class SpecialiteEntity extends AbstractEntity {
 
     @EmbeddedId

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "ips")
+@Table(name = "etablissements_ips")
 public class IndicePositionSocialeEntity extends AbstractEntity {
 
     @EmbeddedId
@@ -19,7 +19,7 @@ public class IndicePositionSocialeEntity extends AbstractEntity {
     @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_ips_etablissements"))
     private EtablissementEntity etablissement;
 
-    @Column(columnDefinition = "CHAR(1)")
+    @Column(columnDefinition = "VARCHAR(1)")
     private String categorie;
 
     /**

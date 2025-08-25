@@ -1,8 +1,10 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.IndicePositionSocialeEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.SpecialiteEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.SpecialitePK;
 import com.guillaumegasnier.education.core.dto.InformationsDto;
-import com.guillaumegasnier.education.core.repositories.EtablissementRepository;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -30,14 +32,12 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     private final EtablissementMapper etablissementMapper;
     private final CoreEtablissementService coreEtablissementService;
     private final CoreReferenceService coreReferenceService;
-    private final EtablissementRepository etablissementRepository;
 
-    public ShellEtablissementServiceImpl(Validator validator, EtablissementMapper etablissementMapper, CoreEtablissementService coreEtablissementService, CoreReferenceService coreReferenceService, EtablissementRepository etablissementRepository) {
+    public ShellEtablissementServiceImpl(Validator validator, EtablissementMapper etablissementMapper, CoreEtablissementService coreEtablissementService, CoreReferenceService coreReferenceService) {
         this.validator = validator;
         this.etablissementMapper = etablissementMapper;
         this.coreEtablissementService = coreEtablissementService;
         this.coreReferenceService = coreReferenceService;
-        this.etablissementRepository = etablissementRepository;
     }
 
     @Override
@@ -124,7 +124,25 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             entity = etablissementMapper.toEntity(dataset);
 
             if (dataset.getCodeCommune() != null) {
-                coreReferenceService.findCommune(dataset.getCodeCommune()).ifPresent(entity::setCommune);
+                var communeOptional = coreReferenceService.findCommune(dataset.getCodeCommune());
+                if (communeOptional.isPresent()) {
+                    entity.setCommune(communeOptional.get());
+                } else {
+                    communeOptional = coreReferenceService.findCommuneByNom(dataset.getNomCommune());
+                    if (communeOptional.isPresent()) {
+                        entity.setCommune(communeOptional.get());
+                    } else {
+                        log.warn("Commune inconnue pour {} / {}", dataset.getCodeCommune(), dataset.getNomCommune());
+                    }
+                }
+            } else {
+                var communeOptional = coreReferenceService.findCommuneByNom(dataset.getNomCommune());
+
+                if (communeOptional.isPresent()) {
+                    entity.setCommune(communeOptional.get());
+                } else {
+                    log.warn("Commune absente pour {} / {}", dataset.getUai(), dataset.getNomCommune());
+                }
             }
             if (dataset.getCodeNature() != null) {
                 coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
@@ -162,20 +180,20 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 //        return entity.getContacts();
 //    }
 
-    @Transactional
-    protected List<ContactEntity> toContactEntityList(@NonNull EtablissementEntity entity, @NonNull List<ContactEtablissementDataset> contacts) {
-
-        List<ContactEntity> contactEntityList = new ArrayList<>();
-
-        for (ContactEtablissementDataset contact : contacts) {
-            ContactEntity contactEntity = new ContactEntity();
-            contactEntity.setPk(new ContactPk(entity.getUai(), contact.getClef(), contact.getValeur()));
-            contactEntity.setEtablissement(entity);
-            contactEntityList.add(contactEntity);
-        }
-
-        return contactEntityList;
-    }
+//    @Transactional
+//    protected List<ContactEntity> toContactEntityList(@NonNull EtablissementEntity entity, @NonNull List<ContactEtablissementDataset> contacts) {
+//
+//        List<ContactEntity> contactEntityList = new ArrayList<>();
+//
+//        for (ContactEtablissementDataset contact : contacts) {
+//            ContactEntity contactEntity = new ContactEntity();
+//            contactEntity.setPk(new ContactPk(entity.getUai(), contact.getClef(), contact.getValeur()));
+//            contactEntity.setEtablissement(entity);
+//            contactEntityList.add(contactEntity);
+//        }
+//
+//        return contactEntityList;
+//    }
 
     @Override
     @Transactional
@@ -222,7 +240,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             .map(SectionSportiveDataset::getSectionList)
                             .flatMap(List::stream)
                             .map(String::toLowerCase)
-                            .distinct()
                             .collect(Collectors.toSet());
 
                     var entity = coreEtablissementService.findEtablissement(uai);

@@ -13,14 +13,15 @@ import lombok.Setter;
 public class CommuneEntity extends AbstractEntity {
 
     @Id
-    @Column(columnDefinition = "CHAR(5)", length = 5, unique = true)
+    @Column(columnDefinition = "VARCHAR(5)", length = 5, unique = true)
     private String code;
 
     @NotBlank
     private String nom;
 
-    @Column(columnDefinition = "CHAR(2)", length = 2, nullable = false)
-    private String codePays;
+    @ManyToOne
+    @JoinColumn(name = "code_pays", foreignKey = @ForeignKey(name = "fk_communes_pays"))
+    private PaysEntity pays;
 
     @ManyToOne
     @JoinColumn(name = "code_departement", foreignKey = @ForeignKey(name = "fk_communes_departements"))

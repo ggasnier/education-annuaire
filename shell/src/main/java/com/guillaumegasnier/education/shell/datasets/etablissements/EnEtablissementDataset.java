@@ -159,6 +159,14 @@ public class EnEtablissementDataset implements EtablissementDataset {
     }
 
     @Override
+    public String getAdresse() {
+        if (adresse == null) return null;
+        if (adresse.isBlank()) return null;
+        if (adresse.length() > 50) return adresse.substring(0, 50);
+        return adresse;
+    }
+
+    @Override
     public EtablissementDataset cloneWithUai(String uai) {
         try {
             EnEtablissementDataset copy = (EnEtablissementDataset) this.clone();
@@ -191,6 +199,7 @@ public class EnEtablissementDataset implements EtablissementDataset {
     public String getComplement() {
         if (complement == null) return null;
         if (complement.isBlank()) return null;
+        if (complement.length() > 50) return complement.substring(0, 50);
         return complement;
     }
 

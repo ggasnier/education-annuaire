@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class EquivalentTempsPleinPK implements Serializable {
 
     @ValidUai
-    @Column(columnDefinition = "CHAR(8)", length = 8)
+    @Column(columnDefinition = "VARCHAR(8)", length = 8)
     private String uai;
 
     @NotNull

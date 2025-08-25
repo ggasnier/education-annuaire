@@ -12,12 +12,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "contrats")
+@Table(name = "etablissements_contrats")
 public class ContratEntity extends AbstractEntity {
 
     @Id
     @NotBlank
-    @Column(columnDefinition = "CHAR(2)", length = 2, nullable = false, unique = true, updatable = false)
+    @Column(columnDefinition = "VARCHAR(2)", length = 2, nullable = false, unique = true, updatable = false)
     private String code;
 
     @NotBlank

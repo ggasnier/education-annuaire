@@ -16,11 +16,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "natures")
+@Table(name = "etablissements_natures")
 public class NatureEntity extends AbstractEntity {
 
     @Id
-    @Column(columnDefinition = "CHAR(3)", length = 3, unique = true)
+    @Column(columnDefinition = "VARCHAR(3)", length = 3, unique = true)
     private String code;
 
     @NotBlank

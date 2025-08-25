@@ -75,6 +75,16 @@ public class CoreReferenceServiceImpl implements CoreReferenceService {
     }
 
     @Override
+    public Optional<CommuneEntity> findCommuneByNom(String nomCommune) {
+        return communeRepository.findByNom(nomCommune);
+    }
+
+    @Override
+    public PaysEntity getPays(String codePays) {
+        return paysRepository.getReferenceById(codePays);
+    }
+
+    @Override
     @Cacheable("commune")
     public Optional<CommuneEntity> findCommune(@NonNull String codeCommune) {
         return communeRepository.findById(codeCommune);

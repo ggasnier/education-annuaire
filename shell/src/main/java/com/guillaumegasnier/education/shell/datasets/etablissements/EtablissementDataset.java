@@ -30,6 +30,10 @@ public interface EtablissementDataset extends Cloneable, Dataset {
 
     String getCodeCommune();
 
+    default String getNomCommune() {
+        return null;
+    }
+
     String getCodePays();
 
     String getCodeNature();

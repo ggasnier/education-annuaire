@@ -2,7 +2,6 @@ package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
-import com.guillaumegasnier.education.core.domains.references.PaysEntity;
 import com.guillaumegasnier.education.core.dto.InformationsDto;
 import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
@@ -30,17 +29,17 @@ public class EtablissementEntity extends AbstractEntity {
 
     @Id
     @ValidUai
-    @Column(columnDefinition = "CHAR(8)", unique = true, updatable = false, nullable = false, length = 8)
+    @Column(columnDefinition = "VARCHAR(8)", unique = true, updatable = false, nullable = false, length = 8)
     private String uai;
 
     @ValidSiret
-    @Column(columnDefinition = "CHAR(14)", length = 14)
+    @Column(columnDefinition = "VARCHAR(14)", length = 14)
     private String siret;
 
     @NotBlank
     private String nom;
 
-    @Column(columnDefinition = "CHAR(1)", length = 1)
+    @Column(columnDefinition = "VARCHAR(1)", length = 1)
     @Enumerated(EnumType.STRING)
     private EtatEtablissement etat;
 
@@ -64,16 +63,12 @@ public class EtablissementEntity extends AbstractEntity {
     @Column(columnDefinition = "VARCHAR(50)", length = 50)
     private String complement;
 
-    @Column(columnDefinition = "CHAR(5)", length = 5)
+    @Column(columnDefinition = "VARCHAR(5)", length = 5)
     private String codePostal;
 
     @ManyToOne
     @JoinColumn(name = "code_commune", foreignKey = @ForeignKey(name = "fk_etablissements_communes"))
     private CommuneEntity commune;
-
-    @ManyToOne
-    @JoinColumn(name = "code_pays", foreignKey = @ForeignKey(name = "fk_etablissements_pays"))
-    private PaysEntity pays;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
