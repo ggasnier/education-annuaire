@@ -1,13 +1,7 @@
 package com.guillaumegasnier.education.core.services.impl;
 
-import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.IndicePositionSocialeEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
-import com.guillaumegasnier.education.core.repositories.ContratRepository;
-import com.guillaumegasnier.education.core.repositories.EtablissementRepository;
-import com.guillaumegasnier.education.core.repositories.IndicePositionSocialeRepository;
-import com.guillaumegasnier.education.core.repositories.NatureRepository;
+import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.repositories.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +20,15 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final NatureRepository natureRepository;
     private final ContratRepository contratRepository;
     private final IndicePositionSocialeRepository indicePositionSocialeRepository;
+    private final SpecialiteRepository specialiteRepository;
 
     @Autowired
-    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository) {
+    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository) {
         this.etablissementRepository = etablissementRepository;
         this.natureRepository = natureRepository;
         this.contratRepository = contratRepository;
         this.indicePositionSocialeRepository = indicePositionSocialeRepository;
+        this.specialiteRepository = specialiteRepository;
     }
 
     @Override
@@ -80,5 +76,10 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Override
     public void saveEtablissement(@NonNull Optional<EtablissementEntity> entity) {
         entity.ifPresent(etablissementRepository::save);
+    }
+
+    @Override
+    public void saveSpecialites(List<SpecialiteEntity> entities) {
+        specialiteRepository.saveAll(entities); // TODO supprimer les spécilités ou trouver un moyen de virer les anciennes
     }
 }

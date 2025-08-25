@@ -31,6 +31,7 @@ public enum SourcesDatasets {
     EN_ETABS_FERMES("Etablissements fermés", "https://www.data.gouv.fr/api/1/datasets/r/8cc21ef1-911a-46c9-9145-a865f320be48", "datasets/fr-en-etablissements-fermes.csv", StandardCharsets.UTF_8, ';', "GET", EtablissementFermeDataset.class),
     ESR_ETABS_OUVERTS("Etablissements de l'enseignement supérieur", "https://www.data.gouv.fr/api/1/datasets/r/bcc3229a-beb2-4077-a8d8-50a065dfbbfa", "datasets/fr-esr-principaux-etablissements-enseignement-superieur.csv", StandardCharsets.UTF_8, ';', "GET", EsrEtablissementDataset.class),
     CARIF_ETABS_OUVERTS("Liste des organismes", "https://catalogue-apprentissage.intercariforef.org/api/v1/es/search/etablissements/", "datasets/etablissements_carif.csv", StandardCharsets.UTF_8, ',', "POST", CarifEtablissementDataset.class),
+    ONISEP_ETABS_SUP("Idéo-Structures d'enseignement supérieur", "https://www.data.gouv.fr/api/1/datasets/r/2a42a3fa-ec3a-48f1-8c5a-1c21769e6fb3", "datasets/etablissements_onisep_sup.csv", StandardCharsets.UTF_8, ';', "GET", OnisepEtablissementSupDataset.class),
     NATURES("Natures d'établissements", "https://bcn.depp.education.fr/bcn/index.php/export/CSV?n=N_NATURE_UAI&separator=,", "datasets/n_nature_uai_.csv", Charset.forName("windows-1252"), ',', "POST", NatureDataset.class),
     CONTRATS("Contrats d'établissements", "https://bcn.depp.education.fr/bcn/index.php/export/CSV?n=N_CONTRAT_ETABLISSEMENT&separator=,", "datasets/n_contrat_etablissement_.csv", Charset.forName("windows-1252"), ',', "POST", ContratDataset.class),
     IPS_COLLEGES_1("IPS Collèges (depuis 2023)", "https://www.data.gouv.fr/api/1/datasets/r/3c7fe02a-702b-4276-acfb-07d0572c18a2", "datasets/fr-en-ips-colleges-ap2023.csv", StandardCharsets.UTF_8, ';', "GET", IPSCollege2023Dataset.class),
@@ -40,6 +41,7 @@ public enum SourcesDatasets {
     SECTIONS_SPORTIVES("Sections Sportives Scolaires", "https://www.data.gouv.fr/api/1/datasets/r/c479b9b8-8224-46ef-b2f4-f6a3468726fc", null, StandardCharsets.UTF_8, ';', "GET", SectionSportiveDataset.class),
     SECTIONS_INTERNATIONALES("Sections internationales", "https://www.data.gouv.fr/api/1/datasets/r/877befc2-2b3c-4e27-902b-abcf7f1e800f", "datasets/fr-en-sections-internationales.csv", StandardCharsets.UTF_8, ';', "GET", SectionInternationaleDataset.class),
     LANGUES("Offre de langues dans les collèges et lycées", "https://www.data.gouv.fr/api/1/datasets/r/60ca51e3-05b7-4b90-9433-ebbd68803f8c", null, StandardCharsets.UTF_8, ';', "GET", LangueDataset.class),
+    SPECIALITES("Spécialités de première générale", "https://www.data.gouv.fr/api/1/datasets/r/6a3e802b-995a-4a16-852c-4a70c1a4f584", null, StandardCharsets.UTF_8, ';', "GET", SpecialitePremiereDataset.class),
     NULL(null, null, null, null, ',', null, null);
 
     // Formations

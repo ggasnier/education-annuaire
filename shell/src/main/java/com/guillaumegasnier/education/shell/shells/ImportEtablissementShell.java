@@ -10,6 +10,8 @@ public interface ImportEtablissementShell {
 
     String importEtablissementsCarif();
 
+    String importEtablissementsOnisepSup();
+
     String importNatures();
 
     String importContrats();
@@ -17,4 +19,6 @@ public interface ImportEtablissementShell {
     String importSectionsSportives();
 
     String importLangues();
+
+    String importSpecialites();
 }

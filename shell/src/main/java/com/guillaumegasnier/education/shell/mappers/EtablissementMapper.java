@@ -48,4 +48,5 @@ public abstract class EtablissementMapper {
 
     public abstract InformationsDto.LangueDto toLangueDto(LangueDataset dataset);
 
+
 }

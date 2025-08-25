@@ -50,6 +50,12 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     }
 
     @Override
+    @ShellMethod(value = "Import établissements (ONISEP SUP)")
+    public String importEtablissementsOnisepSup() {
+        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SUP), "onisep");
+    }
+
+    @Override
     @ShellMethod(value = "Import natures d'établissements")
     public String importNatures() {
         return shellEtablissementService.createOrUpdateNatures(fileService.importCSV(NATURES));
@@ -71,6 +77,12 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     @ShellMethod(value = "Import langues dans les collèges et lycées")
     public String importLangues() {
         return shellEtablissementService.createOrUpdateLangues(fileService.importCSV(LANGUES));
+    }
+
+    @Override
+    @ShellMethod(value = "Import spécialités de première générale")
+    public String importSpecialites() {
+        return shellEtablissementService.createOrUpdateSpecialites(fileService.importCSV(SPECIALITES));
     }
 
     @ShellMethod(value = "Import IPS Collèges")

@@ -1,9 +1,6 @@
 package com.guillaumegasnier.education.core.services;
 
-import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.IndicePositionSocialeEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.*;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -19,6 +16,10 @@ public interface CoreEtablissementService {
 
     void saveIPS(@NonNull List<IndicePositionSocialeEntity> entities);
 
+    void saveEtablissement(Optional<EtablissementEntity> entity);
+
+    void saveSpecialites(List<SpecialiteEntity> entities);
+
     Optional<EtablissementEntity> findEtablissement(@NonNull String uai);
 
     Optional<NatureEntity> findNature(String codeNature);
@@ -27,5 +28,5 @@ public interface CoreEtablissementService {
 
     Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee);
 
-    void saveEtablissement(Optional<EtablissementEntity> entity);
+
 }
