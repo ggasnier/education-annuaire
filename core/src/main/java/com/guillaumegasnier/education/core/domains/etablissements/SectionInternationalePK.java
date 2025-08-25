@@ -1,32 +1,27 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
+import com.guillaumegasnier.education.core.enums.SectionInternationale;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 @Getter
 @Setter
 @EqualsAndHashCode
 @Embeddable
-@NoArgsConstructor
-public class IndicePositionSocialePK implements Serializable {
-
-    @NotNull
-    private int annee;
+public class SectionInternationalePK {
 
     @ValidUai
     @Column(columnDefinition = "VARCHAR(8)", length = 8)
     private String uai;
 
-    public IndicePositionSocialePK(String uai, int annee) {
-        this.uai = uai;
-        this.annee = annee;
-    }
+    @Enumerated(EnumType.STRING)
+    private SectionInternationale section;
+
+    private String niveau;
 }

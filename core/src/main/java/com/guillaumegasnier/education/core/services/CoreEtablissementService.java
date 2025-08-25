@@ -20,6 +20,8 @@ public interface CoreEtablissementService {
 
     void saveSpecialites(List<SpecialiteEntity> entities);
 
+    void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities);
+
     Optional<EtablissementEntity> findEtablissement(@NonNull String uai);
 
     Optional<NatureEntity> findNature(String codeNature);

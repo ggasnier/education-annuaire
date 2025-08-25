@@ -21,4 +21,6 @@ public interface ShellEtablissementService {
     String createOrUpdateLangues(@NonNull List<LangueDataset> datasets);
 
     String createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets);
+
+    String createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets);
 }

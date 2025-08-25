@@ -21,14 +21,16 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final ContratRepository contratRepository;
     private final IndicePositionSocialeRepository indicePositionSocialeRepository;
     private final SpecialiteRepository specialiteRepository;
+    private final SectionInternationaleRepository sectionInternationaleRepository;
 
     @Autowired
-    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository) {
+    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository) {
         this.etablissementRepository = etablissementRepository;
         this.natureRepository = natureRepository;
         this.contratRepository = contratRepository;
         this.indicePositionSocialeRepository = indicePositionSocialeRepository;
         this.specialiteRepository = specialiteRepository;
+        this.sectionInternationaleRepository = sectionInternationaleRepository;
     }
 
     @Override
@@ -80,6 +82,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 
     @Override
     public void saveSpecialites(List<SpecialiteEntity> entities) {
-        specialiteRepository.saveAll(entities); // TODO supprimer les spécilités ou trouver un moyen de virer les anciennes
+        specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les anciennes
+    }
+
+    @Override
+    public void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities) {
+        sectionInternationaleRepository.saveAll(entities);
     }
 }

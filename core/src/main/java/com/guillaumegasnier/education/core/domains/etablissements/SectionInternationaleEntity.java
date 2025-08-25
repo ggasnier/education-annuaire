@@ -8,14 +8,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "etablissements_specialites")
-public class SpecialiteEntity extends AbstractEntity {
+@Table(name = "etablissements_sections_internationales")
+public class SectionInternationaleEntity extends AbstractEntity {
 
     @EmbeddedId
-    private SpecialitePK pk;
+    private SectionInternationalePK pk;
 
     @MapsId("uai")
     @ManyToOne
-    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_specialites_etablissements"))
+    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_ips_etablissements"))
     private EtablissementEntity etablissement;
 }

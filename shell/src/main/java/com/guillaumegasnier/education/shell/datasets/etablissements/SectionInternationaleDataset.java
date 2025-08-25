@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 /**
  * Rentrée scolaire
  * Academie
@@ -33,4 +36,8 @@ public class SectionInternationaleDataset implements Dataset {
 
     @CsvBindByName(column = "Niveau")
     private String niveau;
+
+    public List<String> getNiveaux() {
+        return Stream.of(niveau.split("et")).map(String::trim).map(String::toUpperCase).toList();
+    }
 }

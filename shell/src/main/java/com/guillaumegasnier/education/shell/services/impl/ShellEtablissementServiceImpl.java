@@ -1,10 +1,8 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.IndicePositionSocialeEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.SpecialiteEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.SpecialitePK;
+import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.dto.InformationsDto;
+import com.guillaumegasnier.education.core.enums.SectionInternationale;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -327,6 +325,39 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveSpecialites(entities);
 
         return String.format("Import terminé : %d specialités enregistrée(s).", entities.size());
+    }
+
+    @Override
+    public String createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets) {
+
+        List<SectionInternationaleEntity> entities = new ArrayList<>();
+
+        datasets.forEach(dataset -> {
+            dataset.getNiveaux().forEach(niveau -> {
+//                log.info("{}: {} {}", dataset.getUai(), dataset.getSection(), niveau);
+
+                SectionInternationalePK pk = new SectionInternationalePK();
+                pk.setUai(dataset.getUai());
+                pk.setSection(SectionInternationale.transformation(dataset.getSection()));
+                pk.setNiveau(niveau);
+                SectionInternationaleEntity entity = new SectionInternationaleEntity();
+                entity.setPk(pk);
+
+                Optional<EtablissementEntity> etablissement = coreEtablissementService.findEtablissement(dataset.getUai());
+
+                if (etablissement.isPresent()) {
+                    entity.setEtablissement(etablissement.get());
+                    entities.add(entity);
+                } else {
+                    log.error("Pas d'établissement avec UAI : {}", dataset.getUai());
+                }
+            });
+        });
+
+        coreEtablissementService.saveSectionsInternationales(entities);
+
+        return String.format("Import terminé : %d sections internationale(s).", entities.size());
+
     }
 
     @Nullable
