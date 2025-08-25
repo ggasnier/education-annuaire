@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.references;
 
+import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 @ToString
-public class AcademieDataset {
+public class AcademieDataset implements Dataset {
 
     @CsvBindByName(column = "ACADEMIE_ET_ASSIMILE")
     private String code;

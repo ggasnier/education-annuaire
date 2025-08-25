@@ -1,13 +1,14 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.etablissements.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.lang.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,12 +147,8 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     @CsvBindByName(column = "Page Wikipédia en français")
     private String contactWikipedia;
 
-    @Override
-    public String getUai() {
-        if (uai == null) return "";
-        return uai;
-    }
-
+    @CsvBindByName(column = "date_creation")
+    private String dateOuverture;
     // compte_flickr
     // compte_pinterest
     // flux_rss
@@ -167,10 +164,26 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     // * Page Wikipédia en anglais
 
     @Override
+    public String getUai() {
+        if (uai == null) return "";
+        return uai;
+    }
+
+    @Override
     public String getSiret() {
         if (siret == null) return null;
         if (siret.isBlank()) return null;
         return siret;
+    }
+
+    @Nullable
+    @Override
+    public LocalDate getDateOuverture() {
+        try {
+            return LocalDate.parse(dateOuverture);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
     }
 
     @Override
@@ -186,6 +199,7 @@ public class EsrEtablissementDataset implements EtablissementDataset {
 
         return null;
     }
+
 
     @Override
     public String getCodePays() {
@@ -240,25 +254,24 @@ public class EsrEtablissementDataset implements EtablissementDataset {
 
     @Override
     public EtablissementDataset cloneWithUai(String uai) {
-        EsrEtablissementDataset copy = new EsrEtablissementDataset();
         try {
-            BeanUtils.copyProperties(this, copy);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            EsrEtablissementDataset copy = (EsrEtablissementDataset) this.clone();
+            copy.setUai(uai);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
         }
-        copy.setUai(uai);
-        return copy;
     }
 
     @Override
     public EtablissementDataset cloneWithSiret(String siret) {
-        EsrEtablissementDataset copy = new EsrEtablissementDataset();
         try {
-            BeanUtils.copyProperties(this, copy);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            EsrEtablissementDataset copy = (EsrEtablissementDataset) this.clone();
+            copy.setSiret(siret);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
         }
-        copy.setSiret(siret);
-        return copy;
     }
+
 }

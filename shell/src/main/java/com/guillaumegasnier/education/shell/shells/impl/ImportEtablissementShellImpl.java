@@ -1,16 +1,10 @@
 package com.guillaumegasnier.education.shell.shells.impl;
 
-import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.EnEtablissementDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.EsrEtablissementDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2021Dataset;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2022Dataset;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2023Dataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.services.FileService;
-import com.guillaumegasnier.education.shell.services.ImportEtablissementService;
+import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
 import com.guillaumegasnier.education.shell.shells.ImportEtablissementShell;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
@@ -22,50 +16,81 @@ import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
 @ShellComponent
 public class ImportEtablissementShellImpl implements ImportEtablissementShell {
 
-    private final ImportEtablissementService importEtablissementService;
+    private final ShellEtablissementService shellEtablissementService;
     private final FileService fileService;
 
-    public ImportEtablissementShellImpl(ImportEtablissementService importEtablissementService, FileService fileService) {
-        this.importEtablissementService = importEtablissementService;
+    @Autowired
+    public ImportEtablissementShellImpl(ShellEtablissementService shellEtablissementService, FileService fileService) {
+        this.shellEtablissementService = shellEtablissementService;
         this.fileService = fileService;
     }
 
     @Override
-    @ShellMethod(value = "Import établissements (EN)")
-    public String importEnEtablissements() {
-        return importEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS, EnEtablissementDataset.class), "en");
+    @ShellMethod(value = "Import établissements (ouverts)")
+    public String importEtablissementsEnOuverts() {
+        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS), "en");
+    }
+
+    @Override
+    @ShellMethod(value = "Import établissements (fermés)")
+    public String importEtablissementsEnFermes() {
+        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_FERMES), "en");
     }
 
     @Override
     @ShellMethod(value = "Import établissements (ESR)")
-    public String importEsrEtablissements() {
-        return importEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ESR_ETABS_OUVERTS, EsrEtablissementDataset.class), "esr");
+    public String importEtablissementsEsr() {
+        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ESR_ETABS_OUVERTS), "esr");
     }
 
     @Override
     @ShellMethod(value = "Import établissements (CARIF OREF)")
-    public String importCarifEtablissements() {
-        return importEtablissementService.createOrUpdateEtablissements(fileService.importJsonCarif(CARIF_ETABS_OUVERTS), "carif");
+    public String importEtablissementsCarif() {
+        return shellEtablissementService.createOrUpdateEtablissements(fileService.importJsonCarif(CARIF_ETABS_OUVERTS), "carif");
+    }
+
+    @Override
+    @ShellMethod(value = "Import établissements (ONISEP SUP)")
+    public String importEtablissementsOnisepSup() {
+        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SUP), "onisep");
     }
 
     @Override
     @ShellMethod(value = "Import natures d'établissements")
     public String importNatures() {
-        return importEtablissementService.createOrUpdateNatures(fileService.importCSV(NATURES, NatureDataset.class));
+        return shellEtablissementService.createOrUpdateNatures(fileService.importCSV(NATURES));
     }
 
     @Override
     @ShellMethod(value = "Import contrats d'établissements")
     public String importContrats() {
-        return importEtablissementService.createOrUpdateContrats(fileService.importCSV(CONTRATS, ContratDataset.class));
+        return shellEtablissementService.createOrUpdateContrats(fileService.importCSV(CONTRATS));
+    }
+
+    @Override
+    @ShellMethod(value = "Import sections sportives")
+    public String importSectionsSportives() {
+        return shellEtablissementService.createOrUpdateSectionsSportives(fileService.importCSV(SECTIONS_SPORTIVES));
+    }
+
+    @Override
+    @ShellMethod(value = "Import langues dans les collèges et lycées")
+    public String importLangues() {
+        return shellEtablissementService.createOrUpdateLangues(fileService.importCSV(LANGUES));
+    }
+
+    @Override
+    @ShellMethod(value = "Import spécialités de première générale")
+    public String importSpecialites() {
+        return shellEtablissementService.createOrUpdateSpecialites(fileService.importCSV(SPECIALITES));
     }
 
     @ShellMethod(value = "Import IPS Collèges")
     public String importIpsColleges() {
         List<IPSDataset> ipsColleges = new ArrayList<>();
-        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_1, IPSCollege2023Dataset.class));
-        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_2, IPSCollege2022Dataset.class));
-        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3, IPSCollege2021Dataset.class));
-        return importEtablissementService.createOrUpdateIPSColleges(ipsColleges);
+        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_1));
+        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_2));
+        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3));
+        return shellEtablissementService.createOrUpdateIPSColleges(ipsColleges);
     }
 }

@@ -1,11 +1,11 @@
 package com.guillaumegasnier.education.shell.mappers;
 
-import com.guillaumegasnier.education.core.etablissements.entities.ContratEntity;
-import com.guillaumegasnier.education.core.etablissements.entities.NatureEntity;
-import com.guillaumegasnier.education.core.references.entities.AcademieEntity;
-import com.guillaumegasnier.education.core.references.entities.CommuneEntity;
-import com.guillaumegasnier.education.core.references.entities.DepartementEntity;
-import com.guillaumegasnier.education.core.references.entities.RegionEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
+import com.guillaumegasnier.education.core.domains.references.AcademieEntity;
+import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
+import com.guillaumegasnier.education.core.domains.references.DepartementEntity;
+import com.guillaumegasnier.education.core.domains.references.RegionEntity;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
 import com.guillaumegasnier.education.shell.datasets.references.AcademieDataset;

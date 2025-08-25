@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
+import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ContratDataset {
+public class ContratDataset implements Dataset {
 
     @CsvBindByName(column = "CONTRAT_ETABLISSEMENT")
     private String code;

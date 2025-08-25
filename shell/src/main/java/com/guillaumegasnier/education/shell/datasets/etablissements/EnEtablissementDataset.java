@@ -1,13 +1,17 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.etablissements.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Type_etablissement
@@ -101,14 +105,79 @@ public class EnEtablissementDataset implements EtablissementDataset {
     @CsvBindByName(column = "Web")
     private String contactWeb;
 
+    @CsvBindByName(column = "date_ouverture")
+    private String dateOuverture;
+
+    @CsvBindByName(column = "Restauration")
+    private String restauration;
+
+    @CsvBindByName(column = "Hebergement")
+    private String hebergement;
+
+    @CsvBindByName(column = "ULIS")
+    private String ulis;
+
+    @CsvBindByName(column = "Apprentissage")
+    private String apprentissage;
+
+    @CsvBindByName(column = "Segpa")
+    private String segpa;
+
+    @CsvBindByName(column = "Section_arts")
+    private String sectionArts;
+
+    @CsvBindByName(column = "Section_cinema")
+    private String sectionCinema;
+
+    @CsvBindByName(column = "Section_theatre")
+    private String sectionTheatre;
+
+    @CsvBindByName(column = "Section_sport")
+    private String sectionSport;
+
+    @CsvBindByName(column = "Section_internationale")
+    private String sectionInternationale;
+
+    @CsvBindByName(column = "Section_europeenne")
+    private String sectionEuropeenne;
+
+    @CsvBindByName(column = "Lycee_Agricole")
+    private String lyceeAgricole;
+
+    @CsvBindByName(column = "Lycee_militaire")
+    private String lyceeMilitaire;
+
+    @CsvBindByName(column = "Lycee_des_metiers")
+    private String lyceeDesMetiers;
+
+    @CsvBindByName(column = "Post_BAC")
+    private String postBac;
+
+    @Override
+    public LocalDate getDateOuverture() {
+        return LocalDate.parse(dateOuverture);
+    }
+
     @Override
     public EtablissementDataset cloneWithUai(String uai) {
-        return null;
+        try {
+            EnEtablissementDataset copy = (EnEtablissementDataset) this.clone();
+            copy.setUai(uai);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     @Override
     public EtablissementDataset cloneWithSiret(String siret) {
-        return null;
+        try {
+            EnEtablissementDataset copy = (EnEtablissementDataset) this.clone();
+            copy.setSiret(siret);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     @Override
@@ -164,5 +233,32 @@ public class EnEtablissementDataset implements EtablissementDataset {
             contacts.add(new ContactEtablissementDataset("web", contactWeb));
 
         return contacts;
+    }
+
+    @Override
+    public Set<OptionEtablissement> getOptions() {
+
+        Set<OptionEtablissement> options = new HashSet<>();
+
+        if (restauration != null && restauration.equals("1")) options.add(OptionEtablissement.RESTAURATION);
+        if (hebergement != null && hebergement.equals("1")) options.add(OptionEtablissement.HEBERGEMENT);
+        if (ulis != null && ulis.equals("1")) options.add(OptionEtablissement.ULIS);
+        if (apprentissage != null && apprentissage.equals("1")) options.add(OptionEtablissement.APPRENTISSAGE);
+        if (segpa != null && segpa.equals("1")) options.add(OptionEtablissement.SEGPA);
+        if (sectionArts != null && sectionArts.equals("1")) options.add(OptionEtablissement.SECTION_ARTS);
+        if (sectionCinema != null && sectionCinema.equals("1")) options.add(OptionEtablissement.SECTION_CINEMA);
+        if (sectionTheatre != null && sectionTheatre.equals("1")) options.add(OptionEtablissement.SECTION_THEATRE);
+        if (sectionSport != null && sectionSport.equals("1")) options.add(OptionEtablissement.SECTION_SPORT);
+        if (sectionInternationale != null && sectionInternationale.equals("1"))
+            options.add(OptionEtablissement.SECTION_INTERNATIONALE);
+        if (sectionEuropeenne != null && sectionEuropeenne.equals("1"))
+            options.add(OptionEtablissement.SECTION_EUROPEENNE);
+        if (lyceeAgricole != null && lyceeAgricole.equals("1")) options.add(OptionEtablissement.LYCEE_AGRICOLE);
+        if (lyceeMilitaire != null && lyceeMilitaire.equals("1")) options.add(OptionEtablissement.LYCEE_MILITAIRE);
+        if (lyceeDesMetiers != null && lyceeDesMetiers.equals("1")) options.add(OptionEtablissement.LYCEE_DES_METIERS);
+        if (postBac != null && postBac.equals("1")) options.add(OptionEtablissement.POST_BAC);
+
+
+        return options;
     }
 }

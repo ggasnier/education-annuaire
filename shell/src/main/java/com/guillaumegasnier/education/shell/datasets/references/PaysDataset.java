@@ -1,4 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.references;
 
-public class PaysDataset {
+import com.guillaumegasnier.education.shell.datasets.Dataset;
+
+public class PaysDataset implements Dataset {
 }

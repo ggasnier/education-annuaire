@@ -2,9 +2,14 @@ package com.guillaumegasnier.education.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.guillaumegasnier.education.core.dto.InformationsDto;
+import com.guillaumegasnier.education.core.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.validations.ValidSiret;
+import com.guillaumegasnier.education.core.validations.ValidUai;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @JsonPropertyOrder(
         {"uai", "nom", "siret",
@@ -20,14 +25,46 @@ import lombok.Setter;
 )
 @Getter
 @Setter
+@ToString
 @Schema(name = "Etablissement", description = "Informations sur un établissement")
-public class EtablissementDto extends EtablissementRequestDto {
+public class EtablissementDto {
+
+    @ValidUai
+    @JsonProperty(required = true)
+    protected String uai;
+
+    @ValidSiret
+    protected String siret;
+
+    protected String nom;
+
+    protected String adresse;
+
+    protected String complement;
+
+    @JsonProperty(value = "code_postal")
+    protected String codePostal;
+
+    @JsonProperty(value = "code_nature")
+    protected String codeNature;
+
+    @JsonProperty(value = "code_etat")
+    protected EtatEtablissement codeEtat;
+
+    @JsonProperty(value = "code_commune")
+    protected String codeCommune;
 
     @JsonProperty(value = "nom_nature")
     protected String nomNature;
 
     @JsonProperty(value = "nom_etat")
     protected String nomEtat;
+
+    @JsonProperty(value = "code_contrat")
+    protected String codeContrat;
+
+    @JsonProperty(value = "nom_contrat")
+    protected String nomContrat;
 
     @JsonProperty(value = "nom_commune")
     protected String nomCommune;
@@ -51,4 +88,6 @@ public class EtablissementDto extends EtablissementRequestDto {
     protected String codePays;
     @JsonProperty(value = "nom_pays")
     protected String nomPays;
+
+    protected InformationsDto informations;
 }

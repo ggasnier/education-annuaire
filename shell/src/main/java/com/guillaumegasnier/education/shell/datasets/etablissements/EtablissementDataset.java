@@ -1,11 +1,16 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.etablissements.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.enums.EtatEtablissement;
+import com.guillaumegasnier.education.core.enums.OptionEtablissement;
+import com.guillaumegasnier.education.shell.datasets.Dataset;
 
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 
-public interface EtablissementDataset extends Cloneable {
+public interface EtablissementDataset extends Cloneable, Dataset {
 
     EtablissementDataset cloneWithUai(String uai);
 
@@ -34,5 +39,17 @@ public interface EtablissementDataset extends Cloneable {
     EtatEtablissement getEtat();
 
     List<ContactEtablissementDataset> getContacts();
+
+    default LocalDate getDateOuverture() {
+        return null;
+    }
+
+    default LocalDate getDateFermeture() {
+        return null;
+    }
+
+    default Set<OptionEtablissement> getOptions() {
+        return Collections.emptySet();
+    }
 
 }

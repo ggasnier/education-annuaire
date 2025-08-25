@@ -1,0 +1,44 @@
+package com.guillaumegasnier.education.core.domains.etablissements;
+
+import com.guillaumegasnier.education.core.domains.AbstractEntity;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "ips")
+public class IndicePositionSocialeEntity extends AbstractEntity {
+
+    @EmbeddedId
+    private IndicePositionSocialePK pk;
+
+    @MapsId("uai")
+    @ManyToOne
+    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_ips_etablissements"))
+    private EtablissementEntity etablissement;
+
+    @Column(columnDefinition = "CHAR(1)")
+    private String categorie;
+
+    /**
+     * IPS de l'établissement
+     */
+    private Double indice;
+
+    /**
+     * Ecart-type établissement
+     */
+    private Double ecartType;
+
+    public IndicePositionSocialeEntity() {
+        this.pk = new IndicePositionSocialePK();
+    }
+
+    public IndicePositionSocialeEntity(String uai, int annee) {
+        this.pk = new IndicePositionSocialePK(uai, annee);
+    }
+}
+
+
