@@ -3,6 +3,7 @@ package com.guillaumegasnier.education.shell.services.impl;
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.dto.InformationsDto;
 import com.guillaumegasnier.education.core.enums.SectionInternationale;
+import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -17,6 +18,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -117,6 +119,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             entity.setDateOuverture(dataset.getDateOuverture());
             entity.setDateFermeture(dataset.getDateFermeture());
             entity.setEtat(dataset.getEtat());
+            entity.setUpdatedAt(LocalDateTime.now());
         } else {
             // Nouvel établissement
             entity = etablissementMapper.toEntity(dataset);
@@ -150,7 +153,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             }
         }
 
-        entity.getInformations().getOptions().addAll(dataset.getOptions());
+//        entity.getInformations().getOptions().addAll(dataset.getOptions());
 
 //        entity.setContacts(mergeContacts(entity, dataset.getContacts()));
         entity.addSource(source);
@@ -229,34 +232,39 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     @Override
     public String createOrUpdateSectionsSportives(@NonNull List<SectionSportiveDataset> datasets) {
 
-        List<EtablissementEntity> entities = new ArrayList<>();
+        List<SectionSportiveEntity> entities = new ArrayList<>();
 
         datasets.stream().collect(Collectors.groupingBy(SectionSportiveDataset::getUai))
                 .forEach((uai, sectionSportiveList) -> {
-                    Set<String> sections = sectionSportiveList
+                    Set<Sport> sections = sectionSportiveList
                             .stream()
                             .map(SectionSportiveDataset::getSectionList)
                             .flatMap(List::stream)
-                            .map(String::toLowerCase)
+                            .map(String::toUpperCase)
+                            .map(Sport::transformation)
+                            .filter(Objects::nonNull)
                             .collect(Collectors.toSet());
 
-                    var entity = coreEtablissementService.findEtablissement(uai);
-                    if (entity.isPresent()) {
-                        InformationsDto informations = entity.get().getInformations();
-                        if (informations == null)
-                            informations = new InformationsDto();
+                    Optional<EtablissementEntity> etablissement = coreEtablissementService.findEtablissement(uai);
 
-                        informations.setSectionsSportives(sections);
-                        entity.get().setInformations(informations);
-                        entities.add(entity.get());
+                    if (etablissement.isPresent()) {
+                        sections.forEach(sport -> {
+                            SectionSportivePK pk = new SectionSportivePK();
+                            pk.setUai(uai);
+                            pk.setSport(sport);
+                            SectionSportiveEntity entity = new SectionSportiveEntity();
+                            entity.setPk(pk);
+                            entity.setEtablissement(etablissement.get());
+                            entities.add(entity);
+                        });
                     } else {
-                        log.error("Etablissement {} non trouvé", uai);
+                        log.error("Pas d'établissement avec UAI : {}", uai);
                     }
                 });
 
-        coreEtablissementService.saveEtablissements(entities);
+        coreEtablissementService.saveSectionsSporties(entities);
 
-        return String.format("Import terminé : %d sections sportives enregistrée(s).", datasets.size());
+        return String.format("Import terminé : %d sections sportives enregistrée(s).", entities.size());
     }
 
     @Override

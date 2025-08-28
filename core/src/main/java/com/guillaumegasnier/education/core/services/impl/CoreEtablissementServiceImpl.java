@@ -22,15 +22,17 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final IndicePositionSocialeRepository indicePositionSocialeRepository;
     private final SpecialiteRepository specialiteRepository;
     private final SectionInternationaleRepository sectionInternationaleRepository;
+    private final SectionSportiveRepository sectionSportiveRepository;
 
     @Autowired
-    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository) {
+    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository, SectionSportiveRepository sectionSportiveRepository) {
         this.etablissementRepository = etablissementRepository;
         this.natureRepository = natureRepository;
         this.contratRepository = contratRepository;
         this.indicePositionSocialeRepository = indicePositionSocialeRepository;
         this.specialiteRepository = specialiteRepository;
         this.sectionInternationaleRepository = sectionInternationaleRepository;
+        this.sectionSportiveRepository = sectionSportiveRepository;
     }
 
     @Override
@@ -88,5 +90,10 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Override
     public void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities) {
         sectionInternationaleRepository.saveAll(entities);
+    }
+
+    @Override
+    public void saveSectionsSporties(List<SectionSportiveEntity> entities) {
+        sectionSportiveRepository.saveAll(entities);
     }
 }

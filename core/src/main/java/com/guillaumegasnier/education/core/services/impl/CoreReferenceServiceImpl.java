@@ -6,6 +6,7 @@ import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +77,12 @@ public class CoreReferenceServiceImpl implements CoreReferenceService {
 
     @Override
     public Optional<CommuneEntity> findCommuneByNom(String nomCommune) {
-        return communeRepository.findByNom(nomCommune);
+        try {
+            return communeRepository.findByNom(nomCommune);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            log.warn("Trop de résultats pour la commune {}", nomCommune);
+            return Optional.empty();
+        }
     }
 
     @Override

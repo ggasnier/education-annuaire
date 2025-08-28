@@ -22,6 +22,8 @@ public interface CoreEtablissementService {
 
     void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities);
 
+    void saveSectionsSporties(List<SectionSportiveEntity> entities);
+
     Optional<EtablissementEntity> findEtablissement(@NonNull String uai);
 
     Optional<NatureEntity> findNature(String codeNature);

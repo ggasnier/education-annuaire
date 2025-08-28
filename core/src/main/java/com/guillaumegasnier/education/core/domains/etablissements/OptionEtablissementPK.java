@@ -1,10 +1,14 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
+import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,17 +17,15 @@ import java.io.Serializable;
 @Setter
 @EqualsAndHashCode
 @Embeddable
-@NoArgsConstructor
-@AllArgsConstructor
-public class EquivalentTempsPleinPK implements Serializable {
+public class OptionEtablissementPK implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
+    
     @ValidUai
     @Column(columnDefinition = "VARCHAR(8)", length = 8)
     private String uai;
 
-    @NotNull
-    private int anne;
+    @Enumerated(EnumType.STRING)
+    private OptionEtablissement option;
 }

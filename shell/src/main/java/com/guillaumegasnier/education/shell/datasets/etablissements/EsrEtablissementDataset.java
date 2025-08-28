@@ -157,6 +157,12 @@ public class EsrEtablissementDataset implements EtablissementDataset {
         if (codeCommune.isBlank()) return null;
         return codeCommune;
     }
+
+    @Override
+    public String getNomCommune() {
+        return nomCommune;
+    }
+    
     // compte_flickr
     // compte_pinterest
     // flux_rss

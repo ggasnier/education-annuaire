@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "etablissements_natures")
+@Table(name = "natures")
 public class NatureEntity extends AbstractEntity {
 
     @Id

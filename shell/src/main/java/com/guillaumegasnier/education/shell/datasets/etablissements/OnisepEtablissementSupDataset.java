@@ -71,6 +71,11 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     }
 
     @Override
+    public String getNomCommune() {
+        return nomCommune;
+    }
+
+    @Override
     public EtablissementDataset cloneWithUai(String uai) {
         try {
             OnisepEtablissementSupDataset copy = (OnisepEtablissementSupDataset) this.clone();
