@@ -37,6 +37,7 @@
         <sonar.exclusions>
             */entities/*
         </sonar.exclusions>
+        <sonar.organization>ggasnier</sonar.organization>
     </properties>
 
     <modules>
