@@ -2,17 +2,14 @@ package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
-import com.guillaumegasnier.education.core.dto.InformationsDto;
 import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
 import com.guillaumegasnier.education.core.validations.ValidUai;
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Type;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
@@ -70,19 +67,19 @@ public class EtablissementEntity extends AbstractEntity {
     @JoinColumn(name = "code_commune", foreignKey = @ForeignKey(name = "fk_etablissements_communes"))
     private CommuneEntity commune;
 
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    private InformationsDto informations = new InformationsDto();
+//    @Type(JsonType.class)
+//    @Column(columnDefinition = "jsonb")
+//    private InformationsDto informations = new InformationsDto();
 
     @Column(name = "sources", columnDefinition = "VARCHAR(50)", length = 50)
     private String sources;
 
-    public InformationsDto getInformations() {
-        if (informations == null) {
-            informations = new InformationsDto();
-        }
-        return informations;
-    }
+//    public InformationsDto getInformations() {
+//        if (informations == null) {
+//            informations = new InformationsDto();
+//        }
+//        return informations;
+//    }
 
     public Set<String> getSources() {
         if (sources == null || sources.isBlank()) return new HashSet<>();

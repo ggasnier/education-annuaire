@@ -23,4 +23,6 @@ public interface ImportEtablissementShell {
     String importLangues();
 
     String importSpecialites();
+
+    String importSectionsBinationales();
 }

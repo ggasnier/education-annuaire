@@ -23,9 +23,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final SpecialiteRepository specialiteRepository;
     private final SectionInternationaleRepository sectionInternationaleRepository;
     private final SectionSportiveRepository sectionSportiveRepository;
+    private final LangueRepository langueRepository;
+    private final OptionEtablissementRepository optionEtablissementRepository;
 
     @Autowired
-    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository, SectionSportiveRepository sectionSportiveRepository) {
+    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository, SectionSportiveRepository sectionSportiveRepository, LangueRepository langueRepository, OptionEtablissementRepository optionEtablissementRepository) {
         this.etablissementRepository = etablissementRepository;
         this.natureRepository = natureRepository;
         this.contratRepository = contratRepository;
@@ -33,6 +35,8 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         this.specialiteRepository = specialiteRepository;
         this.sectionInternationaleRepository = sectionInternationaleRepository;
         this.sectionSportiveRepository = sectionSportiveRepository;
+        this.langueRepository = langueRepository;
+        this.optionEtablissementRepository = optionEtablissementRepository;
     }
 
     @Override
@@ -78,8 +82,13 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
-    public void saveEtablissement(@NonNull Optional<EtablissementEntity> entity) {
-        entity.ifPresent(etablissementRepository::save);
+    public List<OptionEtablissementEntity> getOptionListByUai(String uai) {
+        return optionEtablissementRepository.findAllByPkUai(uai);
+    }
+
+    @Override
+    public List<LangueEntity> getLangueListByUai(String uai) {
+        return langueRepository.findAllByPkUai(uai);
     }
 
     @Override
@@ -95,5 +104,15 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Override
     public void saveSectionsSporties(List<SectionSportiveEntity> entities) {
         sectionSportiveRepository.saveAll(entities);
+    }
+
+    @Override
+    public void saveLangues(List<LangueEntity> entities) {
+        langueRepository.saveAll(entities);
+    }
+
+    @Override
+    public void saveOptions(List<OptionEtablissementEntity> entities) {
+        optionEtablissementRepository.saveAll(entities);
     }
 }

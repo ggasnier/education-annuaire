@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
-import com.guillaumegasnier.education.core.dto.InformationsDto;
+import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.SectionInternationale;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
@@ -47,7 +47,107 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         int size = datasets.size();
         int progressStep = Math.max(size / 10, 1);
 
+        // Les établissements
         List<EtablissementEntity> etablissements = datasets.stream()
+                .flatMap(this::dedoublement)
+                .map(dataset -> toEntityWithProgress(dataset, source, counter, size, progressStep))
+                .filter(this::isValidEntity)
+                .toList();
+        coreEtablissementService.saveEtablissements(etablissements);
+
+        // Les options
+        List<OptionEtablissementEntity> options = datasets.stream()
+                .map(this::toOptions)
+                .flatMap(List::stream)
+                .toList();
+        coreEtablissementService.saveOptions(options);
+
+        // Les contacts
+
+        return String.format("Import terminé : %d établissements(s) enregistrée(s).", datasets.size());
+    }
+
+    private List<OptionEtablissementEntity> toOptions(EtablissementDataset dataset) {
+
+        List<OptionEtablissementEntity> entities = new ArrayList<>();
+
+        dataset.getOptions().forEach(option -> {
+            Optional<EtablissementEntity> etablissement = coreEtablissementService.findEtablissement(dataset.getUai());
+
+            if (etablissement.isPresent()) {
+                OptionEtablissementPK pk = new OptionEtablissementPK();
+                pk.setOption(option);
+                pk.setUai(dataset.getUai());
+                OptionEtablissementEntity entity = new OptionEtablissementEntity();
+                entity.setPk(pk);
+                entity.setEtablissement(etablissement.get());
+                entities.add(entity);
+            }
+        });
+
+        return entities;
+    }
+
+    /**
+     * @param dataset
+     * @param source
+     * @param counter
+     * @param size
+     * @param progressStep
+     * @return L'entité JPA {@link EtablissementEntity}
+     */
+    @Transactional
+    protected EtablissementEntity toEntityWithProgress(
+            EtablissementDataset dataset,
+            String source,
+            @NonNull AtomicInteger counter,
+            int size,
+            int progressStep
+    ) {
+        int count = counter.incrementAndGet();
+        if (count % progressStep == 0) {
+            var percent = (count * 100) / size;
+            log.info("Avancement {}%", percent);
+        }
+        return toEtablissementEntity(dataset, source);
+    }
+
+    /**
+     * @param entity Entité JPA à valider
+     * @return Résultat de la validation
+     */
+    private boolean isValidEntity(EtablissementEntity entity) {
+        Set<ConstraintViolation<EtablissementEntity>> violations = validator.validate(entity);
+
+        if (violations.isEmpty()) {
+            return true;
+        }
+
+        violations.removeIf(v -> {
+//            if (v.getMessage().equals("SIRET invalide")) {
+//                entity.setSiret(null);
+//                return violations.size() == 1; // suppression si c'était la seule erreur
+//            }
+            log.warn("Validation failed on {}.{}: {} ({})",
+                    entity.getClass().getSimpleName(),
+                    v.getPropertyPath(),
+                    v.getMessage(),
+                    v.getInvalidValue());
+            return false;
+        });
+
+        return violations.isEmpty();
+    }
+
+    /**
+     * <p>Dédoublement des datasets</p>
+     * <ul>
+     *     <li>UAI séparés par ";"</li>
+     *     <li>SIRET séparés par ","</li>
+     * </ul>
+     */
+    private Stream<EtablissementDataset> dedoublement(@NonNull EtablissementDataset etablissementDataset) {
+        return Stream.of(etablissementDataset)
                 .flatMap(dataset ->
                         Arrays.stream(dataset.getUai().split(";"))
                                 .map(String::trim)
@@ -63,39 +163,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             .filter(siret -> !siret.isEmpty())
                             .distinct()
                             .map(dataset::cloneWithSiret);
-                })
-                .map(dataset -> {
-                            int count = counter.incrementAndGet();
-                            if (count % progressStep == 0) {
-                                var percent = (count * 100) / size;
-                                log.info("Avancement {}%", percent);
-                            }
-                            return this.toEtablissementEntity(dataset, source);
-                        }
-                )
-                .filter(etablissementEntity -> etablissementEntity.getUai() != null)
-                .filter(entity -> {
-                    Set<ConstraintViolation<EtablissementEntity>> violations = validator.validate(entity);
-                    if (!violations.isEmpty()) {
-                        // TODO : à enregister dans une autre table en JSONB
-                        violations.forEach(v -> {
-                                    if (v.getMessage().equals("SIRET invalide")) {
-                                        entity.setSiret(null);
-                                        if (violations.size() == 1) // Si c'est la seule erreur
-                                            violations.clear();
-                                    } else {
-                                        log.warn("Validation failed on {}.{}: {} ({})", entity.getClass().getSimpleName(), v.getPropertyPath(), v.getMessage(), v.getInvalidValue());
-                                    }
-                                }
-                        );
-                    }
-                    return violations.isEmpty();
-                })
-                .toList();
-
-        coreEtablissementService.saveEtablissements(etablissements);
-
-        return String.format("Import terminé : %d établissements(s) enregistrée(s).", datasets.size());
+                });
     }
 
     @Transactional
@@ -111,14 +179,12 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             // nom : ne change pas
             // nature : ne change pas (à vérifier)
             // contrat : ne change pas (à vérifier)
-            // adresse
-            // complément
-            // codePostal
-            // commune
-            // pays
+            // adresse : ne change pas (à vérifier)
+            // complément : ne change pas (à vérifier)
+            // codePostal : ne change pas (à vérifier)
+            // commune : ne change pas (à vérifier)
             entity.setDateOuverture(dataset.getDateOuverture());
             entity.setDateFermeture(dataset.getDateFermeture());
-            entity.setEtat(dataset.getEtat());
             entity.setUpdatedAt(LocalDateTime.now());
         } else {
             // Nouvel établissement
@@ -151,50 +217,18 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             if (dataset.getCodeContrat() != null) {
                 coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
             }
+
+            // N emettre à jour l'état que si il est renseigné
+            if (dataset.getEtat() != null) {
+                entity.setEtat(dataset.getEtat());
+            }
+
         }
 
-//        entity.getInformations().getOptions().addAll(dataset.getOptions());
-
-//        entity.setContacts(mergeContacts(entity, dataset.getContacts()));
         entity.addSource(source);
 
         return entity;
     }
-
-//    @Transactional
-//    protected List<ContactEntity> mergeContacts(@NonNull EtablissementEntity entity, List<ContactEtablissementDataset> contacts) {
-//        if (entity.getContacts() == null) {
-//            entity.setContacts(new ArrayList<>());
-//        }
-//
-//        Set<ContactPk> existingPks = entity.getContacts()
-//                .stream()
-//                .map(ContactEntity::getPk)
-//                .collect(Collectors.toSet());
-//
-//        List<ContactEntity> nouveaux = toContactEntityList(entity, contacts).stream()
-//                .filter(c -> !existingPks.contains(c.getPk()))
-//                .toList();
-//
-//        entity.getContacts().addAll(nouveaux);
-//
-//        return entity.getContacts();
-//    }
-
-//    @Transactional
-//    protected List<ContactEntity> toContactEntityList(@NonNull EtablissementEntity entity, @NonNull List<ContactEtablissementDataset> contacts) {
-//
-//        List<ContactEntity> contactEntityList = new ArrayList<>();
-//
-//        for (ContactEtablissementDataset contact : contacts) {
-//            ContactEntity contactEntity = new ContactEntity();
-//            contactEntity.setPk(new ContactPk(entity.getUai(), contact.getClef(), contact.getValeur()));
-//            contactEntity.setEtablissement(entity);
-//            contactEntityList.add(contactEntity);
-//        }
-//
-//        return contactEntityList;
-//    }
 
     @Override
     @Transactional
@@ -218,14 +252,10 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     @Override
     public String createOrUpdateIPSColleges(@NonNull List<? extends IPSDataset> datasets) {
-
-        List<IndicePositionSocialeEntity> entities = datasets.stream()
+        coreEtablissementService.saveIPS(datasets.stream()
                 .map(this::toIndicePositionSocialeEntity)
                 .filter(Objects::nonNull)
-                .toList();
-
-        coreEtablissementService.saveIPS(entities);
-
+                .toList());
         return String.format("Import terminé : %d ips enregistrée(s).", datasets.size());
     }
 
@@ -258,7 +288,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             entities.add(entity);
                         });
                     } else {
-                        log.error("Pas d'établissement avec UAI : {}", uai);
+                        log.error("Pas d'établissement avec UAI {} pour sections sportives", uai);
                     }
                 });
 
@@ -270,31 +300,37 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     @Override
     public String createOrUpdateLangues(@NonNull List<LangueDataset> datasets) {
 
-        List<EtablissementEntity> entities = new ArrayList<>();
+        List<LangueEntity> entities = new ArrayList<>();
 
         datasets.stream().collect(Collectors.groupingBy(LangueDataset::getUai))
                 .forEach((uai, langueList) -> {
+                    langueList.forEach(langueDataset -> {
 
-                    Set<InformationsDto.LangueDto> langues = langueList.stream().map(etablissementMapper::toLangueDto).collect(Collectors.toSet());
+                        Langue langue = Langue.transformation(langueDataset.getLangue());
+                        String enseignement = langueDataset.getEnseignement();
 
-                    var entity = coreEtablissementService.findEtablissement(uai);
-                    if (entity.isPresent()) {
-                        InformationsDto informations = entity.get().getInformations();
-                        if (informations == null)
-                            informations = new InformationsDto();
+                        if (langue != null && enseignement != null) {
+                            LanguePK pk = new LanguePK();
+                            pk.setLangue(langue);
+                            pk.setUai(uai);
+                            pk.setEnseignement(enseignement);
 
-                        informations.setLangues(langues);
-                        entity.get().setInformations(informations);
+                            LangueEntity entity = new LangueEntity();
+                            entity.setPk(pk);
 
-                        entities.add(entity.get());
+                            Optional<EtablissementEntity> etablissement = coreEtablissementService.findEtablissement(uai);
 
-                    } else {
-                        log.error("Etablissement {} non trouvé", uai);
-                    }
-
+                            if (etablissement.isPresent()) {
+                                entity.setEtablissement(etablissement.get());
+                                entities.add(entity);
+                            } else {
+                                log.error("Pas d'établissement avec UAI {} pour langues", uai);
+                            }
+                        }
+                    });
                 });
 
-        coreEtablissementService.saveEtablissements(entities);
+        coreEtablissementService.saveLangues(entities);
 
         return String.format("Import terminé : %d langues enregistrée(s).", datasets.size());
     }
@@ -321,7 +357,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                                     entity.setEtablissement(etablissement.get());
                                     entities1.add(entity);
                                 } else {
-                                    log.error("Pas d'établissement avec UAI : {}", dataset.getUai());
+                                    log.error("Pas d'établissement avec UAI {} pour specialites", dataset.getUai());
                                 }
                             }
                     );
@@ -342,7 +378,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
         datasets.forEach(dataset -> {
             dataset.getNiveaux().forEach(niveau -> {
-//                log.info("{}: {} {}", dataset.getUai(), dataset.getSection(), niveau);
 
                 SectionInternationalePK pk = new SectionInternationalePK();
                 pk.setUai(dataset.getUai());
@@ -357,7 +392,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     entity.setEtablissement(etablissement.get());
                     entities.add(entity);
                 } else {
-                    log.error("Pas d'établissement avec UAI : {}", dataset.getUai());
+                    log.error("Pas d'établissement avec UAI {} pour sections internationales", dataset.getUai());
                 }
             });
         });
@@ -366,6 +401,32 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
         return String.format("Import terminé : %d sections internationale(s).", entities.size());
 
+    }
+
+    @Override
+    public String createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets) {
+        List<OptionEtablissementEntity> entities = new ArrayList<>();
+
+        datasets.forEach(dataset -> {
+            Optional<EtablissementEntity> etablissement = coreEtablissementService.findEtablissement(dataset.getUai());
+
+            if (etablissement.isPresent()) {
+                OptionEtablissementPK pk = new OptionEtablissementPK();
+                pk.setUai(dataset.getUai());
+                pk.setOption(dataset.getOption());
+
+                OptionEtablissementEntity entity = new OptionEtablissementEntity();
+                entity.setPk(pk);
+                entity.setEtablissement(etablissement.get());
+                entities.add(entity);
+            } else {
+                log.error("Pas d'établissement avec UAI {} pour sections binationales", dataset.getUai());
+            }
+        });
+
+        coreEtablissementService.saveOptions(entities);
+
+        return String.format("Import terminé : %d sections binationale(s).", entities.size());
     }
 
     @Nullable
@@ -378,7 +439,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         if (etablissement.isPresent()) {
             ips.setEtablissement(etablissement.get());
         } else {
-            log.error("Pas d'établissement avec UAI : {}", dataset.getUai());
+            log.error("Pas d'établissement avec UAI {} pour IPS", dataset.getUai());
             return null;
         }
 

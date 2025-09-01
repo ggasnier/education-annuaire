@@ -27,6 +27,9 @@ public class EtablissementsController {
 
         if (etablissementDto.isPresent()) {
             model.addAttribute("etablissement", etablissementDto.get());
+            model.addAttribute("options", webEtablissementService.getOptionListByUai(uai));
+            model.addAttribute("langues", webEtablissementService.getLangueListByUai(uai));
+
             return "etablissements/details";
         } else {
             return "etablissements/404";

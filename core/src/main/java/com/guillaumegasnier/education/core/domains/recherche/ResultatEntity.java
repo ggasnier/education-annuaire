@@ -17,4 +17,5 @@ public class ResultatEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Double score;
+    private Integer total;
 }

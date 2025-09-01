@@ -3,9 +3,11 @@ package com.guillaumegasnier.education.core.repositories;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.guillaumegasnier.education.core.domains.recherche.FacetteEntity;
 import com.guillaumegasnier.education.core.domains.recherche.ResultatEntity;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlTypeValue;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -15,6 +17,7 @@ import org.springframework.util.MultiValueMap;
 
 import java.sql.Types;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -34,12 +37,21 @@ public class RechercheRepository {
         this.objectMapper = objectMapper;
     }
 
+    public List<FacetteEntity> getFacettes(String q) {
+
+        var sql = "SELECT * FROM public.recherche_facettes(:q)";
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("q", q);
+
+        return namedParameterJdbcTemplate.query(sql, params, new BeanPropertyRowMapper<>(FacetteEntity.class));
+    }
+
     public List<ResultatEntity> getResultats(String q, int page, List<String> categories, MultiValueMap<String, String> facettes) {
 
-        String sql = "SELECT * FROM public.recherche_resultats(:q, :categories, :filtres::jsonb, :page)";
+        var sql = "SELECT * FROM public.recherche_resultats(:q, :categories, :filtres::jsonb, :page)";
 
         var params = new MapSqlParameterSource();
-
         params.addValue("q", q);
         params.addValue("page", page);
 
@@ -65,6 +77,7 @@ public class RechercheRepository {
             entity.setCreatedAt(rs.getObject("created_at", LocalDateTime.class));
             entity.setUpdatedAt(rs.getObject("updated_at", LocalDateTime.class));
             entity.setScore(rs.getDouble("score"));
+            entity.setTotal(rs.getInt("total"));
 
             // Conversion PGobject -> Map
             PGobject pg = (PGobject) rs.getObject("informations");

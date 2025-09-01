@@ -91,6 +91,12 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
         return shellEtablissementService.createOrUpdateSpecialites(fileService.importCSV(SPECIALITES));
     }
 
+    @Override
+    @ShellMethod(value = "Import sections binationales")
+    public String importSectionsBinationales() {
+        return shellEtablissementService.createOrUpdateSectionsBinationales(fileService.importCSV(BINATIONALES));
+    }
+
     @ShellMethod(value = "Import IPS Collèges")
     public String importIpsColleges() {
         List<IPSDataset> ipsColleges = new ArrayList<>();

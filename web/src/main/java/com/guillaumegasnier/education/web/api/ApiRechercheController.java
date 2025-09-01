@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.web.api;
 
+import com.guillaumegasnier.education.web.dto.FacetteRechercheDto;
 import com.guillaumegasnier.education.web.dto.ResultatRechercheDto;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,15 @@ public interface ApiRechercheController {
     )
     @GetMapping("/resultats")
     default ResponseEntity<List<ResultatRechercheDto>> getResultatRecherche(@RequestParam MultiValueMap<String, String> facettes) {
+        return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
+    }
+
+    @Operation(
+            summary = "Facettes de la recherche",
+            tags = {"Recherche"}
+    )
+    @GetMapping("/facettes")
+    default ResponseEntity<List<FacetteRechercheDto>> getFacetteRecherche(@RequestParam MultiValueMap<String, String> facettes) {
         return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
     }
 }

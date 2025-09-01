@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Résultats</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+<form method="get">
+
+    <div class="w-full bg-white shadow p-4">
+        <div class="max-w-7xl mx-auto flex">
+            <label class="flex-grow">
+                <input class="w-full p-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       name="q" placeholder="Rechercher..." th:value="${q}"
+                       type="text">
+            </label>
+            <button class="bg-blue-600 text-white px-5 rounded-r-md">Rechercher</button>
+        </div>
+    </div><!--formulaire-->
+
+    <div class="max-w-7xl mx-auto mt-6 flex gap-6">
+        <div class="w-3/4 mx-auto flex-row">
+
+            <div th:if="${resultats.size() > 0}" class="bg-white p-4 rounded-lg shadow mb-6 hover:shadow-md transition">
+                <span th:text="${resultats.get(0).total}"></span> résultats pour : <span
+                    class="font-semibold text-gray-900"
+                    th:text="${q}"></span>
+            </div>
+
+            <th:block th:each="resultat : ${resultats}">
+                <div class="bg-white p-4 rounded-lg shadow mb-6 hover:shadow-md transition">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-semibold text-blue-700 hover:underline cursor-pointer"
+                        ><a th:href="@{/{categorie}/{key}(categorie=${resultat.categorie},key=${resultat.key})}"
+                            th:text="${resultat.nom}"></a></h2>
+                    </div>
+
+                    <th:block th:each="information : ${resultat.informations}">
+                            <span class="font-semibold" th:text="${information.key}"></span> : <span th:text="${information.value}"></span>
+                    </th:block>
+                </div><!--resultat-->
+            </th:block>
+        </div><!--resultats-->
+
+        <div class="w-1/4 p-4 bg-white rounded-lg shadow">
+            <h3 class="text-lg font-semibold mb-4">Filtres</h3>
+
+            <div th:each="facette : ${facettes}" class="mb-6"
+             th:if="${facette.valeurs != null and facette.valeurs.size() > 0}">
+            <h4 class="font-medium mb-2" th:text="${facette.nomCategorie}"></h4>
+
+            <div class="space-y-1">
+                <label class="flex items-center justify-between w-full" th:each="valeur : ${facette.valeurs}">
+                    <div class="flex items-center">
+                        <input type="checkbox"
+                               th:name="${facette.codeCategorie}"
+                               th:value="${valeur.code}"
+                               th:checked="${valeur.checked}"
+                               class="mr-2 text-blue-600"
+                               th:onchange="this.form.submit()">
+                        <span class="text-sm text-gray-700" th:text="${valeur.nom}"></span>
+                    </div>
+                    <span class="text-sm text-gray-400" th:text="'(' + ${valeur.total} + ')'"></span>
+                </label>
+            </div>
+        </div><!--facettes-->
+    </div>
+</form>
+</body>
+</html>

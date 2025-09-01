@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.web.api.impl;
 
 import com.guillaumegasnier.education.web.api.ApiRechercheController;
+import com.guillaumegasnier.education.web.dto.FacetteRechercheDto;
 import com.guillaumegasnier.education.web.dto.ResultatRechercheDto;
 import com.guillaumegasnier.education.web.services.RechercheService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,10 @@ public class ApiRechercheImpl implements ApiRechercheController {
     @Override
     public ResponseEntity<List<ResultatRechercheDto>> getResultatRecherche(@RequestParam MultiValueMap<String, String> facettes) {
         return ResponseEntity.ok(rechercheService.recherche(facettes));
+    }
+
+    @Override
+    public ResponseEntity<List<FacetteRechercheDto>> getFacetteRecherche(@RequestParam MultiValueMap<String, String> facettes) {
+        return ResponseEntity.ok(rechercheService.facette(facettes));
     }
 }

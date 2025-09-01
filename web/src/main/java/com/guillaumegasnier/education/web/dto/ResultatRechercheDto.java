@@ -19,5 +19,6 @@ public class ResultatRechercheDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Double score;
+    private Integer total;
 
 }

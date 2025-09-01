@@ -16,13 +16,15 @@ public interface CoreEtablissementService {
 
     void saveIPS(@NonNull List<IndicePositionSocialeEntity> entities);
 
-    void saveEtablissement(Optional<EtablissementEntity> entity);
-
     void saveSpecialites(List<SpecialiteEntity> entities);
 
     void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities);
 
     void saveSectionsSporties(List<SectionSportiveEntity> entities);
+
+    void saveLangues(List<LangueEntity> entities);
+
+    void saveOptions(List<OptionEtablissementEntity> entities);
 
     Optional<EtablissementEntity> findEtablissement(@NonNull String uai);
 
@@ -32,5 +34,7 @@ public interface CoreEtablissementService {
 
     Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee);
 
+    List<OptionEtablissementEntity> getOptionListByUai(String uai);
 
+    List<LangueEntity> getLangueListByUai(String uai);
 }

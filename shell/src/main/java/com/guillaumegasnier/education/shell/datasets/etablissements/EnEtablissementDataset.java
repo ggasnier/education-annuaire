@@ -257,7 +257,6 @@ public class EnEtablissementDataset implements EtablissementDataset {
         if (lyceeDesMetiers != null && lyceeDesMetiers.equals("1")) options.add(OptionEtablissement.LYCEE_DES_METIERS);
         if (postBac != null && postBac.equals("1")) options.add(OptionEtablissement.POST_BAC);
 
-
         return options;
     }
 }
