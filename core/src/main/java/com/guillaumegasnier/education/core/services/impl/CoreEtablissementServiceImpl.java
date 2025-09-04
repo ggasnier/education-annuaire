@@ -3,11 +3,13 @@ package com.guillaumegasnier.education.core.services.impl;
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.repositories.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.validations.ValidUai;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,8 +61,9 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         indicePositionSocialeRepository.saveAll(entities);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Optional<EtablissementEntity> findEtablissement(@NonNull String uai) {
+    public Optional<EtablissementEntity> findEtablissement(@ValidUai String uai) {
         return etablissementRepository.findById(uai);
     }
 

@@ -31,7 +31,6 @@ public class ShellReferenceServiceImpl implements ShellReferenceService {
     public String createOrUpdatePays(@NonNull List<PaysDataset> datasets) {
         coreReferenceService.savePays(datasets.stream().map(referenceMapper::toPaysEntity).toList());
         return String.format("Import terminé : %d pays enregistrée(s).", datasets.size());
-
     }
 
     @Override

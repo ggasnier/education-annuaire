@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.validations.ValidUai;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface CoreEtablissementService {
 
     void saveOptions(List<OptionEtablissementEntity> entities);
 
-    Optional<EtablissementEntity> findEtablissement(@NonNull String uai);
+    Optional<EtablissementEntity> findEtablissement(@ValidUai String uai);
 
     Optional<NatureEntity> findNature(String codeNature);
 
