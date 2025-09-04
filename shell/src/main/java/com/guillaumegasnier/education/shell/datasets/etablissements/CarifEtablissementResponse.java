@@ -1,7 +1,6 @@
-package com.guillaumegasnier.education.shell.dto;
+package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

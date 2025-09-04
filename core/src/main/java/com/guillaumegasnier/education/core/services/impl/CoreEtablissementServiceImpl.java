@@ -27,9 +27,10 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final SectionSportiveRepository sectionSportiveRepository;
     private final LangueRepository langueRepository;
     private final OptionEtablissementRepository optionEtablissementRepository;
+    private final SportEtudeRepository sportEtudeRepository;
 
     @Autowired
-    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository, SectionSportiveRepository sectionSportiveRepository, LangueRepository langueRepository, OptionEtablissementRepository optionEtablissementRepository) {
+    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository, SectionSportiveRepository sectionSportiveRepository, LangueRepository langueRepository, OptionEtablissementRepository optionEtablissementRepository, SportEtudeRepository sportEtudeRepository) {
         this.etablissementRepository = etablissementRepository;
         this.natureRepository = natureRepository;
         this.contratRepository = contratRepository;
@@ -39,6 +40,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         this.sectionSportiveRepository = sectionSportiveRepository;
         this.langueRepository = langueRepository;
         this.optionEtablissementRepository = optionEtablissementRepository;
+        this.sportEtudeRepository = sportEtudeRepository;
     }
 
     @Override
@@ -91,7 +93,22 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 
     @Override
     public List<LangueEntity> getLangueListByUai(String uai) {
-        return langueRepository.findAllByPkUai(uai);
+        return langueRepository.findAllByPkUaiOrderByPkEnseignementAscPkLangueAsc(uai);
+    }
+
+    @Override
+    public void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities) {
+        sportEtudeRepository.saveAll(entities);
+    }
+
+    @Override
+    public List<SectionSportiveEntity> getSectionSportiveListByUai(String uai) {
+        return sectionSportiveRepository.findAllByPkUai(uai);
+    }
+
+    @Override
+    public List<IndicePositionSocialeEntity> getIPSListByUai(String uai) {
+        return indicePositionSocialeRepository.findAllByPkUaiOrderByPkAnneeDesc(uai);
     }
 
     @Override

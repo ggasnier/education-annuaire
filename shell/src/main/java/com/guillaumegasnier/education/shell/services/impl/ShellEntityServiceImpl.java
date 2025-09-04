@@ -42,61 +42,66 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, String source) {
-        EtablissementEntity entity;
-        Optional<EtablissementEntity> etablissementEntityOptional = coreEtablissementService.findEtablissement(dataset.getUai());
+    public <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, @NonNull String source) {
+        return coreEtablissementService.findEtablissement(dataset.getUai())
+                .map(etablissementEntity -> toEtablissementEntityOld(etablissementEntity, dataset, source))
+                .orElseGet(() -> toEtablissementEntityNew(dataset, source));
+    }
 
-        // Etablissement existant (mise à jour de certains champs)
-        if (etablissementEntityOptional.isPresent()) {
-            entity = etablissementEntityOptional.get();
-            // uai : ne change pas
-            // siret : ne change pas
-            // nom : ne change pas
-            // nature : ne change pas (à vérifier)
-            // contrat : ne change pas (à vérifier)
-            // adresse : ne change pas (à vérifier)
-            // complément : ne change pas (à vérifier)
-            // codePostal : ne change pas (à vérifier)
-            // commune : ne change pas (à vérifier)
+    private <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityOld(@NonNull EtablissementEntity entity, @NonNull T dataset, @NonNull String source) {
+        // Ne mettre à jour les champs que si isl sont renseignés
+
+        if (dataset.getDateOuverture() != null)
             entity.setDateOuverture(dataset.getDateOuverture());
+
+        if (dataset.getDateFermeture() != null)
             entity.setDateFermeture(dataset.getDateFermeture());
-            entity.setUpdatedAt(LocalDateTime.now());
-        } else {
-            // Nouvel établissement
-            entity = etablissementMapper.toEntity(dataset);
 
-            if (dataset.getCodeCommune() != null) {
-                var communeOptional = coreReferenceService.findCommune(dataset.getCodeCommune());
-                if (communeOptional.isPresent()) {
-                    entity.setCommune(communeOptional.get());
-                } else {
-                    communeOptional = coreReferenceService.findCommuneByNom(dataset.getNomCommune());
-                    if (communeOptional.isPresent()) {
-                        entity.setCommune(communeOptional.get());
-                    } else {
-                        log.warn("Commune inconnue pour {} / {}", dataset.getCodeCommune(), dataset.getNomCommune());
-                    }
-                }
+        entity.setUpdatedAt(LocalDateTime.now());
+
+        if (dataset.getEtat() != null) {
+            entity.setEtat(dataset.getEtat());
+        }
+
+        entity.addSource(source);
+
+        return entity;
+    }
+
+    private <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityNew(@NonNull T dataset, @NonNull String source) {
+        EtablissementEntity entity = etablissementMapper.toEntity(dataset);
+
+        if (dataset.getCodeCommune() != null) {
+            var communeOptional = coreReferenceService.findCommune(dataset.getCodeCommune());
+            if (communeOptional.isPresent()) {
+                entity.setCommune(communeOptional.get());
             } else {
-                var communeOptional = coreReferenceService.findCommuneByNom(dataset.getNomCommune());
-
+                communeOptional = coreReferenceService.findCommuneByNom(dataset.getNomCommune());
                 if (communeOptional.isPresent()) {
                     entity.setCommune(communeOptional.get());
                 } else {
-                    log.warn("Commune absente pour {} / {}", dataset.getUai(), dataset.getNomCommune());
+                    log.warn("Commune inconnue pour {} / {}", dataset.getCodeCommune(), dataset.getNomCommune());
                 }
             }
-            if (dataset.getCodeNature() != null) {
-                coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
-            }
-            if (dataset.getCodeContrat() != null) {
-                coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
-            }
+        } else {
+            var communeOptional = coreReferenceService.findCommuneByNom(dataset.getNomCommune());
 
-            // Ne mettre à jour l'état que si il est renseigné
-            if (dataset.getEtat() != null) {
-                entity.setEtat(dataset.getEtat());
+            if (communeOptional.isPresent()) {
+                entity.setCommune(communeOptional.get());
+            } else {
+                log.warn("Commune absente pour {} / {}", dataset.getUai(), dataset.getNomCommune());
             }
+        }
+        if (dataset.getCodeNature() != null) {
+            coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
+        }
+        if (dataset.getCodeContrat() != null) {
+            coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
+        }
+
+        // Ne renseigner l'état que si il est renseigné
+        if (dataset.getEtat() != null) {
+            entity.setEtat(dataset.getEtat());
         }
 
         entity.addSource(source);
@@ -225,9 +230,11 @@ public class ShellEntityServiceImpl implements ShellEntityService {
                     SpecialitePK pk = new SpecialitePK();
                     pk.setUai(dataset.getUai());
                     pk.setSpecialite(specialiteBac);
+
                     SpecialiteEntity entity = new SpecialiteEntity();
                     entity.setPk(pk);
                     entity.setEtablissement(etablissementOpt.get());
+
                     return entity;
                 }
         ).toList();
@@ -275,6 +282,8 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         IndicePositionSocialeEntity entity = new IndicePositionSocialeEntity();
         entity.setPk(pk);
         entity.setEtablissement(etablissementOpt.get());
+        entity.setIndice(dataset.getIndice());
+        entity.setEcartType(dataset.getEcartType());
 
         return entity;
     }
@@ -300,5 +309,32 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         });
 
         return violations.isEmpty();
+    }
+
+    @Nullable
+    @Override
+    public SportEtudeEntity toSportEtudeEntity(@NonNull SectionSportEtudeDataset dataset) {
+        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
+
+        if (etablissementOpt.isEmpty()) {
+            log.warn("Pas d'établissement avec UAI {} pour sections sport etudes", dataset.getUai());
+            return null;
+        }
+
+        Sport sport = Sport.transformation(dataset.getNomSport());
+
+        if (sport != null) {
+            SportEtudePK pk = new SportEtudePK();
+            pk.setUai(dataset.getUai());
+            pk.setSport(sport);
+
+            SportEtudeEntity entity = new SportEtudeEntity();
+            entity.setPk(pk);
+            entity.setEtablissement(etablissementOpt.get());
+
+            return entity;
+        }
+
+        return null;
     }
 }

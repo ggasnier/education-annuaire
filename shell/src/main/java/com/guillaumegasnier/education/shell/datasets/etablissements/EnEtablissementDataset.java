@@ -145,6 +145,7 @@ public class EnEtablissementDataset implements EtablissementDataset {
 
     @Override
     public LocalDate getDateOuverture() {
+        if (dateOuverture == null) return null;
         return LocalDate.parse(dateOuverture);
     }
 

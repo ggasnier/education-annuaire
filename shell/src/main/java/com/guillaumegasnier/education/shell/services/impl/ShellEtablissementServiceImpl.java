@@ -124,6 +124,16 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    public String createOrUpdateSectionsSportEtudes(@NonNull List<SectionSportEtudeDataset> datasets) {
+        coreEtablissementService.saveSectionsSportEtudes(datasets
+                .stream()
+                .map(shellEntityService::toSportEtudeEntity)
+                .filter(Objects::nonNull)
+                .toList());
+        return String.format("Import terminé : %d sections sport etudes enregistrée(s).", datasets.size());
+    }
+
+    @Override
     @Transactional
     public String createOrUpdateLangues(@NonNull List<LangueDataset> datasets) {
         coreEtablissementService.saveLangues(datasets

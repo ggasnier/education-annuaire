@@ -10,4 +10,6 @@ import java.util.List;
 public interface LangueRepository extends JpaRepository<LangueEntity, Long> {
 
     List<LangueEntity> findAllByPkUai(String uai);
+
+    List<LangueEntity> findAllByPkUaiOrderByPkEnseignementAscPkLangueAsc(String uai);
 }

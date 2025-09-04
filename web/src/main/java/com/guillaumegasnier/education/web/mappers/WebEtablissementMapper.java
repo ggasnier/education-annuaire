@@ -1,11 +1,11 @@
 package com.guillaumegasnier.education.web.mappers;
 
-import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.LangueEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.OptionEtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.LangueDto;
-import com.guillaumegasnier.education.web.dto.OptionDto;
+import com.guillaumegasnier.education.web.dto.etablissements.IPSDto;
+import com.guillaumegasnier.education.web.dto.etablissements.OptionDto;
+import com.guillaumegasnier.education.web.dto.etablissements.SectionSportiveDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -39,5 +39,16 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "niveau", source = "pk.enseignement")
     @Mapping(target = "code", source = "pk.langue")
     public abstract LangueDto toLangueDto(LangueEntity entity);
+
+    @Mapping(target = "nom", source = "pk.sport.nom")
+    @Mapping(target = "code", source = "pk.sport")
+    public abstract SectionSportiveDto toSectionSportiveDto(SectionSportiveEntity entity);
+
+    @Mapping(target = "uai", source = "pk.uai")
+    @Mapping(target = "nomCategorie", source = "categorie") // TODO
+    @Mapping(target = "codeCategorie", source = "categorie") // TODO
+    @Mapping(target = "valeur", source = "indice")
+    @Mapping(target = "annee", source = "pk.annee")
+    public abstract IPSDto toIndicePositionSocialeEntity(IndicePositionSocialeEntity entity);
 
 }

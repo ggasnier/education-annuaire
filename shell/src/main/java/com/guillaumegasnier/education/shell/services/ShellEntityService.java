@@ -27,4 +27,5 @@ public interface ShellEntityService {
 
     boolean isValidEntity(@NonNull EtablissementEntity entity);
 
+    SportEtudeEntity toSportEtudeEntity(@NonNull SectionSportEtudeDataset dataset);
 }

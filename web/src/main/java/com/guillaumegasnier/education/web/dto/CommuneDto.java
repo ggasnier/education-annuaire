@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(name = "Commune")
-public class CommuneDto extends CommuneRequestDto {
+public class CommuneDto {
 
     @JsonProperty(value = "nom_departement")
     protected String nomDepartement;

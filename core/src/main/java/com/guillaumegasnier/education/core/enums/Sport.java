@@ -16,15 +16,15 @@ public enum Sport {
     ACTIVIT_SPORT_AQUATIQUES_PLEINE_NATURE("Activités aquatiques en pleine nature", List.of("ACTIVIT. SPORT. AQUATIQUES PLEINE NATURE")),
     ACTIVIT_SPORT_TERRESTRES_PLEINE_NATURE("Activités terrestres en pleine nature", List.of("ACTIVITES SPORT.TERRESTRES PLEINE NATURE")),
     ACTIVITES_SPORTIVES_DE_MONTAGNE("Activités sportives de montagne", List.of("ACTIVITES SPORTIVES DE MONTAGNE")),
-    ACTIVITES_SPORTIVES_SUR_ROLLERS("", List.of("ACTIVITES SPORTIVES SUR ROLLERS")),
-    ACTIVITES_SPORTIVES_SUBAQUATIQUES("", List.of("ACTIVITES SPORTIVES SUBAQUATIQUES")),
+    ACTIVITES_SPORTIVES_SUR_ROLLERS("Activités sportives sur rollers", List.of("ACTIVITES SPORTIVES SUR ROLLERS")),
+    ACTIVITES_SPORTIVES_SUBAQUATIQUES("Activités sportives subaquatiques", List.of("ACTIVITES SPORTIVES SUBAQUATIQUES")),
     ARTS_MARTIAUX_AUTRES("ARTS MARTIAUX (AUTRES QUE LE JUDO)", List.of("ARTS MARTIAUX (AUTRES QUE LE JUDO)")),
-    ARBITRAGE("", List.of("ARBITRAGE")),
+    ARBITRAGE("Arbitrage", List.of("ARBITRAGE")),
     ARBITRAGE_BASKET_BALL("", List.of("ARBITRAGE BASKET-BALL")),
     ARBITRAGE_FOOTBALL("", List.of("ARBITRAGE FOOTBALL")),
     ARBITRAGE_SPORTIF("", List.of("ARBITRAGE SPORTIF")),
     ATHLETISME("", List.of("ATHLETISME")),
-    AVIRON("", List.of("AVIRON")),
+    AVIRON("Aviron", List.of("AVIRON")),
     BADMINTON("", List.of("BADMINTON")),
     BASEBALL("", List.of("BASEBALL")),
     BASKET_BALL("", List.of("BASKET-BALL")),
@@ -46,14 +46,14 @@ public enum Sport {
     DANSE("", List.of("DANSE SPORTIVE", "DANSE")),
     DISCIPLINES_NORDIQUES("", List.of("DISCIPLINES NORDIQUES")),
     EQUITATION("", List.of("EQUITATION", "HIPPOLOGIE ET EQUITATION", "HIPPOLOGIE & EQUITATION")),
-    ESCALADE("", List.of("ESCALADE")),
-    ESCRIME("", List.of("ESCRIME")),
-    FOOTBALL("", List.of("FOOTBALL")),
+    ESCALADE("Escalade", List.of("ESCALADE")),
+    ESCRIME("Escrime", List.of("ESCRIME")),
+    FOOTBALL("Footbal", List.of("FOOTBALL")),
     FOOTBALL_MIXTE("", List.of("FOOTBALL (MIXTE)")),
     FOOTBALL_AMERICAIN("", List.of("FOOTBALL AMERICAIN")),
-    FOOTBALL_F("", List.of("OOTBALL FEMININ")),
+    FOOTBALL_F("", List.of("FOOTBALL FEMININ")),
     FOOTBALL_M("", List.of("FOOTBALL MASCULIN")),
-    FUTSAL("", List.of("FOOTBALL EN SALLE (FUTSAL)")),
+    FUTSAL("", List.of("FOOTBALL EN SALLE (FUTSAL)", "FUTSAL")),
     FUTSAL_M("", List.of("FUTSAL GARÇON")),
     GOLF("", List.of("GOLF")),
     BICROSS("", List.of("BICROSS")),
@@ -78,7 +78,7 @@ public enum Sport {
     HOCKEY_SUR_GAZON("", List.of("HOCKEY SUR GAZON")),
     HOCKEY_SUR_GLACE("", List.of("HOCKEY SUR GLACE")),
     JUDO("", List.of("JUDO")),
-    JUDO_FEMININ("", List.of("HOCKEY SUR GLACE")),
+    JUDO_FEMININ("", List.of("JUDO FEMININ")),
     JU_JITSU("", List.of("JU-JITSU")),
     KARATE("", List.of("KARATE")),
     LUTTE("", List.of("LUTTE")),
@@ -151,5 +151,11 @@ public enum Sport {
         }
         log.info("Pas de sport trouvé pour {}", s);
         return null;
+    }
+
+    public String getNom() {
+        if (this.nom.isBlank())
+            return this.name();
+        return this.nom;
     }
 }

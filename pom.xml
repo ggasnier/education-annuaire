@@ -35,7 +35,9 @@
         <spring-shell.version>3.4.1</spring-shell.version>
         <core.version>1.0.0</core.version>
         <sonar.exclusions>
-            */entities/*
+            *Entity.java,
+            *PK.java,
+            /**/enums/*
         </sonar.exclusions>
         <sonar.organization>ggasnier</sonar.organization>
     </properties>
@@ -45,18 +47,6 @@
         <module>shell</module>
         <module>web</module>
     </modules>
-
-    <!--    <dependencyManagement>-->
-    <!--        <dependencies>-->
-    <!--            <dependency>-->
-    <!--                <groupId>org.springframework.boot</groupId>-->
-    <!--                <artifactId>spring-boot-dependencies</artifactId>-->
-    <!--                &lt;!&ndash;                <version>3.2.5</version>&ndash;&gt;-->
-    <!--                <type>pom</type>-->
-    <!--                <scope>import</scope>-->
-    <!--            </dependency>-->
-    <!--        </dependencies>-->
-    <!--    </dependencyManagement>-->
 
     <profiles>
         <profile>

@@ -2,7 +2,7 @@ package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
-import com.guillaumegasnier.education.shell.dto.CarifEtablissementResponse;
+import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementResponse;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.opencsv.bean.CsvToBeanBuilder;

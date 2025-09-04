@@ -74,6 +74,12 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     }
 
     @Override
+    @ShellMethod(value = "Import sections sport études")
+    public String importSectionsSportEtudes() {
+        return shellEtablissementService.createOrUpdateSectionsSportEtudes(fileService.importCSV(SECTIONS_SPORT_ETUDES));
+    }
+
+    @Override
     @ShellMethod(value = "Import sections internationales")
     public String importSectionsInternationales() {
         return shellEtablissementService.createOrUpdateSectionsInternationales(fileService.importCSV(SECTIONS_INTERNATIONALES));

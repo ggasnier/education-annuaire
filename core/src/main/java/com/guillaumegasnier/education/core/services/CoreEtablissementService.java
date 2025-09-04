@@ -38,4 +38,10 @@ public interface CoreEtablissementService {
     List<OptionEtablissementEntity> getOptionListByUai(String uai);
 
     List<LangueEntity> getLangueListByUai(String uai);
+
+    void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities);
+
+    List<SectionSportiveEntity> getSectionSportiveListByUai(String uai);
+
+    List<IndicePositionSocialeEntity> getIPSListByUai(String uai);
 }

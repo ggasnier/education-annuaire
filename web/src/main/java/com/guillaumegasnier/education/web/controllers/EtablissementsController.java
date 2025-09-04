@@ -29,6 +29,8 @@ public class EtablissementsController {
             model.addAttribute("etablissement", etablissementDto.get());
             model.addAttribute("options", webEtablissementService.getOptionListByUai(uai));
             model.addAttribute("langues", webEtablissementService.getLangueListByUai(uai));
+            model.addAttribute("sectionSportives", webEtablissementService.getSectionSportiveListByUai(uai));
+            model.addAttribute("indices", webEtablissementService.getIPSListByUai(uai));
 
             return "etablissements/details";
         } else {
