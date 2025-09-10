@@ -134,7 +134,7 @@ public enum Sport {
     ULTIMATE("", List.of("ULTIMATE")),
     VOILE("", List.of("VOILE")),
     VOL_LIBRE("", List.of("VOL LIBRE")),
-    VOLLEY_BALL("", List.of("VOLLEY BALL")),
+    VOLLEY_BALL("Volley-ball", List.of("VOLLEY BALL")),
     VOLTIGE_EQUESTRE("", List.of("VOLTIGE ÉQUESTRE")),
     VTT("", List.of("VTT")),
     WATER_POLO("", List.of("WATER POLO", "WATER-POLO"));

@@ -25,7 +25,7 @@ public interface ShellEntityService {
 
     LangueEntity toLangueEntity(@NonNull LangueDataset dataset);
 
-    boolean isValidEntity(@NonNull EtablissementEntity entity);
+    <T> T toValidEntity(@NonNull T entity);
 
     SportEtudeEntity toSportEtudeEntity(@NonNull SectionSportEtudeDataset dataset);
 }

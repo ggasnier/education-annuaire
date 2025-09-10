@@ -292,23 +292,23 @@ public class ShellEntityServiceImpl implements ShellEntityService {
      * @param entity Entité JPA à valider
      * @return Résultat de la validation
      */
-    public boolean isValidEntity(@NonNull EtablissementEntity entity) {
-        Set<ConstraintViolation<EtablissementEntity>> violations = validator.validate(entity);
+    @Override
+    public <T> T toValidEntity(@NonNull T entity) {
+        Set<ConstraintViolation<T>> violations = validator.validate(entity);
 
         if (violations.isEmpty()) {
-            return true;
+            return entity;
         }
 
-        violations.removeIf(v -> {
+        for (ConstraintViolation<T> v : violations) {
             log.warn("Validation failed on {}.{}: {} ({})",
                     entity.getClass().getSimpleName(),
                     v.getPropertyPath(),
                     v.getMessage(),
                     v.getInvalidValue());
-            return false;
-        });
+        }
 
-        return violations.isEmpty();
+        return null;
     }
 
     @Nullable
