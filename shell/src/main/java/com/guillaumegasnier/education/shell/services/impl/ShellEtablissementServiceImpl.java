@@ -103,7 +103,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
                 .map(etablissementMapper::toContratEntity)
                 .toList());
-        return String.format("Import terminé : %d contrat(s) enregistrée(s).", datasets.size());
+        return String.format("Import terminé : %d contrat(s) enregistré(s).", datasets.size());
     }
 
     @Override
@@ -188,7 +188,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .map(shellEntityService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
-        return String.format("Import terminé : %d sections binationale(s).", datasets.size());
+        return String.format("Import terminé : %d sections binationale enregistrée(s).", datasets.size());
     }
 
 }
