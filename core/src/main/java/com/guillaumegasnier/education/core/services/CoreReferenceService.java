@@ -25,4 +25,8 @@ public interface CoreReferenceService {
     AcademieEntity getAcademie(String codeAcademie);
 
     DepartementEntity getDepartement(String codeDepartement);
+
+    Optional<CommuneEntity> findCommuneByNom(String nomCommune);
+
+    PaysEntity getPays(String codePays);
 }

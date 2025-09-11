@@ -17,7 +17,7 @@ public class DepartementEntity extends AbstractEntity {
     private String code;
 
     @NotBlank
-    @Column(columnDefinition = "VARCHAR(50)", length = 50, unique = true, nullable = false)
+    @Column(columnDefinition = "VARCHAR(50)", length = 50)
     private String nom;
 
     @ManyToOne

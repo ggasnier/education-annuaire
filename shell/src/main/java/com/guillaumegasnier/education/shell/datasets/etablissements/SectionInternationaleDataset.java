@@ -1,10 +1,14 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
+import com.guillaumegasnier.education.core.validations.ValidUai;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Rentrée scolaire
@@ -25,12 +29,29 @@ import lombok.ToString;
 @ToString
 public class SectionInternationaleDataset implements Dataset {
 
-    @CsvBindByName(column = "UAI")
-    private String uai;
+    @CsvBindByName(column = "Rentrée scolaire")
+    private String rentreeScolaire;
+
+    @CsvBindByName(column = "Academie")
+    private String nomAcademie;
 
     @CsvBindByName(column = "Section")
     private String section;
 
+    @ValidUai
+    @CsvBindByName(column = "UAI")
+    private String uai;
+
+    @CsvBindByName(column = "Nom établissement")
+    private String nomEtablissement;
+
     @CsvBindByName(column = "Niveau")
     private String niveau;
+
+    @CsvBindByName(column = "Ville")
+    private String nomCommune;
+
+    public List<String> getNiveaux() {
+        return Stream.of(niveau.split("et")).map(String::trim).map(String::toUpperCase).toList();
+    }
 }

@@ -72,6 +72,9 @@ public class EtablissementFermeDataset implements EtablissementDataset {
     @CsvBindByName(column = "code_commune")
     private String codeCommune;
 
+    @CsvBindByName(column = "libelle_commune")
+    private String nomCommune;
+
     private String codePays;
 
     @CsvBindByName(column = "nature_uai")
@@ -108,6 +111,11 @@ public class EtablissementFermeDataset implements EtablissementDataset {
         } catch (CloneNotSupportedException e) {
             return null;
         }
+    }
+
+    @Override
+    public String getNomCommune() {
+        return nomCommune;
     }
 
     @Override

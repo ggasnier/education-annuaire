@@ -1,22 +1,20 @@
 # Shell
 
-## Commandes
+## Sources de données
 
-### Référence
-
-- import-pays: Import des pays
-- import-regions: Import des régions
-- import-academies: Import des académies
-- import-departements: Import des départements
-- import-communes: Import des communes
+### Références
 
 ### Etablissements
 
-- import-en-etablissements: Import établissements (EN)
-- import-ips-colleges: Import IPS Collèges
-- import-carif-etablissements: Import établissements (CARIF OREF)
-- import-esr-etablissements: Import établissements (ESR)
-- import-contrats: Import contrats d'établissements
-- import-natures: Import natures d'établissements
-
-### Formations
+| Nom                                                                                                                                                | URL                                                                                                                                                                                | Auteur              | Description                                                                                                                                      | Commande d'import                |
+|----------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------|
+| Annuaire de l'éducation                                                                                                                            | https://www.data.gouv.fr/datasets/annuaire-de-leducation/                                                                                                                          | Education Nationale | Données sur les établissements publics et privés ouverts situés en France                                                                        | import-etablissements-en-ouverts |
+| Principaux établissements d'enseignement supérieur                                                                                                 | https://www.data.gouv.fr/datasets/principaux-etablissements-denseignement-superieur/                                                                                               | MESR                | Caractéristiques des principaux établissements d'enseignement supérieur. Situation à date.                                                       | import-etablissements-esr        |
+| Liste des organismes de formation en apprentissage                                                                                                 | https://catalogue-apprentissage.intercariforef.org/recherche/etablissements                                                                                                        | CARIF OREF          |                                                                                                                                                  | import-etablissements-carif      |
+| Idéo-Structures d'enseignement supérieur                                                                                                           | https://www.data.gouv.fr/datasets/ideo-structures-denseignement-superieur/                                                                                                         | ONISEP              | Ce jeu est un répertoire des établissements référencés par L'Onisep qui proposent un enseignement supérieur.                                     | import-etablissements-onisep-sup |
+| Offre de langues dans les collèges et lycées                                                                                                       | https://www.data.gouv.fr/datasets/offre-de-langues-dans-les-colleges-et-lycees/                                                                                                    | Education Nationale |                                                                                                                                                  | import-langues                   |
+| Etablissements avec sections binationales (Abibac, Bachibac et Esabac)                                                                             | https://www.data.gouv.fr/datasets/etablissements-avec-sections-binationales-abibac-bachibac-et-esabac/                                                                             | Guillamume GASNIER  | Liste des établissements scolaires en France et à l'étranger qui proposent des sections  binationales                                            | import-sections-binationales     |
+| Sections Sportives Scolaires                                                                                                                       | https://www.data.gouv.fr/datasets/sections-sportives-scolaires/                                                                                                                    | Education Nationale | Listes des sections sportives scolaires implantées dans les établissements du 2nd degré à la rentrée scolaire 2024.                              | import-sections-sportives        |
+| Implantation des sections Sport-Etudes                                                                                                             | https://www.data.gouv.fr/datasets/implantation-des-sections-sport-etudes/                                                                                                          | Education Nationale | Listes des sections Sport-Etudes implantées dans les établissements du 2nd degré à la rentrée 2025, par pratique proposée.                       | import-sections-sport-etudes     |
+| Sections internationales et classes menant au baccalauréat français international (BFI) en France et dans les établissements français à l’étranger | https://www.data.gouv.fr/datasets/sections-internationales-et-classes-menant-au-baccalaureat-francais-international-bfi-en-france-et-dans-les-etablissements-francais-a-letranger/ | Education Nationale | Liste des sections internationales dans les écoles, collèges et lycées                                                                           | import-sections-internationales  |
+| Idéo-Enseignements de spécialité de première générale                                                                                              | https://www.data.gouv.fr/datasets/ideo-enseignements-de-specialite-de-premiere-generale/                                                                                           | ONISEP              | Ce jeu précise, pour les actions de formation de première générale, les enseignements de spécialités proposés par les structures d’enseignement. | import-specialites               |

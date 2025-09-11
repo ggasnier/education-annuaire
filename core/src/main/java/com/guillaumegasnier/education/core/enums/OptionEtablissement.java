@@ -23,6 +23,8 @@ public enum OptionEtablissement {
     LYCEE_DES_METIERS("Lycee des métiers"),
     POST_BAC("Post BAC"),
     BACHIBAC("Section binationale BACHIBAC"),
+    ABIBAC("Section binationale ABIBAC"),
+    ESABAC("Section binationale ESABAC"),
     BFI("Baccalauréat Français international");
 
     private final String nom;

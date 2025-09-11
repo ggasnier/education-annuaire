@@ -2,7 +2,7 @@ package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
-import com.guillaumegasnier.education.shell.dto.CarifEtablissementResponse;
+import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementResponse;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -102,7 +102,8 @@ public class ProductionFileService implements FileService {
 
     @Override
     public <T extends Dataset> List<T> importCSV(@NonNull SourcesDatasets source) {
-        log.info("Début import {}", source.getUrl());
+        log.info("Début import {}", source.getNom());
+        log.info("URL {}", source.getUrl());
 
         List<T> result = new ArrayList<>();
         @SuppressWarnings("unchecked")
@@ -123,14 +124,15 @@ public class ProductionFileService implements FileService {
             }
         }, () -> log.error("Impossible de lire le fichier : {}", source.getUrl()));
 
-        log.info("Fin import {}, lignes importées : {}", source.getUrl(), result.size());
+        log.info("Fin import {}, lignes importées : {}", source.getNom(), result.size());
         return result;
     }
 
     @Override
     public List<CarifEtablissementDataset> importJsonCarif(@NonNull SourcesDatasets source) {
 
-        log.info("Début import {}", source.getUrl());
+        log.info("Début import {}", source.getNom());
+        log.info("URL {}", source.getUrl());
 
         String scrollId = null;
         int totalFetched = 0;
@@ -178,7 +180,7 @@ public class ProductionFileService implements FileService {
             }
         } while (totalRecupere != 0);
 
-        log.info("Fin import {}, lignes importées : {}", source.getUrl(), totalFetched);
+        log.info("Fin import {}, lignes importées : {}", source.getNom(), totalFetched);
 
         return etablissementDatasetList;
     }

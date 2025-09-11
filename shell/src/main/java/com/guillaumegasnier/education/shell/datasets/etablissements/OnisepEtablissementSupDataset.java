@@ -48,24 +48,32 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "n° SIRET")
     private String siret;
-
     @CsvBindByName(column = "nom")
     private String nom;
-
     @CsvBindByName(column = "adresse")
     private String adresse;
-
     @CsvBindByName(column = "CP")
     private String codePostal;
-
     @CsvBindByName(column = "commune (COG)")
     private String codeCommune;
-
+    @CsvBindByName(column = "commune")
+    private String nomCommune;
     @CsvBindByName(column = "boîte postale")
     private String boitePostale;
-
     @CsvBindByName(column = "cedex")
     private String cedex;
+
+    @Override
+    public String getSiret() {
+        if (siret == null) return null;
+        if (siret.isBlank()) return null;
+        return siret;
+    }
+
+    @Override
+    public String getNomCommune() {
+        return nomCommune;
+    }
 
     @Override
     public EtablissementDataset cloneWithUai(String uai) {

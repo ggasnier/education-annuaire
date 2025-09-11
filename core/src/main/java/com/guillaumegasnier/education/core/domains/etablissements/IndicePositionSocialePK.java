@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.validations.ValidUai;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -21,6 +22,7 @@ public class IndicePositionSocialePK implements Serializable {
     private int annee;
 
     @ValidUai
+    @Column(columnDefinition = "VARCHAR(8)", length = 8)
     private String uai;
 
     public IndicePositionSocialePK(String uai, int annee) {

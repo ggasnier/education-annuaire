@@ -8,3 +8,11 @@ spring:
     active: local
   main:
     web-application-type: none
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  flyway:
+    enable: true
+    baseline-on-migrate: true
+    validate-on-migrate: true

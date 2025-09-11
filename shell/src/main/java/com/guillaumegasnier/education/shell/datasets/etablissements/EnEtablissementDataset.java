@@ -95,67 +95,66 @@ public class EnEtablissementDataset implements EtablissementDataset {
     private String codeContrat;
     @CsvBindByName(column = "Code_commune")
     private String codeCommune;
+    @CsvBindByName(column = "Nom_commune")
+    private String nomCommune;
     @CsvBindByName(column = "etat")
     private String etat;
-
     @CsvBindByName(column = "Telephone")
     private String contactTelephone;
     @CsvBindByName(column = "Mail")
     private String contactMail;
     @CsvBindByName(column = "Web")
     private String contactWeb;
-
     @CsvBindByName(column = "date_ouverture")
     private String dateOuverture;
-
     @CsvBindByName(column = "Restauration")
     private String restauration;
-
     @CsvBindByName(column = "Hebergement")
     private String hebergement;
-
     @CsvBindByName(column = "ULIS")
     private String ulis;
-
     @CsvBindByName(column = "Apprentissage")
     private String apprentissage;
-
     @CsvBindByName(column = "Segpa")
     private String segpa;
-
     @CsvBindByName(column = "Section_arts")
     private String sectionArts;
-
     @CsvBindByName(column = "Section_cinema")
     private String sectionCinema;
-
     @CsvBindByName(column = "Section_theatre")
     private String sectionTheatre;
-
     @CsvBindByName(column = "Section_sport")
     private String sectionSport;
-
     @CsvBindByName(column = "Section_internationale")
     private String sectionInternationale;
-
     @CsvBindByName(column = "Section_europeenne")
     private String sectionEuropeenne;
-
     @CsvBindByName(column = "Lycee_Agricole")
     private String lyceeAgricole;
-
     @CsvBindByName(column = "Lycee_militaire")
     private String lyceeMilitaire;
-
     @CsvBindByName(column = "Lycee_des_metiers")
     private String lyceeDesMetiers;
-
     @CsvBindByName(column = "Post_BAC")
     private String postBac;
 
     @Override
+    public String getNomCommune() {
+        return nomCommune;
+    }
+
+    @Override
     public LocalDate getDateOuverture() {
+        if (dateOuverture == null) return null;
         return LocalDate.parse(dateOuverture);
+    }
+
+    @Override
+    public String getAdresse() {
+        if (adresse == null) return null;
+        if (adresse.isBlank()) return null;
+        if (adresse.length() > 50) return adresse.substring(0, 50);
+        return adresse;
     }
 
     @Override
@@ -191,6 +190,7 @@ public class EnEtablissementDataset implements EtablissementDataset {
     public String getComplement() {
         if (complement == null) return null;
         if (complement.isBlank()) return null;
+        if (complement.length() > 50) return complement.substring(0, 50);
         return complement;
     }
 
@@ -257,7 +257,6 @@ public class EnEtablissementDataset implements EtablissementDataset {
         if (lyceeMilitaire != null && lyceeMilitaire.equals("1")) options.add(OptionEtablissement.LYCEE_MILITAIRE);
         if (lyceeDesMetiers != null && lyceeDesMetiers.equals("1")) options.add(OptionEtablissement.LYCEE_DES_METIERS);
         if (postBac != null && postBac.equals("1")) options.add(OptionEtablissement.POST_BAC);
-
 
         return options;
     }

@@ -38,7 +38,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "etp")
+@Table(name = "etablissements_etp")
 public class EquivalentTempsPleinEntity {
 
     @EmbeddedId

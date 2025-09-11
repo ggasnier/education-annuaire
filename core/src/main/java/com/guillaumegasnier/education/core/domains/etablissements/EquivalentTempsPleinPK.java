@@ -6,6 +6,7 @@ import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Getter
@@ -16,8 +17,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class EquivalentTempsPleinPK implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @ValidUai
-    @Column(columnDefinition = "CHAR(8)", length = 8)
+    @Column(columnDefinition = "VARCHAR(8)", length = 8)
     private String uai;
 
     @NotNull

@@ -27,109 +27,74 @@ public class CarifEtablissementDataset implements EtablissementDataset {
 
     @JsonProperty("siret")
     private String siret;
-
     @JsonProperty("siren")
     private String siren;
-
     @JsonProperty("nda")
     private String nda;
-
     @JsonProperty("naf_code")
     private String nafCode;
-
     @JsonProperty("naf_libelle")
     private String nafLibelle;
-
     @JsonProperty("tranche_effectif_salarie")
     private String trancheEffectifSalarie;
-
     @JsonProperty("date_creation")
     private String dateCreation;
-
     @JsonProperty("date_mise_a_jour")
     private String dateMiseAJour;
-
     @JsonProperty("diffusable_commercialement")
     private Boolean diffusableCommercialement;
-
     @JsonProperty("enseigne")
     private String enseigne;
-
     @JsonProperty("onisep_nom")
     private String onisepNom;
-
     @JsonProperty("onisep_url")
     private String onisepUrl;
-
     @JsonProperty("onisep_code_postal")
     private String onisepCodePostal;
-
     @JsonProperty("adresse")
     private String adresse;
-
     @JsonProperty("numero_voie")
     private String numeroVoie;
-
     @JsonProperty("type_voie")
     private String typeVoie;
-
     @JsonProperty("nom_voie")
     private String nomVoie;
-
     @JsonProperty("complement_adresse")
     private String complement;
-
     @JsonProperty("code_postal")
     private String codePostal;
-
     @JsonProperty("num_departement")
     private String numDepartement;
-
     @JsonProperty("nom_departement")
     private String nomDepartement;
-
     @JsonProperty("localite")
     private String localite;
-
     @JsonProperty("code_insee_localite")
     private String codeCommune;
-
     @JsonProperty("cedex")
     private String cedex;
-
     @JsonProperty("geo_coordonnees")
     private String geoCoordonnees;
-
     @JsonProperty("date_fermeture")
     private String dateFermeture;
-
     @JsonProperty("ferme")
     private Boolean ferme;
-
     @JsonProperty("region_implantation_code")
     private String regionImplantationCode;
-
     @JsonProperty("region_implantation_nom")
     private String regionImplantationNom;
-
     @JsonProperty("commune_implantation_code")
     private String communeImplantationCode;
-
     @JsonProperty("commune_implantation_nom")
     private String communeImplantationNom;
-
     @JsonProperty("pays_implantation_code")
     private String paysImplantationCode;
-
     @JsonProperty("pays_implantation_nom")
     private String paysImplantationNom;
-
     @JsonProperty("num_academie")
     private Integer numAcademie;
-
     @JsonProperty("nom_academie")
     private String nomAcademie;
-
     @JsonProperty("uai")
     private String uai;
     @JsonProperty("uai_valide")
@@ -240,6 +205,13 @@ public class CarifEtablissementDataset implements EtablissementDataset {
     private String opcoNom;
     @JsonProperty("opco_siren")
     private String opcoSiren;
+
+    @Override
+    public String getSiret() {
+        if (siret == null) return null;
+        if (siret.isBlank()) return null;
+        return siret;
+    }
 
     @Override
     public EtablissementDataset cloneWithUai(String uai) {

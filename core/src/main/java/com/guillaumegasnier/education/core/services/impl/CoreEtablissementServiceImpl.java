@@ -3,11 +3,13 @@ package com.guillaumegasnier.education.core.services.impl;
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.repositories.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.validations.ValidUai;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,14 +23,24 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final ContratRepository contratRepository;
     private final IndicePositionSocialeRepository indicePositionSocialeRepository;
     private final SpecialiteRepository specialiteRepository;
+    private final SectionInternationaleRepository sectionInternationaleRepository;
+    private final SectionSportiveRepository sectionSportiveRepository;
+    private final LangueRepository langueRepository;
+    private final OptionEtablissementRepository optionEtablissementRepository;
+    private final SportEtudeRepository sportEtudeRepository;
 
     @Autowired
-    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository) {
+    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository, SectionSportiveRepository sectionSportiveRepository, LangueRepository langueRepository, OptionEtablissementRepository optionEtablissementRepository, SportEtudeRepository sportEtudeRepository) {
         this.etablissementRepository = etablissementRepository;
         this.natureRepository = natureRepository;
         this.contratRepository = contratRepository;
         this.indicePositionSocialeRepository = indicePositionSocialeRepository;
         this.specialiteRepository = specialiteRepository;
+        this.sectionInternationaleRepository = sectionInternationaleRepository;
+        this.sectionSportiveRepository = sectionSportiveRepository;
+        this.langueRepository = langueRepository;
+        this.optionEtablissementRepository = optionEtablissementRepository;
+        this.sportEtudeRepository = sportEtudeRepository;
     }
 
     @Override
@@ -51,8 +63,9 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         indicePositionSocialeRepository.saveAll(entities);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Optional<EtablissementEntity> findEtablissement(@NonNull String uai) {
+    public Optional<EtablissementEntity> findEtablissement(@ValidUai String uai) {
         return etablissementRepository.findById(uai);
     }
 
@@ -74,12 +87,52 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
-    public void saveEtablissement(@NonNull Optional<EtablissementEntity> entity) {
-        entity.ifPresent(etablissementRepository::save);
+    public List<OptionEtablissementEntity> getOptionListByUai(String uai) {
+        return optionEtablissementRepository.findAllByPkUai(uai);
+    }
+
+    @Override
+    public List<LangueEntity> getLangueListByUai(String uai) {
+        return langueRepository.findAllByPkUaiOrderByPkEnseignementAscPkLangueAsc(uai);
+    }
+
+    @Override
+    public void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities) {
+        sportEtudeRepository.saveAll(entities);
+    }
+
+    @Override
+    public List<SectionSportiveEntity> getSectionSportiveListByUai(String uai) {
+        return sectionSportiveRepository.findAllByPkUai(uai);
+    }
+
+    @Override
+    public List<IndicePositionSocialeEntity> getIPSListByUai(String uai) {
+        return indicePositionSocialeRepository.findAllByPkUaiOrderByPkAnneeDesc(uai);
     }
 
     @Override
     public void saveSpecialites(List<SpecialiteEntity> entities) {
-        specialiteRepository.saveAll(entities); // TODO supprimer les spécilités ou trouver un moyen de virer les anciennes
+        specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les anciennes
+    }
+
+    @Override
+    public void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities) {
+        sectionInternationaleRepository.saveAll(entities);
+    }
+
+    @Override
+    public void saveSectionsSporties(List<SectionSportiveEntity> entities) {
+        sectionSportiveRepository.saveAll(entities);
+    }
+
+    @Override
+    public void saveLangues(List<LangueEntity> entities) {
+        langueRepository.saveAll(entities);
+    }
+
+    @Override
+    public void saveOptions(List<OptionEtablissementEntity> entities) {
+        optionEtablissementRepository.saveAll(entities);
     }
 }

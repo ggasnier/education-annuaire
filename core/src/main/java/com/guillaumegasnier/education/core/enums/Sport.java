@@ -1,0 +1,161 @@
+package com.guillaumegasnier.education.core.enums;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+
+import java.util.List;
+
+@Slf4j
+@Getter
+@AllArgsConstructor
+public enum Sport {
+
+    ACTIVIT_SPORT_AQUATIQUES_PLEINE_NATURE("Activités aquatiques en pleine nature", List.of("ACTIVIT. SPORT. AQUATIQUES PLEINE NATURE")),
+    ACTIVIT_SPORT_TERRESTRES_PLEINE_NATURE("Activités terrestres en pleine nature", List.of("ACTIVITES SPORT.TERRESTRES PLEINE NATURE")),
+    ACTIVITES_SPORTIVES_DE_MONTAGNE("Activités sportives de montagne", List.of("ACTIVITES SPORTIVES DE MONTAGNE")),
+    ACTIVITES_SPORTIVES_SUR_ROLLERS("Activités sportives sur rollers", List.of("ACTIVITES SPORTIVES SUR ROLLERS")),
+    ACTIVITES_SPORTIVES_SUBAQUATIQUES("Activités sportives subaquatiques", List.of("ACTIVITES SPORTIVES SUBAQUATIQUES")),
+    ARTS_MARTIAUX_AUTRES("ARTS MARTIAUX (AUTRES QUE LE JUDO)", List.of("ARTS MARTIAUX (AUTRES QUE LE JUDO)")),
+    ARBITRAGE("Arbitrage", List.of("ARBITRAGE")),
+    ARBITRAGE_BASKET_BALL("", List.of("ARBITRAGE BASKET-BALL")),
+    ARBITRAGE_FOOTBALL("", List.of("ARBITRAGE FOOTBALL")),
+    ARBITRAGE_SPORTIF("", List.of("ARBITRAGE SPORTIF")),
+    ATHLETISME("", List.of("ATHLETISME")),
+    AVIRON("Aviron", List.of("AVIRON")),
+    BADMINTON("", List.of("BADMINTON")),
+    BASEBALL("", List.of("BASEBALL")),
+    BASKET_BALL("", List.of("BASKET-BALL")),
+    BASKET_BALL_F("", List.of("BASKET-BALL FÉMININ")),
+    BASKET_BALL_M("", List.of("BASKET-BALL MASCULIN")),
+    BEACH_VOLLEY("", List.of("BEACH VOLLEY")),
+    BMX("", List.of("BMX")),
+    BOWLING("", List.of("BOWLING")),
+    BOXE("", List.of("BOXE")),
+    BOXE_ANGLAISE("", List.of("BOXE ANGLAISE")),
+    BOXE_FRANCAISE("", List.of("BOXE FRANCAISE")),
+    BOXE_THAI("", List.of("BOXE THAI")),
+    CANOE_KAYAK("", List.of("CANOE KAYAK", "CANOE ET CANOE KAYAK")),
+    CHAR_A_VOILES("", List.of("CHAR A VOILES")),
+    COURSE_ORIENTATION("", List.of("COURSE D'ORIENTATION")),
+    CYCLISME("", List.of("CYCLISME")),
+    MECANIQUE("", List.of("SPORTS MECANIQUE (AUTO-MOTO)")),
+    CYCLISME_PISTE("", List.of("CYCLISME PISTE")),
+    DANSE("", List.of("DANSE SPORTIVE", "DANSE")),
+    DISCIPLINES_NORDIQUES("", List.of("DISCIPLINES NORDIQUES")),
+    EQUITATION("", List.of("EQUITATION", "HIPPOLOGIE ET EQUITATION", "HIPPOLOGIE & EQUITATION")),
+    ESCALADE("Escalade", List.of("ESCALADE")),
+    ESCRIME("Escrime", List.of("ESCRIME")),
+    FOOTBALL("Footbal", List.of("FOOTBALL")),
+    FOOTBALL_MIXTE("", List.of("FOOTBALL (MIXTE)")),
+    FOOTBALL_AMERICAIN("", List.of("FOOTBALL AMERICAIN")),
+    FOOTBALL_F("", List.of("FOOTBALL FEMININ")),
+    FOOTBALL_M("", List.of("FOOTBALL MASCULIN")),
+    FUTSAL("", List.of("FOOTBALL EN SALLE (FUTSAL)", "FUTSAL")),
+    FUTSAL_M("", List.of("FUTSAL GARÇON")),
+    GOLF("", List.of("GOLF")),
+    BICROSS("", List.of("BICROSS")),
+    CIRQUE("", List.of("ARTS DU CIRQUE", "ACTIVITES SPORTIVES DE CIRQUE")),
+    GRS("", List.of("GRS", "GYMNASTIQUE RYTHMIQUE ET SPORTIVE")),
+    GYM_AEROBIC("", List.of("GYM AÉROBIC")),
+    GYMNASTIQUE("", List.of("GYMNASTIQUE")),
+    GYMNASTIQUE_RYTHMIQUE("", List.of("GYMNASTIQUE RYTHMIQUE")),
+    GYMNASTIQUE_AEROBIQUE("", List.of("GYMNASTIQUE AEROBIQUE")),
+    GYMNASTIQUE_ARTISTIQUE("", List.of("GYMNASTIQUE ARTISTIQUE")),
+    GYMNASTIQUE_ACROBATIQUE("", List.of("GYMNASTIQUE ACROBATIQUE")),
+    GYMNASTIQUE_F("", List.of("GYMNASTIQUE FEMININE")),
+    GYMNASTIQUE_M("", List.of("GYMNASTIQUE MASCULINE")),
+    HALTEROPHILIE("", List.of("HALTÉROPHILIE")),
+    HANDBALL("", List.of("HANDBALL")),
+    HANDBALL_F("", List.of("HANDBALL FEMININ")),
+    HANDBALL_M("", List.of("HANDBALL MASCULIN")),
+    HANDISPORT("", List.of("HANDISPORT")),
+    HANDI_ATHLETISME("", List.of("HANDI-ATHLÉTISME")),
+    HANDI_BASKET("", List.of("HANDI-BASKET")),
+    HANDI_TENNIS_DE_TABLE("", List.of("HANDI-TENNIS DE TABLE")),
+    HOCKEY_SUR_GAZON("", List.of("HOCKEY SUR GAZON")),
+    HOCKEY_SUR_GLACE("", List.of("HOCKEY SUR GLACE")),
+    JUDO("", List.of("JUDO")),
+    JUDO_FEMININ("", List.of("JUDO FEMININ")),
+    JU_JITSU("", List.of("JU-JITSU")),
+    KARATE("", List.of("KARATE")),
+    LUTTE("", List.of("LUTTE")),
+    LANCERS_ATHLETIQUES("", List.of("LANCERS ATHLETIQUES")),
+    MOTOCYCLISME("", List.of("MOTOCYCLISME")),
+    MULTI_ACTIVITES("", List.of("MULTI-ACTIVITÉS")),
+    NAGE_AVEC_PALMES("", List.of("NAGE AVEC PALMES")),
+    NATATION_ACTIVITES_SPORTIVES_AQUATIQUES("", List.of("NATATION ET ACTIV.SPORTIV. AQUATIQUES")),
+    NATATION("", List.of("NATATION")),
+    NATATION_ARTISTIQUE("", List.of("NATATION ARTISTIQUE")),
+    NATATION_SYNCHRONISEE("", List.of("NATATION SYNCHRONISEE")),
+    PADDLE("", List.of("PADDLE")),
+    PATINAGE("", List.of("PATINAGE", "PATINAGE SUR GLACE")),
+    PATINAGE_ARTISTIQUE("", List.of("PATINAGE ARTISTIQUE")),
+    PELOTE_BASQUE("", List.of("PELOTE BASQUE")),
+    PENTATHLON("", List.of("PENTATHLON")),
+    PLANCHE_A_VOILE("", List.of("PLANCHE À VOILE", "PLANCHE A VOILE")),
+    PLONGEON("", List.of("PLONGEON")),
+    PLONGEE("", List.of("PLONGEE")),
+    ROLLER("", List.of("ROLLER")),
+    RAID_MULTISPORTS("", List.of("RAID MULTISPORTS")),
+    RAQUETTE("", List.of("RAQUETTE")),
+    RUGBY("", List.of("RUGBY")),
+    RUGBY_MIXTE("", List.of("RUGBY (MIXTE)")),
+    RUGBY_13("", List.of("RUGBY À 13")),
+    RUGBY_F("", List.of("RUGBY FEMININ")),
+    RUGBY_M("", List.of("RUGBY MASCULIN")),
+    SAUVETAGE("", List.of("SAUVETAGE")),
+    SAUVETAGE_COTIER("", List.of("SAUVETAGE CÔTIER")),
+    SAUVETAGE_SPORTIF("", List.of("SAUVETAGE SPORTIF")),
+    SHORT_TRACK("", List.of("SHORT TRACK")),
+    SKATEBOARD("", List.of("SKATEBOARD")),
+    SKI_ALPIN("", List.of("SKI ALPIN")),
+    SKI_BIATHLON("", List.of("SKI BIATHLON")),
+    SKI_DE_FOND("", List.of("SKI DE FOND")),
+    SKI_FREESTYLE("", List.of("SKI FREESTYLE")),
+    SKI_NORDIQUE("", List.of("SKI NORDIQUE")),
+    SNOWBOARD("", List.of("SNOWBOARD")),
+    SOFTBALL("", List.of("SOFTBALL")),
+    SPORTS_DE_GLACE("", List.of("SPORTS DE GLACE")),
+    SPORTS_INDIVIDUELS("", List.of("SPORTS INDIVIDUELS")),
+    SPORTS_NAUTIQUES("", List.of("SPORTS NAUTIQUES")),
+    SQUASH("", List.of("SQUASH")),
+    SURF("", List.of("SURF")),
+    TAEKWONDO("", List.of("TAEKWONDO")),
+    TENNIS("", List.of("TENNIS")),
+    TENNIS_DE_TABLE("", List.of("TENNIS DE TABLE")),
+    TIR("", List.of("TIR")),
+    TIR_ARC("", List.of("TIR A L'ARC")),
+    TRAMPOLINE("", List.of("TRAMPOLINE")),
+    TRIATHLON("", List.of("TRIATHLON")),
+    TUMBLING("", List.of("TUMBLING")),
+    ULTIMATE("", List.of("ULTIMATE")),
+    VOILE("", List.of("VOILE")),
+    VOL_LIBRE("", List.of("VOL LIBRE")),
+    VOLLEY_BALL("Volley-ball", List.of("VOLLEY BALL")),
+    VOLTIGE_EQUESTRE("", List.of("VOLTIGE ÉQUESTRE")),
+    VTT("", List.of("VTT")),
+    WATER_POLO("", List.of("WATER POLO", "WATER-POLO"));
+
+    private final String nom;
+    private final List<String> code;
+
+    @Nullable
+    public static Sport transformation(@NonNull String s) {
+        for (Sport sport : Sport.values()) {
+            if (sport.getCode().contains(s.trim())) {
+                return sport;
+            }
+        }
+        log.info("Pas de sport trouvé pour {}", s);
+        return null;
+    }
+
+    public String getNom() {
+        if (this.nom.isBlank())
+            return this.name();
+        return this.nom;
+    }
+}

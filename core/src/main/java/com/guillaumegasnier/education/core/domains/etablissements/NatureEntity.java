@@ -20,7 +20,7 @@ import lombok.Setter;
 public class NatureEntity extends AbstractEntity {
 
     @Id
-    @Column(columnDefinition = "CHAR(3)", length = 3, unique = true)
+    @Column(columnDefinition = "VARCHAR(3)", length = 3, unique = true)
     private String code;
 
     @NotBlank

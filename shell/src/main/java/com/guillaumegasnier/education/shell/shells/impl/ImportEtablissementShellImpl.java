@@ -74,6 +74,18 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     }
 
     @Override
+    @ShellMethod(value = "Import sections sport études")
+    public String importSectionsSportEtudes() {
+        return shellEtablissementService.createOrUpdateSectionsSportEtudes(fileService.importCSV(SECTIONS_SPORT_ETUDES));
+    }
+
+    @Override
+    @ShellMethod(value = "Import sections internationales")
+    public String importSectionsInternationales() {
+        return shellEtablissementService.createOrUpdateSectionsInternationales(fileService.importCSV(SECTIONS_INTERNATIONALES));
+    }
+
+    @Override
     @ShellMethod(value = "Import langues dans les collèges et lycées")
     public String importLangues() {
         return shellEtablissementService.createOrUpdateLangues(fileService.importCSV(LANGUES));
@@ -83,6 +95,12 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     @ShellMethod(value = "Import spécialités de première générale")
     public String importSpecialites() {
         return shellEtablissementService.createOrUpdateSpecialites(fileService.importCSV(SPECIALITES));
+    }
+
+    @Override
+    @ShellMethod(value = "Import sections binationales")
+    public String importSectionsBinationales() {
+        return shellEtablissementService.createOrUpdateSectionsBinationales(fileService.importCSV(BINATIONALES));
     }
 
     @ShellMethod(value = "Import IPS Collèges")

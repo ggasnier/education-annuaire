@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "specialites")
+@Table(name = "etablissements_specialites")
 public class SpecialiteEntity extends AbstractEntity {
 
     @EmbeddedId
@@ -16,5 +16,6 @@ public class SpecialiteEntity extends AbstractEntity {
 
     @MapsId("uai")
     @ManyToOne
+    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_specialites_etablissements"))
     private EtablissementEntity etablissement;
 }

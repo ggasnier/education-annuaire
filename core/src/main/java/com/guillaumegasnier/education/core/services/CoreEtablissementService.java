@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.validations.ValidUai;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -16,11 +17,17 @@ public interface CoreEtablissementService {
 
     void saveIPS(@NonNull List<IndicePositionSocialeEntity> entities);
 
-    void saveEtablissement(Optional<EtablissementEntity> entity);
-
     void saveSpecialites(List<SpecialiteEntity> entities);
 
-    Optional<EtablissementEntity> findEtablissement(@NonNull String uai);
+    void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities);
+
+    void saveSectionsSporties(List<SectionSportiveEntity> entities);
+
+    void saveLangues(List<LangueEntity> entities);
+
+    void saveOptions(List<OptionEtablissementEntity> entities);
+
+    Optional<EtablissementEntity> findEtablissement(@ValidUai String uai);
 
     Optional<NatureEntity> findNature(String codeNature);
 
@@ -28,5 +35,13 @@ public interface CoreEtablissementService {
 
     Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee);
 
+    List<OptionEtablissementEntity> getOptionListByUai(String uai);
 
+    List<LangueEntity> getLangueListByUai(String uai);
+
+    void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities);
+
+    List<SectionSportiveEntity> getSectionSportiveListByUai(String uai);
+
+    List<IndicePositionSocialeEntity> getIPSListByUai(String uai);
 }

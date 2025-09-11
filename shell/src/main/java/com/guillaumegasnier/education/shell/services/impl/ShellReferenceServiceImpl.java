@@ -29,7 +29,8 @@ public class ShellReferenceServiceImpl implements ShellReferenceService {
 
     @Override
     public String createOrUpdatePays(@NonNull List<PaysDataset> datasets) {
-        return "";
+        coreReferenceService.savePays(datasets.stream().map(referenceMapper::toPaysEntity).toList());
+        return String.format("Import terminé : %d pays enregistrée(s).", datasets.size());
     }
 
     @Override
@@ -78,6 +79,8 @@ public class ShellReferenceServiceImpl implements ShellReferenceService {
 
     @Override
     public String createOrUpdateCommunes(@NonNull List<CommuneDataset> datasets) {
+        var pays = coreReferenceService.getPays("FR");
+
         coreReferenceService.saveCommunes(datasets.stream().map(dataset -> {
             var entity = referenceMapper.toCommuneEntity(dataset);
             if (!dataset.getCodeDepartement().isEmpty()) {
@@ -85,6 +88,8 @@ public class ShellReferenceServiceImpl implements ShellReferenceService {
             } else {
                 entity.setDepartement(coreReferenceService.getDepartement(dataset.getCode().substring(0, 2)));
             }
+
+            entity.setPays(pays);
 
             return entity;
         }).toList());

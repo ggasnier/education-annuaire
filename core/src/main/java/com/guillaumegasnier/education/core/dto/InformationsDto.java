@@ -23,9 +23,6 @@ public class InformationsDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty(value = "sections_sportives", required = true)
-    private Set<String> sectionsSportives = new HashSet<>();
-
     @JsonProperty(value = "sections_sports_etudes", required = true)
     private Set<String> sectionSportsEtudes = new HashSet<>();
 

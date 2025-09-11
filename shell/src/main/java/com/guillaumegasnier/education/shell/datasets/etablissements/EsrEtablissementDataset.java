@@ -132,6 +132,8 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     private String codePostal;
     @CsvBindByName(column = "Code commune")
     private String codeCommune;
+    @CsvBindByName(column = "Commune")
+    private String nomCommune;
     @CsvBindByName(column = "Numéro de téléphone")
     private String contactTelephone;
     @CsvBindByName(column = "site internet")
@@ -146,9 +148,21 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     private String contactYoutube;
     @CsvBindByName(column = "Page Wikipédia en français")
     private String contactWikipedia;
-
     @CsvBindByName(column = "date_creation")
     private String dateOuverture;
+
+    @Override
+    public String getCodeCommune() {
+        if (codeCommune == null) return null;
+        if (codeCommune.isBlank()) return null;
+        return codeCommune;
+    }
+
+    @Override
+    public String getNomCommune() {
+        return nomCommune;
+    }
+    
     // compte_flickr
     // compte_pinterest
     // flux_rss

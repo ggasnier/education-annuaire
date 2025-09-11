@@ -2,18 +2,14 @@ package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
-import com.guillaumegasnier.education.core.domains.references.PaysEntity;
-import com.guillaumegasnier.education.core.dto.InformationsDto;
 import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
 import com.guillaumegasnier.education.core.validations.ValidUai;
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Type;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
@@ -30,17 +26,17 @@ public class EtablissementEntity extends AbstractEntity {
 
     @Id
     @ValidUai
-    @Column(columnDefinition = "CHAR(8)", unique = true, updatable = false, nullable = false, length = 8)
+    @Column(columnDefinition = "VARCHAR(8)", unique = true, updatable = false, nullable = false, length = 8)
     private String uai;
 
     @ValidSiret
-    @Column(columnDefinition = "CHAR(14)", length = 14)
+    @Column(columnDefinition = "VARCHAR(14)", length = 14)
     private String siret;
 
     @NotBlank
     private String nom;
 
-    @Column(columnDefinition = "CHAR(1)", length = 1)
+    @Column(columnDefinition = "VARCHAR(1)", length = 1)
     @Enumerated(EnumType.STRING)
     private EtatEtablissement etat;
 
@@ -64,29 +60,26 @@ public class EtablissementEntity extends AbstractEntity {
     @Column(columnDefinition = "VARCHAR(50)", length = 50)
     private String complement;
 
-    @Column(columnDefinition = "CHAR(5)", length = 5)
+    @Column(columnDefinition = "VARCHAR(5)", length = 5)
     private String codePostal;
 
     @ManyToOne
     @JoinColumn(name = "code_commune", foreignKey = @ForeignKey(name = "fk_etablissements_communes"))
     private CommuneEntity commune;
 
-    @ManyToOne
-    @JoinColumn(name = "code_pays", foreignKey = @ForeignKey(name = "fk_etablissements_pays"))
-    private PaysEntity pays;
+//    @Type(JsonType.class)
+//    @Column(columnDefinition = "jsonb")
+//    private InformationsDto informations = new InformationsDto();
 
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    private InformationsDto informations = new InformationsDto();
     @Column(name = "sources", columnDefinition = "VARCHAR(50)", length = 50)
     private String sources;
 
-    public InformationsDto getInformations() {
-        if (informations == null) {
-            informations = new InformationsDto();
-        }
-        return informations;
-    }
+//    public InformationsDto getInformations() {
+//        if (informations == null) {
+//            informations = new InformationsDto();
+//        }
+//        return informations;
+//    }
 
     public Set<String> getSources() {
         if (sources == null || sources.isBlank()) return new HashSet<>();

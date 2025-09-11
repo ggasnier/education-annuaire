@@ -19,14 +19,20 @@ public class EtablissementsController {
         this.webEtablissementService = webEtablissementService;
     }
 
-
     @GetMapping("/{uai}")
     public String getEtablissement(@PathVariable String uai, Model model) {
 
         var etablissementDto = webEtablissementService.findEtablissementByUai(uai);
 
         if (etablissementDto.isPresent()) {
+            model.addAttribute("title", etablissementDto.get().getNom());
+
             model.addAttribute("etablissement", etablissementDto.get());
+            model.addAttribute("options", webEtablissementService.getOptionListByUai(uai));
+            model.addAttribute("langues", webEtablissementService.getLangueListByUai(uai));
+            model.addAttribute("sectionSportives", webEtablissementService.getSectionSportiveListByUai(uai));
+            model.addAttribute("indices", webEtablissementService.getIPSListByUai(uai));
+
             return "etablissements/details";
         } else {
             return "etablissements/404";
