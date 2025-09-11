@@ -43,11 +43,8 @@ public class RechercheServiceImpl implements RechercheService {
 
     @PostConstruct
     public void initResolvers() {
-//        resolvers.put(Categorie.METIERS, this::resolveNomMetier);
         resolvers.put(Categorie.CODE_CONTRAT, this::resolveNomContrat);
-//        resolvers.put(Categorie.CODE_COMMUNE, this::resolveNomCommune);
         resolvers.put(Categorie.CODE_NATURE, this::resolveNomNature);
-//        resolvers.put(Categorie.CODE_NIVEAU, this::resolveNomNiveau);
         resolvers.put(Categorie.CATEGORIE, this::resolveNomCategorie);
         resolvers.put(Categorie.OPTION, this::resolveNomOption);
         resolvers.put(Categorie.SPECIALITE, this::resolveNomSpecialite);
@@ -118,7 +115,6 @@ public class RechercheServiceImpl implements RechercheService {
 
         return rechercheRepository.getResultats(q, page, categories, facettesCopy)
                 .stream()
-                .peek(resultatRecherche -> log.debug("resultatRecherche: {}", resultatRecherche))
                 .map(webRechercheMapper::toResultatRechercheDto).toList();
     }
 
@@ -136,6 +132,7 @@ public class RechercheServiceImpl implements RechercheService {
         List<FacetteRechercheDto> resultats = new ArrayList<>();
 
         for (Map.Entry<String, List<FacetteEntity>> entry : rechercheRepository.getFacettes(q).stream()
+                .filter(facetteEntity -> !facetteEntity.getCode().equals("code_commune"))
                 .collect(Collectors.groupingBy(FacetteEntity::getCode)).entrySet()) {
             String code = entry.getKey();
             List<FacetteEntity> list = entry.getValue();

@@ -2,70 +2,87 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Résultats</title>
+    <title th:text="${title}"></title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body class="bg-gray-50 text-gray-900">
 
-<div class="max-w-7xl mx-auto mt-6">
-    <ul>
-        <li><span>UAI:</span> <span th:text="${etablissement.uai}"></span></li>
-        <li><span>SIRET:</span> <span th:text="${etablissement.siret}"></span></li>
-        <li><span>Nom:</span> <span th:text="${etablissement.nom}"></span></li>
-        <li><span>Adresse:</span> <span th:text="${etablissement.adresse}"></span></li>
-        <li><span>Complément:</span> <span th:text="${etablissement.complement}"></span></li>
-        <li><span>Code Postal:</span> <span th:text="${etablissement.codePostal}"></span></li>
-        <li><span>Commune:</span> <span th:text="${etablissement.nomCommune}"></span> (<span
-                th:text="${etablissement.codeCommune}"></span>)
-        </li>
-        <li><span>Académie:</span> <span th:text="${etablissement.nomAcademie}"></span> (<span
-                th:text="${etablissement.codeAcademie}"></span>)
-        </li>
+<main class="max-w-7xl mx-auto">
+    <section class="bg-white shadow p-4 mb-4">
+        <ul>
+            <li><span>UAI:</span> <span th:text="${etablissement.uai}"></span></li>
+            <li><span>SIRET:</span> <span th:text="${etablissement.siret}"></span></li>
+            <li><span>Nom:</span> <span th:text="${etablissement.nom}"></span></li>
+            <li><span>Adresse:</span> <span th:text="${etablissement.adresse}"></span></li>
+            <li><span>Complément:</span> <span th:text="${etablissement.complement}"></span></li>
+            <li><span>Code Postal:</span> <span th:text="${etablissement.codePostal}"></span></li>
+            <li><span>Commune:</span> <span th:text="${etablissement.nomCommune}"></span> (<span
+                    th:text="${etablissement.codeCommune}"></span>)
+            </li>
+            <li><span>Académie:</span> <span th:text="${etablissement.nomAcademie}"></span> (<span
+                    th:text="${etablissement.codeAcademie}"></span>)
+            </li>
 
-        <li><span>Département:</span> <span th:text="${etablissement.nomDepartement}"></span> (<span
-                th:text="${etablissement.codeDepartement}"></span>)
-        </li>
+            <li><span>Département:</span> <span th:text="${etablissement.nomDepartement}"></span> (<span
+                    th:text="${etablissement.codeDepartement}"></span>)
+            </li>
 
-        <li><span>Etat:</span> <span th:text="${etablissement.nomEtat}"></span> (<span
-                th:text="${etablissement.codeEtat}"></span>)
-        </li>
+            <li><span>Etat:</span> <span th:text="${etablissement.nomEtat}"></span> (<span
+                    th:text="${etablissement.codeEtat}"></span>)
+            </li>
 
-        <li><span>Nature:</span> <span th:text="${etablissement.nomNature}"></span> (<span
-                th:text="${etablissement.codeNature}"></span>)
-        </li>
-        <li><span>Contrat:</span> <span th:text="${etablissement.nomContrat}"></span> (<span
-                th:text="${etablissement.codeContrat}"></span>)
-        </li>
-    </ul>
-    <div th:text="${etablissement}"></div>
+            <li><span>Nature:</span> <span th:text="${etablissement.nomNature}"></span> (<span
+                    th:text="${etablissement.codeNature}"></span>)
+            </li>
+            <li><span>Contrat:</span> <span th:text="${etablissement.nomContrat}"></span> (<span
+                    th:text="${etablissement.codeContrat}"></span>)
+            </li>
+        </ul>
+    </section>
 
-    <div th:text="${options}"></div>
+    <section class="bg-white shadow p-4 mb-4" th:if="${langues.size() > 0}">
+        <h2 class="text-xl font-semibold mb-4">Langues</h2>
 
-    <div>
-        <h2>Langues</h2>
+        <div class="flex flex-wrap gap-2">
+            <th:block th:each="langue : ${langues}">
+                <div class="border border-red-500 border-l-5 rounded-sm pb-0.5 pt-0.5 pl-1 pr-1"><span
+                        th:text="${langue.nom}"></span> (<span
+                        th:text="${langue.niveau}"></span>)
+                </div>
+            </th:block>
+        </div>
+    </section>
 
-        <th:block th:each="langue : ${langues}">
-            <span th:text="${langue.nom}"></span> (<span th:text="${langue.niveau}"></span>)
+    <section class="bg-white shadow p-4 mb-4" th:if="${options.size() > 0}">
+        <th:block th:each="option : ${options}">
+            <div th:text="${option.nom}"></div>
         </th:block>
-    </div>
+    </section>
 
-    <div th:text="${sectionSportives}"></div>
+    <section class="bg-white shadow p-4 mb-4" th:if="${sectionSportives.size() > 0}">
+        <h2 class="text-xl font-semibold mb-4">Section(s) sportive(s)</h2>
 
-    <table class="border-collapse table-auto border border-gray-400">
-        <tr>
-            <th>Année</th>
-        </tr>
+        <th:block th:each="sectionSportive : ${sectionSportives}">
+            <span th:text="${sectionSportive.nom}"></span>
+        </th:block>
+    </section>
 
-        <tr th:each="indice : ${indices}">
-            <td class="border border-gray-300" th:text="${indice.annee}"></td>
-            <td class="border border-gray-300" th:text="${indice.valeur}"></td>
-            <td class="border border-gray-300" th:text="${indice.ecartType()}"></td>
-        </tr>
+    <section class="bg-white shadow p-4 mb-4" th:if="${indices.size() > 0}">
 
-    </table>
+        <table class="border-collapse table-auto border border-gray-400">
+            <tr>
+                <th>Année</th>
+            </tr>
 
-    <div th:text="${indices}"></div>
+            <tr th:each="indice : ${indices}">
+                <td class="border border-gray-300 p-1" th:text="${indice.annee}"></td>
+                <td class="border border-gray-300 p-1" th:text="${indice.valeur}"></td>
+                <td class="border border-gray-300 p-1" th:text="${indice.ecartType()}"></td>
+            </tr>
 
-</div>
+        </table>
+
+    </section>
+</main>
 </body>
 </html>
