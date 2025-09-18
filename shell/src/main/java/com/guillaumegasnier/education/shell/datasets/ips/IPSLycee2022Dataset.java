@@ -1,8 +1,8 @@
 package com.guillaumegasnier.education.shell.datasets.ips;
 
+import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * Rentrée scolaire
@@ -26,6 +26,31 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString
-public class IPSLycee2022Dataset extends IPSLycee2021Dataset {
+public class IPSLycee2022Dataset implements IPSDataset {
+
+    private String categorie = "L";
+
+    @CsvBindByName(column = "UAI")
+    private String uai;
+
+    @CsvBindByName(column = "Rentrée scolaire")
+    private String rentreeScolaire;
+
+    @CsvBindByName(column = "IPS Ensemble GT-PRO")
+    private String indice;
+
+    private Double ecartType;
+
+    @Override
+    public final int getAnnee() {
+        return Integer.parseInt(rentreeScolaire.substring(0, 4));
+    }
+
+    @Override
+    public Double getIndice() {
+        if (indice == null || indice.isBlank()) return null;
+        if (indice.equals("NA") || indice.equals("NS")) return null;
+        return Double.parseDouble(indice);
+    }
+
 }

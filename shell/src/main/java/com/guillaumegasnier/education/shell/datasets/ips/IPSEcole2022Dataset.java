@@ -5,24 +5,35 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 01 Rentrée scolaire
- * 02 Académie
- * 03 Code du département
- * 04 Département
- * 05 UAI
- * 06 Nom de l'établissment
- * 07 Code INSEE de la commune
- * 08 Nom de la commune
- * 09 Secteur
- * 10 IPS
- * 11 Ecart-type de l'IPS
- * 12 Effectifs
+ * num_ligne
+ * Rentrée scolaire
+ * Code région
+ * Région
+ * Code de l'académie
+ * Académie
+ * Code du département
+ * Département
+ * Code INSEE de la commune
+ * Nom de la commune
+ * UAI
+ * Nom de l'établissement
+ * Secteur
+ * IPS
+ * IPS national privé
+ * IPS national public
+ * IPS national
+ * IPS académique privé
+ * IPS académique public
+ * IPS académique
+ * IPS départemental privé
+ * IPS départemental public
+ * IPS départemental
  */
 @Getter
 @Setter
-public class IPSCollege2022Dataset implements IPSDataset {
+public class IPSEcole2022Dataset implements IPSDataset {
 
-    private String categorie = "C";
+    private String categorie = "E";
 
     @CsvBindByName(column = "UAI")
     private String uai;
@@ -33,8 +44,7 @@ public class IPSCollege2022Dataset implements IPSDataset {
     @CsvBindByName(column = "IPS")
     private String indice;
 
-    @CsvBindByName(column = "Ecart-type de l'IPS")
-    private String ecartType;
+    private Double ecartType;
 
     @Override
     public final int getAnnee() {
@@ -46,13 +56,6 @@ public class IPSCollege2022Dataset implements IPSDataset {
         if (indice == null || indice.isBlank()) return null;
         if (indice.equals("NA") || indice.equals("NS")) return null;
         return Double.parseDouble(indice);
-    }
-
-    @Override
-    public Double getEcartType() {
-        if (ecartType == null || ecartType.isBlank()) return null;
-        if (ecartType.equals("NA") || ecartType.equals("NS")) return null;
-        return Double.parseDouble(ecartType);
     }
 
 }

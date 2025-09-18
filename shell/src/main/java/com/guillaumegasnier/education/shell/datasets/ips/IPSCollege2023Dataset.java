@@ -3,7 +3,6 @@ package com.guillaumegasnier.education.shell.datasets.ips;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * num_ligne
@@ -17,7 +16,7 @@ import lombok.ToString;
  * 08 Nom de la commune
  * 09 Secteur
  * 10 IPS
- * 11 Ecart type de l'IPS (nom de colonne changé)
+ * 11 Ecart type de l'IPS
  * 12 Effectifs (supprimé)
  * Code région
  * Région académique
@@ -34,37 +33,35 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString
-public class IPSCollege2023Dataset extends IPSCollege2022Dataset {
+public class IPSCollege2023Dataset implements IPSDataset {
+
+    private String categorie = "C";
+
+    @CsvBindByName(column = "UAI")
+    private String uai;
+
+    @CsvBindByName(column = "Rentrée scolaire")
+    private String rentreeScolaire;
+
+    @CsvBindByName(column = "IPS")
+    private String indice;
 
     @CsvBindByName(column = "Ecart type de l'IPS")
-    protected String ecartType;
-    // National
-    @CsvBindByName(column = "IPS national")
-    protected String indiceNational;
-    @CsvBindByName(column = "IPS national privé")
-    protected String indiceNationalPrive;
-    @CsvBindByName(column = "IPS national public")
-    protected String indiceNationalPublic;
-    // Academie
-    @CsvBindByName(column = "Code académie")
-    protected String codeAcademie;
-    @CsvBindByName(column = "IPS académique")
-    protected String indiceAcademie;
-    @CsvBindByName(column = "IPS académique privé")
-    protected String indiceAcademiePrive;
-    @CsvBindByName(column = "IPS académique public")
-    protected String indiceAcademiePublic;
-    // Departement
-    @CsvBindByName(column = "Code du département")
-    protected String codeDepartement;
-    @CsvBindByName(column = "IPS départemental")
-    protected String indiceDepartement;
-    @CsvBindByName(column = "IPS départemental privé")
-    protected String indiceDepartementPrive;
-    @CsvBindByName(column = "IPS départemental public")
-    protected String indiceDepartementPublic;
+    private String ecartType;
 
+    @Override
+    public final int getAnnee() {
+        return Integer.parseInt(rentreeScolaire.substring(0, 4));
+    }
+
+    @Override
+    public Double getIndice() {
+        if (indice == null || indice.isBlank()) return null;
+        if (indice.equals("NA") || indice.equals("NS")) return null;
+        return Double.parseDouble(indice);
+    }
+
+    @Override
     public Double getEcartType() {
         if (ecartType == null || ecartType.isBlank()) return null;
         if (ecartType.equals("NA") || ecartType.equals("NS")) return null;

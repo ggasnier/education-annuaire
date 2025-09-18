@@ -3,7 +3,6 @@ package com.guillaumegasnier.education.shell.datasets.ips;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * 01 Rentrée scolaire
@@ -20,23 +19,35 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString
-public class IPSCollege2021Dataset extends IPSDataset {
+public class IPSCollege2021Dataset implements IPSDataset {
 
-    protected String categorie = "C";
+    private String categorie = "C";
 
-    @CsvBindByName(column = "Secteur")
-    protected String nomSecteur;
+    @CsvBindByName(column = "UAI")
+    private String uai;
+
+    @CsvBindByName(column = "Rentrée scolaire")
+    private String rentreeScolaire;
+
+    @CsvBindByName(column = "IPS")
+    private String indice;
 
     @CsvBindByName(column = "Ecart-type de l'IPS")
-    protected String ecartType;
+    private String ecartType;
 
-    @CsvBindByName(column = "Code du département")
-    protected String codeDepartement;
+    @Override
+    public final int getAnnee() {
+        return Integer.parseInt(rentreeScolaire.substring(0, 4));
+    }
 
-    @CsvBindByName(column = "Code INSEE de la commune")
-    protected String codeCommune;
+    @Override
+    public Double getIndice() {
+        if (indice == null || indice.isBlank()) return null;
+        if (indice.equals("NA") || indice.equals("NS")) return null;
+        return Double.parseDouble(indice);
+    }
 
+    @Override
     public Double getEcartType() {
         if (ecartType == null || ecartType.isBlank()) return null;
         if (ecartType.equals("NA") || ecartType.equals("NS")) return null;

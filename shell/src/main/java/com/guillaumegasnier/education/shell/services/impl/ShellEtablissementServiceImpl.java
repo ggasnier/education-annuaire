@@ -111,6 +111,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     public String createOrUpdateIPSColleges(@NonNull List<? extends IPSDataset> datasets) {
         coreEtablissementService.saveIPS(datasets.stream()
                 .map(shellEntityService::toIndicePositionSocialeEntity)
+                .filter(Objects::nonNull)
                 .map(shellEntityService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());

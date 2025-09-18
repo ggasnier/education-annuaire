@@ -3,7 +3,6 @@ package com.guillaumegasnier.education.shell.datasets.ips;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * num_ligne
@@ -57,21 +56,35 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString
-public class IPSLycee2023Dataset extends IPSLycee2022Dataset {
+public class IPSLycee2023Dataset implements IPSDataset {
+
+    private String categorie = "L";
+
+    @CsvBindByName(column = "UAI")
+    private String uai;
+
+    @CsvBindByName(column = "Rentrée scolaire")
+    private String rentreeScolaire;
 
     @CsvBindByName(column = "IPS de l'établissement")
-    protected String indice;
+    private String indice;
 
     @CsvBindByName(column = "Ecart-type établissement")
-    protected String ecartType;
+    private String ecartType;
 
+    @Override
+    public final int getAnnee() {
+        return Integer.parseInt(rentreeScolaire.substring(0, 4));
+    }
+
+    @Override
     public Double getIndice() {
-        if (indice == null) return null;
+        if (indice == null || indice.isBlank()) return null;
         if (indice.equals("NA") || indice.equals("NS")) return null;
         return Double.parseDouble(indice);
     }
 
+    @Override
     public Double getEcartType() {
         if (ecartType == null || ecartType.isBlank()) return null;
         if (ecartType.equals("NA") || ecartType.equals("NS")) return null;

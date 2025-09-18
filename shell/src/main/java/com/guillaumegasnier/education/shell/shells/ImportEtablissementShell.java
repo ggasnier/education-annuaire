@@ -2,6 +2,13 @@ package com.guillaumegasnier.education.shell.shells;
 
 public interface ImportEtablissementShell {
 
+    /**
+     * Import de tous les établissements
+     *
+     * @return Message
+     */
+    String importEtablissementsAll();
+
     String importEtablissementsEsr();
 
     String importEtablissementsEnOuverts();
@@ -27,4 +34,9 @@ public interface ImportEtablissementShell {
     String importSpecialites();
 
     String importSectionsBinationales();
+
+    String importIpsEcoles();
+
+    String importIpsColleges();
+
 }

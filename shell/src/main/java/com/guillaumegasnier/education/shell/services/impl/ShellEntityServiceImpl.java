@@ -49,7 +49,11 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     private <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityOld(@NonNull EtablissementEntity entity, @NonNull T dataset, @NonNull String source) {
-        // Ne mettre à jour les champs que si isl sont renseignés
+        // Ne mettre à jour les champs que si ils sont renseignés
+
+        if (dataset.getCodeNature() != null) {
+            coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
+        }
 
         if (dataset.getDateOuverture() != null)
             entity.setDateOuverture(dataset.getDateOuverture());
@@ -299,6 +303,23 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         if (violations.isEmpty()) {
             return entity;
         }
+
+        if (entity instanceof EtablissementEntity) {
+            return toValidEtablissementEntity(entity, violations);
+        } else {
+            for (ConstraintViolation<T> v : violations) {
+                log.warn("Validation failed on {}.{}: {} ({})",
+                        entity.getClass().getSimpleName(),
+                        v.getPropertyPath(),
+                        v.getMessage(),
+                        v.getInvalidValue());
+            }
+        }
+
+        return null;
+    }
+
+    private <T> T toValidEtablissementEntity(T entity, Set<ConstraintViolation<T>> violations) {
 
         for (ConstraintViolation<T> v : violations) {
             log.warn("Validation failed on {}.{}: {} ({})",
