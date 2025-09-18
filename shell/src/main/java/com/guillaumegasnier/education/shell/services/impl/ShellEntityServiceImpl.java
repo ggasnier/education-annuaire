@@ -55,6 +55,10 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
         }
 
+        if (dataset.getCodeContrat() != null) {
+            coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
+        }
+
         if (dataset.getDateOuverture() != null)
             entity.setDateOuverture(dataset.getDateOuverture());
 
@@ -296,6 +300,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
      * @param entity Entité JPA à valider
      * @return Résultat de la validation
      */
+    @Deprecated
     @Override
     public <T> T toValidEntity(@NonNull T entity) {
         Set<ConstraintViolation<T>> violations = validator.validate(entity);
@@ -303,23 +308,6 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         if (violations.isEmpty()) {
             return entity;
         }
-
-        if (entity instanceof EtablissementEntity) {
-            return toValidEtablissementEntity(entity, violations);
-        } else {
-            for (ConstraintViolation<T> v : violations) {
-                log.warn("Validation failed on {}.{}: {} ({})",
-                        entity.getClass().getSimpleName(),
-                        v.getPropertyPath(),
-                        v.getMessage(),
-                        v.getInvalidValue());
-            }
-        }
-
-        return null;
-    }
-
-    private <T> T toValidEtablissementEntity(T entity, Set<ConstraintViolation<T>> violations) {
 
         for (ConstraintViolation<T> v : violations) {
             log.warn("Validation failed on {}.{}: {} ({})",
