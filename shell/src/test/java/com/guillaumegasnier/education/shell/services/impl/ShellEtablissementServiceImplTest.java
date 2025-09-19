@@ -5,6 +5,7 @@ import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
+import com.guillaumegasnier.education.shell.services.ValidatorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,6 +26,8 @@ class ShellEtablissementServiceImplTest {
     private CoreEtablissementService coreEtablissementService;
     @Mock
     private ShellEntityService shellEntityService;
+    @Mock
+    private ValidatorService validatorService;
     @InjectMocks
     private ShellEtablissementServiceImpl service;
     private String uaiExiste = "0750683K";
