@@ -44,4 +44,6 @@ public interface CoreEtablissementService {
     List<SectionSportiveEntity> getSectionSportiveListByUai(String uai);
 
     List<IndicePositionSocialeEntity> getIPSListByUai(String uai);
+
+    EtablissementEntity saveEtablissement(EtablissementEntity entity);
 }
