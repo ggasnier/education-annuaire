@@ -121,7 +121,7 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
         List<IPSDataset> ipsEcoles = new ArrayList<>();
         ipsEcoles.addAll(fileService.importCSV(IPS_ECOLES_1));
         ipsEcoles.addAll(fileService.importCSV(IPS_ECOLES_2));
-        return shellEtablissementService.createOrUpdateIPSColleges(ipsEcoles);
+        return shellEtablissementService.createOrUpdateIPS(ipsEcoles, "E");
     }
 
     @Override
@@ -131,6 +131,6 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
         ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_1));
         ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_2));
         ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3));
-        return shellEtablissementService.createOrUpdateIPSColleges(ipsColleges);
+        return shellEtablissementService.createOrUpdateIPS(ipsColleges, "C");
     }
 }

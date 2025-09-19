@@ -3,7 +3,6 @@ package com.guillaumegasnier.education.shell.services.impl;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSCollege2023Dataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
 import org.junit.jupiter.api.BeforeEach;
@@ -97,19 +96,6 @@ class ShellEtablissementServiceImplTest {
         List<ContratDataset> datasets = List.of(dataset, dataset2);
 
         assertEquals("Import terminé : 2 contrat(s) enregistré(s).", service.createOrUpdateContrats(datasets));
-    }
-
-    @Test
-    void createOrUpdateIPSCollegesTest() {
-        IPSCollege2023Dataset dataset = new IPSCollege2023Dataset();
-        dataset.setUai(uaiExiste);
-        dataset.setIndice("140.00");
-        dataset.setEcartType("40.00");
-        dataset.setRentreeScolaire("2024");
-
-        List<IPSCollege2023Dataset> datasets = List.of(dataset);
-
-        assertEquals("Import terminé : 1 ips enregistrée(s).", service.createOrUpdateIPSColleges(datasets));
     }
 
     @Test

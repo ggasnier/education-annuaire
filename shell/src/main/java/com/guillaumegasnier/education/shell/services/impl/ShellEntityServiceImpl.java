@@ -274,7 +274,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
 
     @Nullable
     @Override
-    public IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset) {
+    public IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset, @NonNull String categorie) {
 
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
@@ -290,6 +290,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         IndicePositionSocialeEntity entity = new IndicePositionSocialeEntity();
         entity.setPk(pk);
         entity.setEtablissement(etablissementOpt.get());
+        entity.setCategorie(categorie);
         entity.setIndice(dataset.getIndice());
         entity.setEcartType(dataset.getEcartType());
 

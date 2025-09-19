@@ -21,10 +21,11 @@ public interface ShellEntityService {
 
     List<SectionInternationaleEntity> toSectionInternationaleEntity(@NonNull SectionInternationaleDataset dataset);
 
-    IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset);
+    IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset, @NonNull String categorie);
 
     LangueEntity toLangueEntity(@NonNull LangueDataset dataset);
 
+    @Deprecated
     <T> T toValidEntity(@NonNull T entity);
 
     SportEtudeEntity toSportEtudeEntity(@NonNull SectionSportEtudeDataset dataset);
