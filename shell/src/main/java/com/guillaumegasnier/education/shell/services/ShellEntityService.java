@@ -25,8 +25,5 @@ public interface ShellEntityService {
 
     LangueEntity toLangueEntity(@NonNull LangueDataset dataset);
 
-    @Deprecated
-    <T> T toValidEntity(@NonNull T entity);
-
     SportEtudeEntity toSportEtudeEntity(@NonNull SectionSportEtudeDataset dataset);
 }

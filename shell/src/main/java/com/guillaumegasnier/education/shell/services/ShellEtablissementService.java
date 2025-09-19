@@ -14,8 +14,6 @@ public interface ShellEtablissementService {
 
     String createOrUpdateContrats(@NonNull List<ContratDataset> datasets);
 
-//    String createOrUpdateIPSColleges(@NonNull List<? extends IPSDataset> datasets);
-
     String createOrUpdateIPS(@NonNull List<? extends IPSDataset> datasets, String categorie);
 
     String createOrUpdateSectionsSportives(@NonNull List<SectionSportiveDataset> datasets);
