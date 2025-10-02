@@ -8,6 +8,7 @@ import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
+import com.guillaumegasnier.education.shell.services.ValidatorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -25,11 +26,13 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     private final EtablissementMapper etablissementMapper;
     private final CoreEtablissementService coreEtablissementService;
     private final ShellEntityService shellEntityService;
+    private final ValidatorService validatorService;
 
-    public ShellEtablissementServiceImpl(EtablissementMapper etablissementMapper, CoreEtablissementService coreEtablissementService, ShellEntityService shellEntityService) {
+    public ShellEtablissementServiceImpl(EtablissementMapper etablissementMapper, CoreEtablissementService coreEtablissementService, ShellEntityService shellEntityService, ValidatorService validatorService) {
         this.etablissementMapper = etablissementMapper;
         this.coreEtablissementService = coreEtablissementService;
         this.shellEntityService = shellEntityService;
+        this.validatorService = validatorService;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         List<EtablissementEntity> etablissements = datasets.stream()
                 .flatMap(this::dedoublement)
                 .map(dataset -> shellEntityService.toEtablissementEntity(dataset, source))
-                .map(shellEntityService::toValidEntity)
+                .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList();
         coreEtablissementService.saveEtablissements(etablissements);
@@ -49,7 +52,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .flatMap(this::dedoublement)
                 .map(shellEntityService::toOptionEtablissementEntity)
                 .flatMap(List::stream)
-                .map(shellEntityService::toValidEntity)
+                .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList();
         coreEtablissementService.saveOptions(options);
@@ -107,11 +110,11 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
-    @Transactional
-    public String createOrUpdateIPSColleges(@NonNull List<? extends IPSDataset> datasets) {
+    public String createOrUpdateIPS(@NonNull List<? extends IPSDataset> datasets, String categorie) {
         coreEtablissementService.saveIPS(datasets.stream()
-                .map(shellEntityService::toIndicePositionSocialeEntity)
-                .map(shellEntityService::toValidEntity)
+                .map(ipsDataset -> shellEntityService.toIndicePositionSocialeEntity(ipsDataset, categorie))
+                .filter(Objects::nonNull)
+                .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
         return String.format("Import terminé : %d ips enregistrée(s).", datasets.size());
@@ -124,7 +127,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .stream()
                 .map(shellEntityService::toSectionSportiveEntity)
                 .flatMap(List::stream)
-                .map(shellEntityService::toValidEntity)
+                .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
         return String.format("Import terminé : %d sections sportives enregistrée(s).", datasets.size());
@@ -135,7 +138,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveSectionsSportEtudes(datasets
                 .stream()
                 .map(shellEntityService::toSportEtudeEntity)
-                .map(shellEntityService::toValidEntity)
+                .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
         return String.format("Import terminé : %d sections sport etudes enregistrée(s).", datasets.size());
@@ -147,7 +150,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveLangues(datasets
                 .stream()
                 .map(shellEntityService::toLangueEntity)
-                .map(shellEntityService::toValidEntity)
+                .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
         return String.format("Import terminé : %d langues enregistrée(s).", datasets.size());
@@ -160,7 +163,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .stream()
                 .map(shellEntityService::toSpecialiteEntity)
                 .flatMap(List::stream)
-                .map(shellEntityService::toValidEntity)
+                .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
         return String.format("Import terminé : %d specialités enregistrée(s).", datasets.size());
@@ -172,7 +175,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveSectionsInternationales(datasets.stream()
                 .map(shellEntityService::toSectionInternationaleEntity)
                 .flatMap(List::stream)
-                .map(shellEntityService::toValidEntity)
+                .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
         return String.format("Import terminé : %d sections internationale(s).", datasets.size());
@@ -185,7 +188,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .stream()
                 .map(shellEntityService::toOptionEtablissementEntity)
                 .filter(Objects::nonNull)
-                .map(shellEntityService::toValidEntity)
+                .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
         return String.format("Import terminé : %d sections binationale enregistrée(s).", datasets.size());

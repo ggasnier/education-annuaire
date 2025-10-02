@@ -132,7 +132,7 @@ public class RechercheServiceImpl implements RechercheService {
         List<FacetteRechercheDto> resultats = new ArrayList<>();
 
         for (Map.Entry<String, List<FacetteEntity>> entry : rechercheRepository.getFacettes(q).stream()
-                .filter(facetteEntity -> !facetteEntity.getCode().equals("code_commune"))
+                .filter(facetteEntity -> !facetteEntity.getCode().equals("CODE_COMMUNE"))
                 .collect(Collectors.groupingBy(FacetteEntity::getCode)).entrySet()) {
             String code = entry.getKey();
             List<FacetteEntity> list = entry.getValue();
@@ -150,7 +150,7 @@ public class RechercheServiceImpl implements RechercheService {
 
                         return valeurFacetteRecherche;
                     }
-            ).toList();
+            ).sorted(Comparator.comparing(ValeurFacetteRecherche::getTotal).reversed()).toList();
 
             facetteRechercheDto.setValeurs(valeurs);
             resultats.add(facetteRechercheDto);

@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.web.services;
 
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
+import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.web.dto.LangueDto;
 import com.guillaumegasnier.education.web.dto.etablissements.IPSDto;
 import com.guillaumegasnier.education.web.dto.etablissements.OptionDto;
@@ -20,4 +21,6 @@ public interface WebEtablissementService {
     List<SectionSportiveDto> getSectionSportiveListByUai(String uai);
 
     List<IPSDto> getIPSListByUai(String uai);
+
+    Optional<EtablissementDto> createEtablissement(EtablissementRequestDto dto);
 }

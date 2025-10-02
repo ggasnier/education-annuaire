@@ -10,8 +10,6 @@ import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -22,20 +20,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 @Service
 public class ShellEntityServiceImpl implements ShellEntityService {
 
-    private final Validator validator;
     private final CoreReferenceService coreReferenceService;
     private final CoreEtablissementService coreEtablissementService;
     private final EtablissementMapper etablissementMapper;
 
     @Autowired
-    public ShellEntityServiceImpl(Validator validator, CoreReferenceService coreReferenceService, CoreEtablissementService coreEtablissementService, EtablissementMapper etablissementMapper) {
-        this.validator = validator;
+    public ShellEntityServiceImpl(CoreReferenceService coreReferenceService, CoreEtablissementService coreEtablissementService, EtablissementMapper etablissementMapper) {
         this.coreReferenceService = coreReferenceService;
         this.coreEtablissementService = coreEtablissementService;
         this.etablissementMapper = etablissementMapper;
@@ -49,7 +44,15 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     private <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityOld(@NonNull EtablissementEntity entity, @NonNull T dataset, @NonNull String source) {
-        // Ne mettre à jour les champs que si isl sont renseignés
+        // Ne mettre à jour les champs que si ils sont renseignés
+
+        if (dataset.getCodeNature() != null) {
+            coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
+        }
+
+        if (dataset.getCodeContrat() != null) {
+            coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
+        }
 
         if (dataset.getDateOuverture() != null)
             entity.setDateOuverture(dataset.getDateOuverture());
@@ -266,7 +269,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
 
     @Nullable
     @Override
-    public IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset) {
+    public IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset, @NonNull String categorie) {
 
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
@@ -282,33 +285,11 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         IndicePositionSocialeEntity entity = new IndicePositionSocialeEntity();
         entity.setPk(pk);
         entity.setEtablissement(etablissementOpt.get());
+        entity.setCategorie(categorie);
         entity.setIndice(dataset.getIndice());
         entity.setEcartType(dataset.getEcartType());
 
         return entity;
-    }
-
-    /**
-     * @param entity Entité JPA à valider
-     * @return Résultat de la validation
-     */
-    @Override
-    public <T> T toValidEntity(@NonNull T entity) {
-        Set<ConstraintViolation<T>> violations = validator.validate(entity);
-
-        if (violations.isEmpty()) {
-            return entity;
-        }
-
-        for (ConstraintViolation<T> v : violations) {
-            log.warn("Validation failed on {}.{}: {} ({})",
-                    entity.getClass().getSimpleName(),
-                    v.getPropertyPath(),
-                    v.getMessage(),
-                    v.getInvalidValue());
-        }
-
-        return null;
     }
 
     @Nullable

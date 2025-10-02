@@ -25,8 +25,4 @@ public class IndicePositionSocialePK implements Serializable {
     @Column(columnDefinition = "VARCHAR(8)", length = 8)
     private String uai;
 
-    public IndicePositionSocialePK(String uai, int annee) {
-        this.uai = uai;
-        this.annee = annee;
-    }
 }

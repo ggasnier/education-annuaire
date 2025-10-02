@@ -4,13 +4,9 @@ import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Getter
 @Setter
-@ToString
 public class AcademieDataset implements Dataset {
 
     @CsvBindByName(column = "ACADEMIE_ET_ASSIMILE")

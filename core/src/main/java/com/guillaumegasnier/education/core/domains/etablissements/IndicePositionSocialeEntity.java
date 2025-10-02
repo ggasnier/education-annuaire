@@ -32,13 +32,6 @@ public class IndicePositionSocialeEntity extends AbstractEntity {
      */
     private Double ecartType;
 
-    public IndicePositionSocialeEntity() {
-        this.pk = new IndicePositionSocialePK();
-    }
-
-    public IndicePositionSocialeEntity(String uai, int annee) {
-        this.pk = new IndicePositionSocialePK(uai, annee);
-    }
 }
 
 

@@ -1,15 +1,14 @@
 package com.guillaumegasnier.education.shell.mappers;
 
-import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.lang.NonNull;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public abstract class EtablissementMapper {
@@ -30,16 +29,5 @@ public abstract class EtablissementMapper {
     @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
     public abstract ContratEntity toContratEntity(ContratDataset dataset);
-
-    @Mapping(target = "pk", source = "dataset", qualifiedByName = "toIndicePositionSocialePK")
-    @Mapping(target = "etablissement", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
-    @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
-    public abstract IndicePositionSocialeEntity toIndicePositionSocialeEntity(IPSDataset dataset);
-
-    @Named("toIndicePositionSocialePK")
-    public IndicePositionSocialePK toIndicePositionSocialePK(@NonNull IPSDataset dataset) {
-        return new IndicePositionSocialePK(dataset.getUai(), dataset.getAnnee());
-    }
 
 }
