@@ -2,6 +2,8 @@ package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.OptionEtablissementEntity;
+import com.guillaumegasnier.education.core.domains.recherche.DocumentEntity;
+import com.guillaumegasnier.education.core.services.CoreElasticService;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
@@ -25,12 +27,14 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     private final EtablissementMapper etablissementMapper;
     private final CoreEtablissementService coreEtablissementService;
+    private final CoreElasticService coreElasticService;
     private final ShellEntityService shellEntityService;
     private final ValidatorService validatorService;
 
-    public ShellEtablissementServiceImpl(EtablissementMapper etablissementMapper, CoreEtablissementService coreEtablissementService, ShellEntityService shellEntityService, ValidatorService validatorService) {
+    public ShellEtablissementServiceImpl(EtablissementMapper etablissementMapper, CoreEtablissementService coreEtablissementService, CoreElasticService coreElasticService, ShellEntityService shellEntityService, ValidatorService validatorService) {
         this.etablissementMapper = etablissementMapper;
         this.coreEtablissementService = coreEtablissementService;
+        this.coreElasticService = coreElasticService;
         this.shellEntityService = shellEntityService;
         this.validatorService = validatorService;
     }
@@ -117,7 +121,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
-        return String.format("Import terminé : %d ips enregistrée(s).", datasets.size());
+        return String.format("Import terminé : %d ips enregistré(s).", datasets.size());
     }
 
     @Override
@@ -192,6 +196,18 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .filter(Objects::nonNull)
                 .toList());
         return String.format("Import terminé : %d sections binationale enregistrée(s).", datasets.size());
+    }
+
+    @Override
+    public String createOrUpdateEtablissementsRecherche() {
+
+        List<DocumentEntity> entities = coreEtablissementService.findAll()
+                .stream()
+                .map(etablissementMapper::toDocumentEntity)
+                .toList();
+        coreElasticService.saveDocuments(entities);
+
+        return String.format("Import terminé : %d établissements enregistré(s).", entities.size());
     }
 
 }

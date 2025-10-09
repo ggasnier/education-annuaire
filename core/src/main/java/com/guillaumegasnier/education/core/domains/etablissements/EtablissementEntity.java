@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -83,6 +84,10 @@ public class EtablissementEntity extends AbstractEntity {
         Set<String> sourcesSet = getSources();
         sourcesSet.add(source);
         this.sources = String.join("|", sourcesSet);
+    }
+
+    public UUID getId() {
+        return UUID.nameUUIDFromBytes(uai.getBytes());
     }
 
 }

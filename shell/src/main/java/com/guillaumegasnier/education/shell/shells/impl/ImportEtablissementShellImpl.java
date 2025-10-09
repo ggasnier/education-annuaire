@@ -133,4 +133,10 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
         ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3));
         return shellEtablissementService.createOrUpdateIPS(ipsColleges, "C");
     }
+
+    @Override
+    @ShellMethod(value = "Import établissements dans ES")
+    public String importEtablissementsRecherche() {
+        return shellEtablissementService.createOrUpdateEtablissementsRecherche();
+    }
 }

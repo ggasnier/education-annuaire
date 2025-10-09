@@ -46,4 +46,6 @@ public interface CoreEtablissementService {
     List<IndicePositionSocialeEntity> getIPSListByUai(String uai);
 
     EtablissementEntity saveEtablissement(EtablissementEntity entity);
+
+    List<EtablissementEntity> findAll();
 }

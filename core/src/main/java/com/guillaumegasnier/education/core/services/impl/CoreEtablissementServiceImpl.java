@@ -117,6 +117,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    public List<EtablissementEntity> findAll() {
+        return etablissementRepository.findAll();
+    }
+
+    @Override
     public void saveSpecialites(List<SpecialiteEntity> entities) {
         specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les anciennes
     }

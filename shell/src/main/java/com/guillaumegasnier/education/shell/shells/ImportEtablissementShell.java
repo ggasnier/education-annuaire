@@ -39,4 +39,5 @@ public interface ImportEtablissementShell {
 
     String importIpsColleges();
 
+    String importEtablissementsRecherche();
 }
