@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:17
@@ -13,6 +11,32 @@ services:
     networks:
       - myapp-net
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - myapp-net
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.15.3
+    container_name: kibana
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - myapp-net
+
   web:
     image: ghcr.io/ggasnier/education-annuaire/web:latest
     restart: always
@@ -23,6 +47,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
     depends_on:
       - postgres
+      - elasticsearch
     networks:
       - myapp-net
 
@@ -36,6 +61,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
     depends_on:
       - postgres
+      - elasticsearch
     networks:
       - myapp-net
 
@@ -61,10 +87,12 @@ services:
     entrypoint: /bin/sh
     command: -c "trap exit TERM; while :; do certbot renew --webroot -w /var/www/html --quiet; sleep 12h; done"
     networks:
-      - app-net
+      - myapp-net
 
 volumes:
   db_data:
+  es_data:
+
 
 networks:
   myapp-net:

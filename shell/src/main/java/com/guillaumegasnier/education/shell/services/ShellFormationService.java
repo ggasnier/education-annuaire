@@ -1,9 +1,6 @@
 package com.guillaumegasnier.education.shell.services;
 
-import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationDataset;
-import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
-import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
 import org.springframework.lang.NonNull;
 
 import java.util.List;

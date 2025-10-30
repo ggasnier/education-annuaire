@@ -22,6 +22,21 @@ public class ImportFormationShellImpl implements ImportFormationShell {
     }
 
     @Override
+    @ShellMethod(value = "Import formations (CPF)")
+    public String importFormationsCpf() {
+        return shellFormationService.createOrUpdateFormationsCpf(fileService.importCSV(CPF_FORMATIONS));
+    }
+
+    @Override
+    @ShellMethod(value = "Import organismes de formation")
+    public String importOrganismesFormations() {
+        return "";
+    }
+
+    @Override
+    @ShellMethod(value = "Import formations Onisep IDF")
+    public String importFormationsOnisepIdf() {
+        return shellFormationService.createOrUpdateFormationsOnisepIdf();
     @ShellMethod("Import des formations CPF")
     public String importFormationsCPF() {
         return shellFormationService.createOrUpdateFormations(fileService.importCSV(FORMATIONS_CPF));
