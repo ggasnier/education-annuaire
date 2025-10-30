@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.enums;
 
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
+import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSGlobalDataset;
 import com.guillaumegasnier.education.shell.datasets.references.*;
 import lombok.Getter;
@@ -48,9 +49,11 @@ public enum SourcesDatasets {
     LANGUES("Offre de langues dans les collèges et lycées", "https://www.data.gouv.fr/api/1/datasets/r/60ca51e3-05b7-4b90-9433-ebbd68803f8c", null, StandardCharsets.UTF_8, ';', "GET", LangueDataset.class),
     BINATIONALES("Etablissements avec sections binationales (Abibac, Bachibac et Esabac)", "https://www.data.gouv.fr/api/1/datasets/r/b4856bda-e942-4ad9-b016-a64dd281b558", null, StandardCharsets.UTF_8, ',', "GET", SectionBinationaleDataset.class),
     SPECIALITES("Idéo-Enseignements de spécialité de première générale", "https://www.data.gouv.fr/api/1/datasets/r/2f4a36ad-b3fc-429d-92c1-6cd9c37cb900", null, StandardCharsets.UTF_8, ';', "GET", SpecialitePremiereDataset.class),
-    NULL(null, null, null, null, ',', null, null);
 
     // Formations
+    CPF_FORMATIONS("", "https://www.data.gouv.fr/api/1/datasets/r/205a72c5-725a-40c0-9c39-073454bdd553", "datasets/moncompteformation_catalogueformation.csv", StandardCharsets.UTF_8, ';', "GET", CPFFormationDataset.class),
+
+    NULL(null, null, null, null, ',', "GET", null);
 
     private final String nom;
     private final String url;
