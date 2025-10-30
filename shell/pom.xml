@@ -90,7 +90,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.14.1</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
@@ -135,24 +134,12 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <sources>
-                                <source>${project.basedir}/src/main/resources/xsd</source>
+                                <source>${project.basedir}/src/main/resources/xsd/lheo.xsd</source>
+                                <source>${project.basedir}/src/main/resources/xsd/rncp-rs-france-competence-v4.1.xsd
+                                </source>
                             </sources>
-                            <!-- Emplacement du XSD -->
-                            <!--                            <schemaDirectory>${project.basedir}/src/main/resources/xsd</schemaDirectory>-->
-                            <!--                            <schemas>-->
-                            <!--                                <schema>rncp-rs-france-competence-v4.1.xsd</schema>-->
-                            <!--                            </schemas>-->
-
-                            <!--                            &lt;!&ndash; package de sortie &ndash;&gt;-->
                             <packageName>com.guillaumegasnier.education.shell.datasets</packageName>
-
-                            <!--                            &lt;!&ndash; dossier de sortie (optionnel) &ndash;&gt;-->
                             <outputDirectory>${project.build.directory}/generated-sources/jaxb</outputDirectory>
-
-                            <!--                            &lt;!&ndash; options XJC si besoin &ndash;&gt;-->
-                            <!--                            <args>-->
-                            <!--                                &lt;!&ndash; par ex. pour générer des classes immuables/custom &ndash;&gt;-->
-                            <!--                            </args>-->
                         </configuration>
                     </execution>
                 </executions>

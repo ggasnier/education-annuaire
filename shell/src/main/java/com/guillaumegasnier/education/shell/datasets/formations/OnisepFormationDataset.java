@@ -48,7 +48,7 @@ public class OnisepFormationDataset implements Dataset {
     private String etablissementNomCommune;
     // Action de Formation
     @CsvBindByName(column = "Action de Formation (AF) identifiant Onisep")
-    private String actionFormationOnisepId;
+    private String actionFormationUrl;
     //ENS département
     //ENS académie
     //ENS région
@@ -102,7 +102,7 @@ public class OnisepFormationDataset implements Dataset {
     }
 
     public Integer getActionFormationOnisepId() {
-        return extractOnisepId(actionFormationOnisepId);
+        return extractOnisepId(actionFormationUrl);
     }
 
     public Integer getEtablissmentOnisepId() {

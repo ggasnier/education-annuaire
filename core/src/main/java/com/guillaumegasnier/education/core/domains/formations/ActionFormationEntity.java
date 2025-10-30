@@ -164,4 +164,6 @@ public class ActionFormationEntity extends AbstractEntity {
     private String organismeFormateur;
 
     private String organismeFinanceur;
+
+    private Integer onisepId;
 }

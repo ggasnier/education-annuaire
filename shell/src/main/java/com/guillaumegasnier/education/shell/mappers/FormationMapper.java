@@ -7,6 +7,7 @@ import com.guillaumegasnier.education.core.domains.formations.RomeEntity;
 import com.guillaumegasnier.education.shell.datasets.CODESROME;
 import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
+import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -43,6 +44,23 @@ public abstract class FormationMapper {
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
     @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
     public abstract FormationEntity toFormationEntity(OnisepFormationDataset dataset, EtablissementEntity etablissement);
+
+    @Mapping(target = "id", source = "formationId")
+    @Mapping(target = "onisepId", source = "formationOnisepId")
+    @Mapping(target = "nom", source = "formationNom")
+    @Mapping(target = "parcoursDeFormation", constant = "1")
+    @Mapping(target = "positionnement", ignore = true)
+    @Mapping(target = "objectif", ignore = true)
+    @Mapping(target = "identifiantModule", ignore = true)
+    @Mapping(target = "etablissement", ignore = true)
+    @Mapping(target = "contenu", ignore = true)
+    @Mapping(target = "codeNiveauEntree", ignore = true)
+    @Mapping(target = "resultats", ignore = true)
+    @Mapping(target = "certifications", ignore = true) // Ne pas mapper
+    @Mapping(target = "actions", ignore = true) // Ne pas mapper
+    @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
+    @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
+    public abstract FormationEntity toFormationEntity(OnisepFormationDataset dataset);
 
     @Mapping(target = "urlAction", ignore = true)
     @Mapping(target = "transport", ignore = true)
@@ -89,4 +107,6 @@ public abstract class FormationMapper {
     @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
     public abstract RomeEntity toRomeEntity(CODESROME.ROME rome);
+
+    public abstract FormationEntity toFormationEntity(ParcoursupFormationDataset parcoursupFormationDataset);
 }

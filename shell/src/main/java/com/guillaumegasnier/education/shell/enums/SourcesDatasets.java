@@ -5,6 +5,7 @@ import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationResponse;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
+import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSGlobalDataset;
 import com.guillaumegasnier.education.shell.datasets.references.*;
 import lombok.Getter;
@@ -56,19 +57,15 @@ public enum SourcesDatasets {
     SPECIALITES("Idéo-Enseignements de spécialité de première générale", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/2f4a36ad-b3fc-429d-92c1-6cd9c37cb900", "specialites.csv", StandardCharsets.UTF_8, ';', "GET", SpecialitePremiereDataset.class),
 
     //Certifications
-
     CERTIFICATIONS_RNCP("Répertoire national des certifications professionnelles et répertoire spécifique", FC, "", "export-fiches-rncp-v4-1-2025-10-23.zip", StandardCharsets.UTF_8, ',', "GET", null),
 
     // Formations
     FORMATIONS_CPF("Moncompteformation - L'offre de formation", CDC, "https://www.data.gouv.fr/api/1/datasets/r/205a72c5-725a-40c0-9c39-073454bdd553", "formations.csv", StandardCharsets.UTF_8, ';', "GET", CPFFormationDataset.class),
-    // parcourssup
-    
-    // carif oref
-    CARIF_FORMATIONS("Liste des formations", CARIF, "https://catalogue-apprentissage.intercariforef.org/api/v1/es/search/formation/", "formations.json", StandardCharsets.UTF_8, ',', "POST", CarifFormationResponse.class),
+    FORMATIONS_PARCOURSUP("Cartographie des formations Parcoursup", ESR, "https://www.data.gouv.fr/api/1/datasets/r/19e77c6b-9e90-4673-aaed-276b77ac9c69", "formations_parcoursup.csv", StandardCharsets.UTF_8, ';', "GET", ParcoursupFormationDataset.class),
+    FORMATIONS_CARIF("Liste des formations", CARIF, "https://catalogue-apprentissage.intercariforef.org/api/v1/es/search/formation/", "formations.json", StandardCharsets.UTF_8, ',', "POST", CarifFormationResponse.class),
+    FORMATIONS_ONISEP_ESR("Idéo-Actions de formation initiale-Univers enseignement supérieur", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/45f9fab2-adcd-49b1-8c9c-ef5d6ea90e9e", "formations_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepFormationDataset.class),
 
-    // ONISEP
-
-    AF_ONISEP_ESR("Idéo-Actions de formation initiale-Univers enseignement supérieur", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/b4d1eec0-5be8-4a2e-9a3d-02669d0bdc8e", "formations_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepFormationDataset.class),
+    // LHEO
 
     // Default
     NULL(null, AUTRE, null, null, null, ',', null, null);

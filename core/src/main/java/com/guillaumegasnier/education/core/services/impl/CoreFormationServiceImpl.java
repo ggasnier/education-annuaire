@@ -41,6 +41,11 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     }
 
     @Override
+    public void saveFormations(@NonNull List<FormationEntity> entities) {
+        formationRepository.saveAll(entities);
+    }
+
+    @Override
     public Optional<FormationEntity> findFormationByOnisepId(Integer onisepId) {
         return formationRepository.findByOnisepId(onisepId);
     }

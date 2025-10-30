@@ -54,18 +54,20 @@ public class LocalFileService implements FileService {
     }
 
     @Override
-    public <T extends Dataset> List<T> importCSV(@NonNull SourcesDatasets source) {
-        log.info("Début import {}", source.getLocalPath());
+    public <T extends Dataset> List<T> importCSV(@NonNull SourcesDatasets sourcesDatasets) {
+        log.info("Début import {}", sourcesDatasets.getLocalPath());
+
+        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
 
         List<T> result = new ArrayList<>();
         @SuppressWarnings("unchecked")
-        Class<T> clazz = (Class<T>) source.getDatasetClass();
+        Class<T> clazz = (Class<T>) sourcesDatasets.getDatasetClass();
 
-        openFile(source.getLocalPath(), source.getCharset(), null).ifPresentOrElse(reader -> {
+        openFile(String.valueOf(outPath), StandardCharsets.UTF_8, null).ifPresentOrElse(reader -> {
             try (reader) {
                 List<T> beans = new CsvToBeanBuilder<T>(reader)
                         .withType(clazz)
-                        .withSeparator(source.getSeparator())
+                        .withSeparator(',')
                         .build()
                         .parse();
 
@@ -74,20 +76,10 @@ public class LocalFileService implements FileService {
             } catch (Exception e) {
                 log.error("Erreur pendant le parsing CSV : {}", e.getMessage(), e);
             }
-        }, () -> log.error("Impossible de lire le fichier : {}", source.getLocalPath()));
+        }, () -> log.error("Impossible de lire le fichier : {}", outPath));
 
-        log.info("Fin import {}, lignes importées : {}", source.getLocalPath(), result.size());
+        log.info("Fin import {}, lignes importées : {}", outPath, result.size());
         return result;
-    }
-
-    @Override
-    public <T> void saveResultAsJson(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
-
-    }
-
-    @Override
-    public <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
-
     }
 
     @Override
@@ -102,7 +94,6 @@ public class LocalFileService implements FileService {
 
     @Override
     public FICHES importXmlFromZip(@NonNull SourcesDatasets source) {
-
         log.info("Début import {}", source.getLocalPath());
 
         JAXBContext jaxbContext = null;
@@ -118,40 +109,17 @@ public class LocalFileService implements FileService {
         }
 
         try (ZipFile zipFile = new ZipFile(source.getLocalPath())) {
-
             Enumeration<? extends ZipEntry> zipEnumeration = zipFile.entries();
 
             while (zipEnumeration.hasMoreElements()) {
                 ZipEntry zipEntry = zipEnumeration.nextElement();
                 try (InputStream inputStream = new BufferedInputStream(zipFile.getInputStream(zipEntry))) {
-
                     return (FICHES) jaxbContext.createUnmarshaller().unmarshal(inputStream);
-//                            JAXBElement < FICHES > unmarshalled = (JAXBElement<FICHES>) unmarshaller.unmarshal(JAXBContext context = JAXBContext.newInstance(Book.class););
-//                    return unmarshalled;
                 }
             }
         } catch (Exception e) {
             log.error("Erreur lors de l'ouverture du fichier zip {} : {}", source.getLocalPath(), e.getMessage(), e);
         }
-
-//        try (InputStream fis = Files.newInputStream(Path.of(source.getLocalPath()));
-//             ZipFile zipFile = new ZipFile(fis)) {
-//
-//            ZipEntry zipEntry;
-//            while ((zipEntry = zipFile.getNextEntry()) != null) {
-//                if (!zipEntry.isDirectory() && zipEntry.getName().toLowerCase().endsWith(".xml")) {
-//                    try {
-//                        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-//                        JAXBElement<FICHES> unmarshalled = unmarshaller.unmarshal(zipInputStream., FICHES.class);
-//                        zipInputStream.closeEntry();
-//                        return unmarshalled;
-//                    } catch (Exception e) {
-//                        throw new IOException("Erreur lors de l'unmarshal du fichier XML `" + zipEntry.getName() + "`", e);
-//                    }
-//                }
-//                zipInputStream.closeEntry();
-//            }
-//        }
 
         return null;
     }

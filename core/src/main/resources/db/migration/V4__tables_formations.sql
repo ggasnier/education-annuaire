@@ -117,6 +117,7 @@ CREATE TABLE formations_actions
     duree_conventionnee               VARCHAR(255),
     organisme_formateur               VARCHAR(255),
     organisme_financeur               VARCHAR(255),
+    onisep_id                         INTEGER,
     CONSTRAINT pk_formations_actions PRIMARY KEY (id)
 );
 

@@ -17,6 +17,12 @@ class OnisepFormationDatasetTest {
     @Test
     void getIdTest() {
         dataset.setFormationUrl("https://www.onisep.fr/http/redirection/formation/slug/FOR.270");
-        assertEquals(270, dataset.getActionFormationOnisepId());
+        assertEquals(270, dataset.getFormationOnisepId());
+    }
+
+    @Test
+    void getActionFormationOnisepId() {
+        dataset.setActionFormationUrl("AF.112647");
+        assertEquals(112647, dataset.getActionFormationOnisepId());
     }
 }

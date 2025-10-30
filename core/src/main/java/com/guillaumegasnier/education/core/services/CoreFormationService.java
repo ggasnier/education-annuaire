@@ -16,6 +16,8 @@ public interface CoreFormationService {
 
     void saveFormation(FormationEntity entity);
 
+    void saveFormations(@NonNull List<FormationEntity> entities);
+
     Optional<FormationEntity> findFormationByOnisepId(Integer onisepId);
 
     void saveRomes(List<RomeEntity> entities);

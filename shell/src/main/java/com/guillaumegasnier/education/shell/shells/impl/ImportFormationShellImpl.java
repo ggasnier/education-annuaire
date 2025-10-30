@@ -22,36 +22,39 @@ public class ImportFormationShellImpl implements ImportFormationShell {
     }
 
     @Override
-    @ShellMethod(value = "Import formations (CPF)")
-    public String importFormationsCpf() {
-        return shellFormationService.createOrUpdateFormationsCpf(fileService.importCSV(CPF_FORMATIONS));
-    }
-
-    @Override
     @ShellMethod(value = "Import organismes de formation")
     public String importOrganismesFormations() {
-        return "";
+        return "TODO";
     }
 
     @Override
-    @ShellMethod(value = "Import formations Onisep IDF")
-    public String importFormationsOnisepIdf() {
-        return shellFormationService.createOrUpdateFormationsOnisepIdf();
-    @ShellMethod("Import des formations CPF")
-    public String importFormationsCPF() {
-        return shellFormationService.createOrUpdateFormations(fileService.importCSV(FORMATIONS_CPF));
+    @ShellMethod(value = "Import formations (CPF)")
+    public String importFormationsCpf() {
+        return shellFormationService.createOrUpdateFormationsCpf(fileService.importCSV(FORMATIONS_CPF));
     }
 
     @Override
-    @ShellMethod("Import des formations Carif-Oref")
-    public String importFormationsCarif() {
-        return shellFormationService.createOrUpdateFormationsCarif(fileService.importCarifFormations(CARIF_FORMATIONS));
+    @ShellMethod("Import des formations Parcoursup")
+    public String importFormationsParcoursup() {
+        return shellFormationService.createOrUpdateFormationsParcoursup(fileService.importCSV(FORMATIONS_PARCOURSUP));
     }
 
     @Override
     @ShellMethod("Import des formations Onisep")
     public String importFormationsOnisepEsr() {
-        return shellFormationService.createOrUpdateFormationsOnisep(fileService.importCSV(AF_ONISEP_ESR));
+        return shellFormationService.createOrUpdateFormationsOnisepEsr(fileService.importCSV(FORMATIONS_ONISEP_ESR));
+    }
+
+    @Override
+    @ShellMethod(value = "Import formations Onisep au format LHEO")
+    public String importFormationsOnisepLheo() {
+        return shellFormationService.createOrUpdateFormationsOnisepLheo(null);
+    }
+
+    @Override
+    @ShellMethod("Import des formations Carif-Oref")
+    public String importFormationsCarif() {
+        return shellFormationService.createOrUpdateFormationsCarif(fileService.importCarifFormations(FORMATIONS_CARIF));
     }
 
     @Override
@@ -60,7 +63,7 @@ public class ImportFormationShellImpl implements ImportFormationShell {
         return shellFormationService.createOrUpdateCertificationsRncp(fileService.importXmlFromZip(CERTIFICATIONS_RNCP));
     }
 
-
+    // TODO
     @Override
     @ShellMethod("Import du répertoire spécifique")
     public String importRs() {
