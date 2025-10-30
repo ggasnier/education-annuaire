@@ -1,14 +1,18 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.SectionInternationale;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
+import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
+import com.guillaumegasnier.education.shell.mappers.FormationMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +31,17 @@ public class ShellEntityServiceImpl implements ShellEntityService {
 
     private final CoreReferenceService coreReferenceService;
     private final CoreEtablissementService coreEtablissementService;
+    private final CoreFormationService coreFormationService;
     private final EtablissementMapper etablissementMapper;
+    private final FormationMapper formationMapper;
 
     @Autowired
-    public ShellEntityServiceImpl(CoreReferenceService coreReferenceService, CoreEtablissementService coreEtablissementService, EtablissementMapper etablissementMapper) {
+    public ShellEntityServiceImpl(CoreReferenceService coreReferenceService, CoreEtablissementService coreEtablissementService, CoreFormationService coreFormationService, EtablissementMapper etablissementMapper, FormationMapper formationMapper) {
         this.coreReferenceService = coreReferenceService;
         this.coreEtablissementService = coreEtablissementService;
+        this.coreFormationService = coreFormationService;
         this.etablissementMapper = etablissementMapper;
+        this.formationMapper = formationMapper;
     }
 
     @Override
@@ -62,8 +70,8 @@ public class ShellEntityServiceImpl implements ShellEntityService {
 
         entity.setUpdatedAt(LocalDateTime.now());
 
-        if (dataset.getEtat() != null) {
-            entity.setEtat(dataset.getEtat());
+        if (dataset.isActif() != null) {
+            entity.setActif(dataset.isActif());
         }
 
         entity.addSource(source);
@@ -100,11 +108,6 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         }
         if (dataset.getCodeContrat() != null) {
             coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
-        }
-
-        // Ne renseigner l'état que si il est renseigné
-        if (dataset.getEtat() != null) {
-            entity.setEtat(dataset.getEtat());
         }
 
         entity.addSource(source);
@@ -317,5 +320,24 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         }
 
         return null;
+    }
+
+    @Override
+    public FormationEntity findFormationByOnisepId(OnisepFormationDataset dataset) {
+        var entity = coreFormationService.findFormationByOnisepId(dataset.getFormationOnisepId());
+
+        if (entity.isPresent()) {
+            return entity.get();
+            // TODO mise à jour
+        } else {
+            Optional<EtablissementEntity> etablissementEntityOpt = coreEtablissementService.findEtablissement(dataset.getEtablissementUai());
+            if (etablissementEntityOpt.isEmpty()) {
+                log.warn("Rien trouvé avec {}/{}/{}/{}", dataset.getEtablissementUai(), dataset.getEtablissmentOnisepId(), dataset.getEtablissementNom(), dataset.getEtablissementAdresse());
+                return null;
+            }
+            FormationEntity formationEntity = formationMapper.toFormationEntity(dataset, etablissementEntityOpt.get());
+            coreFormationService.saveFormation(formationEntity);
+            return formationEntity;
+        }
     }
 }

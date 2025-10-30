@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
 
@@ -21,6 +23,18 @@ public class ImportReferenceShellImpl implements ImportReferenceShell {
     public ImportReferenceShellImpl(ShellReferenceService shellReferenceService, FileService fileService) {
         this.shellReferenceService = shellReferenceService;
         this.fileService = fileService;
+    }
+
+    @Override
+    @ShellMethod(value = "Import toutes les références")
+    public String importAll() {
+        List<String> rapports = new ArrayList<>();
+        rapports.add(importPays());
+        rapports.add(importRegions());
+        rapports.add(importAcademies());
+        rapports.add(importDepartements());
+        rapports.add(importCommunes());
+        return rapports.toString();
     }
 
     @Override

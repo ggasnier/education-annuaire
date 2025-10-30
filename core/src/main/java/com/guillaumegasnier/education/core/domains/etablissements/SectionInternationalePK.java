@@ -17,7 +17,7 @@ import lombok.Setter;
 public class SectionInternationalePK {
 
     @ValidUai
-    @Column(columnDefinition = "VARCHAR(8)", length = 8)
+    @Column(columnDefinition = "BPCHAR(8)", length = 8)
     private String uai;
 
     @Enumerated(EnumType.STRING)

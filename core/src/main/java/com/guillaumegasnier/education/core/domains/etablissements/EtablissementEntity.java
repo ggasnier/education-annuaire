@@ -2,7 +2,6 @@ package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
-import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import jakarta.persistence.*;
@@ -22,24 +21,39 @@ import java.util.UUID;
 @Setter
 @Entity
 @DynamicUpdate
-@Table(name = "etablissements")
+@Table(name = "etablissements",
+        indexes = {@Index(name = "idx_uai_not_null", columnList = "uai")},
+        uniqueConstraints = {@UniqueConstraint(name = "unique_uai_not_null", columnNames = {"uai"})})
 public class EtablissementEntity extends AbstractEntity {
 
     @Id
+    @Column(columnDefinition = "UUID", nullable = false, updatable = false)
+    private UUID id;
+
+    /**
+     * Code UAI de l’organisme de formation/l'établissement scolaire
+     */
     @ValidUai
-    @Column(columnDefinition = "VARCHAR(8)", unique = true, updatable = false, nullable = false, length = 8)
+    @Column(columnDefinition = "BPCHAR(8)", length = 8, unique = true)
     private String uai;
 
+    /**
+     * Numéro SIRET de l’organisme de formation
+     */
     @ValidSiret
-    @Column(columnDefinition = "VARCHAR(14)", length = 14)
+    @Column(columnDefinition = "BPCHAR(14)", length = 14)
     private String siret;
+
+    /**
+     * Numéro de déclaration d’activité de l’organisme responsable de l’offre.
+     */
+    @Column(columnDefinition = "BPCHAR(11)", length = 11)
+    private String numeroDeclarationActivite;
 
     @NotBlank
     private String nom;
 
-    @Column(columnDefinition = "VARCHAR(1)", length = 1)
-    @Enumerated(EnumType.STRING)
-    private EtatEtablissement etat;
+    private Boolean actif;
 
     @Column
     private LocalDate dateOuverture;
@@ -61,7 +75,7 @@ public class EtablissementEntity extends AbstractEntity {
     @Column(columnDefinition = "VARCHAR(50)", length = 50)
     private String complement;
 
-    @Column(columnDefinition = "VARCHAR(5)", length = 5)
+    @Column(columnDefinition = "BPCHAR(5)", length = 5)
     private String codePostal;
 
     @ManyToOne
@@ -86,8 +100,8 @@ public class EtablissementEntity extends AbstractEntity {
         this.sources = String.join("|", sourcesSet);
     }
 
-    public UUID getId() {
-        return UUID.nameUUIDFromBytes(uai.getBytes());
-    }
+//    public UUID getId() {
+//        return UUID.nameUUIDFromBytes(uai.getBytes());
+//    }
 
 }

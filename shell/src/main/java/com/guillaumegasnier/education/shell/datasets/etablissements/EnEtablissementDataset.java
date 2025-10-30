@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
@@ -8,10 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Type_etablissement
@@ -180,6 +176,11 @@ public class EnEtablissementDataset implements EtablissementDataset {
     }
 
     @Override
+    public UUID getId() {
+        return UUID.nameUUIDFromBytes(uai.getBytes());
+    }
+
+    @Override
     public String getSiret() {
         if (siret == null) return null;
         if (siret.isBlank()) return null;
@@ -201,22 +202,8 @@ public class EnEtablissementDataset implements EtablissementDataset {
     }
 
     @Override
-    public EtatEtablissement getEtat() {
-        if (etat == null) {
-            return EtatEtablissement.O;
-        } else {
-            switch (etat) {
-                case "A FERMER" -> {
-                    return EtatEtablissement.C;
-                }
-                case "FERME" -> {
-                    return EtatEtablissement.F;
-                }
-                default -> {
-                    return EtatEtablissement.O;
-                }
-            }
-        }
+    public Boolean isActif() {
+        return true;
     }
 
     @Override

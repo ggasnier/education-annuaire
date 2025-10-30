@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.OptionEtablissementEntity;
 import com.guillaumegasnier.education.core.domains.recherche.DocumentEntity;
 import com.guillaumegasnier.education.core.services.CoreElasticService;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
@@ -12,10 +11,13 @@ import com.guillaumegasnier.education.shell.services.ShellEntityService;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +33,9 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     private final ShellEntityService shellEntityService;
     private final ValidatorService validatorService;
 
+    @Value("${spring.jpa.properties.hibernate.jdbc.batch_size}")
+    int chunk;
+
     public ShellEtablissementServiceImpl(EtablissementMapper etablissementMapper, CoreEtablissementService coreEtablissementService, CoreElasticService coreElasticService, ShellEntityService shellEntityService, ValidatorService validatorService) {
         this.etablissementMapper = etablissementMapper;
         this.coreEtablissementService = coreEtablissementService;
@@ -40,30 +45,57 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
-    @Transactional
+    public String createOrUpdateOrganismes(List<TravailOrganismeFormationDataset> datasets) {
+
+        datasets.forEach(dataset -> {
+
+            List<EtablissementEntity> etablissementEntities = coreEtablissementService.findEtablissementByNda(dataset.getNumeroDeclarationActivite());
+
+            if (etablissementEntities.isEmpty()) {
+                log.info("on n'a trouvé l'organisme : {}", dataset);
+            }
+
+        });
+
+        return String.format("Import terminé : %d organismes(s) traité(s).", datasets.size());
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public String createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source) {
+
+        long startTime = System.nanoTime();
+
         // Les établissements
-        List<EtablissementEntity> etablissements = datasets.stream()
-                .flatMap(this::dedoublement)
-                .map(dataset -> shellEntityService.toEtablissementEntity(dataset, source))
-                .map(validatorService::toValidEntity)
-                .filter(Objects::nonNull)
-                .toList();
-        coreEtablissementService.saveEtablissements(etablissements);
+        for (int i = 0; i < datasets.size(); i += chunk) {
+            List<? extends EtablissementDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
+            coreEtablissementService.saveEtablissements(sub.stream()
+                    .flatMap(this::dedoublement)
+                    .map(dataset -> shellEntityService.toEtablissementEntity(dataset, source))
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList());
 
-        // Les options
-        List<OptionEtablissementEntity> options = datasets.stream()
-                .flatMap(this::dedoublement)
-                .map(shellEntityService::toOptionEtablissementEntity)
-                .flatMap(List::stream)
-                .map(validatorService::toValidEntity)
-                .filter(Objects::nonNull)
-                .toList();
-        coreEtablissementService.saveOptions(options);
+            // Les options
+            coreEtablissementService.saveOptions(sub.stream()
+                    .flatMap(this::dedoublement)
+                    .map(shellEntityService::toOptionEtablissementEntity)
+                    .flatMap(List::stream)
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList());
 
-        // Les contacts
+            // Les contacts
+        }
 
-        return String.format("Import terminé : %d établissements(s) enregistrée(s).", datasets.size());
+        long endTime = System.nanoTime();
+        double totalTime = (endTime - startTime) / 1_000_000_000.00;
+        double vitesse = datasets.size() / totalTime;
+        var decimalFormat = new DecimalFormat("#.00");
+
+        log.info("Vitesse de traitement : {} etabs/s", decimalFormat.format(vitesse));
+
+        return String.format("Import terminé : %d établissements(s) traité(s).", datasets.size());
     }
 
     /**

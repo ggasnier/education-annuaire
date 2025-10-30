@@ -35,3 +35,4 @@ application-*.yml
 /src/main/frontend/node_modules/
 *.log
 /.env
+/datasets/

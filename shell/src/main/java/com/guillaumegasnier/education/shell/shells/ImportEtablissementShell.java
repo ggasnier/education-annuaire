@@ -19,6 +19,8 @@ public interface ImportEtablissementShell {
 
     String importEtablissementsOnisepSup();
 
+    String importOrganismes();
+
     String importNatures();
 
     String importContrats();

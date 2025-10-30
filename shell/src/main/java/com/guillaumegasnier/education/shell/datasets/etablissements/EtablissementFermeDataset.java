@@ -7,8 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 /**
  * numero_uai
@@ -90,8 +89,6 @@ public class EtablissementFermeDataset implements EtablissementDataset {
     @CsvBindByName(column = "date_fermeture")
     private String dateFermeture;
 
-    private List<ContactEtablissementDataset> contacts = new ArrayList<>();
-
     @Override
     public LocalDate getDateFermeture() {
         return LocalDate.parse(dateFermeture);
@@ -119,6 +116,11 @@ public class EtablissementFermeDataset implements EtablissementDataset {
     }
 
     @Override
+    public Boolean isActif() {
+        return false;
+    }
+
+    @Override
     public EtablissementDataset cloneWithSiret(String siret) {
         try {
             EtablissementFermeDataset copy = (EtablissementFermeDataset) this.clone();
@@ -127,6 +129,11 @@ public class EtablissementFermeDataset implements EtablissementDataset {
         } catch (CloneNotSupportedException e) {
             return null;
         }
+    }
+
+    @Override
+    public UUID getId() {
+        return UUID.nameUUIDFromBytes(uai.getBytes());
     }
 
 }

@@ -13,14 +13,14 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public abstract class WebEtablissementMapper {
 
+    @Mapping(target = "nomEtat", ignore = true)
+    @Mapping(target = "codeEtat", ignore = true)
     @Mapping(target = "codeContrat", source = "contrat.code")
     @Mapping(target = "nomContrat", source = "contrat.nom")
     @Mapping(target = "nomPays", ignore = true)
     @Mapping(target = "codePays", ignore = true)
     @Mapping(target = "nomNature", source = "nature.nom")
-    @Mapping(target = "nomEtat", source = "etat.nom")
     @Mapping(target = "codeNature", source = "nature.code")
-    @Mapping(target = "codeEtat", source = "etat")
     @Mapping(target = "codeCommune", source = "commune.code")
     @Mapping(target = "nomCommune", source = "commune.nom")
     @Mapping(target = "codeDepartement", source = "commune.departement.code")

@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * identifiant interne
@@ -162,7 +162,7 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     public String getNomCommune() {
         return nomCommune;
     }
-    
+
     // compte_flickr
     // compte_pinterest
     // flux_rss
@@ -221,21 +221,6 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     }
 
     @Override
-    public String getCodeNature() {
-        return null;
-    }
-
-    @Override
-    public String getCodeContrat() {
-        return null;
-    }
-
-    @Override
-    public EtatEtablissement getEtat() {
-        return null;
-    }
-
-    @Override
     public List<ContactEtablissementDataset> getContacts() {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 
@@ -286,6 +271,11 @@ public class EsrEtablissementDataset implements EtablissementDataset {
         } catch (CloneNotSupportedException e) {
             return null;
         }
+    }
+
+    @Override
+    public UUID getId() {
+        return UUID.nameUUIDFromBytes(uai.getBytes());
     }
 
 }
