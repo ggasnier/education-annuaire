@@ -13,7 +13,7 @@ import lombok.Setter;
 public class CommuneEntity extends AbstractEntity {
 
     @Id
-    @Column(columnDefinition = "VARCHAR(5)", length = 5, unique = true)
+    @Column(columnDefinition = "BPCHAR(5)", length = 5, unique = true)
     private String code;
 
     @NotBlank

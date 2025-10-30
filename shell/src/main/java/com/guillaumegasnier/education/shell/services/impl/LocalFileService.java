@@ -1,10 +1,14 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.shell.datasets.Dataset;
+import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
+import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.opencsv.bean.CsvToBeanBuilder;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
@@ -12,17 +16,18 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 @Slf4j
 @Service
@@ -76,8 +81,79 @@ public class LocalFileService implements FileService {
     }
 
     @Override
-    public List<CarifEtablissementDataset> importJsonCarif(@NonNull SourcesDatasets source) {
+    public <T> void saveResultAsJson(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
+
+    }
+
+    @Override
+    public <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
+
+    }
+
+    @Override
+    public List<CarifEtablissementDataset> importCarifEtablissements(@NonNull SourcesDatasets source) {
         return List.of();
+    }
+
+    @Override
+    public List<CarifFormationDataset> importCarifFormations(@NonNull SourcesDatasets source) {
+        return List.of();
+    }
+
+    @Override
+    public FICHES importXmlFromZip(@NonNull SourcesDatasets source) {
+
+        log.info("Début import {}", source.getLocalPath());
+
+        JAXBContext jaxbContext = null;
+        try {
+            jaxbContext = JAXBContext.newInstance(FICHES.class);
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (!Files.exists(Path.of(source.getLocalPath()))) {
+            log.error("Le fichier zip {} n'existe pas", source.getLocalPath());
+            return null;
+        }
+
+        try (ZipFile zipFile = new ZipFile(source.getLocalPath())) {
+
+            Enumeration<? extends ZipEntry> zipEnumeration = zipFile.entries();
+
+            while (zipEnumeration.hasMoreElements()) {
+                ZipEntry zipEntry = zipEnumeration.nextElement();
+                try (InputStream inputStream = new BufferedInputStream(zipFile.getInputStream(zipEntry))) {
+
+                    return (FICHES) jaxbContext.createUnmarshaller().unmarshal(inputStream);
+//                            JAXBElement < FICHES > unmarshalled = (JAXBElement<FICHES>) unmarshaller.unmarshal(JAXBContext context = JAXBContext.newInstance(Book.class););
+//                    return unmarshalled;
+                }
+            }
+        } catch (Exception e) {
+            log.error("Erreur lors de l'ouverture du fichier zip {} : {}", source.getLocalPath(), e.getMessage(), e);
+        }
+
+//        try (InputStream fis = Files.newInputStream(Path.of(source.getLocalPath()));
+//             ZipFile zipFile = new ZipFile(fis)) {
+//
+//            ZipEntry zipEntry;
+//            while ((zipEntry = zipFile.getNextEntry()) != null) {
+//                if (!zipEntry.isDirectory() && zipEntry.getName().toLowerCase().endsWith(".xml")) {
+//                    try {
+//                        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+//                        JAXBElement<FICHES> unmarshalled = unmarshaller.unmarshal(zipInputStream., FICHES.class);
+//                        zipInputStream.closeEntry();
+//                        return unmarshalled;
+//                    } catch (Exception e) {
+//                        throw new IOException("Erreur lors de l'unmarshal du fichier XML `" + zipEntry.getName() + "`", e);
+//                    }
+//                }
+//                zipInputStream.closeEntry();
+//            }
+//        }
+
+        return null;
     }
 
 }

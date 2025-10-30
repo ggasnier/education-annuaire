@@ -1,12 +1,11 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
+import java.util.UUID;
 
 /**
  * code UAI
@@ -106,33 +105,8 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     }
 
     @Override
-    public String getComplement() {
-        return null;
-    }
-
-    @Override
-    public String getCodePays() {
-        return null;
-    }
-
-    @Override
-    public String getCodeNature() {
-        return null;
-    }
-
-    @Override
-    public String getCodeContrat() {
-        return null;
-    }
-
-    @Override
-    public EtatEtablissement getEtat() {
-        return null;
-    }
-
-    @Override
-    public List<ContactEtablissementDataset> getContacts() {
-        return List.of();
+    public UUID getId() {
+        return UUID.nameUUIDFromBytes(uai.getBytes());
     }
 
 }

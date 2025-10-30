@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 
@@ -8,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 
 public interface EtablissementDataset extends Cloneable, Dataset {
@@ -16,15 +16,27 @@ public interface EtablissementDataset extends Cloneable, Dataset {
 
     EtablissementDataset cloneWithSiret(String siret);
 
-    String getUai();
+    UUID getId();
 
-    String getSiret();
+    default String getUai() {
+        return null;
+    }
+
+    default String getSiret() {
+        return null;
+    }
+
+    default String getNumeroDeclarationActivite() {
+        return null;
+    }
 
     String getNom();
 
     String getAdresse();
 
-    String getComplement();
+    default String getComplement() {
+        return null;
+    }
 
     String getCodePostal();
 
@@ -34,15 +46,25 @@ public interface EtablissementDataset extends Cloneable, Dataset {
         return null;
     }
 
-    String getCodePays();
+    default String getCodePays() {
+        return null;
+    }
 
-    String getCodeNature();
+    default String getCodeNature() {
+        return null;
+    }
 
-    String getCodeContrat();
+    default String getCodeContrat() {
+        return null;
+    }
 
-    EtatEtablissement getEtat();
+    default Boolean isActif() {
+        return null;
+    }
 
-    List<ContactEtablissementDataset> getContacts();
+    default List<ContactEtablissementDataset> getContacts() {
+        return Collections.emptyList();
+    }
 
     default LocalDate getDateOuverture() {
         return null;

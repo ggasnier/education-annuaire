@@ -11,4 +11,7 @@ public class FacetteRechercheDto {
     private String codeCategorie;
     private String nomCategorie;
     private List<ValeurFacetteRecherche> valeurs;
+
+    public FacetteRechercheDto(String key, long count) {
+    }
 }

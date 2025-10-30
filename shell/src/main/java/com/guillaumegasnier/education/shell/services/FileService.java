@@ -1,7 +1,9 @@
 package com.guillaumegasnier.education.shell.services;
 
 import com.guillaumegasnier.education.shell.datasets.Dataset;
+import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
+import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import org.springframework.lang.NonNull;
 
@@ -16,6 +18,19 @@ public interface FileService {
 
     <T extends Dataset> List<T> importCSV(@NonNull SourcesDatasets source);
 
-    List<CarifEtablissementDataset> importJsonCarif(@NonNull SourcesDatasets source);
+    /**
+     * Sauvegarde la liste de résultats dans un fichier JSON
+     */
+    <T> void saveResultAsJson(List<T> result, @NonNull SourcesDatasets sourcesDatasets);
 
+    /**
+     * Sauvegarde la liste de résultats dans un fichier CSV
+     */
+    <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets);
+
+    List<CarifEtablissementDataset> importCarifEtablissements(@NonNull SourcesDatasets source);
+
+    List<CarifFormationDataset> importCarifFormations(@NonNull SourcesDatasets source);
+
+    FICHES importXmlFromZip(@NonNull SourcesDatasets source);
 }

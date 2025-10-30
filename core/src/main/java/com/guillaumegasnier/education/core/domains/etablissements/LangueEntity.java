@@ -14,8 +14,7 @@ public class LangueEntity extends AbstractEntity {
     @EmbeddedId
     private LanguePK pk;
 
-    @MapsId("uai")
     @ManyToOne
-    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_langues_etablissements"))
+    @JoinColumn(name = "etablissement_id", foreignKey = @ForeignKey(name = "fk_langues_etablissements"), columnDefinition = "UUID", nullable = false)
     private EtablissementEntity etablissement;
 }

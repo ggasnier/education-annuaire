@@ -16,7 +16,7 @@ import lombok.Setter;
 public class AcademieEntity extends AbstractEntity {
 
     @Id
-    @Column(columnDefinition = "VARCHAR(2)", length = 2, unique = true)
+    @Column(columnDefinition = "BPCHAR(2)", length = 2, unique = true)
     private String code;
 
     @NotBlank

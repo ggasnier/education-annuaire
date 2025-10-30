@@ -16,7 +16,7 @@ import lombok.Setter;
 public class RegionEntity extends AbstractEntity {
 
     @Id
-    @Column(columnDefinition = "VARCHAR(2)", length = 2, unique = true, nullable = false)
+    @Column(columnDefinition = "BPCHAR(2)", length = 2, unique = true, nullable = false)
     private String code;
 
     @NotBlank
