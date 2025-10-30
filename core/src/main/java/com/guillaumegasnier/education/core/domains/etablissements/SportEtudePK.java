@@ -24,7 +24,7 @@ public class SportEtudePK implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ValidUai
-    @Column(columnDefinition = "VARCHAR(8)", length = 8)
+    @Column(columnDefinition = "BPCHAR(8)", length = 8)
     private String uai;
 
     @NotNull

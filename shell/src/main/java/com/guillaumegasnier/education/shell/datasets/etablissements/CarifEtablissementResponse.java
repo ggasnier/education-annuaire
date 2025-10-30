@@ -46,4 +46,5 @@ public class CarifEtablissementResponse {
         @JsonProperty("_source")
         private CarifEtablissementDataset source;
     }
+
 }

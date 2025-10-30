@@ -1,11 +1,20 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
+import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementResponse;
+import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
+import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationResponse;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import com.guillaumegasnier.education.shell.services.FileService;
+import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.bean.HeaderColumnNameMappingStrategy;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
@@ -16,18 +25,19 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 @Slf4j
 @Service
@@ -57,12 +67,6 @@ public class ProductionFileService implements FileService {
                     byte[] input = payload.getBytes(charset);
                     os.write(input, 0, input.length);
                 }
-
-//                int status = conn.getResponseCode();
-//                int contentLength = conn.getContentLength();
-//                String contentType = conn.getContentType();
-
-//                log.info("HTTP POST → [{}]: Code: {}, Taille: {}, Type: {}", url, status, contentLength, contentType);
 
                 rawInputStream = conn.getInputStream();
 
@@ -124,13 +128,14 @@ public class ProductionFileService implements FileService {
             }
         }, () -> log.error("Impossible de lire le fichier : {}", source.getUrl()));
 
+        saveResultAsCsv(result, source);
+
         log.info("Fin import {}, lignes importées : {}", source.getNom(), result.size());
         return result;
     }
 
     @Override
-    public List<CarifEtablissementDataset> importJsonCarif(@NonNull SourcesDatasets source) {
-
+    public List<CarifEtablissementDataset> importCarifEtablissements(@NonNull SourcesDatasets source) {
         log.info("Début import {}", source.getNom());
         log.info("URL {}", source.getUrl());
 
@@ -180,8 +185,188 @@ public class ProductionFileService implements FileService {
             }
         } while (totalRecupere != 0);
 
+        saveResultAsJson(etablissementDatasetList, source);
+
         log.info("Fin import {}, lignes importées : {}", source.getNom(), totalFetched);
 
         return etablissementDatasetList;
     }
+
+    @Override
+    public List<CarifFormationDataset> importCarifFormations(@NonNull SourcesDatasets source) {
+        log.info("Début import {}", source.getNom());
+        log.info("URL {}", source.getUrl());
+
+        String scrollId = null;
+        int totalFetched = 0;
+        int page = 1;
+        int totalRecupere = 0;
+        final String scrollDuration = "5m";
+        List<CarifFormationDataset> formationDatasetList = new ArrayList<>();
+
+        String body = """
+                {
+                  "query": {
+                    "bool": {
+                      "must": [
+                        {
+                          "bool": {
+                            "must": [
+                              {
+                                "term": {
+                                  "published": "true"
+                                }
+                              },
+                              {
+                                "bool": {
+                                  "should": [
+                                    {
+                                      "terms": {
+                                        "tags.keyword": [
+                                          "2027"
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                """;
+
+
+        do {
+            CarifFormationResponse response;
+            log.debug("Page : {}", page++);
+
+            if (scrollId == null) {
+                // 1er appel
+                response = restClient.post()
+                        .uri(source.getUrl() + "_search?scroll=" + scrollDuration)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .body(body)
+                        .retrieve()
+                        .body(CarifFormationResponse.class);
+            } else {
+                // appels suivants
+                response = restClient.post()
+                        .uri(String.format(source.getUrl() + "scroll?scroll=%s&scroll_id=%s", scrollDuration, URLEncoder.encode(scrollId, StandardCharsets.UTF_8)))
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .body(String.format("{\"scroll\": true,\"scroll_id\": \"%1$s\",\"activeQuery\":{\"scroll\": \"1m\",\"scroll_id\": \"%1$s\"}}", scrollId))
+                        .retrieve()
+                        .body(CarifFormationResponse.class);
+            }
+
+            try {
+                if (response != null) {
+                    scrollId = response.getScrollId();
+                    totalRecupere = response.getHits().getHits().size();
+                    for (CarifFormationResponse.Hit hit : response.getHits().getHits()) {
+                        formationDatasetList.add(hit.getSource());
+                    }
+                    totalFetched += totalRecupere;
+                } else {
+                    log.error("Response null");
+                    break;
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+        } while (totalRecupere != 0);
+
+        saveResultAsJson(formationDatasetList, source);
+
+        log.info("Fin import {}, lignes importées : {}", source.getNom(), totalFetched);
+
+        return formationDatasetList;
+    }
+
+    @Override
+    public FICHES importXmlFromZip(@NonNull SourcesDatasets source) {
+        return null;
+    }
+
+    @Override
+    public <T> void saveResultAsJson(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
+
+        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+
+        if (result == null || result.isEmpty()) {
+            log.warn("Aucun résultat à sauvegarder pour la source: {}", sourcesDatasets);
+            return;
+        }
+
+        try {
+            log.info("{}", outPath.getParent());
+            Files.createDirectories(outPath.getParent());
+            Files.createFile(outPath);
+        } catch (IOException e) {
+            log.error("Impossible de créer un fichier pour {}: {}", sourcesDatasets, e.getMessage());
+            return;
+        }
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+            objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS); // Désactiver l'erreur pour les beans vides
+            objectMapper.findAndRegisterModules(); // Pour supporter LocalDateTime, etc.
+
+            objectMapper.writeValue(outPath.toFile(), result);
+
+            log.info("Résultat sauvegardé dans : {}", outPath.toAbsolutePath());
+            log.info("Taille du fichier : {} Mo", Files.size(outPath) / 1024 / 1024);
+
+        } catch (IOException e) {
+            log.error("Erreur lors de la sauvegarde du fichier JSON : {}", e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
+
+        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+
+        if (result == null || result.isEmpty()) {
+            log.warn("Aucun résultat à sauvegarder pour la source: {}", sourcesDatasets);
+            return;
+        }
+
+        try {
+            Files.createDirectories(outPath.getParent());
+            Files.createFile(outPath);
+        } catch (IOException e) {
+            log.error("Impossible de créer un fichier pour {}: {}", sourcesDatasets, e.getMessage());
+            return;
+        }
+
+        // Déterminer la classe du bean depuis le premier élément
+        @SuppressWarnings("unchecked")
+        Class<T> clazz = (Class<T>) result.getFirst().getClass();
+
+        try {
+            Files.createDirectories(outPath.getParent());
+            try (Writer writer = Files.newBufferedWriter(outPath, StandardCharsets.UTF_8)) {
+                HeaderColumnNameMappingStrategy<T> mappingStrategy = new HeaderColumnNameMappingStrategy<>();
+                mappingStrategy.setType(clazz);
+
+                StatefulBeanToCsv<T> beanToCsv = new StatefulBeanToCsvBuilder<T>(writer)
+                        .withMappingStrategy(mappingStrategy)
+                        .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER) // ou CSVWriter.DEFAULT_QUOTE_CHARACTER
+                        .withSeparator(sourcesDatasets.getSeparator())
+                        .withOrderedResults(true)
+                        .build();
+
+                beanToCsv.write(result);
+                log.info("CSV écrit avec succès: {}", outPath.toAbsolutePath());
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException("Erreur lors de l'écriture du CSV: " + e.getMessage(), e);
+        }
+    }
+
 }

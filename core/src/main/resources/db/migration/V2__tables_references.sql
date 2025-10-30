@@ -6,7 +6,7 @@ SET client_encoding = 'UTF8';
 -- pays
 CREATE TABLE pays
 (
-    code VARCHAR(2)  NOT NULL,
+    code BPCHAR(2)    NOT NULL,
     nom  VARCHAR(50) NOT NULL,
     CONSTRAINT pk_pays PRIMARY KEY (code)
 );
@@ -14,7 +14,7 @@ CREATE TABLE pays
 -- regions
 CREATE TABLE regions
 (
-    code       VARCHAR(2)                  NOT NULL,
+    code       BPCHAR(2)                    NOT NULL,
     nom        VARCHAR(50)                 NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE regions
 -- academies
 CREATE TABLE academies
 (
-    code       VARCHAR(2)                  NOT NULL,
+    code       BPCHAR(2)                    NOT NULL,
     nom        VARCHAR(100)                NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -36,8 +36,8 @@ CREATE TABLE departements
 (
     code          VARCHAR(3)                  NOT NULL,
     nom           VARCHAR(50)                 NOT NULL,
-    code_region   VARCHAR(2),
-    code_academie VARCHAR(2),
+    code_region   BPCHAR(2),
+    code_academie BPCHAR(2),
     created_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_departements PRIMARY KEY (code)
@@ -52,10 +52,10 @@ ALTER TABLE departements
 -- communes
 CREATE TABLE communes
 (
-    code             VARCHAR(5)                  NOT NULL,
+    code             BPCHAR(5)                    NOT NULL,
     nom              VARCHAR(255)                NOT NULL,
-    code_pays        VARCHAR(2),
-    code_departement VARCHAR(3),
+    code_pays        BPCHAR(2),
+    code_departement BPCHAR(3),
     created_at       TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at       TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_communes PRIMARY KEY (code)

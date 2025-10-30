@@ -6,7 +6,12 @@ import org.springframework.lang.NonNull;
 import java.util.List;
 
 public interface ShellFormationService {
-    String createOrUpdateFormationsCpf(@NonNull List<CPFFormationDataset> datasets);
 
-    String createOrUpdateFormationsOnisepIdf();
+    String createOrUpdateFormations(@NonNull List<CPFFormationDataset> datasets);
+
+    String createOrUpdateFormationsOnisep(@NonNull List<OnisepFormationDataset> datasets);
+
+    String createOrUpdateCertificationsRncp(FICHES fiches);
+
+    String createOrUpdateFormationsCarif(@NonNull List<CarifFormationDataset> datasets);
 }

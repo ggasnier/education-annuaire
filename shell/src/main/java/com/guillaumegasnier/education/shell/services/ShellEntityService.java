@@ -1,7 +1,9 @@
 package com.guillaumegasnier.education.shell.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
+import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import org.springframework.lang.NonNull;
 
@@ -26,4 +28,6 @@ public interface ShellEntityService {
     LangueEntity toLangueEntity(@NonNull LangueDataset dataset);
 
     SportEtudeEntity toSportEtudeEntity(@NonNull SectionSportEtudeDataset dataset);
+
+    FormationEntity findFormationByOnisepId(OnisepFormationDataset dataset);
 }

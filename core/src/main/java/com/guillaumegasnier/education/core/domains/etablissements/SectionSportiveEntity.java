@@ -14,8 +14,7 @@ public class SectionSportiveEntity extends AbstractEntity {
     @EmbeddedId
     private SectionSportivePK pk;
 
-    @MapsId("uai")
     @ManyToOne
-    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_options_etablissements"))
+    @JoinColumn(name = "etablissement_id", foreignKey = @ForeignKey(name = "fk_sections_sportives_etablissements"), columnDefinition = "UUID", nullable = false)
     private EtablissementEntity etablissement;
 }

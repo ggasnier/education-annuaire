@@ -66,7 +66,6 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
             EtablissementEntity entity = new EtablissementEntity();
             entity.setUai(dto.getUai());
             entity.setNom(dto.getNom());
-            entity.setEtat(dto.getCodeEtat());
             entity.setAdresse(dto.getAdresse());
             entity.setComplement(dto.getComplement());
             entity.setCodePostal(dto.getCodePostal());

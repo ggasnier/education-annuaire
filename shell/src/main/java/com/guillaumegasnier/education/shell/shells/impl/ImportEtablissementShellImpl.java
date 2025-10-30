@@ -41,6 +41,8 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     @ShellMethod(value = "Import de tous les établissements")
     public String importEtablissementsAll() {
         List<String> rapports = new ArrayList<>();
+        rapports.add(importNatures());
+        rapports.add(importContrats());
         rapports.add(importEtablissementsEnOuverts());
         rapports.add(importEtablissementsEsr());
         rapports.add(importEtablissementsCarif());
@@ -58,13 +60,19 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     @Override
     @ShellMethod(value = "Import établissements (CARIF OREF)")
     public String importEtablissementsCarif() {
-        return shellEtablissementService.createOrUpdateEtablissements(fileService.importJsonCarif(CARIF_ETABS_OUVERTS), "carif");
+        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCarifEtablissements(CARIF_ETABS_OUVERTS), "carif");
     }
 
     @Override
     @ShellMethod(value = "Import établissements (ONISEP SUP)")
     public String importEtablissementsOnisepSup() {
         return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SUP), "onisep");
+    }
+
+    @Override
+    @ShellMethod(value = "Import Organismes de formations")
+    public String importOrganismes() {
+        return shellEtablissementService.createOrUpdateOrganismes(fileService.importCSV(TRAVAIL_ETABS));
     }
 
     @Override
@@ -132,5 +140,11 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
         ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_2));
         ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3));
         return shellEtablissementService.createOrUpdateIPS(ipsColleges, "C");
+    }
+
+    @Override
+    @ShellMethod(value = "Import établissements dans ES")
+    public String importEtablissementsRecherche() {
+        return shellEtablissementService.createOrUpdateEtablissementsRecherche();
     }
 }

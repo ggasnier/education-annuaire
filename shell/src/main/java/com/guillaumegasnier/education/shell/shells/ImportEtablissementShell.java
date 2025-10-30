@@ -19,6 +19,8 @@ public interface ImportEtablissementShell {
 
     String importEtablissementsOnisepSup();
 
+    String importOrganismes();
+
     String importNatures();
 
     String importContrats();
@@ -39,4 +41,5 @@ public interface ImportEtablissementShell {
 
     String importIpsColleges();
 
+    String importEtablissementsRecherche();
 }

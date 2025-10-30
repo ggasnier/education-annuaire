@@ -1,24 +1,37 @@
 package com.guillaumegasnier.education.web.dto;
 
+import com.guillaumegasnier.education.core.domains.recherche.DocumentEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.UUID;
+import java.util.List;
 
 @Data
 @Schema(name = "ResultatRecherche")
 public class ResultatRechercheDto {
 
-    private UUID id;
-    private String nom;
-    private String categorie;
-    private String key;
-    private Map<String, String> informations;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Double score;
-    private Integer total;
+//    private UUID id;
+//    private String nom;
+//    private String categorie;
+//    private String key;
+//    private Map<String, String> informations;
+//    private LocalDateTime createdAt;
+//    private LocalDateTime updatedAt;
+//    private Double score;
+//    private Integer total;
+
+    private final List<DocumentEntity> results;
+    private final long totalElements;
+    private final int page;
+    private final int size;
+    private final long totalPages;
+
+    public ResultatRechercheDto(List<DocumentEntity> results, long totalElements, int page, int size) {
+        this.results = results;
+        this.totalElements = totalElements;
+        this.page = page;
+        this.size = size;
+        this.totalPages = (long) Math.ceil((double) totalElements / (double) size);
+    }
 
 }

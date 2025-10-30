@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 @Validated
@@ -27,12 +28,12 @@ public class ApiRechercheImpl implements ApiRechercheController {
     }
 
     @Override
-    public ResponseEntity<List<ResultatRechercheDto>> getResultatRecherche(@RequestParam MultiValueMap<String, String> facettes) {
+    public ResponseEntity<ResultatRechercheDto> getResultatRecherche(@RequestParam MultiValueMap<String, String> facettes) {
         return ResponseEntity.ok(rechercheService.recherche(facettes));
     }
 
     @Override
-    public ResponseEntity<List<FacetteRechercheDto>> getFacetteRecherche(@RequestParam MultiValueMap<String, String> facettes) {
+    public ResponseEntity<List<FacetteRechercheDto>> getFacetteRecherche(@RequestParam MultiValueMap<String, String> facettes) throws IOException {
         return ResponseEntity.ok(rechercheService.facette(facettes));
     }
 }

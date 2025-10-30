@@ -14,12 +14,11 @@ public class IndicePositionSocialeEntity extends AbstractEntity {
     @EmbeddedId
     private IndicePositionSocialePK pk;
 
-    @MapsId("uai")
     @ManyToOne
-    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_ips_etablissements"))
+    @JoinColumn(name = "etablissement_id", foreignKey = @ForeignKey(name = "fk_ips_etablissements"), columnDefinition = "UUID", nullable = false)
     private EtablissementEntity etablissement;
 
-    @Column(columnDefinition = "VARCHAR(1)")
+    @Column(columnDefinition = "BPCHAR(1)")
     private String categorie;
 
     /**

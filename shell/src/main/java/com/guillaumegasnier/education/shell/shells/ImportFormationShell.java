@@ -7,4 +7,15 @@ public interface ImportFormationShell {
     String importOrganismesFormations();
 
     String importFormationsOnisepIdf();
+  
+    String importFormationsCPF();
+
+    String importFormationsCarif();
+
+    String importFormationsOnisepEsr();
+
+    String importRncp();
+
+    String importRs();
+
 }

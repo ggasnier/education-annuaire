@@ -4,11 +4,14 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.repositories.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.validations.ValidUai;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -29,6 +32,9 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final OptionEtablissementRepository optionEtablissementRepository;
     private final SportEtudeRepository sportEtudeRepository;
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Autowired
     public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository, SectionSportiveRepository sectionSportiveRepository, LangueRepository langueRepository, OptionEtablissementRepository optionEtablissementRepository, SportEtudeRepository sportEtudeRepository) {
         this.etablissementRepository = etablissementRepository;
@@ -44,8 +50,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveEtablissements(@NonNull List<EtablissementEntity> entities) {
         etablissementRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 
     @Override
@@ -63,10 +72,10 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         indicePositionSocialeRepository.saveAll(entities);
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<EtablissementEntity> findEtablissement(@ValidUai String uai) {
-        return etablissementRepository.findById(uai);
+        return etablissementRepository.findByUai(uai);
     }
 
     @Override
@@ -117,6 +126,16 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    public List<EtablissementEntity> findAll() {
+        return etablissementRepository.findAll();
+    }
+
+    @Override
+    public List<EtablissementEntity> findEtablissementByNda(String numeroDeclarationActivite) {
+        return etablissementRepository.findByNumeroDeclarationActivite(numeroDeclarationActivite);
+    }
+
+    @Override
     public void saveSpecialites(List<SpecialiteEntity> entities) {
         specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les anciennes
     }
@@ -137,7 +156,10 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveOptions(List<OptionEtablissementEntity> entities) {
         optionEtablissementRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 }

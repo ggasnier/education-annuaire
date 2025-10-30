@@ -27,6 +27,12 @@ public interface CoreEtablissementService {
 
     void saveOptions(List<OptionEtablissementEntity> entities);
 
+    /**
+     * Recherche d'un établissment par son UAI
+     *
+     * @param uai Unité administrative immatriculée
+     * @return Etablissment ou organisme de formation
+     */
     Optional<EtablissementEntity> findEtablissement(@ValidUai String uai);
 
     Optional<NatureEntity> findNature(String codeNature);
@@ -46,4 +52,9 @@ public interface CoreEtablissementService {
     List<IndicePositionSocialeEntity> getIPSListByUai(String uai);
 
     EtablissementEntity saveEtablissement(EtablissementEntity entity);
+
+    List<EtablissementEntity> findAll();
+
+    List<EtablissementEntity> findEtablissementByNda(String numeroDeclarationActivite);
+
 }

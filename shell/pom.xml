@@ -58,6 +58,19 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+        <!-- API JAXB (Jakarta) -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
+        <!-- Implémentation/runtime JAXB (GlassFish) -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>4.0.3</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -124,8 +137,22 @@
                             <sources>
                                 <source>${project.basedir}/src/main/resources/xsd</source>
                             </sources>
-                            <packageName>com.guillaumegasnier.education.shell.datasets.lheo</packageName>
+                            <!-- Emplacement du XSD -->
+                            <!--                            <schemaDirectory>${project.basedir}/src/main/resources/xsd</schemaDirectory>-->
+                            <!--                            <schemas>-->
+                            <!--                                <schema>rncp-rs-france-competence-v4.1.xsd</schema>-->
+                            <!--                            </schemas>-->
+
+                            <!--                            &lt;!&ndash; package de sortie &ndash;&gt;-->
+                            <packageName>com.guillaumegasnier.education.shell.datasets</packageName>
+
+                            <!--                            &lt;!&ndash; dossier de sortie (optionnel) &ndash;&gt;-->
                             <outputDirectory>${project.build.directory}/generated-sources/jaxb</outputDirectory>
+
+                            <!--                            &lt;!&ndash; options XJC si besoin &ndash;&gt;-->
+                            <!--                            <args>-->
+                            <!--                                &lt;!&ndash; par ex. pour générer des classes immuables/custom &ndash;&gt;-->
+                            <!--                            </args>-->
                         </configuration>
                     </execution>
                 </executions>

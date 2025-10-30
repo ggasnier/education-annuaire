@@ -4,7 +4,14 @@ import com.guillaumegasnier.education.core.domains.etablissements.EtablissementE
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface EtablissementRepository extends JpaRepository<EtablissementEntity, String> {
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+@Repository
+public interface EtablissementRepository extends JpaRepository<EtablissementEntity, UUID> {
+
+    Optional<EtablissementEntity> findByUai(String uai);
+
+    List<EtablissementEntity> findByNumeroDeclarationActivite(String numeroDeclarationActivite);
 }

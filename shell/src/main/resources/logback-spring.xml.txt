@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <!-- Couleurs lisibles dans IntelliJ -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <property name="LOG_PATTERN"
+              value="%clr(%d{HH:mm:ss.SSS}){faint} %clr([%t]){cyan} %clr(%-5level) %clr(%logger{40}){magenta} - %msg%n"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Niveau global -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- Logs Spring Transaction -->
+    <logger name="org.springframework.transaction" level="TRACE"/>
+    <logger name="org.springframework.orm.jpa" level="DEBUG"/>
+    <logger name="org.hibernate.engine.transaction.internal.TransactionImpl" level="DEBUG"/>
+
+    <!-- Logs SQL -->
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+
+</configuration>

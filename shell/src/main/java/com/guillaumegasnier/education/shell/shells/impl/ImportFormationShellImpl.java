@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
-import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.CPF_FORMATIONS;
+import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
 
 @ShellComponent
 public class ImportFormationShellImpl implements ImportFormationShell {
@@ -37,5 +37,33 @@ public class ImportFormationShellImpl implements ImportFormationShell {
     @ShellMethod(value = "Import formations Onisep IDF")
     public String importFormationsOnisepIdf() {
         return shellFormationService.createOrUpdateFormationsOnisepIdf();
+    @ShellMethod("Import des formations CPF")
+    public String importFormationsCPF() {
+        return shellFormationService.createOrUpdateFormations(fileService.importCSV(FORMATIONS_CPF));
+    }
+
+    @Override
+    @ShellMethod("Import des formations Carif-Oref")
+    public String importFormationsCarif() {
+        return shellFormationService.createOrUpdateFormationsCarif(fileService.importCarifFormations(CARIF_FORMATIONS));
+    }
+
+    @Override
+    @ShellMethod("Import des formations Onisep")
+    public String importFormationsOnisepEsr() {
+        return shellFormationService.createOrUpdateFormationsOnisep(fileService.importCSV(AF_ONISEP_ESR));
+    }
+
+    @Override
+    @ShellMethod("Import des certifications professionnelles")
+    public String importRncp() {
+        return shellFormationService.createOrUpdateCertificationsRncp(fileService.importXmlFromZip(CERTIFICATIONS_RNCP));
+    }
+
+
+    @Override
+    @ShellMethod("Import du répertoire spécifique")
+    public String importRs() {
+        return "";
     }
 }
