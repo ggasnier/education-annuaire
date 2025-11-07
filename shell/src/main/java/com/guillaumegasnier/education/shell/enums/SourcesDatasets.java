@@ -47,6 +47,9 @@ public enum SourcesDatasets {
     IPS_COLLEGES_2("IPS Collèges (2022)", EN, "https://www.data.gouv.fr/api/1/datasets/r/28e511a7-af0d-48c7-a8bb-2f38ec003f49", "ips_colleges_2022.csv", StandardCharsets.UTF_8, ';', "GET", IPSGlobalDataset.class),
     IPS_COLLEGES_3("IPS Collèges (2016 - 2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/b63bd365-c589-48e4-b7d8-9e4f5db133c5", "ips_colleges_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSGlobalDataset.class),
     // Lycées
+    IPS_LYCEES_1("IPS Lycées (depuis 2023)", EN, "https://www.data.gouv.fr/api/1/datasets/r/08a3919f-9dab-4c2a-9a1b-2d9922dc14b1", "ips_lycees_2023.csv", StandardCharsets.UTF_8, ';', "GET", IPSGlobalDataset.class),
+    IPS_LYCEES_2("IPS Lycées (2022)", EN, "https://www.data.gouv.fr/api/1/datasets/r/df2cbcb3-da0a-4265-a24e-c36f2c787db2", "ips_lycees_2022.csv", StandardCharsets.UTF_8, ';', "GET", IPSGlobalDataset.class),
+    IPS_LYCEES_3("IPS Lycées (2016 - 2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/27d469ff-9908-4b7e-a2e0-9439bb38a395", "ips_lycees_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSGlobalDataset.class),
 
     // Compléments
     SECTIONS_SPORTIVES("Sections Sportives Scolaires", EN, "https://www.data.gouv.fr/api/1/datasets/r/c479b9b8-8224-46ef-b2f4-f6a3468726fc", "sections_sportives.csv", StandardCharsets.UTF_8, ';', "GET", SectionSportiveDataset.class),
@@ -54,7 +57,7 @@ public enum SourcesDatasets {
     SECTIONS_INTERNATIONALES("Sections internationales", EN, "https://www.data.gouv.fr/api/1/datasets/r/877befc2-2b3c-4e27-902b-abcf7f1e800f", "sections-internationales.csv", StandardCharsets.UTF_8, ';', "GET", SectionInternationaleDataset.class),
     LANGUES("Offre de langues dans les collèges et lycées", EN, "https://www.data.gouv.fr/api/1/datasets/r/60ca51e3-05b7-4b90-9433-ebbd68803f8c", "langues.csv", StandardCharsets.UTF_8, ';', "GET", LangueDataset.class),
     BINATIONALES("Etablissements avec sections binationales (Abibac, Bachibac et Esabac)", AUTRE, "https://www.data.gouv.fr/api/1/datasets/r/b4856bda-e942-4ad9-b016-a64dd281b558", "sections_binationales.csv", StandardCharsets.UTF_8, ',', "GET", SectionBinationaleDataset.class),
-    SPECIALITES("Idéo-Enseignements de spécialité de première générale", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/2f4a36ad-b3fc-429d-92c1-6cd9c37cb900", "specialites.csv", StandardCharsets.UTF_8, ';', "GET", SpecialitePremiereDataset.class),
+    SPECIALITES("Idéo-Enseignements de spécialité de première générale", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/69fca5c6-f392-480b-9a8a-2fd043206d2f", "specialites.csv", StandardCharsets.UTF_8, ';', "GET", SpecialitePremiereDataset.class),
 
     //Certifications
     CERTIFICATIONS_RNCP("Répertoire national des certifications professionnelles et répertoire spécifique", FC, "", "export-fiches-rncp-v4-1-2025-10-23.zip", StandardCharsets.UTF_8, ',', "GET", null),
