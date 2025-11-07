@@ -133,6 +133,8 @@ public class EnEtablissementDataset implements EtablissementDataset {
     private String lyceeDesMetiers;
     @CsvBindByName(column = "Post_BAC")
     private String postBac;
+    @CsvBindByName(column = "Appartenance_Education_Prioritaire")
+    private String educationPrioritaire;
 
     @Override
     public String getNomCommune() {
@@ -204,6 +206,12 @@ public class EnEtablissementDataset implements EtablissementDataset {
     @Override
     public Boolean isActif() {
         return true;
+    }
+
+    @Override
+    public String getEducationPrioritaire() {
+        if (educationPrioritaire == null || educationPrioritaire.isBlank()) return null;
+        return educationPrioritaire;
     }
 
     @Override

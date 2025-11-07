@@ -37,6 +37,9 @@
             <li><span>Contrat:</span> <span th:text="${etablissement.nomContrat}"></span> (<span
                     th:text="${etablissement.codeContrat}"></span>)
             </li>
+            <li><span>Education prioritaire:</span> <span th:text="${etablissement.educationPrioritaire}"></span> (<span
+                    th:text="${etablissement.educationPrioritaire}"></span>)
+            </li>
         </ul>
     </section>
 
@@ -54,8 +57,18 @@
     </section>
 
     <section class="bg-white shadow p-4 mb-4" th:if="${options.size() > 0}">
+        <h2 class="text-xl font-semibold mb-4">Option(s)</h2>
+
         <th:block th:each="option : ${options}">
             <div th:text="${option.nom}"></div>
+        </th:block>
+    </section>
+
+    <section class="bg-white shadow p-4 mb-4" th:if="${specialites.size() > 0}">
+        <h2 class="text-xl font-semibold mb-4">Spécialités du BAC</h2>
+
+        <th:block th:each="specialite : ${specialites}">
+            <div th:text="${specialite.nom}"></div>
         </th:block>
     </section>
 

@@ -74,6 +74,10 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             entity.setActif(dataset.isActif());
         }
 
+        if (dataset.getEducationPrioritaire() != null) {
+            entity.setEducationPrioritaire(dataset.getEducationPrioritaire());
+        }
+
         entity.addSource(source);
 
         return entity;

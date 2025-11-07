@@ -85,6 +85,14 @@ public class EtablissementEntity extends AbstractEntity {
     @Column(name = "sources", columnDefinition = "VARCHAR(50)", length = 50)
     private String sources;
 
+    @Column(name = "education_prioritaire", columnDefinition = "BPCHAR(4)")
+    private String educationPrioritaire;
+
+    public NatureEntity getNature() {
+        if (nature == null) return new NatureEntity("$", "Non renseigné");
+        return nature;
+    }
+
     public Set<String> getSources() {
         if (sources == null || sources.isBlank()) return new HashSet<>();
         return new HashSet<>(Arrays.asList(sources.split("\\|")));
@@ -99,9 +107,5 @@ public class EtablissementEntity extends AbstractEntity {
         sourcesSet.add(source);
         this.sources = String.join("|", sourcesSet);
     }
-
-//    public UUID getId() {
-//        return UUID.nameUUIDFromBytes(uai.getBytes());
-//    }
 
 }

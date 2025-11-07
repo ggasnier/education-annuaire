@@ -54,6 +54,10 @@ public interface EtablissementDataset extends Cloneable, Dataset {
         return null;
     }
 
+    default String getEducationPrioritaire() {
+        return null;
+    }
+
     default String getCodeContrat() {
         return null;
     }
