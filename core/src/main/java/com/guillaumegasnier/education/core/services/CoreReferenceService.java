@@ -28,5 +28,9 @@ public interface CoreReferenceService {
 
     Optional<CommuneEntity> findCommuneByNom(String nomCommune);
 
+    Optional<DepartementEntity> findDepartement(String code);
+
     PaysEntity getPays(String codePays);
+
+    List<DepartementEntity> getDepartements();
 }

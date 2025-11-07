@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+<main class="max-w-7xl mx-auto">
+    <section class="bg-white shadow p-4 mb-4">
+        <header class="mb-8">
+            <h1 class="text-3xl font-semibold" th:text="${title}">Academies</h1>
+        </header>
+
+        <div class="grid grid-cols-4 gap-4">
+            <div class="" th:each="aw : ${academies}">
+                <h2 class="text-2xl pb-3" th:text="${aw.academie.nom}">Nom Académie</h2>
+                <ul class="">
+                    <li class="" th:each="dep : ${aw.departements}">
+                        <a class="" th:href="@{|/departements/${dep.code}|}"><span th:text="${dep.nom}"></span> (<span
+                                th:text="${dep.code}"></span>)</a>
+                    </li>
+                </ul>
+            </div><!--each-->
+        </div>
+    </section>
+</main>
+</body>
+</html>

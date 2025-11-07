@@ -143,6 +143,16 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     }
 
     @Override
+    @ShellMethod(value = "Import IPS Lycées")
+    public String importIpsLycees() {
+        List<IPSDataset> ipsLycees = new ArrayList<>();
+        ipsLycees.addAll(fileService.importCSV(IPS_LYCEES_1));
+        ipsLycees.addAll(fileService.importCSV(IPS_LYCEES_2));
+        ipsLycees.addAll(fileService.importCSV(IPS_LYCEES_3));
+        return shellEtablissementService.createOrUpdateIPS(ipsLycees, "L");
+    }
+
+    @Override
     @ShellMethod(value = "Import établissements dans ES")
     public String importEtablissementsRecherche() {
         return shellEtablissementService.createOrUpdateEtablissementsRecherche();

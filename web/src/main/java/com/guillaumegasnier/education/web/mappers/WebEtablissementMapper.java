@@ -1,14 +1,18 @@
 package com.guillaumegasnier.education.web.mappers;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
+import com.guillaumegasnier.education.core.enums.SpecialiteBac;
+import com.guillaumegasnier.education.web.dto.CommuneDto;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.LangueDto;
-import com.guillaumegasnier.education.web.dto.etablissements.IPSDto;
-import com.guillaumegasnier.education.web.dto.etablissements.OptionDto;
-import com.guillaumegasnier.education.web.dto.etablissements.SectionSportiveDto;
+import com.guillaumegasnier.education.web.dto.etablissements.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public abstract class WebEtablissementMapper {
@@ -35,10 +39,15 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "code", source = "pk.option")
     public abstract OptionDto toOptionDto(OptionEtablissementEntity enity);
 
+    public SpecialiteBac toSpecialiteBac(SpecialiteEntity entity) {
+        return entity.getPk().getSpecialite();
+    }
+
     @Mapping(target = "nom", source = "pk.langue.nom")
     @Mapping(target = "niveau", source = "pk.enseignement")
     @Mapping(target = "code", source = "pk.langue")
     public abstract LangueDto toLangueDto(LangueEntity entity);
+
 
     @Mapping(target = "nom", source = "pk.sport.nom")
     @Mapping(target = "code", source = "pk.sport")
@@ -50,5 +59,48 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "valeur", source = "indice")
     @Mapping(target = "annee", source = "pk.annee")
     public abstract IPSDto toIndicePositionSocialeEntity(IndicePositionSocialeEntity entity);
+
+
+    public List<NatureWithEtablissementsDto> groupbyNature(List<EtablissementEntity> etablissements) {
+        if (etablissements == null) return Collections.emptyList();
+
+        Map<NatureEntity, List<EtablissementEntity>> grouped = etablissements.stream()
+                .filter(e -> e != null && e.getNature() != null)
+                .collect(Collectors.groupingBy(EtablissementEntity::getNature, LinkedHashMap::new, Collectors.toList()));
+
+        return grouped.entrySet().stream()
+                .map(entry -> {
+                    NatureDto natureDto = toNatureDto(entry.getKey());
+                    List<EtablissementDto> etablissementDtoList = entry.getValue().stream()
+                            .filter(Objects::nonNull)
+                            .map(this::toEtablissementDto)
+                            .collect(Collectors.toList());
+                    return new NatureWithEtablissementsDto(natureDto, etablissementDtoList);
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<CommuneWithEtablissementsDto> groupByCommune(List<EtablissementEntity> etablissements) {
+        if (etablissements == null) return Collections.emptyList();
+
+        Map<CommuneEntity, List<EtablissementEntity>> grouped = etablissements.stream()
+                .filter(e -> e != null && e.getCommune() != null)
+                .collect(Collectors.groupingBy(EtablissementEntity::getCommune, LinkedHashMap::new, Collectors.toList()));
+
+        return grouped.entrySet().stream()
+                .map(entry -> {
+                    CommuneDto communeDto = toCommuneDto(entry.getKey());
+                    List<EtablissementDto> etablissementDtoList = entry.getValue().stream()
+                            .filter(Objects::nonNull)
+                            .map(this::toEtablissementDto)
+                            .collect(Collectors.toList());
+                    return new CommuneWithEtablissementsDto(communeDto, etablissementDtoList);
+                })
+                .collect(Collectors.toList());
+    }
+
+    public abstract CommuneDto toCommuneDto(CommuneEntity key);
+
+    public abstract NatureDto toNatureDto(NatureEntity key);
 
 }

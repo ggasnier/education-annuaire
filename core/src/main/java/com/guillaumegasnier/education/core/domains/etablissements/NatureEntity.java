@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -16,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "natures")
 public class NatureEntity extends AbstractEntity {
 
@@ -27,4 +29,9 @@ public class NatureEntity extends AbstractEntity {
     private String nom;
 
     private String nomCourt;
+
+    public NatureEntity(String code, String nom) {
+        this.code = code;
+        this.nom = nom;
+    }
 }

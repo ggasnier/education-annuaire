@@ -57,4 +57,9 @@ public interface CoreEtablissementService {
 
     List<EtablissementEntity> findEtablissementByNda(String numeroDeclarationActivite);
 
+    List<EtablissementEntity> findEtablissementListByDepartement(String code);
+
+    List<SpecialiteEntity> getSpecialiteListByUai(String uai);
+
+    List<EtablissementEntity> findEtablissementListByCommune(String code);
 }

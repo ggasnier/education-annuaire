@@ -186,6 +186,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveLangues(datasets
                 .stream()
                 .map(shellEntityService::toLangueEntity)
+                .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());

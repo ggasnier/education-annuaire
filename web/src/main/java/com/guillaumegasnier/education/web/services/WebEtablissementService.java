@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.web.services;
 
+import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.web.dto.LangueDto;
@@ -15,6 +16,8 @@ public interface WebEtablissementService {
     Optional<EtablissementDto> findEtablissementByUai(String uai);
 
     List<OptionDto> getOptionListByUai(String uai);
+
+    List<SpecialiteBac> getSpecialiteListByUai(String uai);
 
     List<LangueDto> getLangueListByUai(String uai);
 

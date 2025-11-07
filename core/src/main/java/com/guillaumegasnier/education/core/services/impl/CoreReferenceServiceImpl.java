@@ -86,8 +86,18 @@ public class CoreReferenceServiceImpl implements CoreReferenceService {
     }
 
     @Override
+    public Optional<DepartementEntity> findDepartement(String code) {
+        return departementRepository.findById(code);
+    }
+
+    @Override
     public PaysEntity getPays(String codePays) {
         return paysRepository.getReferenceById(codePays);
+    }
+
+    @Override
+    public List<DepartementEntity> getDepartements() {
+        return departementRepository.findAllByOrderByAcademieNomAscNomAsc();
     }
 
     @Override

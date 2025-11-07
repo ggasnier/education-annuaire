@@ -136,6 +136,21 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    public List<EtablissementEntity> findEtablissementListByDepartement(String code) {
+        return etablissementRepository.findAllByCommuneDepartementCode(code);
+    }
+
+    @Override
+    public List<SpecialiteEntity> getSpecialiteListByUai(String uai) {
+        return specialiteRepository.findAllByPkUai(uai);
+    }
+
+    @Override
+    public List<EtablissementEntity> findEtablissementListByCommune(String code) {
+        return etablissementRepository.findAllByCommuneCodeOrderByNatureAscNomAsc(code);
+    }
+
+    @Override
     public void saveSpecialites(List<SpecialiteEntity> entities) {
         specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les anciennes
     }

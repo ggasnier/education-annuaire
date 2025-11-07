@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.web.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
@@ -42,6 +43,11 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
     @Override
     public List<OptionDto> getOptionListByUai(String uai) {
         return coreEtablissementService.getOptionListByUai(uai).stream().map(webEtablissementMapper::toOptionDto).toList();
+    }
+
+    @Override
+    public List<SpecialiteBac> getSpecialiteListByUai(String uai) {
+        return coreEtablissementService.getSpecialiteListByUai(uai).stream().map(webEtablissementMapper::toSpecialiteBac).toList();
     }
 
     @Override

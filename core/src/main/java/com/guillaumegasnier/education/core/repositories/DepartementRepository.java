@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface DepartementRepository extends JpaRepository<DepartementEntity, String> {
     List<DepartementEntity> findAllByOrderByCode();
+
+    List<DepartementEntity> findAllByOrderByAcademieNomAscNomAsc();
 }
