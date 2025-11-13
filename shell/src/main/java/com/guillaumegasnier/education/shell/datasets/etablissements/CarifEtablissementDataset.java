@@ -333,7 +333,6 @@ public class CarifEtablissementDataset extends CarifDataset implements Etablisse
         else if (numeroDeclarationActivite != null)
             return UUID.nameUUIDFromBytes(numeroDeclarationActivite.getBytes());
         else {
-
             return null;
         }
     }

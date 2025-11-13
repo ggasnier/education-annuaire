@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
+import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Deprecated
 @Table(name = "etablissements_ips")
-public class IndicePositionSocialeEntity extends AbstractEntity {
+public class IndicePositionSocialeEntity extends AbstractEntity implements IndicePositionSociale {
 
     @EmbeddedId
     private IndicePositionSocialePK pk;

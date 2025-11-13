@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
+@Deprecated
 public class EquivalentTempsPleinPK implements Serializable {
 
     @Serial

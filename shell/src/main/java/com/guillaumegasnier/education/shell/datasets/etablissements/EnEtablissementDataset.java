@@ -137,11 +137,6 @@ public class EnEtablissementDataset implements EtablissementDataset {
     private String educationPrioritaire;
 
     @Override
-    public String getNomCommune() {
-        return nomCommune;
-    }
-
-    @Override
     public LocalDate getDateOuverture() {
         if (dateOuverture == null) return null;
         return LocalDate.parse(dateOuverture);

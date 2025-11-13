@@ -38,6 +38,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Deprecated
 @Table(name = "etablissements_etp")
 public class EquivalentTempsPleinEntity {
 
