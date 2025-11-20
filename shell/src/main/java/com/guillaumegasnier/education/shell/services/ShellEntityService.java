@@ -30,4 +30,6 @@ public interface ShellEntityService {
     SportEtudeEntity toSportEtudeEntity(@NonNull SectionSportEtudeDataset dataset);
 
     FormationEntity findFormationByOnisepId(OnisepFormationDataset dataset);
+
+    OrganismeEntity toOrganismeEntity(@NonNull TravailOrganismeFormationDataset dataset);
 }

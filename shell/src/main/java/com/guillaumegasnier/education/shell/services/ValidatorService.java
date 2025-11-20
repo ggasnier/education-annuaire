@@ -20,4 +20,6 @@ public interface ValidatorService {
     SportEtudeEntity toValidEntity(@NonNull SportEtudeEntity entity);
 
     SectionSportiveEntity toValidEntity(@NonNull SectionSportiveEntity entity);
+
+    OrganismeEntity toValidEntity(@NonNull OrganismeEntity entity);
 }

@@ -1,9 +1,9 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.core.domains.recherche.DocumentEntity;
 import com.guillaumegasnier.education.core.services.CoreElasticService;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
@@ -32,30 +32,31 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     private final CoreElasticService coreElasticService;
     private final ShellEntityService shellEntityService;
     private final ValidatorService validatorService;
+    private final CoreReferenceService coreReferenceService;
 
     @Value("${spring.jpa.properties.hibernate.jdbc.batch_size}")
     int chunk;
 
-    public ShellEtablissementServiceImpl(EtablissementMapper etablissementMapper, CoreEtablissementService coreEtablissementService, CoreElasticService coreElasticService, ShellEntityService shellEntityService, ValidatorService validatorService) {
+    public ShellEtablissementServiceImpl(EtablissementMapper etablissementMapper, CoreEtablissementService coreEtablissementService, CoreElasticService coreElasticService, ShellEntityService shellEntityService, ValidatorService validatorService, CoreReferenceService coreReferenceService) {
         this.etablissementMapper = etablissementMapper;
         this.coreEtablissementService = coreEtablissementService;
         this.coreElasticService = coreElasticService;
         this.shellEntityService = shellEntityService;
         this.validatorService = validatorService;
+        this.coreReferenceService = coreReferenceService;
     }
 
     @Override
-    public String createOrUpdateOrganismes(List<TravailOrganismeFormationDataset> datasets) {
+    public String createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets) {
 
-        datasets.forEach(dataset -> {
-
-            List<EtablissementEntity> etablissementEntities = coreEtablissementService.findEtablissementByNda(dataset.getNumeroDeclarationActivite());
-
-            if (etablissementEntities.isEmpty()) {
-                log.info("on n'a trouvé l'organisme : {}", dataset);
-            }
-
-        });
+        for (int i = 0; i < datasets.size(); i += chunk) {
+            List<? extends TravailOrganismeFormationDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
+            coreEtablissementService.saveOrganismes(sub.stream()
+                    .map(shellEntityService::toOrganismeEntity)
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList());
+        }
 
         return String.format("Import terminé : %d organismes(s) traité(s).", datasets.size());
     }

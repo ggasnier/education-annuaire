@@ -35,6 +35,8 @@ public interface CoreEtablissementService {
      */
     Optional<EtablissementEntity> findEtablissement(@ValidUai String uai);
 
+    Optional<OrganismeEntity> findOrganisme(String nda);
+
     Optional<NatureEntity> findNature(String codeNature);
 
     Optional<ContratEntity> findContrat(String codeContrat);
@@ -62,4 +64,8 @@ public interface CoreEtablissementService {
     List<SpecialiteEntity> getSpecialiteListByUai(String uai);
 
     List<EtablissementEntity> findEtablissementListByCommune(String code);
+
+    void saveOrganisme(OrganismeEntity entity);
+
+    void saveOrganismes(List<OrganismeEntity> entities);
 }

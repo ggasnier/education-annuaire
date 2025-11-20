@@ -28,6 +28,8 @@ public interface CoreReferenceService {
 
     Optional<CommuneEntity> findCommuneByNom(String nomCommune);
 
+    Optional<CommuneEntity> findCommuneByNomAndCodeRegion(String nomCommune, String codeRegion);
+
     Optional<DepartementEntity> findDepartement(String code);
 
     PaysEntity getPays(String codePays);

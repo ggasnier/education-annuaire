@@ -31,12 +31,13 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final LangueRepository langueRepository;
     private final OptionEtablissementRepository optionEtablissementRepository;
     private final SportEtudeRepository sportEtudeRepository;
+    private final OrganismeRepository organismeRepository;
 
     @PersistenceContext
     private EntityManager em;
 
     @Autowired
-    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository, SectionSportiveRepository sectionSportiveRepository, LangueRepository langueRepository, OptionEtablissementRepository optionEtablissementRepository, SportEtudeRepository sportEtudeRepository) {
+    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository, SectionSportiveRepository sectionSportiveRepository, LangueRepository langueRepository, OptionEtablissementRepository optionEtablissementRepository, SportEtudeRepository sportEtudeRepository, OrganismeRepository organismeRepository) {
         this.etablissementRepository = etablissementRepository;
         this.natureRepository = natureRepository;
         this.contratRepository = contratRepository;
@@ -47,6 +48,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         this.langueRepository = langueRepository;
         this.optionEtablissementRepository = optionEtablissementRepository;
         this.sportEtudeRepository = sportEtudeRepository;
+        this.organismeRepository = organismeRepository;
     }
 
     @Override
@@ -76,6 +78,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<EtablissementEntity> findEtablissement(@ValidUai String uai) {
         return etablissementRepository.findByUai(uai);
+    }
+
+    @Override
+    public Optional<OrganismeEntity> findOrganisme(String nda) {
+        return organismeRepository.findById(nda);
     }
 
     @Override
@@ -148,6 +155,16 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Override
     public List<EtablissementEntity> findEtablissementListByCommune(String code) {
         return etablissementRepository.findAllByCommuneCodeOrderByNatureAscNomAsc(code);
+    }
+
+    @Override
+    public void saveOrganisme(OrganismeEntity entity) {
+        organismeRepository.save(entity);
+    }
+
+    @Override
+    public void saveOrganismes(List<OrganismeEntity> entities) {
+        organismeRepository.saveAll(entities);
     }
 
     @Override

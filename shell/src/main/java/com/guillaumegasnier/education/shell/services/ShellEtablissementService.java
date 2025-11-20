@@ -30,5 +30,5 @@ public interface ShellEtablissementService {
 
     String createOrUpdateEtablissementsRecherche();
 
-    String createOrUpdateOrganismes(List<TravailOrganismeFormationDataset> datasets);
+    String createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets);
 }

@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.guillaumegasnier.education.shell.mappers.DateMapper.toLocalDate;
+
 @Slf4j
 @Service
 public class ShellEntityServiceImpl implements ShellEntityService {
@@ -343,5 +345,30 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             coreFormationService.saveFormation(formationEntity);
             return formationEntity;
         }
+    }
+
+    @Override
+    public OrganismeEntity toOrganismeEntity(@NonNull TravailOrganismeFormationDataset dataset) {
+        return coreEtablissementService.findOrganisme(dataset.getNumeroDeclarationActivite())
+                .map(organismeEntity -> toOrganismeEntityOld(organismeEntity, dataset))
+                .orElseGet(() -> toOrganismeEntityNew(dataset));
+    }
+
+    private OrganismeEntity toOrganismeEntityNew(TravailOrganismeFormationDataset dataset) {
+        var o = etablissementMapper.toOrganismeEntity(dataset);
+        coreReferenceService.findCommuneByNom(dataset.getNomCommune()).ifPresent(o::setCommune);
+        return o;
+    }
+
+    private OrganismeEntity toOrganismeEntityOld(OrganismeEntity organismeEntity, TravailOrganismeFormationDataset dataset) {
+        organismeEntity.setActionsDeFormation(dataset.getActionsDeFormation());
+        organismeEntity.setBilansDeCompetences(dataset.getBilansDeCompetences());
+        organismeEntity.setValidationAcquisExperience(dataset.getValidationAcquisExperience());
+        organismeEntity.setActionsDeFormationParApprentissage(dataset.getActionsDeFormationParApprentissage());
+        organismeEntity.setDateDebut(toLocalDate(dataset.getDateDebut()));
+        organismeEntity.setDateFin(toLocalDate(dataset.getDateFin()));
+        organismeEntity.setDateDerniereDeclaration(toLocalDate(dataset.getDateDerniereDeclaration()));
+
+        return organismeEntity;
     }
 }

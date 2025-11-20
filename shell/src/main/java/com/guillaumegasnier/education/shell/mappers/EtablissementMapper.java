@@ -3,15 +3,17 @@ package com.guillaumegasnier.education.shell.mappers;
 import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.recherche.DocumentEntity;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.TravailOrganismeFormationDataset;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN, uses = {DateMapper.class})
 public abstract class EtablissementMapper {
 
     @Mapping(target = "nature", ignore = true)
@@ -42,4 +44,12 @@ public abstract class EtablissementMapper {
     @Mapping(target = "codeCommune", source = "commune.code")
     public abstract DocumentEntity toDocumentEntity(EtablissementEntity etablissementEntity);
 
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "specialites", ignore = true)
+    @Mapping(target = "nda", source = "numeroDeclarationActivite")
+    @Mapping(target = "dateCertificationQualiopi", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "commune", ignore = true)
+    @Mapping(target = "certificationQualiopi", ignore = true)
+    public abstract OrganismeEntity toOrganismeEntity(TravailOrganismeFormationDataset dataset);
 }

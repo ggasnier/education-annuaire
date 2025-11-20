@@ -81,4 +81,9 @@ public class ValidatorServiceImpl implements ValidatorService {
     public SectionSportiveEntity toValidEntity(@NonNull SectionSportiveEntity entity) {
         return toValidEntity(entity, SectionSportiveEntity.class);
     }
+
+    @Override
+    public OrganismeEntity toValidEntity(@NonNull OrganismeEntity entity) {
+        return toValidEntity(entity, OrganismeEntity.class);
+    }
 }

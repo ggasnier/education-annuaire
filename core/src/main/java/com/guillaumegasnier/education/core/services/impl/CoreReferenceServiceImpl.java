@@ -77,12 +77,19 @@ public class CoreReferenceServiceImpl implements CoreReferenceService {
 
     @Override
     public Optional<CommuneEntity> findCommuneByNom(String nomCommune) {
+        if (nomCommune != null && nomCommune.isBlank())
+            return Optional.empty();
         try {
-            return communeRepository.findByNom(nomCommune);
+            return communeRepository.findByNomIgnoreCase(nomCommune);
         } catch (IncorrectResultSizeDataAccessException e) {
-            log.warn("Trop de résultats pour la commune {}", nomCommune);
+            log.debug("Trop de résultats pour la commune {}", nomCommune);
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<CommuneEntity> findCommuneByNomAndCodeRegion(String nomCommune, String codeRegion) {
+        return Optional.empty();
     }
 
     @Override
