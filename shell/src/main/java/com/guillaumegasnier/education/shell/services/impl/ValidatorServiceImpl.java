@@ -52,10 +52,10 @@ public class ValidatorServiceImpl implements ValidatorService {
         return toValidEntity(entity, OptionEtablissementEntity.class);
     }
 
-    @Override
-    public IndicePositionSocialeEntity toValidEntity(@NonNull IndicePositionSocialeEntity entity) {
-        return toValidEntity(entity, IndicePositionSocialeEntity.class);
-    }
+//    @Override
+//    public IndicePositionSocialeEntity toValidEntity(@NonNull IndicePositionSocialeEntity entity) {
+//        return toValidEntity(entity, IndicePositionSocialeEntity.class);
+//    }
 
     @Override
     public SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity) {

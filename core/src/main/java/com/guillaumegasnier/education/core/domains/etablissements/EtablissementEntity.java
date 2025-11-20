@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
+import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
 import com.guillaumegasnier.education.core.validations.ValidUai;
@@ -15,40 +16,28 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
 @DynamicUpdate
-@Table(name = "etablissements",
-        indexes = {@Index(name = "idx_uai_not_null", columnList = "uai")},
-        uniqueConstraints = {@UniqueConstraint(name = "unique_uai_not_null", columnNames = {"uai"})})
+@Table(name = "etablissements")
 public class EtablissementEntity extends AbstractEntity {
 
-    @Id
-    @Column(columnDefinition = "UUID", nullable = false, updatable = false)
-    private UUID id;
-
     /**
-     * Code UAI de l’organisme de formation/l'établissement scolaire
+     * Code UAI de l'établissement scolaire
      */
+    @Id
     @ValidUai
-    @Column(columnDefinition = "BPCHAR(8)", length = 8, unique = true)
+    @Column(columnDefinition = "BPCHAR(8)", length = 8, unique = true, nullable = false)
     private String uai;
 
     /**
-     * Numéro SIRET de l’organisme de formation
+     * Numéro SIRET de l’entreprise
      */
     @ValidSiret
     @Column(columnDefinition = "BPCHAR(14)", length = 14)
     private String siret;
-
-    /**
-     * Numéro de déclaration d’activité de l’organisme responsable de l’offre.
-     */
-    @Column(columnDefinition = "BPCHAR(11)", length = 11)
-    private String numeroDeclarationActivite;
 
     @NotBlank
     private String nom;
@@ -60,14 +49,6 @@ public class EtablissementEntity extends AbstractEntity {
 
     @Column
     private LocalDate dateFermeture;
-
-    @ManyToOne
-    @JoinColumn(name = "code_nature", foreignKey = @ForeignKey(name = "fk_etablissements_natures"))
-    private NatureEntity nature;
-
-    @ManyToOne
-    @JoinColumn(name = "code_contrat", foreignKey = @ForeignKey(name = "fk_etablissements_contrats"))
-    private ContratEntity contrat;
 
     @Column(columnDefinition = "VARCHAR(50)", length = 50)
     private String adresse;
@@ -82,11 +63,23 @@ public class EtablissementEntity extends AbstractEntity {
     @JoinColumn(name = "code_commune", foreignKey = @ForeignKey(name = "fk_etablissements_communes"))
     private CommuneEntity commune;
 
+    @ManyToOne
+    @JoinColumn(name = "code_nature", foreignKey = @ForeignKey(name = "fk_etablissements_natures"))
+    private NatureEntity nature;
+
+    @ManyToOne
+    @JoinColumn(name = "code_contrat", foreignKey = @ForeignKey(name = "fk_etablissements_contrats"))
+    private ContratEntity contrat;
+
+    /**
+     * Organisme de formation
+     */
+    @ManyToOne
+    @JoinColumn(name = "nda", foreignKey = @ForeignKey(name = "fk_etablissements_organismes"))
+    private OrganismeEntity organisme;
+
     @Column(name = "sources", columnDefinition = "VARCHAR(50)", length = 50)
     private String sources;
-
-    @Column(name = "education_prioritaire", columnDefinition = "BPCHAR(4)")
-    private String educationPrioritaire;
 
     public NatureEntity getNature() {
         if (nature == null) return new NatureEntity("$", "Non renseigné");

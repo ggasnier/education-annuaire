@@ -7,6 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum OptionEtablissement {
 
+    REP("REP"),
+    REPP("REP+"),
     RESTAURATION("Restauration"),
     HEBERGEMENT("Hebergement"),
     ULIS("ULIS"),

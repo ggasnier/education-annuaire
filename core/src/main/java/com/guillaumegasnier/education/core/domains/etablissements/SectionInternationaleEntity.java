@@ -14,7 +14,8 @@ public class SectionInternationaleEntity extends AbstractEntity {
     @EmbeddedId
     private SectionInternationalePK pk;
 
+    @MapsId("uai")
     @ManyToOne
-    @JoinColumn(name = "etablissement_id", foreignKey = @ForeignKey(name = "fk_sections_internationales_etablissements"), columnDefinition = "UUID", nullable = false)
+    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_sections_internationales_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 }

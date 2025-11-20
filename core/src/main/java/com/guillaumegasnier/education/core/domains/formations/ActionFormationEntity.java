@@ -103,8 +103,8 @@ public class ActionFormationEntity extends AbstractEntity {
 
     private String priseEnChargeFraisPossible;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "etablissement_id", foreignKey = @ForeignKey(name = "fk_actions_formations_etablissements"), columnDefinition = "UUID", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_actions_formations_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 
     private String modalitesEntreesSorties;

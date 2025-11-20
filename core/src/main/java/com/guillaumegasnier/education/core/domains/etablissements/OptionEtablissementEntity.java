@@ -14,7 +14,8 @@ public class OptionEtablissementEntity extends AbstractEntity {
     @EmbeddedId
     private OptionEtablissementPK pk;
 
+    @MapsId("uai")
     @ManyToOne
-    @JoinColumn(name = "etablissement_id", foreignKey = @ForeignKey(name = "fk_options_etablissements"), columnDefinition = "UUID", nullable = false)
+    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_options_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 }

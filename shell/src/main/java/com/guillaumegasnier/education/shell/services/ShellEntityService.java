@@ -4,7 +4,6 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public interface ShellEntityService {
 
     List<SectionInternationaleEntity> toSectionInternationaleEntity(@NonNull SectionInternationaleDataset dataset);
 
-    IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset, @NonNull String categorie);
+//    IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset, @NonNull String categorie);
 
     LangueEntity toLangueEntity(@NonNull LangueDataset dataset);
 

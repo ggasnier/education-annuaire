@@ -38,10 +38,10 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 
     @Autowired
     public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, IndicePositionSocialeRepository indicePositionSocialeRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository, SectionSportiveRepository sectionSportiveRepository, LangueRepository langueRepository, OptionEtablissementRepository optionEtablissementRepository, SportEtudeRepository sportEtudeRepository, OrganismeRepository organismeRepository) {
+    public CoreEtablissementServiceImpl(EtablissementRepository etablissementRepository, NatureRepository natureRepository, ContratRepository contratRepository, SpecialiteRepository specialiteRepository, SectionInternationaleRepository sectionInternationaleRepository, SectionSportiveRepository sectionSportiveRepository, LangueRepository langueRepository, OptionEtablissementRepository optionEtablissementRepository, SportEtudeRepository sportEtudeRepository) {
         this.etablissementRepository = etablissementRepository;
         this.natureRepository = natureRepository;
         this.contratRepository = contratRepository;
-        this.indicePositionSocialeRepository = indicePositionSocialeRepository;
         this.specialiteRepository = specialiteRepository;
         this.sectionInternationaleRepository = sectionInternationaleRepository;
         this.sectionSportiveRepository = sectionSportiveRepository;
@@ -69,10 +69,10 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         contratRepository.saveAll(entities);
     }
 
-    @Override
-    public void saveIPS(@NonNull List<IndicePositionSocialeEntity> entities) {
-        indicePositionSocialeRepository.saveAll(entities);
-    }
+//    @Override
+//    public void saveIPS(@NonNull List<IndicePositionSocialeEntity> entities) {
+//        indicePositionSocialeRepository.saveAll(entities);
+//    }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -97,10 +97,10 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         return contratRepository.findById(codeContrat);
     }
 
-    @Override
-    public Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee) {
-        return indicePositionSocialeRepository.findByPkUaiAndPkAnnee(uai, annee);
-    }
+//    @Override
+//    public Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee) {
+//        return indicePositionSocialeRepository.findByPkUaiAndPkAnnee(uai, annee);
+//    }
 
     @Override
     public List<OptionEtablissementEntity> getOptionListByUai(String uai) {
@@ -121,11 +121,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     public List<SectionSportiveEntity> getSectionSportiveListByUai(String uai) {
         return sectionSportiveRepository.findAllByPkUai(uai);
     }
-
-    @Override
-    public List<IndicePositionSocialeEntity> getIPSListByUai(String uai) {
-        return indicePositionSocialeRepository.findAllByPkUaiOrderByPkAnneeDesc(uai);
-    }
+//
+//    @Override
+//    public List<IndicePositionSocialeEntity> getIPSListByUai(String uai) {
+//        return indicePositionSocialeRepository.findAllByPkUaiOrderByPkAnneeDesc(uai);
+//    }
 
     @Override
     public EtablissementEntity saveEtablissement(EtablissementEntity entity) {

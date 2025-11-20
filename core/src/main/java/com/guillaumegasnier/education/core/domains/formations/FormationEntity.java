@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.core.domains.formations;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -105,11 +106,19 @@ public class FormationEntity extends AbstractEntity {
     private List<ActionFormationEntity> actions = new ArrayList<>();
 
     /**
+     * TODO utile ?
+     * Cet élément décrit l’établissement où se déroule la formation.
+     */
+    @ManyToOne
+    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_formations_etablissements"))
+    private EtablissementEntity etablissement;
+
+    /**
      * Cet élément décrit l’organisme de formation responsable de la formation.
      */
     @ManyToOne
-    @JoinColumn(name = "etablissement_id", foreignKey = @ForeignKey(name = "fk_formations_etablissements"), columnDefinition = "UUID")
-    private EtablissementEntity etablissement;
+    @JoinColumn(name = "nda", foreignKey = @ForeignKey(name = "fk_formations_etablissements"))
+    private OrganismeEntity organisme;
 
     /**
      * Cet identifiant permet de donner un identifiant à une action (qui dès lors devient un module). Cet identifiant
@@ -126,7 +135,7 @@ public class FormationEntity extends AbstractEntity {
     private Integer positionnement;
 
     private Integer onisepId;
-    
+
     // contacts
     // url
     // modules

@@ -9,7 +9,7 @@ public interface ValidatorService {
 
     OptionEtablissementEntity toValidEntity(@NonNull OptionEtablissementEntity entity);
 
-    IndicePositionSocialeEntity toValidEntity(@NonNull IndicePositionSocialeEntity entity);
+//    IndicePositionSocialeEntity toValidEntity(@NonNull IndicePositionSocialeEntity entity);
 
     SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity);
 

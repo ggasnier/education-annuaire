@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.shell.services;
 
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public interface ShellEtablissementService {
 
     String createOrUpdateContrats(@NonNull List<ContratDataset> datasets);
 
-    String createOrUpdateIPS(@NonNull List<? extends IPSDataset> datasets, String categorie);
+//    String createOrUpdateIPS(@NonNull List<? extends IPSDataset> datasets, String categorie);
 
     String createOrUpdateSectionsSportives(@NonNull List<SectionSportiveDataset> datasets);
 

@@ -37,11 +37,11 @@ public interface ImportEtablissementShell {
 
     String importSectionsBinationales();
 
-    String importIpsEcoles();
-
-    String importIpsColleges();
-
-    String importIpsLycees();
+//    String importIpsEcoles();
+//
+//    String importIpsColleges();
+//
+//    String importIpsLycees();
 
     String importEtablissementsRecherche();
 }

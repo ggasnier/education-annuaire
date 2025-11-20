@@ -5,7 +5,6 @@ import com.guillaumegasnier.education.core.services.CoreElasticService;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
@@ -146,16 +145,16 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         return String.format("Import terminé : %d contrat(s) enregistré(s).", datasets.size());
     }
 
-    @Override
-    public String createOrUpdateIPS(@NonNull List<? extends IPSDataset> datasets, String categorie) {
-        coreEtablissementService.saveIPS(datasets.stream()
-                .map(ipsDataset -> shellEntityService.toIndicePositionSocialeEntity(ipsDataset, categorie))
-                .filter(Objects::nonNull)
-                .map(validatorService::toValidEntity)
-                .filter(Objects::nonNull)
-                .toList());
-        return String.format("Import terminé : %d ips enregistré(s).", datasets.size());
-    }
+//    @Override
+//    public String createOrUpdateIPS(@NonNull List<? extends IPSDataset> datasets, String categorie) {
+//        coreEtablissementService.saveIPS(datasets.stream()
+//                .map(ipsDataset -> shellEntityService.toIndicePositionSocialeEntity(ipsDataset, categorie))
+//                .filter(Objects::nonNull)
+//                .map(validatorService::toValidEntity)
+//                .filter(Objects::nonNull)
+//                .toList());
+//        return String.format("Import terminé : %d ips enregistré(s).", datasets.size());
+//    }
 
     @Override
     @Transactional

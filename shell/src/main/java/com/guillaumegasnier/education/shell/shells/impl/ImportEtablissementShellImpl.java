@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.shell.shells.impl;
 
-import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
 import com.guillaumegasnier.education.shell.shells.ImportEtablissementShell;
@@ -123,34 +122,34 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
         return shellEtablissementService.createOrUpdateSectionsBinationales(fileService.importCSV(BINATIONALES));
     }
 
-    @Override
-    @ShellMethod(value = "Import IPS Ecoles")
-    public String importIpsEcoles() {
-        List<IPSDataset> ipsEcoles = new ArrayList<>();
-        ipsEcoles.addAll(fileService.importCSV(IPS_ECOLES_1));
-        ipsEcoles.addAll(fileService.importCSV(IPS_ECOLES_2));
-        return shellEtablissementService.createOrUpdateIPS(ipsEcoles, "E");
-    }
+//    @Override
+//    @ShellMethod(value = "Import IPS Ecoles")
+//    public String importIpsEcoles() {
+//        List<IPSDataset> ipsEcoles = new ArrayList<>();
+//        ipsEcoles.addAll(fileService.importCSV(IPS_ECOLES_1));
+//        ipsEcoles.addAll(fileService.importCSV(IPS_ECOLES_2));
+//        return shellEtablissementService.createOrUpdateIPS(ipsEcoles, "E");
+//    }
+//
+//    @Override
+//    @ShellMethod(value = "Import IPS Collèges")
+//    public String importIpsColleges() {
+//        List<IPSDataset> ipsColleges = new ArrayList<>();
+//        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_1));
+//        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_2));
+//        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3));
+//        return shellEtablissementService.createOrUpdateIPS(ipsColleges, "C");
+//    }
 
-    @Override
-    @ShellMethod(value = "Import IPS Collèges")
-    public String importIpsColleges() {
-        List<IPSDataset> ipsColleges = new ArrayList<>();
-        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_1));
-        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_2));
-        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3));
-        return shellEtablissementService.createOrUpdateIPS(ipsColleges, "C");
-    }
-
-    @Override
-    @ShellMethod(value = "Import IPS Lycées")
-    public String importIpsLycees() {
-        List<IPSDataset> ipsLycees = new ArrayList<>();
-        ipsLycees.addAll(fileService.importCSV(IPS_LYCEES_1));
-        ipsLycees.addAll(fileService.importCSV(IPS_LYCEES_2));
-        ipsLycees.addAll(fileService.importCSV(IPS_LYCEES_3));
-        return shellEtablissementService.createOrUpdateIPS(ipsLycees, "L");
-    }
+//    @Override
+//    @ShellMethod(value = "Import IPS Lycées")
+//    public String importIpsLycees() {
+//        List<IPSDataset> ipsLycees = new ArrayList<>();
+//        ipsLycees.addAll(fileService.importCSV(IPS_LYCEES_1));
+//        ipsLycees.addAll(fileService.importCSV(IPS_LYCEES_2));
+//        ipsLycees.addAll(fileService.importCSV(IPS_LYCEES_3));
+//        return shellEtablissementService.createOrUpdateIPS(ipsLycees, "L");
+//    }
 
     @Override
     @ShellMethod(value = "Import établissements dans ES")

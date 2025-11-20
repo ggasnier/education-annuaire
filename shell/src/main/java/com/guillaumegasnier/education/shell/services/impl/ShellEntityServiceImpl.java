@@ -10,7 +10,6 @@ import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.mappers.FormationMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
@@ -76,9 +75,9 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             entity.setActif(dataset.isActif());
         }
 
-        if (dataset.getEducationPrioritaire() != null) {
-            entity.setEducationPrioritaire(dataset.getEducationPrioritaire());
-        }
+//        if (dataset.getEducationPrioritaire() != null) {
+//            entity.setEducationPrioritaire(dataset.getEducationPrioritaire());
+//        }
 
         entity.addSource(source);
 
@@ -276,30 +275,30 @@ public class ShellEntityServiceImpl implements ShellEntityService {
                 .toList();
     }
 
-    @Nullable
-    @Override
-    public IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset, @NonNull String categorie) {
-
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isEmpty()) {
-            log.warn("Pas d'établissement avec UAI {} pour IPS", dataset.getUai());
-            return null;
-        }
-
-        IndicePositionSocialePK pk = new IndicePositionSocialePK();
-        pk.setUai(dataset.getUai());
-        pk.setAnnee(dataset.getAnnee());
-
-        IndicePositionSocialeEntity entity = new IndicePositionSocialeEntity();
-        entity.setPk(pk);
-        entity.setEtablissement(etablissementOpt.get());
-        entity.setCategorie(categorie);
-        entity.setIndice(dataset.getIndice());
-        entity.setEcartType(dataset.getEcartType());
-
-        return entity;
-    }
+//    @Nullable
+//    @Override
+//    public IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset, @NonNull String categorie) {
+//
+//        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
+//
+//        if (etablissementOpt.isEmpty()) {
+//            log.warn("Pas d'établissement avec UAI {} pour IPS", dataset.getUai());
+//            return null;
+//        }
+//
+//        IndicePositionSocialePK pk = new IndicePositionSocialePK();
+//        pk.setUai(dataset.getUai());
+//        pk.setAnnee(dataset.getAnnee());
+//
+//        IndicePositionSocialeEntity entity = new IndicePositionSocialeEntity();
+//        entity.setPk(pk);
+//        entity.setEtablissement(etablissementOpt.get());
+//        entity.setCategorie(categorie);
+//        entity.setIndice(dataset.getIndice());
+//        entity.setEcartType(dataset.getEcartType());
+//
+//        return entity;
+//    }
 
     @Nullable
     @Override

@@ -19,10 +19,11 @@ import org.hibernate.annotations.Type;
 public class EtablissementMetadataEntity extends AbstractEntity {
 
     @EmbeddedId
-    private EtablissementMetadataPK pk;
+    private EtablissementAnneePK pk;
 
+    @MapsId("uai")
     @ManyToOne
-    @JoinColumn(name = "etablissement_id", foreignKey = @ForeignKey(name = "fk_metadatas_etablissements"), columnDefinition = "UUID", nullable = false)
+    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_metadatas_etablissements"), columnDefinition = "UUID", nullable = false)
     private EtablissementEntity etablissement;
 
     @Type(JsonType.class)

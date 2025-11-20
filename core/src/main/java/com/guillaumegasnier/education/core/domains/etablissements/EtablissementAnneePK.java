@@ -6,18 +6,19 @@ import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @Embeddable
-@NoArgsConstructor
-@Deprecated
-public class IndicePositionSocialePK implements Serializable {
+@EqualsAndHashCode
+public class EtablissementAnneePK implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @NotNull
     private int annee;
@@ -25,5 +26,4 @@ public class IndicePositionSocialePK implements Serializable {
     @ValidUai
     @Column(columnDefinition = "BPCHAR(8)", length = 8)
     private String uai;
-
 }

@@ -16,6 +16,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN, uses = {DateMapper.class})
 public abstract class EtablissementMapper {
 
+    @Mapping(target = "organisme", ignore = true)
     @Mapping(target = "nature", ignore = true)
     @Mapping(target = "contrat", ignore = true)
     @Mapping(target = "commune", ignore = true)
@@ -33,6 +34,7 @@ public abstract class EtablissementMapper {
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
     public abstract ContratEntity toContratEntity(ContratDataset dataset);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "nomNature", source = "nature.nom")
     @Mapping(target = "nomContrat", source = "contrat.nom")
     @Mapping(target = "nomCommune", source = "commune.nom")
