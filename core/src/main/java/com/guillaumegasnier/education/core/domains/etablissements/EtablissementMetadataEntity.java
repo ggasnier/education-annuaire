@@ -8,6 +8,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 
+/**
+ * Metadatas pour chaque établissement, par année (qui correspond à la rentrée scolaire)
+ *
+ */
 @Getter
 @Setter
 @Entity

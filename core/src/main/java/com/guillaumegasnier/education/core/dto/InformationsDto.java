@@ -18,6 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@Deprecated
 public class InformationsDto implements Serializable {
 
     @Serial

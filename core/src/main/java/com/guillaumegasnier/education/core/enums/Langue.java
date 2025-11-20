@@ -11,7 +11,7 @@ import org.springframework.lang.Nullable;
 @AllArgsConstructor
 public enum Langue {
 
-    FR("français", "français"),
+    FR("Français", "français"),
     LA("Latin", "latin"),
     CO("Corse", "corse"),
     EN("Anglais", "anglais"),
