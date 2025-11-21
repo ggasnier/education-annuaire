@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Collections;
+
 @Controller
 @RequestMapping("/etablissements")
 public class EtablissementsController {
@@ -31,8 +33,9 @@ public class EtablissementsController {
             model.addAttribute("options", webEtablissementService.getOptionListByUai(uai));
             model.addAttribute("specialites", webEtablissementService.getSpecialiteListByUai(uai));
             model.addAttribute("langues", webEtablissementService.getLangueListByUai(uai));
-            model.addAttribute("sectionSportives", webEtablissementService.getSectionSportiveListByUai(uai));
-            model.addAttribute("indices", webEtablissementService.getIPSListByUai(uai));
+            model.addAttribute("sports", webEtablissementService.getSportListByUai(uai));
+            //model.addAttribute("indices", webEtablissementService.getIPSListByUai(uai));
+            model.addAttribute("indices", Collections.emptyList());
 
             return "etablissements/details";
         } else {

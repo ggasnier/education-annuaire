@@ -11,44 +11,48 @@ import org.springframework.lang.Nullable;
 @AllArgsConstructor
 public enum Langue {
 
-    FR("Français", "français"),
-    LA("Latin", "latin"),
-    CO("Corse", "corse"),
-    EN("Anglais", "anglais"),
-    ES("Espagnol", "espagnol"),
-    IT("Italien", "italien"),
-    EL("Grec", "grec"),
-    OC("Occitan/Provençal", "occitan"),
-    JP("Japonais", "japonais"),
-    SV("Suédois", "suédois"),
-    BR("Breton", "breton"),
-    TR("Turc", "turc"),
-    RU("Russe", "russe"),
-    PL("Polonais", "polonais"),
-    TA("Tamoul", "tamoul"),
-    DA("Danois", "danois"),
-    TY("Tahitien", "tahitien"),
-    NL("Néerlandais", "néerlandais"),
-    PT("Portugais", "portugais"),
-    FA("Persan", "persan"),
-    HE("Hébreu moderne", "hébreu moderne"),
-    ZH("Chinois", "chinois"),
-    AR("Arabe", "arabe"),
-    VI("Vietnamien", "vietnamien"),
-    EU("Basque", "basque"),
-    HT("Créole", "créole"),
-    KO("Coréen", "coréen"),
-    UK("Ukrainien", "ukrainien"),
-    CA("Catalan", "catalan"),
-    NO("Norvégien", "norvégien"),
-    HY("Arménien", "arménien"),
-    LI("Monégasque", "monégasque"), // le code n'existe pas officiellement
-    DH("Drehu (lifou)", "drehu (lifou)"), // le code n'existe pas officiellement
-    PF("Langues océaniennes", "langues rares océaniennes"), // le code n'existe pas officiellement
-    DE("Allemand", "allemand");
+    FR("Français", "🇫🇷", "français", Categorie.LV),
+    LA("Latin", "🏛️", "latin", Categorie.LC),
+    CO("Corse", "\uD83C\uDFF4\uDB40\uDC66\uDB40\uDC72\uDB40\uDC63\uDB40\uDC6F\uDB40\uDC72\uDB40\uDC7F", "corse", Categorie.LV),
+    EN("Anglais", "🇬🇧", "anglais", Categorie.LV),
+    US("Américain", "\uD83C\uDDFA\uD83C\uDDF8", "américain", Categorie.LV),
+    ES("Espagnol", "🇪🇸", "espagnol", Categorie.LV),
+    IT("Italien", "🇮🇹", "italien", Categorie.LV),
+    EL("Grec", "🇬🇷", "grec", Categorie.LC),
+    OC("Occitan/Provençal", "🏵️", "occitan", Categorie.LV),
+    JP("Japonais", "🇯🇵", "japonais", Categorie.LV),
+    SV("Suédois", "🇸🇪", "suédois", Categorie.LV),
+    BR("Breton", "🏴", "breton", Categorie.LV),
+    TR("Turc", "🇹🇷", "turc", Categorie.LV),
+    RU("Russe", "🇷🇺", "russe", Categorie.LV),
+    PL("Polonais", "🇵🇱", "polonais", Categorie.LV),
+    TA("Tamoul", "🇮🇳", "tamoul", Categorie.LV),
+    DA("Danois", "🇩🇰", "danois", Categorie.LV),
+    TY("Tahitien", "🇵🇫", "tahitien", Categorie.LV),
+    NL("Néerlandais", "🇳🇱", "néerlandais", Categorie.LV),
+    PT("Portugais", "🇵🇹", "portugais", Categorie.LV),
+    FA("Persan", "🇮🇷", "persan", Categorie.LV),
+    HE("Hébreu moderne", "🇮🇱", "hébreu moderne", Categorie.LV),
+    ZH("Chinois", "🇨🇳", "chinois", Categorie.LV),
+    AR("Arabe", "🇸🇦", "arabe", Categorie.LV),
+    VI("Vietnamien", "🇻🇳", "vietnamien", Categorie.LV),
+    EU("Basque", "🏴", "basque", Categorie.LV),
+    HT("Créole", "🇭🇹", "créole", Categorie.LV),
+    KO("Coréen", "🇰🇷", "coréen", Categorie.LV),
+    UK("Ukrainien", "🇺🇦", "ukrainien", Categorie.LV),
+    CA("Catalan", "🏴", "catalan", Categorie.LV),
+    NO("Norvégien", "🇳🇴", "norvégien", Categorie.LV),
+    HY("Arménien", "🇦🇲", "arménien", Categorie.LV),
+    LB("Luxembourgeois", "\uD83C\uDDF1\uD83C\uDDFA", "luxembourgeois", Categorie.LV),
+    LI("Monégasque", "🇲🇨", "monégasque", Categorie.LV), // le code n'existe pas officiellement
+    DH("Drehu (lifou)", "🇳🇨", "drehu (lifou)", Categorie.LV), // le code n'existe pas officiellement
+    PF("Langues océaniennes", "🌊", "langues rares océaniennes", Categorie.LV), // le code n'existe pas officiellement
+    DE("Allemand", "🇩🇪", "allemand", Categorie.LV);
 
     private final String nom;
+    private final String emoji;
     private final String nomMin;
+    private final Categorie categorie;
 
     @Nullable
     public static Langue transformation(@NonNull String s) {
@@ -59,9 +63,21 @@ public enum Langue {
         }
         if (s.trim().equals("provençal"))
             return Langue.OC;
-        if (s.trim().equals("américain"))
-            return Langue.EN;
         log.error("Pas de mapping pour {}", s.trim());
         return null;
+    }
+
+
+    @Getter
+    @AllArgsConstructor
+    public enum Categorie {
+        EU("Sections européennes"),
+        LO("Sections de langues orientales"),
+        SI("Sections internationales"),
+        BI("Sections bilingues"),
+        LV("Langues vivantes"),
+        LC("Langues anciennes");
+
+        private final String nom;
     }
 }

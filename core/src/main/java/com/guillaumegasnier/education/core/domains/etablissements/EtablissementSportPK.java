@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
-import com.guillaumegasnier.education.core.enums.Langue;
+import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -14,11 +14,14 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Remplace
+ */
 @Getter
 @Setter
-@EqualsAndHashCode
 @Embeddable
-public class LanguePK implements Serializable {
+@EqualsAndHashCode
+public class EtablissementSportPK implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,11 +32,11 @@ public class LanguePK implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
+    private Sport sport;
+
+    /**
+     * Section sportive ou sport etudes
+     */
     @Column(columnDefinition = "BPCHAR(2)", length = 2)
-    private Langue langue;
-
-    @NotNull
-    @Column(columnDefinition = "BPCHAR(3)", length = 3)
-    private String enseignement;
-
+    private String categorie;
 }

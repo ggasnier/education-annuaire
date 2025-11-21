@@ -86,16 +86,27 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
         return shellEtablissementService.createOrUpdateContrats(fileService.importCSV(CONTRATS));
     }
 
-    @Override
-    @ShellMethod(value = "Import sections sportives")
-    public String importSectionsSportives() {
-        return shellEtablissementService.createOrUpdateSectionsSportives(fileService.importCSV(SECTIONS_SPORTIVES));
-    }
+//    @Override
+//    @ShellMethod(value = "Import sections sportives")
+//    public String importSectionsSportives() {
+//        return shellEtablissementService.createOrUpdateSectionsSportives(fileService.importCSV(SECTIONS_SPORTIVES));
+//    }
+//
+//    @Override
+//    @ShellMethod(value = "Import sections sport études")
+//    public String importSectionsSportEtudes() {
+//        return shellEtablissementService.createOrUpdateSectionsSportEtudes(fileService.importCSV(SECTIONS_SPORT_ETUDES));
+//    }
+
 
     @Override
-    @ShellMethod(value = "Import sections sport études")
-    public String importSectionsSportEtudes() {
-        return shellEtablissementService.createOrUpdateSectionsSportEtudes(fileService.importCSV(SECTIONS_SPORT_ETUDES));
+    @ShellMethod(value = "Import sections sport études et sections sportives")
+    public String importSports() {
+
+        return shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), "ss") +
+                shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), "se");
+
+        //return shellEtablissementService.createOrUpdateSectionsSportEtudes(fileService.importCSV(SECTIONS_SPORT_ETUDES));
     }
 
     @Override
@@ -120,6 +131,12 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     @ShellMethod(value = "Import sections binationales")
     public String importSectionsBinationales() {
         return shellEtablissementService.createOrUpdateSectionsBinationales(fileService.importCSV(BINATIONALES));
+    }
+
+    @Override
+    @ShellMethod(value = "Import des dispositifs des établissements")
+    public String importDispositifs() {
+        return shellEtablissementService.createOrUpdateDispositifs(fileService.importCSV(DISPOSITIFS));
     }
 
 //    @Override

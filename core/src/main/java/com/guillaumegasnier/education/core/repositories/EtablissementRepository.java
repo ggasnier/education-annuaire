@@ -12,7 +12,7 @@ public interface EtablissementRepository extends JpaRepository<EtablissementEnti
 
     Optional<EtablissementEntity> findByUai(String uai);
 
-    List<EtablissementEntity> findByNumeroDeclarationActivite(String numeroDeclarationActivite);
+    //List<EtablissementEntity> findByNumeroDeclarationActivite(String numeroDeclarationActivite);
 
     List<EtablissementEntity> findAllByCommuneDepartementCode(String code);
 

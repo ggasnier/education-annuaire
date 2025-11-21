@@ -4,15 +4,12 @@ import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.List;
 
 @Getter
 @Setter
-@ToString
-@Deprecated
-public class SectionSportiveDataset implements Dataset {
+public class SportDataset implements Dataset {
 
     @CsvBindByName(column = "UAI")
     private String uai;
@@ -20,7 +17,19 @@ public class SectionSportiveDataset implements Dataset {
     @CsvBindByName(column = "Sections scolaires")
     private String sections;
 
-    public List<String> getSectionList() {
-        return List.of(sections.split(","));
+    @CsvBindByName(column = "Pratique proposée")
+    private String nomSport;
+
+    public String getUai() {
+        return uai.toUpperCase();
     }
+
+    public List<String> getSectionList() {
+        if (sections != null)
+            return List.of(sections.split(","));
+        if (nomSport != null)
+            return List.of(nomSport);
+        return List.of();
+    }
+
 }

@@ -46,7 +46,8 @@ CREATE TABLE formations
     parcours_de_formation VARCHAR(255),
     code_niveau_entree    INTEGER,
     code_niveau_sortie    INTEGER,
-    etablissement_id      UUID,
+    uai                   BPCHAR(8),
+    nda                   BPCHAR(11),
     identifiant_module    TEXT,
     positionnement        INTEGER,
     onisep_id             INTEGER,
@@ -54,7 +55,10 @@ CREATE TABLE formations
 );
 
 ALTER TABLE formations
-    ADD CONSTRAINT fk_formations_etablissements FOREIGN KEY (etablissement_id) REFERENCES etablissements (id);
+    ADD CONSTRAINT fk_formations_etablissements FOREIGN KEY (uai) REFERENCES etablissements (uai);
+
+ALTER TABLE formations
+    ADD CONSTRAINT fk_formations_organismes FOREIGN KEY (nda) REFERENCES organismes (nda);
 
 
 CREATE TABLE formations_certifications
@@ -87,7 +91,7 @@ CREATE TABLE formations_actions
     modalites_enseignement            VARCHAR(255),
     conditions_specifiques            VARCHAR(255),
     prise_en_charge_frais_possible    VARCHAR(255),
-    etablissement_id                  UUID                        NOT NULL,
+    uai                               BPCHAR(8),
     modalites_entrees_sorties         VARCHAR(255),
     url_action                        VARCHAR(255),
     duree_cycle                       VARCHAR(255),
@@ -125,5 +129,5 @@ ALTER TABLE formations_actions
     ADD CONSTRAINT FK_ACTIONS_FORMATIONS FOREIGN KEY (formation_id) REFERENCES formations (id);
 
 ALTER TABLE formations_actions
-    ADD CONSTRAINT FK_ACTIONS_FORMATIONS_ETABLISSEMENTS FOREIGN KEY (etablissement_id) REFERENCES etablissements (id);
+    ADD CONSTRAINT FK_ACTIONS_FORMATIONS_ETABLISSEMENTS FOREIGN KEY (uai) REFERENCES etablissements (uai);
 

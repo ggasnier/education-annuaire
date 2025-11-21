@@ -101,27 +101,27 @@ class ShellEtablissementServiceImplTest {
         assertEquals("Import terminé : 2 contrat(s) enregistré(s).", service.createOrUpdateContrats(datasets));
     }
 
-    @Test
-    void createOrUpdateSectionsSportivesTest() {
-        SectionSportiveDataset dataset = new SectionSportiveDataset();
-        dataset.setUai(uaiExiste);
-        dataset.setSections("VTT");
+//    @Test
+//    void createOrUpdateSectionsSportivesTest() {
+//        SectionSportiveDataset dataset = new SectionSportiveDataset();
+//        dataset.setUai(uaiExiste);
+//        dataset.setSections("VTT");
+//
+//        List<SectionSportiveDataset> datasets = List.of(dataset);
+//
+//        assertEquals("Import terminé : 1 sections sportives enregistrée(s).", service.createOrUpdateSectionsSportives(datasets));
+//    }
 
-        List<SectionSportiveDataset> datasets = List.of(dataset);
-
-        assertEquals("Import terminé : 1 sections sportives enregistrée(s).", service.createOrUpdateSectionsSportives(datasets));
-    }
-
-    @Test
-    void createOrUpdateSectionsSportEtudesTest() {
-        SectionSportEtudeDataset dataset = new SectionSportEtudeDataset();
-        dataset.setUai(uaiExiste);
-        dataset.setNomSport("VTT");
-
-        List<SectionSportEtudeDataset> datasets = List.of(dataset);
-
-        assertEquals("Import terminé : 1 sections sport etudes enregistrée(s).", service.createOrUpdateSectionsSportEtudes(datasets));
-    }
+//    @Test
+//    void createOrUpdateSectionsSportEtudesTest() {
+//        SectionSportEtudeDataset dataset = new SectionSportEtudeDataset();
+//        dataset.setUai(uaiExiste);
+//        dataset.setNomSport("VTT");
+//
+//        List<SectionSportEtudeDataset> datasets = List.of(dataset);
+//
+//        assertEquals("Import terminé : 1 sections sport etudes enregistrée(s).", service.createOrUpdateSectionsSportEtudes(datasets));
+//    }
 
     @Test
     void createOrUpdateLanguesTest() {

@@ -52,12 +52,15 @@ public enum SourcesDatasets {
     IPS_LYCEES_3("IPS Lycées (2016 - 2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/27d469ff-9908-4b7e-a2e0-9439bb38a395", "ips_lycees_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSGlobalDataset.class),
 
     // Compléments
-    SECTIONS_SPORTIVES("Sections Sportives Scolaires", EN, "https://www.data.gouv.fr/api/1/datasets/r/c479b9b8-8224-46ef-b2f4-f6a3468726fc", "sections_sportives.csv", StandardCharsets.UTF_8, ';', "GET", SectionSportiveDataset.class),
-    SECTIONS_SPORT_ETUDES("Implantation des sections Sport-Etudes", EN, "https://www.data.gouv.fr/api/1/datasets/r/654ba2b1-fc50-4f36-a053-dbf9056ca53a", "sections_sports-etudes.csv", StandardCharsets.UTF_8, ';', "GET", SectionSportEtudeDataset.class),
+    SECTIONS_SPORTIVES("Sections Sportives Scolaires", EN, "https://www.data.gouv.fr/api/1/datasets/r/c479b9b8-8224-46ef-b2f4-f6a3468726fc", "sections_sportives.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),
+    SECTIONS_SPORT_ETUDES("Implantation des sections Sport-Etudes", EN, "https://www.data.gouv.fr/api/1/datasets/r/654ba2b1-fc50-4f36-a053-dbf9056ca53a", "sections_sports-etudes.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),
     SECTIONS_INTERNATIONALES("Sections internationales", EN, "https://www.data.gouv.fr/api/1/datasets/r/877befc2-2b3c-4e27-902b-abcf7f1e800f", "sections-internationales.csv", StandardCharsets.UTF_8, ';', "GET", SectionInternationaleDataset.class),
     LANGUES("Offre de langues dans les collèges et lycées", EN, "https://www.data.gouv.fr/api/1/datasets/r/60ca51e3-05b7-4b90-9433-ebbd68803f8c", "langues.csv", StandardCharsets.UTF_8, ';', "GET", LangueDataset.class),
     BINATIONALES("Etablissements avec sections binationales (Abibac, Bachibac et Esabac)", AUTRE, "https://www.data.gouv.fr/api/1/datasets/r/b4856bda-e942-4ad9-b016-a64dd281b558", "sections_binationales.csv", StandardCharsets.UTF_8, ',', "GET", SectionBinationaleDataset.class),
-    SPECIALITES("Idéo-Enseignements de spécialité de première générale", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/69fca5c6-f392-480b-9a8a-2fd043206d2f", "specialites.csv", StandardCharsets.UTF_8, ';', "GET", SpecialitePremiereDataset.class),
+    SPECIALITES("Idéo-Enseignements de spécialité de première générale", ONISEP, "https://api.opendata.onisep.fr/downloads/60113f395cce6/60113f395cce6.csv", "specialites.csv", StandardCharsets.UTF_8, ';', "GET", SpecialitePremiereDataset.class),
+
+    DISPOSITIFS("Idéo-Actions de dispositif", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/f5f7d289-9e6f-4178-b93d-cdc6f7364ebd", "dispositifs.csv", StandardCharsets.UTF_8, ';', "GET", DispositifDataset.class),
+    // Euroscol https://www.data.gouv.fr/datasets/etablissements-labellises-euroscol/
 
     //Certifications
     CERTIFICATIONS_RNCP("Répertoire national des certifications professionnelles et répertoire spécifique", FC, "", "export-fiches-rncp-v4-1-2025-10-23.zip", StandardCharsets.UTF_8, ',', "GET", null),

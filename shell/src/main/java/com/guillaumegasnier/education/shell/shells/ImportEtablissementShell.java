@@ -25,9 +25,11 @@ public interface ImportEtablissementShell {
 
     String importContrats();
 
-    String importSectionsSportives();
+//    String importSectionsSportives();
+//
+//    String importSectionsSportEtudes();
 
-    String importSectionsSportEtudes();
+    String importSports();
 
     String importSectionsInternationales();
 
@@ -36,6 +38,8 @@ public interface ImportEtablissementShell {
     String importSpecialites();
 
     String importSectionsBinationales();
+
+    String importDispositifs();
 
 //    String importIpsEcoles();
 //

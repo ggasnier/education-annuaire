@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@Deprecated
 @Getter
 @Setter
 @Entity
@@ -16,6 +17,6 @@ public class SectionSportiveEntity extends AbstractEntity {
 
     @MapsId("uai")
     @ManyToOne
-    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_sections_sportives_etablissements"), nullable = false)
+    @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_sections_sportives_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 }

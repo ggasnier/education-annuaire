@@ -6,8 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Deprecated
 @Repository
 public interface SectionSportiveRepository extends JpaRepository<SectionSportiveEntity, Long> {
-    
+
     List<SectionSportiveEntity> findAllByPkUai(String uai);
 }

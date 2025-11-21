@@ -9,5 +9,6 @@ public class LangueDto {
 
     private String code;
     private String nom;
-    private String niveau;
+    private String emoji;
+    private String enseignement;
 }

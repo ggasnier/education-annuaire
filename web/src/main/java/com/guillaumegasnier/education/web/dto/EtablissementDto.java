@@ -88,7 +88,6 @@ public class EtablissementDto {
     @JsonProperty(value = "nom_pays")
     protected String nomPays;
 
-    @JsonProperty(value = "education_prioritaire")
-    protected String educationPrioritaire;
+    protected boolean actif;
 
 }

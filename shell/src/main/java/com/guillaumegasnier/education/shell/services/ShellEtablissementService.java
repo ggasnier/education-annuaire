@@ -15,9 +15,9 @@ public interface ShellEtablissementService {
 
 //    String createOrUpdateIPS(@NonNull List<? extends IPSDataset> datasets, String categorie);
 
-    String createOrUpdateSectionsSportives(@NonNull List<SectionSportiveDataset> datasets);
+//    String createOrUpdateSectionsSportives(@NonNull List<SectionSportiveDataset> datasets);
 
-    String createOrUpdateSectionsSportEtudes(@NonNull List<SectionSportEtudeDataset> datasets);
+//    String createOrUpdateSectionsSportEtudes(@NonNull List<SectionSportEtudeDataset> datasets);
 
     String createOrUpdateLangues(@NonNull List<LangueDataset> datasets);
 
@@ -30,4 +30,8 @@ public interface ShellEtablissementService {
     String createOrUpdateEtablissementsRecherche();
 
     String createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets);
+
+    String createOrUpdateSports(@NonNull List<SportDataset> datasets, String categorie);
+
+    String createOrUpdateDispositifs(@NonNull List<DispositifDataset> datasets);
 }

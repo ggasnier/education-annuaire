@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.web.mappers;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
+import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.web.dto.CommuneDto;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
@@ -43,22 +44,16 @@ public abstract class WebEtablissementMapper {
         return entity.getPk().getSpecialite();
     }
 
-    @Mapping(target = "nom", source = "pk.langue.nom")
-    @Mapping(target = "niveau", source = "pk.enseignement")
-    @Mapping(target = "code", source = "pk.langue")
-    public abstract LangueDto toLangueDto(LangueEntity entity);
+//    @Mapping(target = "nom", source = "pk.sport.nom")
+//    @Mapping(target = "code", source = "pk.sport")
+//    public abstract SectionSportiveDto toSectionSportiveDto(SectionSportiveEntity entity);
 
-
-    @Mapping(target = "nom", source = "pk.sport.nom")
-    @Mapping(target = "code", source = "pk.sport")
-    public abstract SectionSportiveDto toSectionSportiveDto(SectionSportiveEntity entity);
-
-    @Mapping(target = "uai", source = "pk.uai")
-    @Mapping(target = "nomCategorie", source = "categorie") // TODO
-    @Mapping(target = "codeCategorie", source = "categorie") // TODO
-    @Mapping(target = "valeur", source = "indice")
-    @Mapping(target = "annee", source = "pk.annee")
-    public abstract IPSDto toIndicePositionSocialeEntity(IndicePositionSocialeEntity entity);
+//    @Mapping(target = "uai", source = "pk.uai")
+//    @Mapping(target = "nomCategorie", source = "categorie") // TODO
+//    @Mapping(target = "codeCategorie", source = "categorie") // TODO
+//    @Mapping(target = "valeur", source = "indice")
+//    @Mapping(target = "annee", source = "pk.annee")
+//    public abstract IPSDto toIndicePositionSocialeEntity(IndicePositionSocialeEntity entity);
 
 
     public List<NatureWithEtablissementsDto> groupbyNature(List<EtablissementEntity> etablissements) {
@@ -103,4 +98,33 @@ public abstract class WebEtablissementMapper {
 
     public abstract NatureDto toNatureDto(NatureEntity key);
 
+    public List<LangueWithCategorieDto> toLangueWithCategorieDtoList(List<LangueEntity> entities) {
+        if (entities == null) return Collections.emptyList();
+
+        Map<Langue.Categorie, List<LangueEntity>> grouped = entities.stream()
+                .filter(d -> d != null && d.getPk().getEnseignement() != null)
+                .collect(
+                        Collectors.groupingBy(l -> Langue.Categorie.valueOf(l.getPk().getEnseignement().substring(0, 2).toUpperCase()),
+                                LinkedHashMap::new,
+                                Collectors.toList()));
+
+        return grouped.entrySet().stream()
+                .map(entry -> {
+                    Langue.Categorie categorie = entry.getKey();
+                    List<LangueDto> langues = entry.getValue().stream()
+                            .filter(Objects::nonNull)
+                            .map(this::toLangueDto)
+                            .toList();
+                    return new LangueWithCategorieDto(categorie, langues);
+                })
+                .collect(Collectors.toList());
+    }
+
+    private LangueDto toLangueDto(LangueEntity entity) {
+        LangueDto l = new LangueDto();
+        l.setNom(entity.getPk().getLangue().getNom());
+        l.setEmoji(entity.getPk().getLangue().getEmoji());
+        l.setEnseignement(entity.getPk().getEnseignement());
+        return l;
+    }
 }

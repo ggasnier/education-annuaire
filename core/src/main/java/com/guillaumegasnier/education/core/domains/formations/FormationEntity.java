@@ -110,7 +110,7 @@ public class FormationEntity extends AbstractEntity {
      * Cet élément décrit l’établissement où se déroule la formation.
      */
     @ManyToOne
-    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_formations_etablissements"))
+    @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_formations_etablissements"))
     private EtablissementEntity etablissement;
 
     /**

@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import org.springframework.lang.NonNull;
 
@@ -21,7 +22,7 @@ public interface CoreEtablissementService {
 
     void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities);
 
-    void saveSectionsSporties(List<SectionSportiveEntity> entities);
+    //void saveSectionsSporties(List<SectionSportiveEntity> entities);
 
     void saveLangues(List<LangueEntity> entities);
 
@@ -47,9 +48,11 @@ public interface CoreEtablissementService {
 
     List<LangueEntity> getLangueListByUai(String uai);
 
-    void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities);
+    List<EtablissementSportEntity> getSportListByUai(String uai);
 
-    List<SectionSportiveEntity> getSectionSportiveListByUai(String uai);
+    //void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities);
+
+    //List<SectionSportiveEntity> getSectionSportiveListByUai(String uai);
 
 //    List<IndicePositionSocialeEntity> getIPSListByUai(String uai);
 
@@ -57,7 +60,7 @@ public interface CoreEtablissementService {
 
     List<EtablissementEntity> findAll();
 
-    List<EtablissementEntity> findEtablissementByNda(String numeroDeclarationActivite);
+//    List<EtablissementEntity> findEtablissementByNda(String numeroDeclarationActivite);
 
     List<EtablissementEntity> findEtablissementListByDepartement(String code);
 
@@ -68,4 +71,6 @@ public interface CoreEtablissementService {
     void saveOrganisme(OrganismeEntity entity);
 
     void saveOrganismes(List<OrganismeEntity> entities);
+
+    void saveEtablissementSportEntity(List<EtablissementSportEntity> entities);
 }

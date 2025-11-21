@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
 import org.springframework.lang.NonNull;
@@ -13,6 +14,8 @@ public interface ShellEntityService {
     <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, String source);
 
     List<OptionEtablissementEntity> toOptionEtablissementEntity(@NonNull EtablissementDataset dataset);
+
+    OptionEtablissementEntity toOptionEtablissementEntity(@NonNull DispositifDataset dataset);
 
     OptionEtablissementEntity toOptionEtablissementEntity(@NonNull SectionBinationaleDataset dataset);
 
@@ -31,4 +34,8 @@ public interface ShellEntityService {
     FormationEntity findFormationByOnisepId(OnisepFormationDataset dataset);
 
     OrganismeEntity toOrganismeEntity(@NonNull TravailOrganismeFormationDataset dataset);
+
+    List<EtablissementSportEntity> toEtablissementSportEntity(SportDataset dataset, String categorie);
+
+    List<LangueEntity> toLangueEntity(@NonNull DispositifDataset dataset, String enseigenement);
 }

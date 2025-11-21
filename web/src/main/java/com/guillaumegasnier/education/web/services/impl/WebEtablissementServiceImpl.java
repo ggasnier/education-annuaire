@@ -1,15 +1,16 @@
 package com.guillaumegasnier.education.web.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementSportEntity;
 import com.guillaumegasnier.education.core.enums.SpecialiteBac;
+import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
-import com.guillaumegasnier.education.web.dto.LangueDto;
-import com.guillaumegasnier.education.web.dto.etablissements.IPSDto;
+import com.guillaumegasnier.education.web.dto.etablissements.LangueWithCategorieDto;
 import com.guillaumegasnier.education.web.dto.etablissements.OptionDto;
-import com.guillaumegasnier.education.web.dto.etablissements.SectionSportiveDto;
+import com.guillaumegasnier.education.web.dto.etablissements.SportWithCategorieDto;
 import com.guillaumegasnier.education.web.mappers.WebEtablissementMapper;
 import com.guillaumegasnier.education.web.services.WebEtablissementService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -51,19 +52,19 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
     }
 
     @Override
-    public List<LangueDto> getLangueListByUai(String uai) {
-        return coreEtablissementService.getLangueListByUai(uai).stream().map(webEtablissementMapper::toLangueDto).toList();
+    public List<LangueWithCategorieDto> getLangueListByUai(String uai) {
+        return webEtablissementMapper.toLangueWithCategorieDtoList(coreEtablissementService.getLangueListByUai(uai));
     }
 
-    @Override
-    public List<SectionSportiveDto> getSectionSportiveListByUai(String uai) {
-        return coreEtablissementService.getSectionSportiveListByUai(uai).stream().map(webEtablissementMapper::toSectionSportiveDto).toList();
-    }
+//    @Override
+//    public List<SectionSportiveDto> getSectionSportiveListByUai(String uai) {
+//        return coreEtablissementService.getSectionSportiveListByUai(uai).stream().map(webEtablissementMapper::toSectionSportiveDto).toList();
+//    }
 
-    @Override
-    public List<IPSDto> getIPSListByUai(String uai) {
-        return coreEtablissementService.getIPSListByUai(uai).stream().map(webEtablissementMapper::toIndicePositionSocialeEntity).toList();
-    }
+//    @Override
+//    public List<IPSDto> getIPSListByUai(String uai) {
+//        return coreEtablissementService.getIPSListByUai(uai).stream().map(webEtablissementMapper::toIndicePositionSocialeEntity).toList();
+//    }
 
     @Override
     public Optional<EtablissementDto> createEtablissement(@NonNull EtablissementRequestDto dto) {
@@ -93,5 +94,30 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
         } else {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public List<SportWithCategorieDto> getSportListByUai(String uai) {
+
+        List<EtablissementSportEntity> entities = coreEtablissementService.getSportListByUai(uai);
+
+        if (entities.isEmpty()) {
+            return List.of();
+        }
+
+        Map<String, List<EtablissementSportEntity>> grouped = entities.stream()
+                .filter(e -> e != null && e.getPk() != null && e.getPk().getCategorie() != null)
+                .collect(Collectors.groupingBy(e -> e.getPk().getCategorie(), LinkedHashMap::new, Collectors.toList()));
+
+        return grouped.entrySet().stream()
+                .map(entry -> {
+                    SportWithCategorieDto.CategorieDto categorieNom = SportWithCategorieDto.CategorieDto.valueOf(entry.getKey().toUpperCase());
+                    List<Sport> sports = entry.getValue().stream()
+                            .filter(Objects::nonNull)
+                            .map(e -> e.getPk().getSport())
+                            .toList();
+                    return new SportWithCategorieDto(categorieNom, sports);
+                })
+                .collect(Collectors.toList());
     }
 }

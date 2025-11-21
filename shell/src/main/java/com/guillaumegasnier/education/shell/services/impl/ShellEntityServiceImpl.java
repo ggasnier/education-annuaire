@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.SectionInternationale;
 import com.guillaumegasnier.education.core.enums.Sport;
@@ -87,7 +88,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     private <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityNew(@NonNull T dataset, @NonNull String source) {
         EtablissementEntity entity = etablissementMapper.toEntity(dataset);
 
-        if (dataset.getCodeCommune() != null) {
+        if (dataset.getCodeCommune() != null && !dataset.getCodeCommune().isBlank()) {
             var communeOptional = coreReferenceService.findCommune(dataset.getCodeCommune());
             if (communeOptional.isPresent()) {
                 entity.setCommune(communeOptional.get());
@@ -99,7 +100,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
                     log.warn("Commune inconnue pour {} / {}", dataset.getCodeCommune(), dataset.getNomCommune());
                 }
             }
-        } else {
+        } else if (dataset.getNomCommune() != null && !dataset.getNomCommune().isBlank()) {
             var communeOptional = coreReferenceService.findCommuneByNom(dataset.getNomCommune());
 
             if (communeOptional.isPresent()) {
@@ -144,6 +145,27 @@ public class ShellEntityServiceImpl implements ShellEntityService {
                     return entity;
                 })
                 .toList();
+    }
+
+    @Override
+    public OptionEtablissementEntity toOptionEtablissementEntity(@NonNull DispositifDataset dataset) {
+
+        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
+
+        if (etablissementOpt.isEmpty()) {
+            log.warn("Pas d'établissement avec UAI {} pour dispositifs", dataset.getUai());
+            return null;
+        }
+
+        OptionEtablissementPK pk = new OptionEtablissementPK();
+        pk.setUai(dataset.getUai());
+        pk.setOption(dataset.getOption());
+
+        OptionEtablissementEntity entity = new OptionEtablissementEntity();
+        entity.setPk(pk);
+        entity.setEtablissement(etablissementOpt.get());
+
+        return entity;
     }
 
     @Nullable
@@ -252,6 +274,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
+    @Deprecated
     public List<SectionInternationaleEntity> toSectionInternationaleEntity(@NonNull SectionInternationaleDataset dataset) {
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
@@ -351,6 +374,62 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         return coreEtablissementService.findOrganisme(dataset.getNumeroDeclarationActivite())
                 .map(organismeEntity -> toOrganismeEntityOld(organismeEntity, dataset))
                 .orElseGet(() -> toOrganismeEntityNew(dataset));
+    }
+
+    @Override
+    public List<EtablissementSportEntity> toEtablissementSportEntity(SportDataset dataset, String categorie) {
+
+        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
+
+        if (etablissementOpt.isEmpty()) {
+            log.warn("Pas d'établissement avec UAI {} pour sections sportives", dataset.getUai());
+            return List.of();
+        }
+
+        return dataset.getSectionList()
+                .stream()
+                .map(String::toUpperCase)
+                .map(Sport::transformation)
+                .filter(Objects::nonNull)
+                .map(section -> {
+                    EtablissementSportPK pk = new EtablissementSportPK();
+                    pk.setUai(dataset.getUai());
+                    pk.setSport(section);
+                    pk.setCategorie(categorie);
+
+                    EtablissementSportEntity entity = new EtablissementSportEntity();
+                    entity.setPk(pk);
+                    entity.setEtablissement(etablissementOpt.get());
+
+                    return entity;
+                })
+                .toList();
+    }
+
+    @Override
+    public List<LangueEntity> toLangueEntity(@NonNull DispositifDataset dataset, String enseignement) {
+        return dataset.getLangueList()
+                .stream()
+                .map(langue -> {
+                            Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
+
+                            if (etablissementOpt.isPresent()) {
+                                LanguePK pk = new LanguePK();
+                                pk.setLangue(langue);
+                                pk.setUai(dataset.getUai());
+                                pk.setEnseignement(enseignement);
+
+                                LangueEntity entity = new LangueEntity();
+                                entity.setPk(pk);
+                                entity.setEtablissement(etablissementOpt.get());
+
+                                return entity;
+                            }
+                            return null;
+                        }
+                )
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     private OrganismeEntity toOrganismeEntityNew(TravailOrganismeFormationDataset dataset) {

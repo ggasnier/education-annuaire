@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.core.domains.organismes;
 
+import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "entreprises")
-public class EntrepriseEntity {
+public class EntrepriseEntity extends AbstractEntity {
 
     /**
      * Numéro SIRET de l’entreprise (formateur, certificateur, etc.)

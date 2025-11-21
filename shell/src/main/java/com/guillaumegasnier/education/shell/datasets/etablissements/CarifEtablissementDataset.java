@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.shell.datasets.CarifDataset;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,9 +9,7 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -259,6 +258,11 @@ public class CarifEtablissementDataset extends CarifDataset implements Etablisse
     }
 
     @Override
+    public Boolean isActif() {
+        return true;
+    }
+
+    @Override
     public EtablissementDataset cloneWithUai(String uai) {
         try {
             CarifEtablissementDataset copy = (CarifEtablissementDataset) this.clone();
@@ -331,17 +335,19 @@ public class CarifEtablissementDataset extends CarifDataset implements Etablisse
     }
 
     @Override
-    public String getCodePays() {
-        return "";
-    }
-
-    @Override
     public LocalDate getDateFermeture() {
         try {
             return LocalDate.parse(dateFermeture);
         } catch (DateTimeParseException e) {
             return null;
         }
+    }
+
+    @Override
+    public Set<OptionEtablissement> getOptions() {
+        Set<OptionEtablissement> options = new HashSet<>();
+        options.add(OptionEtablissement.APPRENTISSAGE);
+        return options;
     }
 
 }

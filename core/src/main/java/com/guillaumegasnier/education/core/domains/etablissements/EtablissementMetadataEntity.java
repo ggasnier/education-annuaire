@@ -23,7 +23,7 @@ public class EtablissementMetadataEntity extends AbstractEntity {
 
     @MapsId("uai")
     @ManyToOne
-    @JoinColumn(name = "uai", foreignKey = @ForeignKey(name = "fk_metadatas_etablissements"), columnDefinition = "UUID", nullable = false)
+    @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_metadatas_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 
     @Type(JsonType.class)

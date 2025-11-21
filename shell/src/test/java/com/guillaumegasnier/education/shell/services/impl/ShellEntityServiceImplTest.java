@@ -6,7 +6,6 @@ import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSGlobalDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -255,28 +254,4 @@ class ShellEntityServiceImplTest {
         assertNull(result);
     }
 
-    @Test
-    void toIndicePositionSocialeEntityUaiNotFound() {
-        // given
-        IPSGlobalDataset dataset = new IPSGlobalDataset();
-        dataset.setUai(uaiAbsent);
-        // when
-        IndicePositionSocialeEntity result = service.toIndicePositionSocialeEntity(dataset, "C");
-        // then
-        assertNull(result);
-    }
-
-    @Test
-    void toIndicePositionSocialeEntityUaiFound() {
-        // given
-        IPSGlobalDataset dataset = new IPSGlobalDataset();
-        dataset.setUai(uaiExiste);
-        dataset.setIndice1("140.00");
-        dataset.setEcartType1("40.00");
-        dataset.setRentreeScolaire("2024");
-        // when
-        IndicePositionSocialeEntity result = service.toIndicePositionSocialeEntity(dataset, "C");
-        // then
-        assertNotNull(result);
-    }
 }

@@ -26,11 +26,12 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Deprecated
 public class SectionSportEtudeDataset implements Dataset {
 
     @CsvBindByName(column = "UAI")
     private String uai;
-    
+
     @CsvBindByName(column = "Pratique proposée")
     private String nomSport;
 
