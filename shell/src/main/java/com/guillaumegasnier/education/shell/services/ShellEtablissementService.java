@@ -39,4 +39,6 @@ public interface ShellEtablissementService {
     String createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets);
 
     <T extends IndicePositionSociale & Effectifs & Metadata> void createOrUpdateIPS(List<T> datasets);
+
+    <T extends Effectifs & Metadata> String createOrUpdateEffectifs(List<T> datasets);
 }

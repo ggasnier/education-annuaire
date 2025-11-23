@@ -131,6 +131,17 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    public <T extends Effectifs & Metadata> String createOrUpdateEffectifs(List<T> datasets) {
+        coreEtablissementService.saveMetadata(
+                datasets.stream()
+                        .map(shellEntityService::toEtablissementMetadataEntity)
+                        .filter(Objects::nonNull)
+                        .toList());
+
+        return "TODO";
+    }
+
+    @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public String createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source) {
 

@@ -123,6 +123,12 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
         return shellEtablissementService.createOrUpdateDispositifs(fileService.importCSV(DISPOSITIFS));
     }
 
+    @Override
+    @ShellMethod(value = "Import des effectifs des établissements")
+    public String importEffectifs() {
+        return shellEtablissementService.createOrUpdateEffectifs(fileService.importCSV(EFFECTIFS_COLLEGE));
+    }
+
     //    @Override
 //    @ShellMethod(value = "Import IPS Ecoles")
 //    public String importIpsEcoles() {

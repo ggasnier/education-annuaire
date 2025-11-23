@@ -54,6 +54,8 @@ public enum SourcesDatasets {
     IPS_LYCEES_3("IPS Lycées (2016 - 2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/27d469ff-9908-4b7e-a2e0-9439bb38a395", "ips_lycees_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSLycee2016Dataset.class),
     // Erea
 
+    EFFECTIFS_COLLEGE("Effectifs d’élèves en collège", EN, "https://www.data.gouv.fr/api/1/datasets/r/6bf59bae-3c3b-40f5-ad8e-f05b0b2ac271", "effectifs_college.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsCollegeDataset.class),
+
     // Compléments
     SECTIONS_SPORTIVES("Sections Sportives Scolaires", EN, "https://www.data.gouv.fr/api/1/datasets/r/c479b9b8-8224-46ef-b2f4-f6a3468726fc", "sections_sportives.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),
     SECTIONS_SPORT_ETUDES("Implantation des sections Sport-Etudes", EN, "https://www.data.gouv.fr/api/1/datasets/r/654ba2b1-fc50-4f36-a053-dbf9056ca53a", "sections_sports-etudes.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),

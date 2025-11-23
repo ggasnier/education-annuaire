@@ -14,25 +14,27 @@ import java.util.List;
 
 public interface ShellEntityService {
 
+    <T extends Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
+
     <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, String source);
 
     List<OptionEtablissementEntity> toOptionEtablissementEntity(@NonNull EtablissementDataset dataset);
 
     OptionEtablissementEntity toOptionEtablissementEntity(@NonNull OnisepDispositifDataset dataset);
 
-    OptionEtablissementEntity toOptionEtablissementEntity(@NonNull SectionBinationaleDataset dataset);
-
     //List<SectionSportiveEntity> toSectionSportiveEntity(@NonNull SectionSportiveDataset dataset);
 
-    List<SpecialiteEntity> toSpecialiteEntity(@NonNull SpecialitePremiereDataset dataset);
+    OptionEtablissementEntity toOptionEtablissementEntity(@NonNull SectionBinationaleDataset dataset);
 
     //List<SectionInternationaleEntity> toSectionInternationaleEntity(@NonNull SectionInternationaleDataset dataset);
 
 //    IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset, @NonNull String categorie);
 
-    LangueEntity toLangueEntity(@NonNull LangueDataset dataset);
+    List<SpecialiteEntity> toSpecialiteEntity(@NonNull SpecialitePremiereDataset dataset);
 
     //SportEtudeEntity toSportEtudeEntity(@NonNull SectionSportEtudeDataset dataset);
+
+    LangueEntity toLangueEntity(@NonNull LangueDataset dataset);
 
     FormationEntity findFormationByOnisepId(OnisepFormationDataset dataset);
 
