@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
+@Deprecated
 @Setter
 public class IPSGlobalDataset implements IPSDataset {
 

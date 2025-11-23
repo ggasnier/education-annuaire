@@ -1,5 +1,8 @@
 package com.guillaumegasnier.education.shell.services;
 
+import com.guillaumegasnier.education.core.validations.Effectifs;
+import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
+import com.guillaumegasnier.education.core.validations.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import org.springframework.lang.NonNull;
 
@@ -23,7 +26,7 @@ public interface ShellEtablissementService {
 
     String createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets);
 
-    String createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets);
+    //String createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets);
 
     String createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets);
 
@@ -33,5 +36,7 @@ public interface ShellEtablissementService {
 
     String createOrUpdateSports(@NonNull List<SportDataset> datasets, String categorie);
 
-    String createOrUpdateDispositifs(@NonNull List<DispositifDataset> datasets);
+    String createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets);
+
+    <T extends IndicePositionSociale & Effectifs & Metadata> void createOrUpdateIPS(List<T> datasets);
 }

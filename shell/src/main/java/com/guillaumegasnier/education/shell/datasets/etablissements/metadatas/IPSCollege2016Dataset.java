@@ -1,4 +1,50 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
-public class IPSCollege2016Dataset {
+import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
+import com.guillaumegasnier.education.core.validations.Metadata;
+import com.opencsv.bean.CsvBindByName;
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * Indices de position sociale des collèges (2016-2021)
+ * <p>
+ * <a href="https://www.data.gouv.fr/datasets/indices-de-position-sociale-dans-les-colleges-de-france-metropolitaine-et-drom/">Référence</a>
+ */
+@Getter
+@Setter
+public class IPSCollege2016Dataset implements IndicePositionSociale, Metadata {
+
+    @CsvBindByName(column = "Rentrée scolaire")
+    private String rentreeScolaire;
+    @CsvBindByName(column = "UAI")
+    private String uai;
+    @CsvBindByName(column = "IPS")
+    private String indice;
+    @CsvBindByName(column = "Ecart-type de l'IPS")
+    private String ecartType;
+
+    @Override
+    public Double getIndice() {
+        try {
+            return Double.parseDouble(indice);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Double getEcartType() {
+        try {
+            return Double.parseDouble(ecartType);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Integer getAnnee() {
+        return Integer.parseInt(rentreeScolaire.substring(0, 4));
+    }
+
 }

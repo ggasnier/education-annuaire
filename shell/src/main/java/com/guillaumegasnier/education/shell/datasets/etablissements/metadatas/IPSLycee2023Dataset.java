@@ -1,7 +1,9 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
+import com.guillaumegasnier.education.core.validations.Effectifs;
 import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.Metadata;
+import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,37 +14,34 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class IPSLycee2023Dataset implements IndicePositionSociale, Metadata {
+public class IPSLycee2023Dataset implements IndicePositionSociale, Effectifs, Metadata {
 
-    //num_ligne
-    //Rentrée scolaire
+    @CsvBindByName(column = "Rentrée scolaire")
     private String rentreeScolaire;
-    //Code région
-    //Région académique
-    //Code académie
-    //Académie
-    //Code du département
-    //Département
-    //Code INSEE de la commune
-    //Nom de la commune
-    //UAI
+
+    @CsvBindByName(column = "UAI")
     private String uai;
-    //Nom de l'établissement
-    //Secteur
-    //Type de lycée
+
+    /**
+     * LEGT
+     * LP
+     * LPO
+     */
+    @CsvBindByName(column = "Type de lycée")
+    private String typeLycee;
 
     //IPS voie GT
     //IPS voie PRO
-
     //IPS post BAC
 
-    //IPS de l'établissement
+    @CsvBindByName(column = "IPS de l'établissement")
     private Double indice;
+
 
     //Ecart type voie GT
     //Ecart type voie PRO
 
-    //Ecart-type établissement
+    @CsvBindByName(column = "Ecart-type établissement")
     private Double ecartType;
 
     //IPS national LEGT

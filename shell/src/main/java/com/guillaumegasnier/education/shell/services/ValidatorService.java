@@ -10,15 +10,15 @@ public interface ValidatorService {
 
     OptionEtablissementEntity toValidEntity(@NonNull OptionEtablissementEntity entity);
 
-    SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity);
+    //SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity);
 
     SpecialiteEntity toValidEntity(@NonNull SpecialiteEntity entity);
 
     LangueEntity toValidEntity(@NonNull LangueEntity entity);
 
-    SportEtudeEntity toValidEntity(@NonNull SportEtudeEntity entity);
+    //SportEtudeEntity toValidEntity(@NonNull SportEtudeEntity entity);
 
-    SectionSportiveEntity toValidEntity(@NonNull SectionSportiveEntity entity);
+    //SectionSportiveEntity toValidEntity(@NonNull SectionSportiveEntity entity);
 
     EtablissementSportEntity toValidEntity(@NonNull EtablissementSportEntity entity);
 

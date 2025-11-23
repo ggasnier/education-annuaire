@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 @Getter
 @Setter
 @ToString
-public class DispositifDataset implements Dataset {
+public class OnisepDispositifDataset implements Dataset {
 
     @CsvBindByName(column = "Action de dispositif (AD) identifiant Onisep")
     private String code;

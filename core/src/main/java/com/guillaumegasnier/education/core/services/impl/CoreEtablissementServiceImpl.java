@@ -27,11 +27,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final NatureRepository natureRepository;
     private final ContratRepository contratRepository;
     private final SpecialiteRepository specialiteRepository;
-    private final SectionInternationaleRepository sectionInternationaleRepository;
     private final LangueRepository langueRepository;
     private final OptionEtablissementRepository optionEtablissementRepository;
     private final OrganismeRepository organismeRepository;
     private final EtablissementSportRepository etablissementSportRepository;
+    private final EtablissementMetadataRepository etablissementMetadataRepository;
 
     @PersistenceContext
     private EntityManager em;
@@ -148,14 +148,29 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    public int getNbrEtablissements() {
+        return etablissementRepository.countByActif(true);
+    }
+
+    @Override
+    public Optional<EtablissementMetadataEntity> findMetadata(String uai, Integer annee) {
+        return etablissementMetadataRepository.findByPkUaiAndPkAnnee(uai, annee);
+    }
+
+    @Override
+    public void saveMetadata(List<EtablissementMetadataEntity> entities) {
+        etablissementMetadataRepository.saveAll(entities);
+    }
+
+    @Override
     public void saveSpecialites(List<SpecialiteEntity> entities) {
         specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les anciennes
     }
 
-    @Override
+    /*@Override
     public void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities) {
         sectionInternationaleRepository.saveAll(entities);
-    }
+    }*/
 
 //    @Override
 //    public void saveSectionsSporties(List<SectionSportiveEntity> entities) {

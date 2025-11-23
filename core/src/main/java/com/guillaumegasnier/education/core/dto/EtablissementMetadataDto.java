@@ -2,19 +2,13 @@ package com.guillaumegasnier.education.core.dto;
 
 import lombok.Data;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @Data
-public class EtablissementMetadataDto implements Serializable {
-
-    @Serial
-    private final static long serialVersionUID = 1L;
+public class EtablissementMetadataDto {
 
     /**
      * Effectif total de l'établissement
      */
-    private Integer effectif;
+    private Integer effectifs;
 
     /**
      * Indice de position sociale

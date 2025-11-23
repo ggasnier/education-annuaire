@@ -86,34 +86,18 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
         return shellEtablissementService.createOrUpdateContrats(fileService.importCSV(CONTRATS));
     }
 
-//    @Override
-//    @ShellMethod(value = "Import sections sportives")
-//    public String importSectionsSportives() {
-//        return shellEtablissementService.createOrUpdateSectionsSportives(fileService.importCSV(SECTIONS_SPORTIVES));
-//    }
-//
-//    @Override
-//    @ShellMethod(value = "Import sections sport études")
-//    public String importSectionsSportEtudes() {
-//        return shellEtablissementService.createOrUpdateSectionsSportEtudes(fileService.importCSV(SECTIONS_SPORT_ETUDES));
-//    }
-
-
     @Override
     @ShellMethod(value = "Import sections sport études et sections sportives")
     public String importSports() {
-
         return shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), "ss") +
                 shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), "se");
-
-        //return shellEtablissementService.createOrUpdateSectionsSportEtudes(fileService.importCSV(SECTIONS_SPORT_ETUDES));
     }
 
-    @Override
+    /*@Override
     @ShellMethod(value = "Import sections internationales")
     public String importSectionsInternationales() {
         return shellEtablissementService.createOrUpdateSectionsInternationales(fileService.importCSV(SECTIONS_INTERNATIONALES));
-    }
+    }*/
 
     @Override
     @ShellMethod(value = "Import langues dans les collèges et lycées")
@@ -139,7 +123,7 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
         return shellEtablissementService.createOrUpdateDispositifs(fileService.importCSV(DISPOSITIFS));
     }
 
-//    @Override
+    //    @Override
 //    @ShellMethod(value = "Import IPS Ecoles")
 //    public String importIpsEcoles() {
 //        List<IPSDataset> ipsEcoles = new ArrayList<>();
@@ -148,15 +132,21 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
 //        return shellEtablissementService.createOrUpdateIPS(ipsEcoles, "E");
 //    }
 //
-//    @Override
-//    @ShellMethod(value = "Import IPS Collèges")
-//    public String importIpsColleges() {
-//        List<IPSDataset> ipsColleges = new ArrayList<>();
-//        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_1));
-//        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_2));
-//        ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3));
-//        return shellEtablissementService.createOrUpdateIPS(ipsColleges, "C");
-//    }
+    @Override
+    @ShellMethod(value = "Import IPS Collèges")
+    public String importIpsColleges() {
+
+        //shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_COLLEGES_1));
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_COLLEGES_2));
+
+        //List<IPSDataset> ipsColleges = new ArrayList<>();
+        //ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_1));
+        //ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_2));
+        //ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3));
+        //return shellEtablissementService.createOrUpdateIPS(ipsColleges, "C");
+
+        return "TODO";
+    }
 
 //    @Override
 //    @ShellMethod(value = "Import IPS Lycées")

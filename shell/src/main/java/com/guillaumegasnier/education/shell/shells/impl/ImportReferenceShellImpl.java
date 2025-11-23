@@ -27,7 +27,7 @@ public class ImportReferenceShellImpl implements ImportReferenceShell {
 
     @Override
     @ShellMethod(value = "Import toutes les références")
-    public String importAll() {
+    public String importReferencesAll() {
         List<String> rapports = new ArrayList<>();
         rapports.add(importPays());
         rapports.add(importRegions());

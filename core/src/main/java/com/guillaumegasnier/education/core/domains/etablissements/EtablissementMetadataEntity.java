@@ -6,6 +6,7 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 /**
@@ -16,6 +17,7 @@ import org.hibernate.annotations.Type;
 @Setter
 @Entity
 @Table(name = "etablissements_metadatas")
+@ToString
 public class EtablissementMetadataEntity extends AbstractEntity {
 
     @EmbeddedId
@@ -28,6 +30,6 @@ public class EtablissementMetadataEntity extends AbstractEntity {
 
     @Type(JsonType.class)
     @Column(name = "metadatas", columnDefinition = "jsonb")
-    private EtablissementMetadataDto metadatas;
+    private EtablissementMetadataDto metadatas = new EtablissementMetadataDto();
 
 }

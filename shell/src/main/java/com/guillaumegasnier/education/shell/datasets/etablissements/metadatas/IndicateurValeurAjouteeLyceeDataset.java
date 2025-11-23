@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.shell.datasets.etablissements;
+package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
 import com.guillaumegasnier.education.core.dto.ResultatFiliereDto;
 import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;

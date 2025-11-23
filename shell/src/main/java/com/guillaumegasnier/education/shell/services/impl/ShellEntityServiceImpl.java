@@ -4,11 +4,13 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
-import com.guillaumegasnier.education.core.enums.SectionInternationale;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
+import com.guillaumegasnier.education.core.validations.Effectifs;
+import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
+import com.guillaumegasnier.education.core.validations.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
@@ -148,7 +150,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public OptionEtablissementEntity toOptionEtablissementEntity(@NonNull DispositifDataset dataset) {
+    public OptionEtablissementEntity toOptionEtablissementEntity(@NonNull OnisepDispositifDataset dataset) {
 
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
@@ -188,35 +190,6 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         entity.setEtablissement(etablissementOpt.get());
 
         return entity;
-    }
-
-    @Override
-    public List<SectionSportiveEntity> toSectionSportiveEntity(@NonNull SectionSportiveDataset dataset) {
-
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isEmpty()) {
-            log.warn("Pas d'établissement avec UAI {} pour sections sportives", dataset.getUai());
-            return List.of();
-        }
-
-        return dataset.getSectionList()
-                .stream()
-                .map(String::toUpperCase)
-                .map(Sport::transformation)
-                .filter(Objects::nonNull)
-                .map(section -> {
-                    SectionSportivePK pk = new SectionSportivePK();
-                    pk.setUai(dataset.getUai());
-                    pk.setSport(section);
-
-                    SectionSportiveEntity entity = new SectionSportiveEntity();
-                    entity.setPk(pk);
-                    entity.setEtablissement(etablissementOpt.get());
-
-                    return entity;
-                })
-                .toList();
     }
 
     @Nullable
@@ -271,83 +244,6 @@ public class ShellEntityServiceImpl implements ShellEntityService {
                     return entity;
                 }
         ).toList();
-    }
-
-    @Override
-    @Deprecated
-    public List<SectionInternationaleEntity> toSectionInternationaleEntity(@NonNull SectionInternationaleDataset dataset) {
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isEmpty()) {
-            log.warn("Pas d'établissement avec UAI {} pour sections internationales", dataset.getUai());
-            return List.of();
-        }
-
-        return dataset.getNiveaux().stream()
-                .map(niveau -> {
-                    SectionInternationalePK pk = new SectionInternationalePK();
-                    pk.setUai(dataset.getUai());
-                    pk.setSection(SectionInternationale.transformation(dataset.getSection()));
-                    pk.setNiveau(niveau);
-
-                    SectionInternationaleEntity entity = new SectionInternationaleEntity();
-                    entity.setPk(pk);
-                    entity.setEtablissement(etablissementOpt.get()); // association avec l'établissement
-                    return entity;
-                })
-                .toList();
-    }
-
-//    @Nullable
-//    @Override
-//    public IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset, @NonNull String categorie) {
-//
-//        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-//
-//        if (etablissementOpt.isEmpty()) {
-//            log.warn("Pas d'établissement avec UAI {} pour IPS", dataset.getUai());
-//            return null;
-//        }
-//
-//        IndicePositionSocialePK pk = new IndicePositionSocialePK();
-//        pk.setUai(dataset.getUai());
-//        pk.setAnnee(dataset.getAnnee());
-//
-//        IndicePositionSocialeEntity entity = new IndicePositionSocialeEntity();
-//        entity.setPk(pk);
-//        entity.setEtablissement(etablissementOpt.get());
-//        entity.setCategorie(categorie);
-//        entity.setIndice(dataset.getIndice());
-//        entity.setEcartType(dataset.getEcartType());
-//
-//        return entity;
-//    }
-
-    @Nullable
-    @Override
-    public SportEtudeEntity toSportEtudeEntity(@NonNull SectionSportEtudeDataset dataset) {
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isEmpty()) {
-            log.warn("Pas d'établissement avec UAI {} pour sections sport etudes", dataset.getUai());
-            return null;
-        }
-
-        Sport sport = Sport.transformation(dataset.getNomSport());
-
-        if (sport != null) {
-            SportEtudePK pk = new SportEtudePK();
-            pk.setUai(dataset.getUai());
-            pk.setSport(sport);
-
-            SportEtudeEntity entity = new SportEtudeEntity();
-            entity.setPk(pk);
-            entity.setEtablissement(etablissementOpt.get());
-
-            return entity;
-        }
-
-        return null;
     }
 
     @Override
@@ -407,7 +303,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public List<LangueEntity> toLangueEntity(@NonNull DispositifDataset dataset, String enseignement) {
+    public List<LangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, String enseignement) {
         return dataset.getLangueList()
                 .stream()
                 .map(langue -> {
@@ -430,6 +326,52 @@ public class ShellEntityServiceImpl implements ShellEntityService {
                 )
                 .filter(Objects::nonNull)
                 .toList();
+    }
+
+    @Override
+    public <T extends IndicePositionSociale & Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset) {
+        var uai = dataset.getUai();
+        var annee = dataset.getAnnee();
+
+        Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
+
+        if (uai.equals("9760244L"))
+            log.info(dataset.getEffectifs().toString());
+
+        if (metadataEntityOptional.isPresent()) {
+            var entity = metadataEntityOptional.get();
+            var metadatas = entity.getMetadatas();
+            metadatas.setIps(etablissementMapper.toIndicePositionSocialeDto(dataset));
+
+            if (dataset.getEffectifs() != null) {
+                metadatas.setEffectifs(dataset.getEffectifs());
+            }
+
+            entity.setMetadatas(metadatas);
+            return entity;
+        } else {
+            Optional<EtablissementEntity> etablissementEntityOptional = coreEtablissementService.findEtablissement(uai);
+
+            if (etablissementEntityOptional.isPresent()) {
+                var pk = new EtablissementAnneePK();
+                pk.setUai(uai);
+                pk.setAnnee(annee);
+                var entity = new EtablissementMetadataEntity();
+                entity.setPk(pk);
+                entity.setEtablissement(etablissementEntityOptional.get());
+                var metadatas = entity.getMetadatas();
+                metadatas.setIps(etablissementMapper.toIndicePositionSocialeDto(dataset));
+
+                if (dataset.getEffectifs() != null) {
+                    metadatas.setEffectifs(dataset.getEffectifs());
+                }
+                entity.setMetadatas(metadatas);
+                return entity;
+            } else {
+                log.warn("Pas d'établissement avec UAI {} pour IPS", uai);
+                return null;
+            }
+        }
     }
 
     private OrganismeEntity toOrganismeEntityNew(TravailOrganismeFormationDataset dataset) {

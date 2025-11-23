@@ -3,6 +3,7 @@ package com.guillaumegasnier.education.core.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@Deprecated
 @Getter
 @AllArgsConstructor
 public enum EtatEtablissement {

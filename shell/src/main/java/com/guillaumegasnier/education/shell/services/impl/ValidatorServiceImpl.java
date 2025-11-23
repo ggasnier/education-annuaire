@@ -58,10 +58,10 @@ public class ValidatorServiceImpl implements ValidatorService {
 //        return toValidEntity(entity, IndicePositionSocialeEntity.class);
 //    }
 
-    @Override
+    /*@Override
     public SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity) {
         return toValidEntity(entity, SectionInternationaleEntity.class);
-    }
+    }*/
 
     @Override
     public SpecialiteEntity toValidEntity(@NonNull SpecialiteEntity entity) {
@@ -73,7 +73,7 @@ public class ValidatorServiceImpl implements ValidatorService {
         return toValidEntity(entity, LangueEntity.class);
     }
 
-    @Override
+    /*@Override
     public SportEtudeEntity toValidEntity(@NonNull SportEtudeEntity entity) {
         return toValidEntity(entity, SportEtudeEntity.class);
     }
@@ -81,10 +81,10 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public SectionSportiveEntity toValidEntity(@NonNull SectionSportiveEntity entity) {
         return toValidEntity(entity, SectionSportiveEntity.class);
-    }
+    }*/
 
     @Override
-    public EtablissementSportEntity toValidEntity(EtablissementSportEntity entity) {
+    public EtablissementSportEntity toValidEntity(@NonNull EtablissementSportEntity entity) {
         return toValidEntity(entity, EtablissementSportEntity.class);
     }
 

@@ -2,7 +2,7 @@ package com.guillaumegasnier.education.shell.shells;
 
 public interface ImportReferenceShell {
 
-    String importAll();
+    String importReferencesAll();
 
     String importPays();
 

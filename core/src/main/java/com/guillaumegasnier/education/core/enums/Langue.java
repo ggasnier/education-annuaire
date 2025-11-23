@@ -6,6 +6,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+/**
+ * Sert pour
+ * <ul>
+ *     <li>La langues lv1, lv2, lca</li>
+ *     <li>Les sections bilingues</li>
+ *     <li>Les sections internationales</li>
+ *     <li>Les sections européennes</li>
+ *     <li>Les sections langues orientales</li>
+ * </ul>
+ */
 @Slf4j
 @Getter
 @AllArgsConstructor
@@ -47,7 +57,9 @@ public enum Langue {
     LI("Monégasque", "🇲🇨", "monégasque", Categorie.LV), // le code n'existe pas officiellement
     DH("Drehu (lifou)", "🇳🇨", "drehu (lifou)", Categorie.LV), // le code n'existe pas officiellement
     PF("Langues océaniennes", "🌊", "langues rares océaniennes", Categorie.LV), // le code n'existe pas officiellement
-    DE("Allemand", "🇩🇪", "allemand", Categorie.LV);
+    DE("Allemand", "🇩🇪", "allemand", Categorie.LV),
+    GS("Alsacien", "", "langues et cultures régionales : langues régionales d’Alsace", Categorie.LV),
+    FS("Langue des signes française", "", "langue des signes française", Categorie.LV);
 
     private final String nom;
     private final String emoji;

@@ -20,10 +20,6 @@ public interface CoreEtablissementService {
 
     void saveSpecialites(List<SpecialiteEntity> entities);
 
-    void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities);
-
-    //void saveSectionsSporties(List<SectionSportiveEntity> entities);
-
     void saveLangues(List<LangueEntity> entities);
 
     void saveOptions(List<OptionEtablissementEntity> entities);
@@ -73,4 +69,10 @@ public interface CoreEtablissementService {
     void saveOrganismes(List<OrganismeEntity> entities);
 
     void saveEtablissementSportEntity(List<EtablissementSportEntity> entities);
+
+    int getNbrEtablissements();
+
+    Optional<EtablissementMetadataEntity> findMetadata(String uai, Integer annee);
+
+    void saveMetadata(List<EtablissementMetadataEntity> entities);
 }

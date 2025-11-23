@@ -4,6 +4,9 @@ import com.guillaumegasnier.education.core.domains.recherche.DocumentEntity;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.services.CoreElasticService;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.validations.Effectifs;
+import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
+import com.guillaumegasnier.education.core.validations.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
@@ -65,7 +68,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
-    public String createOrUpdateDispositifs(@NonNull List<DispositifDataset> datasets) {
+    public String createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets) {
 
         // Enregistrement comme une option
         coreEtablissementService.saveOptions(datasets.stream()
@@ -116,6 +119,15 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .toList());
 
         return String.format("Import terminé : %d dispositifs enregistré(s).", datasets.size());
+    }
+
+    @Override
+    public <T extends IndicePositionSociale & Effectifs & Metadata> void createOrUpdateIPS(List<T> datasets) {
+        coreEtablissementService.saveMetadata(datasets.stream()
+                //.limit(10)
+                .map(shellEntityService::toEtablissementMetadataEntity)
+                .filter(Objects::nonNull)
+                .toList());
     }
 
     @Override
@@ -265,7 +277,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         return String.format("Import terminé : %d specialités enregistrée(s).", datasets.size());
     }
 
-    @Override
+    /*@Override
     @Transactional
     public String createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets) {
         coreEtablissementService.saveSectionsInternationales(datasets.stream()
@@ -275,7 +287,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .filter(Objects::nonNull)
                 .toList());
         return String.format("Import terminé : %d sections internationale(s).", datasets.size());
-    }
+    }*/
 
     @Override
     @Transactional
@@ -290,7 +302,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         return String.format("Import terminé : %d sections binationale enregistrée(s).", datasets.size());
     }
 
-    @Deprecated
     @Override
     public String createOrUpdateEtablissementsRecherche() {
         List<DocumentEntity> entities = coreEtablissementService.findAll()

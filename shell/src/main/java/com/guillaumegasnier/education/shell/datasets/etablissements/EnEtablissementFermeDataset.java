@@ -50,7 +50,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class EtablissementFermeDataset implements EtablissementDataset {
+public class EnEtablissementFermeDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "numero_uai")
     private String uai;
@@ -102,7 +102,7 @@ public class EtablissementFermeDataset implements EtablissementDataset {
     @Override
     public EtablissementDataset cloneWithUai(String uai) {
         try {
-            EtablissementFermeDataset copy = (EtablissementFermeDataset) this.clone();
+            EnEtablissementFermeDataset copy = (EnEtablissementFermeDataset) this.clone();
             copy.setUai(uai);
             return copy;
         } catch (CloneNotSupportedException e) {
@@ -123,7 +123,7 @@ public class EtablissementFermeDataset implements EtablissementDataset {
     @Override
     public EtablissementDataset cloneWithSiret(String siret) {
         try {
-            EtablissementFermeDataset copy = (EtablissementFermeDataset) this.clone();
+            EnEtablissementFermeDataset copy = (EnEtablissementFermeDataset) this.clone();
             copy.setSiret(siret);
             return copy;
         } catch (CloneNotSupportedException e) {

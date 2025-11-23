@@ -40,8 +40,9 @@ public class IndexController {
     @GetMapping("")
     public String getHome(Model model) {
 
-        model.addAttribute("title", "TODO");
+        model.addAttribute("title", "Formakoi");
 
+        model.addAttribute("nbrEtabliseements", coreEtablissementService.getNbrEtablissements());
 
         return "home.html";
     }
@@ -76,7 +77,7 @@ public class IndexController {
             model.addAttribute("natures", natures);
         }
 
-        return "commune.html";
+        return "references/commune.html";
     }
 
     @GetMapping("/departements/{code}")

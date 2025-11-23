@@ -1,11 +1,17 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.LangueEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.OptionEtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.SpecialiteEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
-import com.guillaumegasnier.education.shell.datasets.etablissements.*;
+import com.guillaumegasnier.education.shell.datasets.etablissements.EnEtablissementDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.LangueDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.SectionBinationaleDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.SpecialitePremiereDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,7 +82,7 @@ class ShellEntityServiceImplTest {
         assertNotNull(entity);
     }
 
-    @Test
+    /*@Test
     void toSectionInternationaleEntityUaiNotFound() {
         // given
         SectionInternationaleDataset dataset = new SectionInternationaleDataset();
@@ -85,9 +91,9 @@ class ShellEntityServiceImplTest {
         List<SectionInternationaleEntity> result = service.toSectionInternationaleEntity(dataset);
         // then
         assertTrue(result.isEmpty());
-    }
+    }*/
 
-    @Test
+    /*@Test
     void toSectionInternationaleEntityUaiFound() {
         // given
         SectionInternationaleDataset dataset = new SectionInternationaleDataset();
@@ -98,7 +104,7 @@ class ShellEntityServiceImplTest {
         List<SectionInternationaleEntity> result = service.toSectionInternationaleEntity(dataset);
         // then
         assertFalse(result.isEmpty());
-    }
+    }*/
 
     @Test
     void toSpecialiteEntityUaiNotFound() {
@@ -170,7 +176,7 @@ class ShellEntityServiceImplTest {
         assertFalse(result.isEmpty());
     }
 
-    @Test
+    /*@Test
     void toSectionSportiveEntityUaiNotFound() {
         // given
         SectionSportiveDataset dataset = new SectionSportiveDataset();
@@ -179,9 +185,9 @@ class ShellEntityServiceImplTest {
         List<SectionSportiveEntity> result = service.toSectionSportiveEntity(dataset);
         // then
         assertTrue(result.isEmpty());
-    }
+    }*/
 
-    @Test
+    /*@Test
     void toSectionSportiveEntityUaiFound() {
         // given
         SectionSportiveDataset dataset = new SectionSportiveDataset();
@@ -191,7 +197,7 @@ class ShellEntityServiceImplTest {
         List<SectionSportiveEntity> result = service.toSectionSportiveEntity(dataset);
         // then
         assertFalse(result.isEmpty());
-    }
+    }*/
 
     @Test
     void toLangueEntityUaiNotFound() {
@@ -219,7 +225,7 @@ class ShellEntityServiceImplTest {
         assertEquals("lv1", result.getPk().getEnseignement());
     }
 
-    @Test
+    /*@Test
     void toSportEtudeEntityUaiNotFound() {
         // given
         SectionSportEtudeDataset dataset = new SectionSportEtudeDataset();
@@ -252,6 +258,6 @@ class ShellEntityServiceImplTest {
         SportEtudeEntity result = service.toSportEtudeEntity(dataset);
         // then
         assertNull(result);
-    }
+    }*/
 
 }
