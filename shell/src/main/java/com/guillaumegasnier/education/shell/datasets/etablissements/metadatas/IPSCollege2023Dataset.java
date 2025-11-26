@@ -7,6 +7,8 @@ import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatDouble;
+
 /**
  * Indices de position sociale des collèges (à partir de 2023)
  * <p>
@@ -45,56 +47,32 @@ public class IPSCollege2023Dataset implements IndicePositionSociale, Effectifs, 
 
     @Override
     public Double getIndiceAcademiePrive() {
-        try {
-            return Double.parseDouble(indiceAcademiePrive);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return formatDouble(indiceAcademiePrive);
     }
 
     @Override
     public Double getIndiceAcademiePublic() {
-        try {
-            return Double.parseDouble(indiceAcademiePublic);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return formatDouble(indiceAcademiePublic);
     }
 
     @Override
     public Double getIndiceDepartementPrive() {
-        try {
-            return Double.parseDouble(indiceDepartementPrive);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return formatDouble(indiceDepartementPrive);
     }
 
     @Override
     public Double getIndiceDepartementPublic() {
-        try {
-            return Double.parseDouble(indiceDepartementPublic);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return formatDouble(indiceDepartementPublic);
     }
 
     @Override
     public Double getIndice() {
-        try {
-            return Double.parseDouble(indice);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return formatDouble(indice);
     }
 
     @Override
     public Double getEcartType() {
-        try {
-            return Double.parseDouble(ecartType);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return formatDouble(ecartType);
     }
 
     @Override

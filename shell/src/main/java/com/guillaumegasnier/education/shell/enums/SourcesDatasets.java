@@ -7,7 +7,6 @@ import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationData
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationResponse;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSGlobalDataset;
 import com.guillaumegasnier.education.shell.datasets.references.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +41,8 @@ public enum SourcesDatasets {
     TRAVAIL_ETABS("Liste Publique des Organismes de Formation", MTEDS, "https://www.data.gouv.fr/api/1/datasets/r/ac59a0f5-fa83-4b82-bf12-3c5806d4f19f", "organismes_formations.csv", StandardCharsets.UTF_8, ';', "GET", TravailOrganismeFormationDataset.class),
 
     // Ecoles
-    IPS_ECOLES_1("Indices de position sociale des écoles (2016-2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/fda33536-a0e0-4cad-b1bf-b88d2a7586e6", "ips_ecoles_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSGlobalDataset.class),
-    IPS_ECOLES_2("Indices de position sociale des écoles (à partir de 2022)", EN, "https://www.data.gouv.fr/api/1/datasets/r/896c2e97-6a64-4521-bcab-b5b0d3cf7065", "ips_ecoles_2022.csv", StandardCharsets.UTF_8, ';', "GET", IPSGlobalDataset.class),
+    IPS_ECOLES_1("Indices de position sociale des écoles (2016-2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/fda33536-a0e0-4cad-b1bf-b88d2a7586e6", "ips_ecoles_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSEcole2016Dataset.class),
+    IPS_ECOLES_2("Indices de position sociale des écoles (à partir de 2022)", EN, "https://www.data.gouv.fr/api/1/datasets/r/896c2e97-6a64-4521-bcab-b5b0d3cf7065", "ips_ecoles_2022.csv", StandardCharsets.UTF_8, ';', "GET", IPSEcole2022Dataset.class),
     // Collèges
     IPS_COLLEGES_1("IPS Collèges (depuis 2023)", EN, "https://www.data.gouv.fr/api/1/datasets/r/3c7fe02a-702b-4276-acfb-07d0572c18a2", "ips_colleges_2023.csv", StandardCharsets.UTF_8, ';', "GET", IPSCollege2023Dataset.class),
     IPS_COLLEGES_2("IPS Collèges (2022)", EN, "https://www.data.gouv.fr/api/1/datasets/r/28e511a7-af0d-48c7-a8bb-2f38ec003f49", "ips_colleges_2022.csv", StandardCharsets.UTF_8, ';', "GET", IPSCollege2022Dataset.class),

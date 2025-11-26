@@ -2,7 +2,6 @@ package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
-import com.guillaumegasnier.education.shell.datasets.CarifDataset;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,7 +13,7 @@ import java.util.*;
 @Getter
 @Setter
 @ToString
-public class CarifEtablissementDataset extends CarifDataset implements EtablissementDataset {
+public class CarifEtablissementDataset implements EtablissementDataset {
 
     @JsonProperty("siege_social")
     private Boolean siegeSocial;

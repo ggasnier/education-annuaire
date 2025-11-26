@@ -7,6 +7,8 @@ import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatDouble;
+
 
 /**
  * Indices de position sociale dans les collèges (2022)
@@ -39,20 +41,12 @@ public class IPSCollege2022Dataset implements IndicePositionSociale, Effectifs, 
 
     @Override
     public Double getIndice() {
-        try {
-            return Double.parseDouble(indice);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return formatDouble(indice);
     }
 
     @Override
     public Double getEcartType() {
-        try {
-            return Double.parseDouble(ecartType);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return formatDouble(ecartType);
     }
 
     @Override

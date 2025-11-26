@@ -26,4 +26,13 @@ public class ShellUtil {
         Matcher matcher = RNCP_PATTERN.matcher(url);
         return matcher.find() ? "RNCP" + matcher.group(1) : null;
     }
+
+    @Nullable
+    public static Double formatDouble(String value) {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 }

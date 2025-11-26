@@ -6,6 +6,8 @@ import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatDouble;
+
 /**
  * Indices de position sociale des collèges (2016-2021)
  * <p>
@@ -26,20 +28,12 @@ public class IPSCollege2016Dataset implements IndicePositionSociale, Metadata {
 
     @Override
     public Double getIndice() {
-        try {
-            return Double.parseDouble(indice);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return formatDouble(indice);
     }
 
     @Override
     public Double getEcartType() {
-        try {
-            return Double.parseDouble(ecartType);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return formatDouble(ecartType);
     }
 
     @Override
