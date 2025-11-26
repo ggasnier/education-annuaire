@@ -4,9 +4,7 @@ import com.guillaumegasnier.education.core.validations.ValidUai;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,6 +13,8 @@ import java.io.Serializable;
 @Setter
 @Embeddable
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class EtablissementAnneePK implements Serializable {
 
     @Serial

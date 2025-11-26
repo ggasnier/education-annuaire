@@ -5,7 +5,9 @@ import com.guillaumegasnier.education.core.domains.etablissements.EtablissementE
 import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
 import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.recherche.DocumentEntity;
+import com.guillaumegasnier.education.core.dto.IndicateurValeurAjouteeDto;
 import com.guillaumegasnier.education.core.dto.IndicePositionSocialeDto;
+import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
@@ -73,5 +75,11 @@ public abstract class EtablissementMapper {
         ips.setIndiceNationalPublic(dataset.getIndiceNationalPublic());
         ips.setIndiceNationalPrive(dataset.getIndiceNationalPrive());
         return ips;
+    }
+
+    public <T extends IndicateurValeurAjoutee & Metadata> IndicateurValeurAjouteeDto toIndicateurValeurAjouteeDto(T dataset) {
+        IndicateurValeurAjouteeDto iva = new IndicateurValeurAjouteeDto();
+        iva.setResultats(dataset.getResultats());
+        return iva;
     }
 }

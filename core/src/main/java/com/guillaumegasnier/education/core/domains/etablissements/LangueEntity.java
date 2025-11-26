@@ -19,7 +19,7 @@ public class LangueEntity extends AbstractEntity {
     private LanguePK pk;
 
     @MapsId("uai")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_langues_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 }

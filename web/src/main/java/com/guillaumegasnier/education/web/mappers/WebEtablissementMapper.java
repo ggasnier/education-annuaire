@@ -127,4 +127,16 @@ public abstract class WebEtablissementMapper {
         l.setEnseignement(entity.getPk().getEnseignement());
         return l;
     }
+
+    @Mapping(target = "tauxMentions", source = "metadatas.iva.resultat.tauxMentions")
+    @Mapping(target = "indiceNational", source = "metadatas.ips.indiceNational")
+    @Mapping(target = "valeurAjoutee", source = "metadatas.iva.resultat.valeurAjoutee")
+    @Mapping(target = "tauxReussite", source = "metadatas.iva.resultat.taux")
+    @Mapping(target = "indiceDepartement", source = "metadatas.ips.indiceDepartement")
+    @Mapping(target = "indiceAcademie", source = "metadatas.ips.indiceAcademie")
+    @Mapping(target = "indice", source = "metadatas.ips.indice")
+    @Mapping(target = "ecartType", source = "metadatas.ips.ecartType")
+    @Mapping(target = "effectifs", source = "metadatas.effectifs")
+    @Mapping(target = "annee", source = "pk.annee")
+    public abstract MetadataDto toMetadataDto(EtablissementMetadataEntity entity);
 }

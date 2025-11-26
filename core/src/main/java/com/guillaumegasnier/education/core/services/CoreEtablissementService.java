@@ -75,4 +75,6 @@ public interface CoreEtablissementService {
     Optional<EtablissementMetadataEntity> findMetadata(String uai, Integer annee);
 
     void saveMetadata(List<EtablissementMetadataEntity> entities);
+
+    List<EtablissementMetadataEntity> getMetadataListByUai(String uai);
 }

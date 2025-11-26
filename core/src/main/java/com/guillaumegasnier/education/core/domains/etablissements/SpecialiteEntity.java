@@ -15,7 +15,7 @@ public class SpecialiteEntity extends AbstractEntity {
     private SpecialitePK pk;
 
     @MapsId("uai")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_specialites_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 }

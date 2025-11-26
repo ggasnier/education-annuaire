@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.services;
 
 import com.guillaumegasnier.education.core.validations.Effectifs;
+import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -41,4 +42,6 @@ public interface ShellEtablissementService {
     <T extends IndicePositionSociale & Effectifs & Metadata> void createOrUpdateIPS(List<T> datasets);
 
     <T extends Effectifs & Metadata> String createOrUpdateEffectifs(List<T> datasets);
+
+    <T extends IndicateurValeurAjoutee & Metadata> String createOrUpdateIVA(List<T> datasets);
 }

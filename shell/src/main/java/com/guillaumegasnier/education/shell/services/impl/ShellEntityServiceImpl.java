@@ -9,6 +9,7 @@ import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.core.validations.Effectifs;
+import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -349,12 +350,8 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             Optional<EtablissementEntity> etablissementEntityOptional = coreEtablissementService.findEtablissement(uai);
 
             if (etablissementEntityOptional.isPresent()) {
-                var pk = new EtablissementAnneePK();
-                pk.setUai(uai);
-                pk.setAnnee(annee);
-                var entity = new EtablissementMetadataEntity();
-                entity.setPk(pk);
-                entity.setEtablissement(etablissementEntityOptional.get());
+                var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), etablissementEntityOptional.get());
+
                 var metadatas = entity.getMetadatas();
 
                 if (dataset.getEffectifs() != null) {
@@ -368,6 +365,39 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             }
         }
 
+    }
+
+    @Override
+    public <T extends IndicateurValeurAjoutee & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset) {
+        var uai = dataset.getUai();
+        var annee = dataset.getAnnee();
+
+        Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
+
+        if (metadataEntityOptional.isPresent()) {
+            var entity = metadataEntityOptional.get();
+            var metadatas = entity.getMetadatas();
+
+            metadatas.setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
+            entity.setMetadatas(metadatas);
+
+            return entity;
+        } else {
+            Optional<EtablissementEntity> etablissementEntityOptional = coreEtablissementService.findEtablissement(uai);
+
+            if (etablissementEntityOptional.isPresent()) {
+                var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), etablissementEntityOptional.get());
+                var metadatas = entity.getMetadatas();
+
+                metadatas.setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
+
+                entity.setMetadatas(metadatas);
+                return entity;
+            } else {
+                log.warn("Pas d'établissement avec UAI {} pour IVA", uai);
+                return null;
+            }
+        }
     }
 
     @Override
@@ -392,12 +422,8 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             Optional<EtablissementEntity> etablissementEntityOptional = coreEtablissementService.findEtablissement(uai);
 
             if (etablissementEntityOptional.isPresent()) {
-                var pk = new EtablissementAnneePK();
-                pk.setUai(uai);
-                pk.setAnnee(annee);
-                var entity = new EtablissementMetadataEntity();
-                entity.setPk(pk);
-                entity.setEtablissement(etablissementEntityOptional.get());
+                var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), etablissementEntityOptional.get());
+
                 var metadatas = entity.getMetadatas();
                 metadatas.setIps(etablissementMapper.toIndicePositionSocialeDto(dataset));
 

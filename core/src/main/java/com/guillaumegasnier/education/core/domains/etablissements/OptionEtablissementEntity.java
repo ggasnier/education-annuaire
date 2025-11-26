@@ -15,7 +15,7 @@ public class OptionEtablissementEntity extends AbstractEntity {
     private OptionEtablissementPK pk;
 
     @MapsId("uai")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_options_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 }

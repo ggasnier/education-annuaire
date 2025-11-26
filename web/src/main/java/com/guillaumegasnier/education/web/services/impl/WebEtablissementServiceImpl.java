@@ -2,14 +2,12 @@ package com.guillaumegasnier.education.web.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementSportEntity;
-import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
-import com.guillaumegasnier.education.web.dto.etablissements.LangueWithCategorieDto;
-import com.guillaumegasnier.education.web.dto.etablissements.OptionDto;
+import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDetailsDto;
 import com.guillaumegasnier.education.web.dto.etablissements.SportWithCategorieDto;
 import com.guillaumegasnier.education.web.mappers.WebEtablissementMapper;
 import com.guillaumegasnier.education.web.services.WebEtablissementService;
@@ -17,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,21 +39,21 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
     public Optional<EtablissementDto> findEtablissementByUai(String uai) {
         return coreEtablissementService.findEtablissement(uai).map(webEtablissementMapper::toEtablissementDto);
     }
-
-    @Override
-    public List<OptionDto> getOptionListByUai(String uai) {
-        return coreEtablissementService.getOptionListByUai(uai).stream().map(webEtablissementMapper::toOptionDto).toList();
-    }
-
-    @Override
-    public List<SpecialiteBac> getSpecialiteListByUai(String uai) {
-        return coreEtablissementService.getSpecialiteListByUai(uai).stream().map(webEtablissementMapper::toSpecialiteBac).toList();
-    }
-
-    @Override
-    public List<LangueWithCategorieDto> getLangueListByUai(String uai) {
-        return webEtablissementMapper.toLangueWithCategorieDtoList(coreEtablissementService.getLangueListByUai(uai));
-    }
+//
+//    @Override
+//    public List<OptionDto> getOptionListByUai(String uai) {
+//        return coreEtablissementService.getOptionListByUai(uai).stream().map(webEtablissementMapper::toOptionDto).toList();
+//    }
+//
+//    @Override
+//    public List<SpecialiteBac> getSpecialiteListByUai(String uai) {
+//        return coreEtablissementService.getSpecialiteListByUai(uai).stream().map(webEtablissementMapper::toSpecialiteBac).toList();
+//    }
+//
+//    @Override
+//    public List<LangueWithCategorieDto> getLangueListByUai(String uai) {
+//        return webEtablissementMapper.toLangueWithCategorieDtoList(coreEtablissementService.getLangueListByUai(uai));
+//    }
 
 //    @Override
 //    public List<SectionSportiveDto> getSectionSportiveListByUai(String uai) {
@@ -119,5 +118,33 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
                     return new SportWithCategorieDto(categorieNom, sports);
                 })
                 .collect(Collectors.toList());
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public EtablissementDetailsDto findEtablissementDetailsDtoByUai(@NonNull String uai) {
+
+        log.info("1 - etablissement");
+        Optional<EtablissementEntity> entity = coreEtablissementService.findEtablissement(uai);
+
+        if (entity.isEmpty()) {
+            return null;
+        }
+
+        var e = new EtablissementDetailsDto();
+
+        e.setEtablissement(entity.map(webEtablissementMapper::toEtablissementDto).orElse(null));
+        log.info("2 - options");
+        e.setOptions(coreEtablissementService.getOptionListByUai(uai).stream().map(webEtablissementMapper::toOptionDto).toList());
+        log.info("3 - specialites");
+        e.setSpecialites(coreEtablissementService.getSpecialiteListByUai(uai).stream().map(webEtablissementMapper::toSpecialiteBac).toList());
+        log.info("4 - langues");
+        e.setLangues(webEtablissementMapper.toLangueWithCategorieDtoList(coreEtablissementService.getLangueListByUai(uai)));
+        log.info("5 - sports");
+        e.setSports(getSportListByUai(uai));
+        log.info("6 - metadatas");
+        e.setMetadatas(coreEtablissementService.getMetadataListByUai(uai).stream().map(webEtablissementMapper::toMetadataDto).toList());
+        return e;
     }
 }

@@ -5,6 +5,7 @@ import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.services.CoreElasticService;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.validations.Effectifs;
+import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -124,7 +125,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     @Override
     public <T extends IndicePositionSociale & Effectifs & Metadata> void createOrUpdateIPS(List<T> datasets) {
         coreEtablissementService.saveMetadata(datasets.stream()
-                //.limit(10)
                 .map(shellEntityService::toEtablissementMetadataEntity)
                 .filter(Objects::nonNull)
                 .toList());
@@ -137,6 +137,16 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                         .map(shellEntityService::toEtablissementMetadataEntity)
                         .filter(Objects::nonNull)
                         .toList());
+
+        return "TODO";
+    }
+
+    @Override
+    public <T extends IndicateurValeurAjoutee & Metadata> String createOrUpdateIVA(List<T> datasets) {
+        coreEtablissementService.saveMetadata(datasets.stream()
+                .map(shellEntityService::toEtablissementMetadataEntity)
+                .filter(Objects::nonNull)
+                .toList());
 
         return "TODO";
     }

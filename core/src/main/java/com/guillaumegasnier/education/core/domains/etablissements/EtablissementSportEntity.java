@@ -15,7 +15,7 @@ public class EtablissementSportEntity extends AbstractEntity {
     private EtablissementSportPK pk;
 
     @MapsId("uai")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_sports_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 }

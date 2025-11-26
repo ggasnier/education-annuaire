@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
 import com.guillaumegasnier.education.core.validations.Effectifs;
+import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -13,8 +14,12 @@ import org.springframework.lang.NonNull;
 import java.util.List;
 
 public interface ShellEntityService {
+    
+    <T extends IndicePositionSociale & Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
 
     <T extends Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
+
+    <T extends IndicateurValeurAjoutee & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
 
     <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, String source);
 
@@ -43,6 +48,4 @@ public interface ShellEntityService {
     List<EtablissementSportEntity> toEtablissementSportEntity(SportDataset dataset, String categorie);
 
     List<LangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, String enseigenement);
-
-    <T extends IndicePositionSociale & Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
 }

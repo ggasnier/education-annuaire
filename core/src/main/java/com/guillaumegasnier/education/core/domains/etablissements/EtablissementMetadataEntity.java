@@ -5,6 +5,7 @@ import com.guillaumegasnier.education.core.dto.EtablissementMetadataDto;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
@@ -18,6 +19,7 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "etablissements_metadatas")
 @ToString
+@NoArgsConstructor
 public class EtablissementMetadataEntity extends AbstractEntity {
 
     @EmbeddedId
@@ -32,4 +34,8 @@ public class EtablissementMetadataEntity extends AbstractEntity {
     @Column(name = "metadatas", columnDefinition = "jsonb")
     private EtablissementMetadataDto metadatas = new EtablissementMetadataDto();
 
+    public EtablissementMetadataEntity(EtablissementAnneePK pk, EtablissementEntity etablissement) {
+        this.pk = pk;
+        this.etablissement = etablissement;
+    }
 }

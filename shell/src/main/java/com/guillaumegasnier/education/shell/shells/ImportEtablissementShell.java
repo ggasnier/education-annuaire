@@ -38,10 +38,12 @@ public interface ImportEtablissementShell {
     String importDispositifs();
 
     String importEffectifs();
-    
+
     //    String importIpsEcoles();
 //
     String importIpsColleges();
+
+    String importIvaColleges();
 //
 //    String importIpsLycees();
 

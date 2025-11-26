@@ -141,17 +141,16 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     @Override
     @ShellMethod(value = "Import IPS Collèges")
     public String importIpsColleges() {
-
-        //shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_COLLEGES_1));
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_COLLEGES_1));
         shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_COLLEGES_2));
-
-        //List<IPSDataset> ipsColleges = new ArrayList<>();
-        //ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_1));
-        //ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_2));
-        //ipsColleges.addAll(fileService.importCSV(IPS_COLLEGES_3));
-        //return shellEtablissementService.createOrUpdateIPS(ipsColleges, "C");
-
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_COLLEGES_3));
         return "TODO";
+    }
+
+    @Override
+    @ShellMethod(value = "Import IVA Collèges")
+    public String importIvaColleges() {
+        return shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_COLLEGES));
     }
 
 //    @Override

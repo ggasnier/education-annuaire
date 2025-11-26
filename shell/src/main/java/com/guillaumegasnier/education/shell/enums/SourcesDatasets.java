@@ -40,6 +40,9 @@ public enum SourcesDatasets {
     ONISEP_ETABS_SUP("Idéo-Structures d'enseignement supérieur", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa586da5c4b6/5fa586da5c4b6.csv", "etablissements_ouverts_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepEtablissementSupDataset.class),
     TRAVAIL_ETABS("Liste Publique des Organismes de Formation", MTEDS, "https://www.data.gouv.fr/api/1/datasets/r/ac59a0f5-fa83-4b82-bf12-3c5806d4f19f", "organismes_formations.csv", StandardCharsets.UTF_8, ';', "GET", TravailOrganismeFormationDataset.class),
 
+    // Indicateurs valeur ajoutée
+    IVA_COLLEGES("Indicateurs de valeur ajoutée des collèges", EN, "https://www.data.gouv.fr/api/1/datasets/r/a230247a-8aea-4112-be41-bc008c0d6966", "iva_colleges.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeCollegeDataset.class),
+
     // Ecoles
     IPS_ECOLES_1("Indices de position sociale des écoles (2016-2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/fda33536-a0e0-4cad-b1bf-b88d2a7586e6", "ips_ecoles_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSEcole2016Dataset.class),
     IPS_ECOLES_2("Indices de position sociale des écoles (à partir de 2022)", EN, "https://www.data.gouv.fr/api/1/datasets/r/896c2e97-6a64-4521-bcab-b5b0d3cf7065", "ips_ecoles_2022.csv", StandardCharsets.UTF_8, ';', "GET", IPSEcole2022Dataset.class),

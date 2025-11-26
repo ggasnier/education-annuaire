@@ -10,4 +10,8 @@ import java.util.Set;
 public class IndicateurValeurAjouteeDto {
 
     private Set<ResultatFiliereDto> resultats;
+
+    public ResultatFiliereDto getResultat() {
+        return resultats.stream().filter(r -> r.getCode().equals("BREVETG")).findFirst().orElse(null);
+    }
 }

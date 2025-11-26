@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
 import com.guillaumegasnier.education.core.dto.ResultatFiliereDto;
-import com.guillaumegasnier.education.core.validations.Effectifs;
 import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.Metadata;
 import com.opencsv.bean.CsvBindByName;
@@ -13,7 +12,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class IndicateurValeurAjouteeCollegeDataset implements IndicateurValeurAjoutee, Effectifs, Metadata {
+public class IndicateurValeurAjouteeCollegeDataset implements IndicateurValeurAjoutee, Metadata {
 
     @CsvBindByName(column = "Session")
     private Integer annee;
