@@ -28,31 +28,14 @@ public class EtablissementsController {
         if (details == null)
             return "etablissements/404";
 
-        model.addAttribute("title", details.getEtablissement().getNom());
-        model.addAttribute("etablissement", details.getEtablissement());
-        model.addAttribute("options", details.getOptions());
-        model.addAttribute("specialites", details.getSpecialites());
-        model.addAttribute("langues", details.getLangues());
-        model.addAttribute("sports", details.getSports());
-        model.addAttribute("metadatats", details.getMetadatas());
+        model.addAttribute("title", details.etablissement().getNom());
+        model.addAttribute("etablissement", details.etablissement());
+        model.addAttribute("options", details.options());
+        model.addAttribute("specialites", details.specialites());
+        model.addAttribute("langues", details.langues());
+        model.addAttribute("sports", details.sports());
+        model.addAttribute("metadatats", details.metadatas());
 
         return "etablissements/details";
-
-//        var etablissementDto = webEtablissementService.findEtablissementByUai(uai);
-//
-//        if (etablissementDto.isPresent()) {
-//            model.addAttribute("title", etablissementDto.get().getNom());
-//
-//            model.addAttribute("etablissement", etablissementDto.get());
-//            model.addAttribute("options", webEtablissementService.getOptionListByUai(uai));
-//            model.addAttribute("specialites", webEtablissementService.getSpecialiteListByUai(uai));
-//            model.addAttribute("langues", webEtablissementService.getLangueListByUai(uai));
-//            model.addAttribute("sports", webEtablissementService.getSportListByUai(uai));
-//            model.addAttribute("indices", Collections.emptyList());
-//
-//            return "etablissements/details";
-//        } else {
-//
-//        }
     }
 }

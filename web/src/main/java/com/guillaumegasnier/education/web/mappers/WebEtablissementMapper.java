@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.SpecialiteBac;
+import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.web.dto.CommuneDto;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.LangueDto;
@@ -139,4 +140,26 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "effectifs", source = "metadatas.effectifs")
     @Mapping(target = "annee", source = "pk.annee")
     public abstract MetadataDto toMetadataDto(EtablissementMetadataEntity entity);
+
+    public List<SportWithCategorieDto> toSportWithCategorieDtoList(List<EtablissementSportEntity> entities) {
+
+        if (entities.isEmpty()) {
+            return List.of();
+        }
+
+        Map<String, List<EtablissementSportEntity>> grouped = entities.stream()
+                .filter(e -> e != null && e.getPk() != null && e.getPk().getCategorie() != null)
+                .collect(Collectors.groupingBy(e -> e.getPk().getCategorie(), LinkedHashMap::new, Collectors.toList()));
+
+        return grouped.entrySet().stream()
+                .map(entry -> {
+                    SportWithCategorieDto.CategorieDto categorieNom = SportWithCategorieDto.CategorieDto.valueOf(entry.getKey().toUpperCase());
+                    List<Sport> sports = entry.getValue().stream()
+                            .filter(Objects::nonNull)
+                            .map(e -> e.getPk().getSport())
+                            .toList();
+                    return new SportWithCategorieDto(categorieNom, sports);
+                })
+                .collect(Collectors.toList());
+    }
 }

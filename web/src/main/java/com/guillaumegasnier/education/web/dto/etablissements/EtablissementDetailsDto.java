@@ -2,24 +2,21 @@ package com.guillaumegasnier.education.web.dto.etablissements;
 
 import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
-public class EtablissementDetailsDto {
 
-    private EtablissementDto etablissement;
+public record EtablissementDetailsDto(
 
-    private List<OptionDto> options;
+        EtablissementDto etablissement,
 
-    private List<SpecialiteBac> specialites;
+        List<OptionDto> options,
 
-    private List<LangueWithCategorieDto> langues;
+        List<SpecialiteBac> specialites,
 
-    private List<SportWithCategorieDto> sports;
+        List<LangueWithCategorieDto> langues,
 
-    private List<MetadataDto> metadatas;
+        List<SportWithCategorieDto> sports,
+
+        List<MetadataDto> metadatas) {
 }
