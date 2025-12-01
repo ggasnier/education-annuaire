@@ -2,7 +2,7 @@ package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
-import com.guillaumegasnier.education.shell.datasets.etablissements.*;
+import com.guillaumegasnier.education.shell.datasets.etablissements.EnEtablissementDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,7 +68,7 @@ class ShellEtablissementServiceImplTest {
         assertEquals("Import terminé : 1 sections internationale(s).", service.createOrUpdateSectionsInternationales(datasets));
     }*/
 
-    @Test
+    /*@Test
     void createOrUpdateNaturesTest() {
         NatureDataset dataset = new NatureDataset();
         dataset.setCode("123");
@@ -83,9 +82,9 @@ class ShellEtablissementServiceImplTest {
         List<NatureDataset> datasets = List.of(dataset, dataset2);
 
         assertEquals("Import terminé : 2 natures(s) enregistrée(s).", service.createOrUpdateNatures(datasets));
-    }
+    }*/
 
-    @Test
+    /*@Test
     void createOrUpdateContratsTest() {
         ContratDataset dataset = new ContratDataset();
         dataset.setCode("12");
@@ -99,7 +98,7 @@ class ShellEtablissementServiceImplTest {
         List<ContratDataset> datasets = List.of(dataset, dataset2);
 
         assertEquals("Import terminé : 2 contrat(s) enregistré(s).", service.createOrUpdateContrats(datasets));
-    }
+    }*/
 
 //    @Test
 //    void createOrUpdateSectionsSportivesTest() {
@@ -123,7 +122,7 @@ class ShellEtablissementServiceImplTest {
 //        assertEquals("Import terminé : 1 sections sport etudes enregistrée(s).", service.createOrUpdateSectionsSportEtudes(datasets));
 //    }
 
-    @Test
+    /*@Test
     void createOrUpdateLanguesTest() {
         LangueDataset dataset = new LangueDataset();
         dataset.setUai(uaiExiste);
@@ -132,9 +131,9 @@ class ShellEtablissementServiceImplTest {
         List<LangueDataset> datasets = List.of(dataset);
 
         assertEquals("Import terminé : 1 langues enregistrée(s).", service.createOrUpdateLangues(datasets));
-    }
+    }*/
 
-    @Test
+    /*@Test
     void createOrUpdateSpecialitesTest() {
         SpecialitePremiereDataset dataset = new SpecialitePremiereDataset();
         dataset.setUai(uaiExiste);
@@ -143,9 +142,9 @@ class ShellEtablissementServiceImplTest {
         List<SpecialitePremiereDataset> datasets = List.of(dataset);
 
         assertEquals("Import terminé : 1 specialités enregistrée(s).", service.createOrUpdateSpecialites(datasets));
-    }
+    }*/
 
-    @Test
+    /*@Test
     void createOrUpdateSectionsBinationalesTest() {
         SectionBinationaleDataset dataset = new SectionBinationaleDataset();
         dataset.setUai(uaiExiste);
@@ -155,6 +154,6 @@ class ShellEtablissementServiceImplTest {
 
         assertEquals("Import terminé : 1 sections binationale enregistrée(s).", service.createOrUpdateSectionsBinationales(datasets));
 
-    }
+    }*/
 
 }

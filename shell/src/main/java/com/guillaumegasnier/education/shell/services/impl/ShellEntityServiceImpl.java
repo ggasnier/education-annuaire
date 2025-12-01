@@ -5,6 +5,7 @@ import com.guillaumegasnier.education.core.domains.formations.ActionFormationEnt
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
+import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
@@ -26,6 +27,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -174,6 +176,25 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         return entity;
     }
 
+    @Override
+    public OptionEtablissementEntity toOptionEtablissementEntity(EuroscolDataset dataset) {
+        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
+
+        if (etablissementOpt.isPresent()) {
+            OptionEtablissementPK pk = new OptionEtablissementPK();
+            pk.setUai(dataset.getUai());
+            pk.setOption(OptionEtablissement.EUROSCOL);
+
+            OptionEtablissementEntity entity = new OptionEtablissementEntity();
+            entity.setPk(pk);
+            entity.setEtablissement(etablissementOpt.get());
+
+            return entity;
+        }
+
+        return null;
+    }
+
     @Nullable
     @Override
     public OptionEtablissementEntity toOptionEtablissementEntity(@NonNull SectionBinationaleDataset dataset) {
@@ -194,6 +215,43 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         entity.setEtablissement(etablissementOpt.get());
 
         return entity;
+    }
+
+    @Override
+    public List<OptionEtablissementEntity> toOptionEtablissementEntity(@NonNull SectionInternationaleDataset dataset) {
+
+        List<OptionEtablissementEntity> entities = new ArrayList<>();
+
+        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
+
+        if (etablissementOpt.isPresent()) {
+            // Indicateur SI
+            OptionEtablissementPK pk = new OptionEtablissementPK();
+            pk.setOption(OptionEtablissement.SECTION_INTERNATIONALE);
+            pk.setUai(dataset.getUai());
+            OptionEtablissementEntity entity = new OptionEtablissementEntity();
+            entity.setPk(pk);
+            entity.setEtablissement(etablissementOpt.get());
+            entities.add(entity);
+
+            // indicateur BFI
+            dataset.getNiveaux().forEach(niveau -> {
+                if (niveau.equals("BFI")) {
+                    var pk2 = new OptionEtablissementPK();
+                    pk2.setOption(OptionEtablissement.BFI);
+                    pk2.setUai(dataset.getUai());
+
+                    var entity2 = new OptionEtablissementEntity();
+                    entity2.setPk(pk2);
+                    entity2.setEtablissement(etablissementOpt.get());
+
+                    entities.add(entity2);
+                }
+            });
+            return entities;
+        }
+
+        return List.of();
     }
 
     @Nullable
@@ -436,7 +494,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public <T extends IndicePositionSociale & Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset) {
+    public <T extends IndicePositionSociale & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset) {
         var uai = dataset.getUai();
         var annee = dataset.getAnnee();
 
@@ -446,10 +504,6 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             var entity = metadataEntityOptional.get();
             var metadatas = entity.getMetadatas();
             metadatas.setIps(etablissementMapper.toIndicePositionSocialeDto(dataset));
-
-            if (dataset.getEffectifs() != null) {
-                metadatas.setEffectifs(dataset.getEffectifs());
-            }
 
             entity.setMetadatas(metadatas);
             return entity;
@@ -462,9 +516,6 @@ public class ShellEntityServiceImpl implements ShellEntityService {
                 var metadatas = entity.getMetadatas();
                 metadatas.setIps(etablissementMapper.toIndicePositionSocialeDto(dataset));
 
-                if (dataset.getEffectifs() != null) {
-                    metadatas.setEffectifs(dataset.getEffectifs());
-                }
                 entity.setMetadatas(metadatas);
                 return entity;
             } else {

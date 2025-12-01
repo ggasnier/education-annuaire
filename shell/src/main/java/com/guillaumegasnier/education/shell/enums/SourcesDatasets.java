@@ -68,7 +68,7 @@ public enum SourcesDatasets {
 
     DISPOSITIFS("Idéo-Actions de dispositif", ONISEP, "https://api.opendata.onisep.fr/downloads/60867458bb600/60867458bb600.csv", "dispositifs.csv", StandardCharsets.UTF_8, ';', "GET", OnisepDispositifDataset.class),
     // Euroscol https://www.data.gouv.fr/datasets/etablissements-labellises-euroscol/
-
+    EUROSCOL("Établissements labellisés Euroscol", EN, "https://www.data.gouv.fr/api/1/datasets/r/d7da7c59-54cc-45ec-96e9-e956231f0469", "euroscol.csv", StandardCharsets.UTF_8, ';', "GET", EuroscolDataset.class),
     //Certifications
     CERTIFICATIONS_RNCP("Répertoire national des certifications professionnelles et répertoire spécifique", FC, "", "export-fiches-rncp-v4-1-2025-10-23.zip", StandardCharsets.UTF_8, ',', "GET", null),
 

@@ -4,48 +4,44 @@ public interface ImportEtablissementShell {
 
     /**
      * Import de tous les établissements
-     *
-     * @return Message
      */
-    String importEtablissementsAll();
+    void importEtablissementsAll();
 
-    String importEtablissementsEsr();
+    void importEtablissementsEsr();
 
-    String importEtablissementsEnOuverts();
+    void importEtablissementsEnOuverts();
 
-    String importEtablissementsEnFermes();
+    void importEtablissementsEnFermes();
 
-    String importEtablissementsCarif();
+    void importEtablissementsCarif();
 
-    String importEtablissementsOnisepSup();
+    void importEtablissementsOnisepSup();
 
-    String importOrganismes();
+    void importOrganismes();
 
-    String importNatures();
+    void importNatures();
 
-    String importContrats();
+    void importContrats();
 
-    String importSports();
+    void importSports();
 
-    //String importSectionsInternationales();
+    void importSectionsInternationales();
 
-    String importLangues();
+    void importLangues();
 
-    String importSpecialites();
+    void importSpecialites();
 
-    String importSectionsBinationales();
+    void importSectionsBinationales();
 
-    String importDispositifs();
+    void importDispositifs();
 
-    String importEffectifs();
+    void importEuroscol();
 
-    //    String importIpsEcoles();
-//
-    String importIpsColleges();
+    void importEffectifs();
 
-    String importIvaColleges();
-//
-//    String importIpsLycees();
+    void importIpsColleges();
 
-    String importEtablissementsRecherche();
+    void importIvaColleges();
+
+    void importDetailsAll();
 }

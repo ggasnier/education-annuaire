@@ -17,7 +17,7 @@ import java.util.List;
 
 public interface ShellEntityService {
 
-    <T extends IndicePositionSociale & Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
+    <T extends IndicePositionSociale & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
 
     <T extends Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
 
@@ -29,9 +29,13 @@ public interface ShellEntityService {
 
     OptionEtablissementEntity toOptionEtablissementEntity(@NonNull OnisepDispositifDataset dataset);
 
+    OptionEtablissementEntity toOptionEtablissementEntity(@NonNull EuroscolDataset dataset);
+
     //List<SectionSportiveEntity> toSectionSportiveEntity(@NonNull SectionSportiveDataset dataset);
 
     OptionEtablissementEntity toOptionEtablissementEntity(@NonNull SectionBinationaleDataset dataset);
+
+    List<OptionEtablissementEntity> toOptionEtablissementEntity(@NonNull SectionInternationaleDataset dataset);
 
     //List<SectionInternationaleEntity> toSectionInternationaleEntity(@NonNull SectionInternationaleDataset dataset);
 

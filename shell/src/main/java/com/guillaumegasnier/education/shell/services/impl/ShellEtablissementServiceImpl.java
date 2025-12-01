@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.domains.recherche.DocumentEntity;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.services.CoreElasticService;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
@@ -42,7 +41,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     int chunk;
 
     @Override
-    public String createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets) {
+    public void createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets) {
 
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<? extends TravailOrganismeFormationDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
@@ -53,11 +52,11 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .toList());
         }
 
-        return String.format("Import terminé : %d organismes(s) traité(s).", datasets.size());
+        log.info("Import terminé : {} organismes(s) traité(s).", datasets.size());
     }
 
     @Override
-    public String createOrUpdateSports(@NonNull List<SportDataset> datasets, String categorie) {
+    public void createOrUpdateSports(@NonNull List<SportDataset> datasets, String categorie) {
         coreEtablissementService.saveEtablissementSportEntity(datasets
                 .stream()
                 .map(dataset -> shellEntityService.toEtablissementSportEntity(dataset, categorie))
@@ -65,11 +64,11 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
-        return String.format("Import terminé : %d sports enregistré(s).", datasets.size());
+        log.info("Import terminé : {} sports enregistré(s).", datasets.size());
     }
 
     @Override
-    public String createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets) {
+    public void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets) {
 
         // Enregistrement comme une option
         coreEtablissementService.saveOptions(datasets.stream()
@@ -81,7 +80,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .filter(Objects::nonNull)
                 .toList());
 
-        // Le sport (section sportive et sport études
+        // Le sport (section sportive et sport études)
 
         log.info("Import des dispositifs sections européennes");
         // Les sections européennes
@@ -119,11 +118,11 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .flatMap(List::stream)
                 .toList());
 
-        return String.format("Import terminé : %d dispositifs enregistré(s).", datasets.size());
+        log.info("Import terminé : {} dispositifs enregistré(s).", datasets.size());
     }
 
     @Override
-    public <T extends IndicePositionSociale & Effectifs & Metadata> void createOrUpdateIPS(List<T> datasets) {
+    public <T extends IndicePositionSociale & Metadata> void createOrUpdateIPS(@NonNull List<T> datasets) {
         coreEtablissementService.saveMetadata(datasets.stream()
                 .map(shellEntityService::toEtablissementMetadataEntity)
                 .filter(Objects::nonNull)
@@ -131,29 +130,36 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
-    public <T extends Effectifs & Metadata> String createOrUpdateEffectifs(List<T> datasets) {
+    public <T extends Effectifs & Metadata> void createOrUpdateEffectifs(List<T> datasets) {
         coreEtablissementService.saveMetadata(
                 datasets.stream()
                         .map(shellEntityService::toEtablissementMetadataEntity)
                         .filter(Objects::nonNull)
                         .toList());
-
-        return "TODO";
     }
 
     @Override
-    public <T extends IndicateurValeurAjoutee & Metadata> String createOrUpdateIVA(List<T> datasets) {
+    public <T extends IndicateurValeurAjoutee & Metadata> void createOrUpdateIVA(List<T> datasets) {
         coreEtablissementService.saveMetadata(datasets.stream()
                 .map(shellEntityService::toEtablissementMetadataEntity)
                 .filter(Objects::nonNull)
                 .toList());
+    }
 
-        return "TODO";
+    @Override
+    public void createOrUpdateEuroscol(List<EuroscolDataset> datasets) {
+
+        coreEtablissementService.saveOptions(datasets.stream()
+                .map(shellEntityService::toOptionEtablissementEntity)
+                .filter(Objects::nonNull)
+                .map(validatorService::toValidEntity)
+                .filter(Objects::nonNull)
+                .toList());
     }
 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public String createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source) {
+    public void createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source) {
 
         long startTime = System.nanoTime();
 
@@ -186,7 +192,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
         log.info("Vitesse de traitement : {} etabs/s", decimalFormat.format(vitesse));
 
-        return String.format("Import terminé : %d établissements(s) traité(s).", datasets.size());
+        log.info("Import terminé : {} établissements(s) traité(s).", datasets.size());
     }
 
     /**
@@ -218,22 +224,22 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     @Override
     @Transactional
-    public String createOrUpdateNatures(@NonNull List<NatureDataset> datasets) {
+    public void createOrUpdateNatures(@NonNull List<NatureDataset> datasets) {
         coreEtablissementService.saveNatures(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
                 .map(etablissementMapper::toNatureEntity)
                 .toList());
-        return String.format("Import terminé : %d natures(s) enregistrée(s).", datasets.size());
+        log.info("Import terminé : {} natures(s) enregistrée(s).", datasets.size());
     }
 
     @Override
     @Transactional
-    public String createOrUpdateContrats(@NonNull List<ContratDataset> datasets) {
+    public void createOrUpdateContrats(@NonNull List<ContratDataset> datasets) {
         coreEtablissementService.saveContrats(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
                 .map(etablissementMapper::toContratEntity)
                 .toList());
-        return String.format("Import terminé : %d contrat(s) enregistré(s).", datasets.size());
+        log.info("Import terminé : {} contrat(s) enregistré(s).", datasets.size());
     }
 
 //    @Override
@@ -274,7 +280,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     @Override
     @Transactional
-    public String createOrUpdateLangues(@NonNull List<LangueDataset> datasets) {
+    public void createOrUpdateLangues(@NonNull List<LangueDataset> datasets) {
         coreEtablissementService.saveLangues(datasets
                 .stream()
                 .map(shellEntityService::toLangueEntity)
@@ -282,12 +288,12 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
-        return String.format("Import terminé : %d langues enregistrée(s).", datasets.size());
+        log.info("Import terminé : {} langues enregistrée(s).", datasets.size());
     }
 
     @Override
     @Transactional
-    public String createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets) {
+    public void createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets) {
         coreEtablissementService.saveSpecialites(datasets
                 .stream()
                 .map(shellEntityService::toSpecialiteEntity)
@@ -295,24 +301,29 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
-        return String.format("Import terminé : %d specialités enregistrée(s).", datasets.size());
+        log.info("Import terminé : {} specialités enregistrée(s).", datasets.size());
     }
 
-    /*@Override
+    @Override
     @Transactional
-    public String createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets) {
-        coreEtablissementService.saveSectionsInternationales(datasets.stream()
-                .map(shellEntityService::toSectionInternationaleEntity)
+    public void createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets) {
+        // Indicateurs Section Internationnale et BFI
+        coreEtablissementService.saveOptions(datasets.stream()
+                .map(shellEntityService::toOptionEtablissementEntity)
                 .flatMap(List::stream)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
-        return String.format("Import terminé : %d sections internationale(s).", datasets.size());
-    }*/
+
+        // Details langues
+
+
+        log.info("Import terminé : {} sections internationale(s).", datasets.size());
+    }
 
     @Override
     @Transactional
-    public String createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets) {
+    public void createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets) {
         coreEtablissementService.saveOptions(datasets
                 .stream()
                 .map(shellEntityService::toOptionEtablissementEntity)
@@ -320,18 +331,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
-        return String.format("Import terminé : %d sections binationale enregistrée(s).", datasets.size());
-    }
-
-    @Override
-    public String createOrUpdateEtablissementsRecherche() {
-        List<DocumentEntity> entities = coreEtablissementService.findAll()
-                .stream()
-                .map(etablissementMapper::toDocumentEntity)
-                .toList();
-        coreElasticService.saveDocuments(entities);
-
-        return String.format("Import terminé : %d établissements enregistré(s).", entities.size());
+        log.info("Import terminé : {} sections binationale enregistrée(s).", datasets.size());
     }
 
 }

@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
 
 @ShellComponent
@@ -26,107 +23,111 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
 
     @Override
     @ShellMethod(value = "Import établissements (ouverts)")
-    public String importEtablissementsEnOuverts() {
-        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS), "en");
+    public void importEtablissementsEnOuverts() {
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS), "en");
     }
 
     @Override
     @ShellMethod(value = "Import établissements (fermés)")
-    public String importEtablissementsEnFermes() {
-        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_FERMES), "en");
+    public void importEtablissementsEnFermes() {
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_FERMES), "en");
     }
 
     @Override
     @ShellMethod(value = "Import de tous les établissements")
-    public String importEtablissementsAll() {
-        List<String> rapports = new ArrayList<>();
-        rapports.add(importNatures());
-        rapports.add(importContrats());
-        rapports.add(importEtablissementsEnOuverts());
-        rapports.add(importEtablissementsEsr());
-        rapports.add(importEtablissementsCarif());
-        rapports.add(importEtablissementsOnisepSup());
-        rapports.add(importEtablissementsEnFermes());
-        return rapports.toString();
+    public void importEtablissementsAll() {
+        importNatures();
+        importContrats();
+        importEtablissementsEnOuverts();
+        importEtablissementsEsr();
+        importEtablissementsCarif();
+        importEtablissementsOnisepSup();
+        importEtablissementsEnFermes();
     }
 
     @Override
     @ShellMethod(value = "Import établissements (ESR)")
-    public String importEtablissementsEsr() {
-        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ESR_ETABS_OUVERTS), "esr");
+    public void importEtablissementsEsr() {
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ESR_ETABS_OUVERTS), "esr");
     }
 
     @Override
     @ShellMethod(value = "Import établissements (CARIF OREF)")
-    public String importEtablissementsCarif() {
-        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCarifEtablissements(CARIF_ETABS_OUVERTS), "carif");
+    public void importEtablissementsCarif() {
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCarifEtablissements(CARIF_ETABS_OUVERTS), "carif");
     }
 
     @Override
     @ShellMethod(value = "Import établissements (ONISEP SUP)")
-    public String importEtablissementsOnisepSup() {
-        return shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SUP), "onisep");
+    public void importEtablissementsOnisepSup() {
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SUP), "onisep");
     }
 
     @Override
     @ShellMethod(value = "Import Organismes de formations")
-    public String importOrganismes() {
-        return shellEtablissementService.createOrUpdateOrganismes(fileService.importCSV(TRAVAIL_ETABS));
+    public void importOrganismes() {
+        shellEtablissementService.createOrUpdateOrganismes(fileService.importCSV(TRAVAIL_ETABS));
     }
 
     @Override
     @ShellMethod(value = "Import natures d'établissements")
-    public String importNatures() {
-        return shellEtablissementService.createOrUpdateNatures(fileService.importCSV(NATURES));
+    public void importNatures() {
+        shellEtablissementService.createOrUpdateNatures(fileService.importCSV(NATURES));
     }
 
     @Override
     @ShellMethod(value = "Import contrats d'établissements")
-    public String importContrats() {
-        return shellEtablissementService.createOrUpdateContrats(fileService.importCSV(CONTRATS));
+    public void importContrats() {
+        shellEtablissementService.createOrUpdateContrats(fileService.importCSV(CONTRATS));
     }
 
     @Override
     @ShellMethod(value = "Import sections sport études et sections sportives")
-    public String importSports() {
-        return shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), "ss") +
-                shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), "se");
+    public void importSports() {
+        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), "ss");
+        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), "se");
     }
 
-    /*@Override
+    @Override
     @ShellMethod(value = "Import sections internationales")
-    public String importSectionsInternationales() {
-        return shellEtablissementService.createOrUpdateSectionsInternationales(fileService.importCSV(SECTIONS_INTERNATIONALES));
-    }*/
+    public void importSectionsInternationales() {
+        shellEtablissementService.createOrUpdateSectionsInternationales(fileService.importCSV(SECTIONS_INTERNATIONALES));
+    }
 
     @Override
     @ShellMethod(value = "Import langues dans les collèges et lycées")
-    public String importLangues() {
-        return shellEtablissementService.createOrUpdateLangues(fileService.importCSV(LANGUES));
+    public void importLangues() {
+        shellEtablissementService.createOrUpdateLangues(fileService.importCSV(LANGUES));
     }
 
     @Override
     @ShellMethod(value = "Import spécialités de première générale")
-    public String importSpecialites() {
-        return shellEtablissementService.createOrUpdateSpecialites(fileService.importCSV(SPECIALITES));
+    public void importSpecialites() {
+        shellEtablissementService.createOrUpdateSpecialites(fileService.importCSV(SPECIALITES));
     }
 
     @Override
     @ShellMethod(value = "Import sections binationales")
-    public String importSectionsBinationales() {
-        return shellEtablissementService.createOrUpdateSectionsBinationales(fileService.importCSV(BINATIONALES));
+    public void importSectionsBinationales() {
+        shellEtablissementService.createOrUpdateSectionsBinationales(fileService.importCSV(BINATIONALES));
     }
 
     @Override
     @ShellMethod(value = "Import des dispositifs des établissements")
-    public String importDispositifs() {
-        return shellEtablissementService.createOrUpdateDispositifs(fileService.importCSV(DISPOSITIFS));
+    public void importDispositifs() {
+        shellEtablissementService.createOrUpdateDispositifs(fileService.importCSV(DISPOSITIFS));
+    }
+
+    @Override
+    @ShellMethod(value = "Import des établissemenst labelisés Euroscol")
+    public void importEuroscol() {
+        shellEtablissementService.createOrUpdateEuroscol(fileService.importCSV(EUROSCOL));
     }
 
     @Override
     @ShellMethod(value = "Import des effectifs des établissements")
-    public String importEffectifs() {
-        return shellEtablissementService.createOrUpdateEffectifs(fileService.importCSV(EFFECTIFS_COLLEGE));
+    public void importEffectifs() {
+        shellEtablissementService.createOrUpdateEffectifs(fileService.importCSV(EFFECTIFS_COLLEGE));
     }
 
     //    @Override
@@ -140,17 +141,16 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
 //
     @Override
     @ShellMethod(value = "Import IPS Collèges")
-    public String importIpsColleges() {
+    public void importIpsColleges() {
         shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_COLLEGES_1));
         shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_COLLEGES_2));
         shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_COLLEGES_3));
-        return "TODO";
     }
 
     @Override
     @ShellMethod(value = "Import IVA Collèges")
-    public String importIvaColleges() {
-        return shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_COLLEGES));
+    public void importIvaColleges() {
+        shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_COLLEGES));
     }
 
 //    @Override
@@ -164,8 +164,13 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
 //    }
 
     @Override
-    @ShellMethod(value = "Import établissements dans ES")
-    public String importEtablissementsRecherche() {
-        return shellEtablissementService.createOrUpdateEtablissementsRecherche();
+    @ShellMethod(value = "Import tous les détails des établissements")
+    public void importDetailsAll() {
+        importDispositifs();
+        importLangues();
+        importSectionsBinationales();
+        importSectionsInternationales();
+        importSports();
+        importSpecialites();
     }
 }

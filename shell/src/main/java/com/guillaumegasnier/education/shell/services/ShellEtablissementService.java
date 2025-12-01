@@ -11,37 +11,31 @@ import java.util.List;
 
 public interface ShellEtablissementService {
 
-    String createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source);
+    void createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source);
 
-    String createOrUpdateNatures(@NonNull List<NatureDataset> datasets);
+    void createOrUpdateNatures(@NonNull List<NatureDataset> datasets);
 
-    String createOrUpdateContrats(@NonNull List<ContratDataset> datasets);
+    void createOrUpdateContrats(@NonNull List<ContratDataset> datasets);
 
-//    String createOrUpdateIPS(@NonNull List<? extends IPSDataset> datasets, String categorie);
+    void createOrUpdateLangues(@NonNull List<LangueDataset> datasets);
 
-//    String createOrUpdateSectionsSportives(@NonNull List<SectionSportiveDataset> datasets);
+    void createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets);
 
-//    String createOrUpdateSectionsSportEtudes(@NonNull List<SectionSportEtudeDataset> datasets);
+    void createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets);
 
-    String createOrUpdateLangues(@NonNull List<LangueDataset> datasets);
+    void createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets);
 
-    String createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets);
+    void createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets);
 
-    //String createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets);
+    void createOrUpdateSports(@NonNull List<SportDataset> datasets, String categorie);
 
-    String createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets);
+    void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets);
 
-    String createOrUpdateEtablissementsRecherche();
+    <T extends IndicePositionSociale & Metadata> void createOrUpdateIPS(@NonNull List<T> datasets);
 
-    String createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets);
+    <T extends Effectifs & Metadata> void createOrUpdateEffectifs(@NonNull List<T> datasets);
 
-    String createOrUpdateSports(@NonNull List<SportDataset> datasets, String categorie);
+    <T extends IndicateurValeurAjoutee & Metadata> void createOrUpdateIVA(@NonNull List<T> datasets);
 
-    String createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets);
-
-    <T extends IndicePositionSociale & Effectifs & Metadata> void createOrUpdateIPS(List<T> datasets);
-
-    <T extends Effectifs & Metadata> String createOrUpdateEffectifs(List<T> datasets);
-
-    <T extends IndicateurValeurAjoutee & Metadata> String createOrUpdateIVA(List<T> datasets);
+    void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets);
 }

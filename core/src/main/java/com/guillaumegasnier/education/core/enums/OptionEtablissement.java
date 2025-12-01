@@ -43,6 +43,7 @@ public enum OptionEtablissement {
     APPRENTISSAGE("Apprentissage"),
     SEGPA("Segpa"),
     POST_BAC("Post BAC"),
+    CPGE("CPGE"),
     CL_H_AM("Classe à horaires aménagés"),
     UPE2A("Unité pédagogique pour élèves allophones arrivants");
 
