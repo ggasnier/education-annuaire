@@ -18,7 +18,7 @@ public interface ShellFormationService {
 
     String createOrUpdateFormationsCarif(@NonNull List<CarifFormationDataset> datasets);
 
-    String createOrUpdateFormationsParcoursup(@NonNull List<ParcoursupFormationDataset> datasets);
+    void createOrUpdateFormationsParcoursup(@NonNull List<ParcoursupFormationDataset> datasets);
 
     String createOrUpdateFormationsOnisepEsr(@NonNull List<OnisepFormationDataset> datasets);
 

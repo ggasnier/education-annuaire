@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
@@ -14,6 +15,7 @@ import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
+import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.mappers.FormationMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
@@ -27,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.guillaumegasnier.education.shell.mappers.DateMapper.toLocalDate;
 
@@ -327,6 +330,38 @@ public class ShellEntityServiceImpl implements ShellEntityService {
                 )
                 .filter(Objects::nonNull)
                 .toList();
+    }
+
+    @Override
+    public ActionFormationEntity toActionFormationEntity(@NonNull ParcoursupFormationDataset dataset, @NonNull FormationEntity formationEntity) {
+
+        Optional<ActionFormationEntity> actionFormationEntityOptional = coreFormationService.findActionFormationByParcoursupId(dataset.getCodeInterneFormation());
+
+        if (actionFormationEntityOptional.isPresent()) {
+            return actionFormationEntityOptional.get();
+        } else {
+            ActionFormationEntity entity = new ActionFormationEntity();
+            entity.setId(UUID.nameUUIDFromBytes(dataset.getCodeInterneFormation().toString().getBytes()));
+
+            entity.setUrlAction(dataset.getLienFormation());
+            entity.setSession(dataset.getAnnee());
+            entity.setConditionsSpecifiques(dataset.getComplements());
+
+            Optional<EtablissementEntity> etablissementEntityOptional = coreEtablissementService.findEtablissement(dataset.getUai());
+
+            if (etablissementEntityOptional.isPresent()) {
+                entity.setEtablissement(etablissementEntityOptional.get());
+            } else {
+                log.warn("Pas d'établissement pour {}", dataset.getUai());
+            }
+
+            entity.setModalitesRecrutement("parcoursup");
+            entity.setHebergement(dataset.getInternat());
+
+            entity.setParcoursupId(dataset.getCodeInterneFormation());
+
+            return entity;
+        }
     }
 
     @Override

@@ -35,8 +35,8 @@ public class ImportFormationShellImpl implements ImportFormationShell {
 
     @Override
     @ShellMethod("Import des formations Parcoursup")
-    public String importFormationsParcoursup() {
-        return shellFormationService.createOrUpdateFormationsParcoursup(fileService.importCSV(FORMATIONS_PARCOURSUP));
+    public void importFormationsParcoursup() {
+        shellFormationService.createOrUpdateFormationsParcoursup(fileService.importCSV(FORMATIONS_PARCOURSUP));
     }
 
     @Override

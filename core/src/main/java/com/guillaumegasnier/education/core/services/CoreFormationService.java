@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.core.services;
 
+import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.CertificationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.RomeEntity;
@@ -27,4 +28,8 @@ public interface CoreFormationService {
     void saveCertification(CertificationEntity entity);
 
     Set<RomeEntity> getRomes(List<String> codes);
+
+    Optional<FormationEntity> findFormationByParcoursupId(Integer parcoursupId);
+
+    Optional<ActionFormationEntity> findActionFormationByParcoursupId(Integer codeInterneFormation);
 }

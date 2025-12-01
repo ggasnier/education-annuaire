@@ -1,8 +1,10 @@
 package com.guillaumegasnier.education.core.services.impl;
 
+import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.CertificationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.RomeEntity;
+import com.guillaumegasnier.education.core.repositories.ActionFormationRepository;
 import com.guillaumegasnier.education.core.repositories.CertificationRepository;
 import com.guillaumegasnier.education.core.repositories.FormationRepository;
 import com.guillaumegasnier.education.core.repositories.RomeRepository;
@@ -20,12 +22,14 @@ import java.util.UUID;
 public class CoreFormationServiceImpl implements CoreFormationService {
 
     private final FormationRepository formationRepository;
+    private final ActionFormationRepository actionFormationRepository;
     private final RomeRepository romeRepository;
     private final CertificationRepository certificationRepository;
 
     @Autowired
-    public CoreFormationServiceImpl(FormationRepository formationRepository, RomeRepository romeRepository, CertificationRepository certificationRepository) {
+    public CoreFormationServiceImpl(FormationRepository formationRepository, ActionFormationRepository actionFormationRepository, RomeRepository romeRepository, CertificationRepository certificationRepository) {
         this.formationRepository = formationRepository;
+        this.actionFormationRepository = actionFormationRepository;
         this.romeRepository = romeRepository;
         this.certificationRepository = certificationRepository;
     }
@@ -68,5 +72,15 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     @Override
     public Set<RomeEntity> getRomes(List<String> codes) {
         return romeRepository.findAllByCodeIn(codes);
+    }
+
+    @Override
+    public Optional<FormationEntity> findFormationByParcoursupId(Integer parcoursupId) {
+        return formationRepository.findByParcoursupId(parcoursupId);
+    }
+
+    @Override
+    public Optional<ActionFormationEntity> findActionFormationByParcoursupId(Integer parcoursupId) {
+        return actionFormationRepository.findByParcoursupId(parcoursupId);
     }
 }

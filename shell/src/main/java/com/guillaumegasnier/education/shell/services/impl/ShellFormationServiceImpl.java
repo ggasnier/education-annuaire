@@ -207,19 +207,63 @@ public class ShellFormationServiceImpl implements ShellFormationService {
     }
 
     @Override
-    public String createOrUpdateFormationsParcoursup(@NonNull List<ParcoursupFormationDataset> datasets) {
+    public void createOrUpdateFormationsParcoursup(@NonNull List<ParcoursupFormationDataset> datasets) {
 
+        Map<Integer, List<ParcoursupFormationDataset>> group = datasets
+                .stream().filter(d -> d.getCodeFormation() != null)
+                .collect(groupingBy(ParcoursupFormationDataset::getCodeFormation));
+
+
+        group.forEach((parcoursupId, actions) -> {
+            // 1. Recherche de la formation
+            FormationEntity entity;
+            Optional<FormationEntity> formationEntityOptional = coreFormationService.findFormationByParcoursupId(parcoursupId);
+
+            if (formationEntityOptional.isPresent()) {
+                // Update ?
+                entity = formationEntityOptional.get();
+            } else {
+                // création
+                entity = new FormationEntity();
+                entity.setId(UUID.nameUUIDFromBytes(parcoursupId.toString().getBytes()));
+                entity.setNom(actions.getFirst().getNomFormation()); // TODO à vérifier
+                //objectif
+                //resultats
+                //contenu
+                //certifiante
+                //parcoursDeFormation (1)
+                //codeNiveauEntree
+                //certifications
+                //codeNiveauSortie
+                //actions (voir plus bas)
+                //etablissement (voir plus bas)
+                //organisme (voir plus bas)
+                //identifiantModule
+                //positionnement
+                //onisepId
+                entity.setParcoursupId(parcoursupId);
+                coreFormationService.saveFormation(entity);
+            }
+
+            // 2. Les actions de formation
+            log.info("Nombre d'actions de formations : {}", actions.size());
+
+            List<ActionFormationEntity> actionFormationEntityList = actions
+                    .stream()
+                    .map(a -> shellEntityService.toActionFormationEntity(a, entity))
+                    .toList();
+        });
 
 //        Map<String, List<ParcoursupFormationDataset>> group = datasets.stream().collect(groupingBy(ParcoursupFormationDataset::getCodeInterneFormation));
 
-        var l = datasets.stream()
-                .filter(dataset -> dataset.getAnnee().equals("2025"))
-                .map(formationMapper::toFormationEntity)
-                .toList();
+//        var l = datasets.stream()
+//                .filter(dataset -> dataset.getAnnee().equals("2025"))
+//                .map(formationMapper::toFormationEntity)
+//                .toList();
 
-        log.info("{} formations Parcoursup sélectionnées.", l.size());
+//        log.info("{} formations Parcoursup sélectionnées.", l.size());
 
-        return String.format("Import terminé : %d formations Parcoursup traitées.", datasets.size());
+        log.info("Import terminé : {} formations Parcoursup traitées.", datasets.size());
     }
 
     @Override

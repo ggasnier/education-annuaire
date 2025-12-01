@@ -38,10 +38,8 @@ public interface ImportFormationShell {
 
     /**
      * Formations sur parcoursup
-     *
-     * @return Résultat de l'import
      */
-    String importFormationsParcoursup();
+    void importFormationsParcoursup();
 
 
 }
