@@ -100,23 +100,22 @@ public class FormationEntity extends AbstractEntity {
     private Integer codeNiveauSortie;
 
     /**
-     * Cet élément décrit une action de formation.
+     * Les actions de formation (établissements, dates, etc.)
      */
     @OneToMany(mappedBy = "formation")
     private List<ActionFormationEntity> actions = new ArrayList<>();
 
     /**
-     * TODO utile ?
-     * Cet élément décrit l’établissement où se déroule la formation.
+     * Cet élément décrit l’établissement responsable de la formation.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_formations_etablissements"))
     private EtablissementEntity etablissement;
 
     /**
      * Cet élément décrit l’organisme de formation responsable de la formation.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nda", foreignKey = @ForeignKey(name = "fk_formations_etablissements"))
     private OrganismeEntity organisme;
 
@@ -134,12 +133,19 @@ public class FormationEntity extends AbstractEntity {
      */
     private Integer positionnement;
 
+    /**
+     * Identifiant Onisep
+     */
     private Integer onisepId;
+
+    /**
+     * Identifiant Parcoursup
+     */
+    private Integer parcoursupId;
 
     // contacts
     // url
     // modules
     // Modules prérequis
-
 
 }

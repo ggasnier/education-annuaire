@@ -41,6 +41,9 @@ public class ParcoursupFormationDataset implements Dataset {
     @CsvBindByName(column = "Aménagement")
     private String amenagement;
 
+    /**
+     * Des épreuves de sélection sont mises en place pour candidater à cette formation
+     */
     @CsvBindByName(column = "Informations complémentaires")
     private String complements;
 
@@ -68,11 +71,14 @@ public class ParcoursupFormationDataset implements Dataset {
     @CsvBindByName(column = "Nom court de la formation")
     private String nomCourtFormation;
 
+    /**
+     * Numéro de l'action de formation
+     */
     @CsvBindByName(column = "Code interne Parcoursup de la formation")
-    private String codeInterneFormation;
+    private Integer codeInterneFormation;
 
     @CsvBindByName(column = "Code interne Parcoursup pour les portails")
-    private String codeExterneParcoursup;
+    private Integer codeExterneParcoursup;
 
     @CsvBindByName(column = "etablissement_id_paysage")
     private String etablissementIdPaysage;
@@ -83,6 +89,9 @@ public class ParcoursupFormationDataset implements Dataset {
     @CsvBindByName(column = "rnd")
     private String rnd;
 
+    /**
+     * Numéro de la formation
+     */
     @CsvBindByName(column = "code_formation")
-    private String codeFormation;
+    private Integer codeFormation;
 }
