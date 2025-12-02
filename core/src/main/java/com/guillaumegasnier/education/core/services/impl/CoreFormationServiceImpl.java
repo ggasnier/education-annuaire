@@ -83,4 +83,9 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     public Optional<ActionFormationEntity> findActionFormationByParcoursupId(Integer parcoursupId) {
         return actionFormationRepository.findByParcoursupId(parcoursupId);
     }
+
+    @Override
+    public void saveActionFormation(List<ActionFormationEntity> entities) {
+        actionFormationRepository.saveAll(entities);
+    }
 }

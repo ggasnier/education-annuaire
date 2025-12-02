@@ -248,10 +248,10 @@ public class ShellFormationServiceImpl implements ShellFormationService {
             // 2. Les actions de formation
             log.info("Nombre d'actions de formations : {}", actions.size());
 
-            List<ActionFormationEntity> actionFormationEntityList = actions
+            coreFormationService.saveActionFormation(actions
                     .stream()
                     .map(a -> shellEntityService.toActionFormationEntity(a, entity))
-                    .toList();
+                    .toList());
         });
 
 //        Map<String, List<ParcoursupFormationDataset>> group = datasets.stream().collect(groupingBy(ParcoursupFormationDataset::getCodeInterneFormation));

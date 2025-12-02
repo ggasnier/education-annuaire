@@ -3,6 +3,7 @@ package com.guillaumegasnier.education.core.domains.formations;
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -68,7 +69,7 @@ public class ActionFormationEntity extends AbstractEntity {
     private FormationEntity formation;
 
     /**
-     * Cet élément décrit le rythme de la formation: temps plein, temps partiel, etc.
+     * Cet élément décrit le rythme de la formation : temps plein, temps partiel, etc.
      */
     @Column(columnDefinition = "TEXT)")
     private String rythmeFormation;
@@ -98,6 +99,8 @@ public class ActionFormationEntity extends AbstractEntity {
      * <p>
      * Texte de 1 à 3000 caractère(s).
      */
+    @Size(max = 3000)
+    @Column(columnDefinition = "TEXT")
     private String modalitesAlternance;
 
     /**
@@ -116,6 +119,8 @@ public class ActionFormationEntity extends AbstractEntity {
      * <p>
      * Texte de 1 à 3000 caractère(s).
      */
+    @Size(max = 3000)
+    @Column(columnDefinition = "TEXT")
     private String conditionsSpecifiques;
 
     /**
@@ -200,6 +205,7 @@ public class ActionFormationEntity extends AbstractEntity {
      * <p>
      * Texte de 2 à 2 caractère(s).
      */
+    @Column(columnDefinition = "BPCHAR(2)")
     private String langueFormation;
 
     /**
@@ -207,6 +213,8 @@ public class ActionFormationEntity extends AbstractEntity {
      * <p>
      * Texte de 0 à 3000 caractère(s).
      */
+    @Size(max = 3000)
+    @Column(columnDefinition = "TEXT")
     private String modalitesRecrutement;
 
     /**

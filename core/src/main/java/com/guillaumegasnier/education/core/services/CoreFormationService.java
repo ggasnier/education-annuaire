@@ -32,4 +32,6 @@ public interface CoreFormationService {
     Optional<FormationEntity> findFormationByParcoursupId(Integer parcoursupId);
 
     Optional<ActionFormationEntity> findActionFormationByParcoursupId(Integer codeInterneFormation);
+
+    void saveActionFormation(List<ActionFormationEntity> entities);
 }

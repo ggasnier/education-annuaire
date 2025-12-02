@@ -27,11 +27,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static com.guillaumegasnier.education.shell.mappers.DateMapper.toLocalDate;
 
@@ -401,6 +397,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             ActionFormationEntity entity = new ActionFormationEntity();
             entity.setId(UUID.nameUUIDFromBytes(dataset.getCodeInterneFormation().toString().getBytes()));
 
+            entity.setFormation(formationEntity);
             entity.setUrlAction(dataset.getLienFormation());
             entity.setSession(dataset.getAnnee());
             entity.setConditionsSpecifiques(dataset.getComplements());

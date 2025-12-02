@@ -74,7 +74,7 @@ public class FormationEntity extends AbstractEntity {
      * <p>
      * 4 mixte
      */
-    private String parcoursDeFormation;
+    private Integer parcoursDeFormation;
 
     /**
      * Cet élément décrit le niveau à l’entrée en formation. Ce niveau peut être souhaité ou exigé en fonction de la
@@ -134,7 +134,7 @@ public class FormationEntity extends AbstractEntity {
     private Integer positionnement;
 
     /**
-     * Identifiant Onisep
+     * Le numéro extrait de FOR.99999
      */
     private Integer onisepId;
 
