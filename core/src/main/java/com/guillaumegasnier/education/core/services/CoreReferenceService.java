@@ -6,6 +6,9 @@ import org.springframework.lang.NonNull;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * TODO à renommer en CoreTerritoireService
+ */
 public interface CoreReferenceService {
 
     Optional<CommuneEntity> findCommune(@NonNull String code);

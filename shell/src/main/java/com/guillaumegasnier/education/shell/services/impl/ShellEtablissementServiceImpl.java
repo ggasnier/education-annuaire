@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
+import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
@@ -40,6 +41,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     int chunk;
 
     @Override
+    @Transactional
     public void createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets) {
 
         for (int i = 0; i < datasets.size(); i += chunk) {
@@ -55,6 +57,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    @Transactional
     public void createOrUpdateSports(@NonNull List<SportDataset> datasets, Sport.Categorie categorie) {
         coreEtablissementService.saveEtablissementSportEntity(datasets
                 .stream()
@@ -67,9 +70,11 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    @Transactional
     public void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets) {
 
         // Enregistrement comme une option
+        log.info("Import des dispositifs comme option");
         coreEtablissementService.saveOptions(datasets.stream()
                 .filter(d -> d.getOption() != null)
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
@@ -86,8 +91,10 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveLangues(datasets.stream()
                 .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_EUROPEENNE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                .map(l -> shellEntityService.toLangueEntity(l, "EU"))
+                .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.EU))
                 .flatMap(List::stream)
+                .map(validatorService::toValidEntity)
+                .filter(Objects::nonNull)
                 .toList());
 
         log.info("Import des dispositifs sections langues orientales");
@@ -95,8 +102,10 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveLangues(datasets.stream()
                 .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_ORIENTALE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                .map(l -> shellEntityService.toLangueEntity(l, "LO"))
+                .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.LO))
                 .flatMap(List::stream)
+                .map(validatorService::toValidEntity)
+                .filter(Objects::nonNull)
                 .toList());
 
         log.info("Import des dispositifs sections internationales");
@@ -104,8 +113,10 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveLangues(datasets.stream()
                 .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_INTERNATIONALE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                .map(l -> shellEntityService.toLangueEntity(l, "SI"))
+                .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.SI))
                 .flatMap(List::stream)
+                .map(validatorService::toValidEntity)
+                .filter(Objects::nonNull)
                 .toList());
 
         log.info("Import des dispositifs sections bilingues");
@@ -113,8 +124,10 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveLangues(datasets.stream()
                 .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_BILINGUE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                .map(l -> shellEntityService.toLangueEntity(l, "BI"))
+                .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.BI))
                 .flatMap(List::stream)
+                .map(validatorService::toValidEntity)
+                .filter(Objects::nonNull)
                 .toList());
 
         log.info("Import terminé : {} dispositifs enregistré(s).", datasets.size());
@@ -324,7 +337,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .toList());
 
         // Details langues
-
+        // TODO
 
         log.info("Import terminé : {} sections internationale(s).", datasets.size());
     }
@@ -339,6 +352,10 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
+
+        // Details langues
+        // TODO
+        
         log.info("Import terminé : {} sections binationale enregistrée(s).", datasets.size());
     }
 

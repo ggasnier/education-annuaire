@@ -8,9 +8,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -18,6 +16,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 public class EtablissementContactPK implements Serializable {
 
@@ -29,6 +29,7 @@ public class EtablissementContactPK implements Serializable {
     private String uai;
 
     @NotNull
+    @Column(columnDefinition = "VARCHAR(10)", length = 10)
     @Enumerated(EnumType.STRING)
     private Contact contact;
 

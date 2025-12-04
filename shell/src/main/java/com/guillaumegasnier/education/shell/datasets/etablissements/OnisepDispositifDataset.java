@@ -13,6 +13,35 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+/**
+ * Action de dispositif (AD) identifiant Onisep
+ * Type de dispositif (TYPDISP) libellé
+ * TYPDISP ID et URL Onisep
+ * TYPDISP indexation Onisep
+ * Structure d'enseignement (ENS) libellé
+ * ENS URL et ID Onisep
+ * ENS type
+ * ENS code UAI
+ * ENS statut
+ * ENS adresse
+ * ENS code postal
+ * ENS commune
+ * ENS département
+ * ENS académie
+ * ENS région
+ * ENS latitude
+ * ENS longitude
+ * ENS téléphone
+ * ENS site web
+ * ENS hébergement
+ * ENS accessibilité
+ * AD durée
+ * AD éléments d'enseignement
+ * AD modalités accueil
+ * AD date de modification
+ *
+ * <a href="https://www.data.gouv.fr/datasets/ideo-actions-de-dispositif/">Référence</a>
+ */
 @Getter
 @Setter
 @ToString
@@ -35,6 +64,12 @@ public class OnisepDispositifDataset implements Dataset {
 
     @CsvBindByName(column = "AD éléments d'enseignement")
     private String enseignement;
+
+    @CsvBindByName(column = "ENS téléphone")
+    private String contactTelephone;
+
+    @CsvBindByName(column = "ENS site web")
+    private String contactWeb;
 
     public OptionEtablissement getOption() {
         return switch (nom) {

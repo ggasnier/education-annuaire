@@ -3,7 +3,6 @@ package com.guillaumegasnier.education.shell.services.impl;
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
@@ -80,10 +79,6 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             entity.setActif(dataset.isActif());
         }
 
-//        if (dataset.getEducationPrioritaire() != null) {
-//            entity.setEducationPrioritaire(dataset.getEducationPrioritaire());
-//        }
-
         entity.addSource(source);
 
         return entity;
@@ -127,206 +122,114 @@ public class ShellEntityServiceImpl implements ShellEntityService {
 
     @Override
     public List<EtablissementOptionEntity> toEtablissementOptionEntity(@NonNull EtablissementDataset dataset) {
-
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isEmpty()) {
-            log.warn("Pas d'établissement avec UAI {} pour etablissement", dataset.getUai());
+        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+            return dataset.getOptions()
+                    .stream()
+                    .map(option -> new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), option), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai())))
+                    .toList();
+        } else {
+            log.warn("Pas d'établissement avec UAI {} pour options", dataset.getUai());
             return List.of();
         }
-
-        return dataset.getOptions()
-                .stream()
-                .map(option -> {
-                    EtablissementOptionPK pk = new EtablissementOptionPK();
-                    pk.setOption(option);
-                    pk.setUai(dataset.getUai());
-
-                    EtablissementOptionEntity entity = new EtablissementOptionEntity();
-                    entity.setPk(pk);
-                    entity.setEtablissement(etablissementOpt.get());
-
-                    return entity;
-                })
-                .toList();
     }
 
     @Override
-    public List<EtablissementContactEntity> toEtablissementContactEntity(EtablissementDataset dataset) {
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isEmpty()) {
-            log.warn("Pas d'établissement avec UAI {} pour etablissement", dataset.getUai());
+    public List<EtablissementContactEntity> toEtablissementContactEntity(@NonNull EtablissementDataset dataset) {
+        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+            return dataset.getContacts()
+                    .stream()
+                    .map(c -> new EtablissementContactEntity(new EtablissementContactPK(dataset.getUai(), c.getContact(), c.getValeur()), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai())))
+                    .toList();
+        } else {
+            log.warn("Pas d'établissement avec UAI {} pour contacts", dataset.getUai());
             return List.of();
         }
-
-        return dataset.getContacts()
-                .stream()
-                .map(c -> {
-                    EtablissementContactPK pk = new EtablissementContactPK();
-                    pk.setContact(c.getContact());
-                    pk.setUai(dataset.getUai());
-
-                    EtablissementContactEntity entity = new EtablissementContactEntity();
-                    entity.setPk(pk);
-                    entity.setEtablissement(etablissementOpt.get());
-
-                    return entity;
-                })
-                .toList();
     }
 
     @Override
     public EtablissementOptionEntity toEtablissementOptionEntity(@NonNull OnisepDispositifDataset dataset) {
-
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isEmpty()) {
-            log.warn("Pas d'établissement avec UAI {} pour dispositifs", dataset.getUai());
+        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+            return new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), dataset.getOption()), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
+        } else {
+            log.warn("Pas d'établissement avec UAI {} pour dispositifs {}", dataset.getUai(), dataset.getOption());
             return null;
         }
-
-        EtablissementOptionPK pk = new EtablissementOptionPK();
-        pk.setUai(dataset.getUai());
-        pk.setOption(dataset.getOption());
-
-        EtablissementOptionEntity entity = new EtablissementOptionEntity();
-        entity.setPk(pk);
-        entity.setEtablissement(etablissementOpt.get());
-
-        return entity;
     }
 
     @Override
-    public EtablissementOptionEntity toEtablissementOptionEntity(EuroscolDataset dataset) {
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isPresent()) {
-            EtablissementOptionPK pk = new EtablissementOptionPK();
-            pk.setUai(dataset.getUai());
-            pk.setOption(OptionEtablissement.EUROSCOL);
-
-            EtablissementOptionEntity entity = new EtablissementOptionEntity();
-            entity.setPk(pk);
-            entity.setEtablissement(etablissementOpt.get());
-
-            return entity;
+    public EtablissementOptionEntity toEtablissementOptionEntity(@NonNull EuroscolDataset dataset) {
+        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+            return new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), OptionEtablissement.EUROSCOL), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
+        } else {
+            log.warn("Pas d'établissement avec UAI {} pour Euroscol", dataset.getUai());
+            return null;
         }
-
-        return null;
     }
 
     @Nullable
     @Override
     public EtablissementOptionEntity toEtablissementOptionEntity(@NonNull SectionBinationaleDataset dataset) {
-
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isEmpty()) {
+        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+            return new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), dataset.getOption()), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
+        } else {
             log.warn("Pas d'établissement avec UAI {} pour sections binationales", dataset.getUai());
             return null;
         }
-
-        EtablissementOptionPK pk = new EtablissementOptionPK();
-        pk.setUai(dataset.getUai());
-        pk.setOption(dataset.getOption());
-
-        EtablissementOptionEntity entity = new EtablissementOptionEntity();
-        entity.setPk(pk);
-        entity.setEtablissement(etablissementOpt.get());
-
-        return entity;
     }
 
     @Override
     public List<EtablissementOptionEntity> toEtablissementOptionEntity(@NonNull SectionInternationaleDataset dataset) {
-
         List<EtablissementOptionEntity> entities = new ArrayList<>();
 
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isPresent()) {
+        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
             // Indicateur SI
-            EtablissementOptionPK pk = new EtablissementOptionPK();
-            pk.setOption(OptionEtablissement.SECTION_INTERNATIONALE);
-            pk.setUai(dataset.getUai());
-            EtablissementOptionEntity entity = new EtablissementOptionEntity();
-            entity.setPk(pk);
-            entity.setEtablissement(etablissementOpt.get());
-            entities.add(entity);
+            entities.add(new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), OptionEtablissement.SECTION_INTERNATIONALE), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai())));
 
             // indicateur BFI
             dataset.getNiveaux().forEach(niveau -> {
                 if (niveau.equals("BFI")) {
-                    var pk2 = new EtablissementOptionPK();
-                    pk2.setOption(OptionEtablissement.BFI);
-                    pk2.setUai(dataset.getUai());
-
-                    var entity2 = new EtablissementOptionEntity();
-                    entity2.setPk(pk2);
-                    entity2.setEtablissement(etablissementOpt.get());
-
-                    entities.add(entity2);
+                    entities.add(new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), OptionEtablissement.BFI), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai())));
                 }
             });
             return entities;
         }
-
         return List.of();
     }
 
     @Nullable
     @Override
     public EtablissementLangueEntity toLangueEntity(@NonNull LangueDataset dataset) {
+        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+            Langue langue = Langue.transformation(dataset.getLangue());
+            if (langue != null) {
+                EtablissementLanguePK pk = new EtablissementLanguePK();
+                pk.setLangue(langue);
+                pk.setUai(dataset.getUai());
+                pk.setCategorie(Langue.Categorie.LV);
+                pk.setEnseignement(dataset.getEnseignement());
 
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
+                EtablissementLangueEntity entity = new EtablissementLangueEntity();
+                entity.setPk(pk);
+                entity.setEtablissement(coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
 
-        if (etablissementOpt.isEmpty()) {
-            log.warn("Pas d'établissement avec UAI {} pour langues", dataset.getUai());
-            return null;
+                return entity;
+            }
+        } else {
+            log.warn("Pas d'établissement avec UAI {} pour langues {}", dataset.getUai(), dataset.getLangue());
         }
-
-        Langue langue = Langue.transformation(dataset.getLangue());
-
-        if (langue != null) {
-            EtablissementLanguePK pk = new EtablissementLanguePK();
-            pk.setLangue(langue);
-            pk.setUai(dataset.getUai());
-            pk.setEnseignement(dataset.getEnseignement());
-
-            EtablissementLangueEntity entity = new EtablissementLangueEntity();
-            entity.setPk(pk);
-            entity.setEtablissement(etablissementOpt.get());
-
-            return entity;
-        }
-
         return null;
     }
 
     @Override
     public List<EtablissementSpecialiteEntity> toSpecialiteEntity(@NonNull SpecialitePremiereDataset dataset) {
-
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isEmpty()) {
+        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+            return dataset.getSpecialites().stream().map(
+                    specialiteBac -> new EtablissementSpecialiteEntity(new EtablissementSpecialitePK(dataset.getUai(), specialiteBac), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()))
+            ).toList();
+        } else {
             log.warn("Pas d'établissement avec UAI {} pour specialites", dataset.getUai());
             return List.of();
         }
-
-        return dataset.getSpecialites().stream().map(
-                specialiteBac -> {
-                    EtablissementSpecialitePK pk = new EtablissementSpecialitePK();
-                    pk.setUai(dataset.getUai());
-                    pk.setSpecialite(specialiteBac);
-
-                    EtablissementSpecialiteEntity entity = new EtablissementSpecialiteEntity();
-                    entity.setPk(pk);
-                    entity.setEtablissement(etablissementOpt.get());
-
-                    return entity;
-                }
-        ).toList();
     }
 
     @Override
@@ -356,59 +259,36 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public List<EtablissementSportEntity> toEtablissementSportEntity(SportDataset dataset, Sport.Categorie categorie) {
-
-        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-        if (etablissementOpt.isEmpty()) {
-            log.warn("Pas d'établissement avec UAI {} pour sections sportives", dataset.getUai());
+    public List<EtablissementSportEntity> toEtablissementSportEntity(@NonNull SportDataset dataset, @NonNull Sport.Categorie categorie) {
+        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+            return dataset.getSectionList()
+                    .stream()
+                    .map(String::toUpperCase)
+                    .map(Sport::transformation)
+                    .filter(Objects::nonNull)
+                    .map(section ->
+                            new EtablissementSportEntity(new EtablissementSportPK(dataset.getUai(), section, categorie), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()))
+                    )
+                    .toList();
+        } else {
+            log.warn("Pas d'établissement avec UAI {} pour {}", dataset.getUai(), categorie);
             return List.of();
         }
-
-        return dataset.getSectionList()
-                .stream()
-                .map(String::toUpperCase)
-                .map(Sport::transformation)
-                .filter(Objects::nonNull)
-                .map(section -> {
-                    EtablissementSportPK pk = new EtablissementSportPK();
-                    pk.setUai(dataset.getUai());
-                    pk.setSport(section);
-                    pk.setCategorie(categorie);
-
-                    EtablissementSportEntity entity = new EtablissementSportEntity();
-                    entity.setPk(pk);
-                    entity.setEtablissement(etablissementOpt.get());
-
-                    return entity;
-                })
-                .toList();
     }
 
     @Override
-    public List<EtablissementLangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, String enseignement) {
-        return dataset.getLangueList()
-                .stream()
-                .map(langue -> {
-                            Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
-
-                            if (etablissementOpt.isPresent()) {
-                                EtablissementLanguePK pk = new EtablissementLanguePK();
-                                pk.setLangue(langue);
-                                pk.setUai(dataset.getUai());
-                                pk.setEnseignement(enseignement);
-
-                                EtablissementLangueEntity entity = new EtablissementLangueEntity();
-                                entity.setPk(pk);
-                                entity.setEtablissement(etablissementOpt.get());
-
-                                return entity;
-                            }
-                            return null;
-                        }
-                )
-                .filter(Objects::nonNull)
-                .toList();
+    public List<EtablissementLangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, @NonNull Langue.Categorie categorie) {
+        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+            return dataset.getLangueList()
+                    .stream()
+                    .map(langue ->
+                            new EtablissementLangueEntity(new EtablissementLanguePK(dataset.getUai(), langue, categorie, ""), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()))
+                    )
+                    .toList();
+        } else {
+            log.warn("Pas d'établissement avec UAI {} pour langues {}", dataset.getUai(), categorie);
+            return null;
+        }
     }
 
     @Override

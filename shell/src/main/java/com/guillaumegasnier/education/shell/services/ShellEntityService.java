@@ -3,7 +3,7 @@ package com.guillaumegasnier.education.shell.services;
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
+import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.Effectifs;
 import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
@@ -54,9 +54,9 @@ public interface ShellEntityService {
 
     OrganismeEntity toOrganismeEntity(@NonNull TravailOrganismeFormationDataset dataset);
 
-    List<EtablissementSportEntity> toEtablissementSportEntity(SportDataset dataset, Sport.Categorie categorie);
+    List<EtablissementSportEntity> toEtablissementSportEntity(@NonNull SportDataset dataset, @NonNull Sport.Categorie categorie);
 
-    List<EtablissementLangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, String enseigenement);
+    List<EtablissementLangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, @NonNull Langue.Categorie categorie);
 
     ActionFormationEntity toActionFormationEntity(@NonNull ParcoursupFormationDataset parcoursupFormationDataset, @NonNull FormationEntity entity);
 }

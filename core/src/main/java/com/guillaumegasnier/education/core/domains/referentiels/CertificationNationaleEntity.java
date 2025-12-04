@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.core.domains.referentiels;
 
+import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "certifications")
-public class CertificationNationaleEntity {
+public class CertificationNationaleEntity extends AbstractEntity {
 
     /**
      * RNCP ou RS + les chiffres

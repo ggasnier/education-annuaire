@@ -7,9 +7,7 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -18,6 +16,8 @@ import java.io.Serializable;
 @Setter
 @Embeddable
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class EtablissementSportPK implements Serializable {
 
     @Serial

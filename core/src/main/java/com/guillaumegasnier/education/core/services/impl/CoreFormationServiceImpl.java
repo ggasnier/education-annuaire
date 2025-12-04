@@ -4,7 +4,6 @@ import com.guillaumegasnier.education.core.domains.formations.ActionFormationEnt
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
 import com.guillaumegasnier.education.core.repositories.ActionFormationRepository;
-import com.guillaumegasnier.education.core.repositories.CertificationRepository;
 import com.guillaumegasnier.education.core.repositories.FormationRepository;
 import com.guillaumegasnier.education.core.repositories.RomeRepository;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
@@ -23,14 +22,13 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     private final FormationRepository formationRepository;
     private final ActionFormationRepository actionFormationRepository;
     private final RomeRepository romeRepository;
-    private final CertificationRepository certificationRepository;
+    //private final CertificationRepository certificationRepository;
 
     @Autowired
-    public CoreFormationServiceImpl(FormationRepository formationRepository, ActionFormationRepository actionFormationRepository, RomeRepository romeRepository, CertificationRepository certificationRepository) {
+    public CoreFormationServiceImpl(FormationRepository formationRepository, ActionFormationRepository actionFormationRepository, RomeRepository romeRepository) {
         this.formationRepository = formationRepository;
         this.actionFormationRepository = actionFormationRepository;
         this.romeRepository = romeRepository;
-        this.certificationRepository = certificationRepository;
     }
 
     @Override
@@ -58,7 +56,7 @@ public class CoreFormationServiceImpl implements CoreFormationService {
         romeRepository.saveAll(entities);
     }
 
-    @Override
+    /*@Override
     public Optional<CertificationEntity> findCertificationByRNCP(String codeRNCP) {
         return certificationRepository.findByCodeRNCP(codeRNCP);
     }
@@ -66,7 +64,7 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     @Override
     public void saveCertification(CertificationEntity entity) {
         certificationRepository.save(entity);
-    }
+    }*/
 
     @Override
     public Set<RomeEntity> getRomes(List<String> codes) {

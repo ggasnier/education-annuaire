@@ -5,7 +5,7 @@ spring:
     interactive:
       enabled: true
   profiles:
-    active: local
+    active: prod
   main:
     web-application-type: none
   jpa:
@@ -19,7 +19,7 @@ spring:
           batch_size: 100
         order_inserts: true
         order_updates: true
-        generate_statistics: false
+        generate_statistics: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enable: true

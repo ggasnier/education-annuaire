@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
-import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import org.springframework.lang.NonNull;
 
@@ -31,6 +30,10 @@ public interface CoreEtablissementService {
      * @return Etablissment ou organisme de formation
      */
     Optional<EtablissementEntity> findEtablissement(@ValidUai String uai);
+
+    boolean isEtablissementExiste(@ValidUai String uai);
+
+    EtablissementEntity getEtablissementReferenceByUai(@ValidUai String uai);
 
     Optional<OrganismeEntity> findOrganisme(String nda);
 

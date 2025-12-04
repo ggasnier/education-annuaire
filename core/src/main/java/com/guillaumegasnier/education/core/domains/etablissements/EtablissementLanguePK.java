@@ -40,7 +40,6 @@ public class EtablissementLanguePK implements Serializable {
     /**
      * LV1, LV2, etc.
      */
-    @NotNull
     @Column(columnDefinition = "BPCHAR(3)", length = 3)
     private String enseignement;
 

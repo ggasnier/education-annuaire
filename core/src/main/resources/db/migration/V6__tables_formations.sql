@@ -1,16 +1,17 @@
---CREATE TABLE certifications
---(
---    id              UUID                        NOT NULL,
---    created_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
---    updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
---   code_rncp       VARCHAR(10),
---    code_rs         VARCHAR(10),
---   code_cpf        VARCHAR(10),
---    code_certifinfo VARCHAR(10),
---    nom             VARCHAR(255),
---    CONSTRAINT pk_certifications PRIMARY KEY (id)
---);
+-- UTF-8 partout
+SET client_encoding = 'UTF8';
 
+-- TODO à déplacer dans referentiels
+CREATE TABLE certifications
+(
+    code       VARCHAR(255)                NOT NULL,
+    nom        VARCHAR(255)                NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    CONSTRAINT pk_certifications PRIMARY KEY (code)
+);
+
+-- TODO à déplacer dans referentiels
 CREATE TABLE romes
 (
     code       CHAR(5)                     NOT NULL,
@@ -20,15 +21,16 @@ CREATE TABLE romes
     CONSTRAINT pk_romes PRIMARY KEY (code)
 );
 
+-- TODO à déplacer dans referentiels
 CREATE TABLE certifications_romes
 (
-    certification_id UUID    NOT NULL,
-    rome_code        CHAR(5) NOT NULL,
-    CONSTRAINT pk_certifications_romes PRIMARY KEY (certification_id, rome_code)
+    certification_code VARCHAR(255) NOT NULL,
+    rome_code          CHAR(5)      NOT NULL,
+    CONSTRAINT pk_certifications_romes PRIMARY KEY (certification_code, rome_code)
 );
 
 ALTER TABLE certifications_romes
-    ADD CONSTRAINT fk_certifications_romes_certification FOREIGN KEY (certification_id) REFERENCES certifications (id);
+    ADD CONSTRAINT fk_certifications_romes_certification FOREIGN KEY (certification_code) REFERENCES certifications (code);
 
 ALTER TABLE certifications_romes
     ADD CONSTRAINT fk_certifications_romes_romes FOREIGN KEY (rome_code) REFERENCES romes (code);
@@ -64,15 +66,15 @@ ALTER TABLE formations
 
 CREATE TABLE formations_certifications
 (
-    formation_entity_id UUID NOT NULL,
-    certifications_id   UUID NOT NULL
+    formation_entity_id UUID         NOT NULL,
+    certifications_code VARCHAR(255) NOT NULL
 );
 
 ALTER TABLE formations_certifications
-    ADD CONSTRAINT uc_formations_certifications_certifications UNIQUE (certifications_id);
+    ADD CONSTRAINT uc_formations_certifications_certifications UNIQUE (certifications_code);
 
 ALTER TABLE formations_certifications
-    ADD CONSTRAINT fk_forcer_on_certification_entity FOREIGN KEY (certifications_id) REFERENCES certifications (id);
+    ADD CONSTRAINT fk_forcer_on_certification_entity FOREIGN KEY (certifications_code) REFERENCES certifications (code);
 
 ALTER TABLE formations_certifications
     ADD CONSTRAINT fk_forcer_on_formation_entity FOREIGN KEY (formation_entity_id) REFERENCES formations (id);
@@ -133,3 +135,4 @@ ALTER TABLE formations_actions
 ALTER TABLE formations_actions
     ADD CONSTRAINT FK_ACTIONS_FORMATIONS_ETABLISSEMENTS FOREIGN KEY (uai) REFERENCES etablissements (uai);
 
+-- sessions de formations

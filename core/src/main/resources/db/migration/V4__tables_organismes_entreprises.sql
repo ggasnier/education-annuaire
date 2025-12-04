@@ -1,3 +1,6 @@
+-- UTF-8 partout
+SET client_encoding = 'UTF8';
+
 -- groupes
 CREATE TABLE formations_specialites_groupes
 (
@@ -61,3 +64,12 @@ ALTER TABLE organismes_groupes
 
 ALTER TABLE organismes_groupes
     ADD CONSTRAINT fk_organismes_groupes_organismes FOREIGN KEY (nda) REFERENCES organismes (nda);
+
+CREATE TABLE entreprises
+(
+    siret      CHAR(14)                    NOT NULL,
+    nom        VARCHAR(255),
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    CONSTRAINT pk_entreprises PRIMARY KEY (siret)
+);

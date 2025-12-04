@@ -2,10 +2,8 @@ package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
-import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
-import com.guillaumegasnier.education.shell.datasets.CODESROME;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationDataset;
@@ -26,8 +24,10 @@ import org.springframework.stereotype.Service;
 
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -148,7 +148,7 @@ public class ShellFormationServiceImpl implements ShellFormationService {
     @Override
     public String createOrUpdateCertificationsRncp(@NonNull FICHES fiches) {
 
-        log.info("Début traitement romes");
+        /*log.info("Début traitement romes");
         coreFormationService.saveRomes(fiches.getFICHE()
                 .stream()
                 .map(FICHES.FICHE::getCODESROME)
@@ -195,7 +195,7 @@ public class ShellFormationServiceImpl implements ShellFormationService {
                     coreFormationService.saveCertification(entity);
                 }
             }
-        });
+        });*/
 
         return String.format("Import terminé : %d certifications traitées.", fiches.getFICHE().size());
     }

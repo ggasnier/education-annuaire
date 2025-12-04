@@ -22,9 +22,9 @@ public interface CoreFormationService {
 
     void saveRomes(List<RomeEntity> entities);
 
-    Optional<CertificationEntity> findCertificationByRNCP(String certificationCode);
+    //Optional<CertificationEntity> findCertificationByRNCP(String certificationCode);
 
-    void saveCertification(CertificationEntity entity);
+    //void saveCertification(CertificationEntity entity);
 
     Set<RomeEntity> getRomes(List<String> codes);
 

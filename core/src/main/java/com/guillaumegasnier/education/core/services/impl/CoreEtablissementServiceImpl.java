@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
-import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import com.guillaumegasnier.education.core.repositories.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.validations.ValidUai;
@@ -59,6 +58,16 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<EtablissementEntity> findEtablissement(@ValidUai String uai) {
         return etablissementRepository.findByUai(uai);
+    }
+
+    @Override
+    public boolean isEtablissementExiste(String uai) {
+        return etablissementRepository.existsById(uai);
+    }
+
+    @Override
+    public EtablissementEntity getEtablissementReferenceByUai(String uai) {
+        return etablissementRepository.getReferenceById(uai);
     }
 
     @Override

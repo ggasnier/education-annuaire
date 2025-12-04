@@ -22,7 +22,7 @@ public abstract class FormationMapper {
     @Mapping(target = "identifiantModule", ignore = true)
     @Mapping(target = "codeNiveauSortie", ignore = true)
     @Mapping(target = "codeNiveauEntree", ignore = true)
-    @Mapping(target = "certifications", ignore = true)
+    //@Mapping(target = "certifications", ignore = true)
     @Mapping(target = "actions", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
@@ -38,7 +38,7 @@ public abstract class FormationMapper {
     @Mapping(target = "identifiantModule", ignore = true)
     @Mapping(target = "contenu", ignore = true)
     @Mapping(target = "codeNiveauEntree", ignore = true)
-    @Mapping(target = "certifications", ignore = true)
+    //@Mapping(target = "certifications", ignore = true)
     @Mapping(target = "certifiante", source = "dataset.certifiante")
     @Mapping(target = "actions", ignore = true) // Ne pas mapper
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
@@ -56,7 +56,7 @@ public abstract class FormationMapper {
     @Mapping(target = "contenu", ignore = true)
     @Mapping(target = "codeNiveauEntree", ignore = true)
     @Mapping(target = "resultats", ignore = true)
-    @Mapping(target = "certifications", ignore = true) // Ne pas mapper
+    //@Mapping(target = "certifications", ignore = true) // Ne pas mapper
     @Mapping(target = "actions", ignore = true) // Ne pas mapper
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
     @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
@@ -103,7 +103,7 @@ public abstract class FormationMapper {
 
     @Mapping(target = "nom", source = "LIBELLE")
     @Mapping(target = "code", source = "CODE")
-    @Mapping(target = "certifications", ignore = true)
+    //@Mapping(target = "certifications", ignore = true)
     @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
     public abstract RomeEntity toRomeEntity(CODESROME.ROME rome);

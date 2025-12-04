@@ -5,7 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import static com.guillaumegasnier.education.core.enums.Contact.TEL;
 
 /**
  * code UAI
@@ -61,6 +65,8 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     private String boitePostale;
     @CsvBindByName(column = "cedex")
     private String cedex;
+    @CsvBindByName(column = "téléphone")
+    private String contactTelephone;
 
     @Override
     public String getSiret() {
@@ -109,4 +115,13 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
         return UUID.nameUUIDFromBytes(uai.getBytes());
     }
 
+    @Override
+    public List<ContactEtablissementDataset> getContacts() {
+        List<ContactEtablissementDataset> contacts = new ArrayList<>();
+
+        if (contactTelephone != null && !contactTelephone.isEmpty())
+            contacts.add(new ContactEtablissementDataset(TEL, contactTelephone));
+
+        return contacts;
+    }
 }
