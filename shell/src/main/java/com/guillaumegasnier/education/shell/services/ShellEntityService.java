@@ -3,7 +3,7 @@ package com.guillaumegasnier.education.shell.services;
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
-import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.Effectifs;
 import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
@@ -27,6 +27,8 @@ public interface ShellEntityService {
     <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, String source);
 
     List<EtablissementOptionEntity> toEtablissementOptionEntity(@NonNull EtablissementDataset dataset);
+
+    List<EtablissementContactEntity> toEtablissementContactEntity(@NonNull EtablissementDataset dataset);
 
     EtablissementOptionEntity toEtablissementOptionEntity(@NonNull OnisepDispositifDataset dataset);
 

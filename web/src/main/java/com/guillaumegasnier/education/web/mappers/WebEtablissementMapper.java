@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.web.mappers;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
-import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
+import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.core.enums.Sport;
@@ -39,9 +39,9 @@ public abstract class WebEtablissementMapper {
 
     @Mapping(target = "nom", source = "pk.option.nom")
     @Mapping(target = "code", source = "pk.option")
-    public abstract OptionDto toOptionDto(OptionEtablissementEntity enity);
+    public abstract OptionDto toOptionDto(EtablissementOptionEntity enity);
 
-    public SpecialiteBac toSpecialiteBac(SpecialiteEntity entity) {
+    public SpecialiteBac toSpecialiteBac(EtablissementSpecialiteEntity entity) {
         return entity.getPk().getSpecialite();
     }
 
@@ -99,10 +99,10 @@ public abstract class WebEtablissementMapper {
 
     public abstract NatureDto toNatureDto(NatureEntity key);
 
-    public List<LangueWithCategorieDto> toLangueWithCategorieDtoList(List<LangueEntity> entities) {
+    public List<LangueWithCategorieDto> toLangueWithCategorieDtoList(List<EtablissementLangueEntity> entities) {
         if (entities == null) return Collections.emptyList();
 
-        Map<Langue.Categorie, List<LangueEntity>> grouped = entities.stream()
+        Map<Langue.Categorie, List<EtablissementLangueEntity>> grouped = entities.stream()
                 .filter(d -> d != null && d.getPk().getEnseignement() != null)
                 .collect(
                         Collectors.groupingBy(l -> Langue.Categorie.valueOf(l.getPk().getEnseignement().substring(0, 2).toUpperCase()),
@@ -121,7 +121,7 @@ public abstract class WebEtablissementMapper {
                 .collect(Collectors.toList());
     }
 
-    private LangueDto toLangueDto(LangueEntity entity) {
+    private LangueDto toLangueDto(EtablissementLangueEntity entity) {
         LangueDto l = new LangueDto();
         l.setNom(entity.getPk().getLangue().getNom());
         l.setEmoji(entity.getPk().getLangue().getEmoji());
@@ -147,18 +147,17 @@ public abstract class WebEtablissementMapper {
             return List.of();
         }
 
-        Map<String, List<EtablissementSportEntity>> grouped = entities.stream()
+        Map<Sport.Categorie, List<EtablissementSportEntity>> grouped = entities.stream()
                 .filter(e -> e != null && e.getPk() != null && e.getPk().getCategorie() != null)
                 .collect(Collectors.groupingBy(e -> e.getPk().getCategorie(), LinkedHashMap::new, Collectors.toList()));
 
         return grouped.entrySet().stream()
                 .map(entry -> {
-                    SportWithCategorieDto.CategorieDto categorieNom = SportWithCategorieDto.CategorieDto.valueOf(entry.getKey().toUpperCase());
                     List<Sport> sports = entry.getValue().stream()
                             .filter(Objects::nonNull)
                             .map(e -> e.getPk().getSport())
                             .toList();
-                    return new SportWithCategorieDto(categorieNom, sports);
+                    return new SportWithCategorieDto(entry.getKey(), sports);
                 })
                 .collect(Collectors.toList());
     }

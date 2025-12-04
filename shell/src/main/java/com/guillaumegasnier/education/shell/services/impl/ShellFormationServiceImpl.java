@@ -1,9 +1,8 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
-import com.guillaumegasnier.education.core.domains.formations.CertificationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
-import com.guillaumegasnier.education.core.domains.formations.RomeEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.shell.datasets.CODESROME;

@@ -1,8 +1,8 @@
 package com.guillaumegasnier.education.web.mappers;
 
-import com.guillaumegasnier.education.core.domains.references.AcademieEntity;
-import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
-import com.guillaumegasnier.education.core.domains.references.DepartementEntity;
+import com.guillaumegasnier.education.core.domains.territoires.AcademieEntity;
+import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
+import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity;
 import com.guillaumegasnier.education.web.dto.CommuneDto;
 import com.guillaumegasnier.education.web.dto.references.AcademieDto;
 import com.guillaumegasnier.education.web.dto.references.AcademieWithDepartementsDto;

@@ -1,8 +1,8 @@
 package com.guillaumegasnier.education.web.controllers;
 
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
-import com.guillaumegasnier.education.core.domains.references.DepartementEntity;
+import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
+import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.web.dto.etablissements.CommuneWithEtablissementsDto;

@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class SportWithCategorieDto {
 
-    private CategorieDto categorie;
+    private Sport.Categorie categorie;
 
     private List<Sport> sections;
 

@@ -1,8 +1,8 @@
-package com.guillaumegasnier.education.core.domains.organismes;
+package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
-import com.guillaumegasnier.education.core.domains.formations.GroupeSpecialiteFormationEntity;
-import com.guillaumegasnier.education.core.domains.references.CommuneEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.GroupeSpecialiteFormationEntity;
+import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
 import jakarta.persistence.*;
 import lombok.Getter;

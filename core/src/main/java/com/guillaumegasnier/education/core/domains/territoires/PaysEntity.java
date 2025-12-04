@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.core.domains.references;
+package com.guillaumegasnier.education.core.domains.territoires;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

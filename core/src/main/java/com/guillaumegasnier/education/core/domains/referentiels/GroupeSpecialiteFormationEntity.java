@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.core.domains.formations;
+package com.guillaumegasnier.education.core.domains.referentiels;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import jakarta.persistence.Column;

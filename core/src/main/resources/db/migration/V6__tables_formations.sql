@@ -1,15 +1,15 @@
-CREATE TABLE certifications
-(
-    id              UUID                        NOT NULL,
-    created_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    code_rncp       VARCHAR(10),
-    code_rs         VARCHAR(10),
-    code_cpf        VARCHAR(10),
-    code_certifinfo VARCHAR(10),
-    nom             VARCHAR(255),
-    CONSTRAINT pk_certifications PRIMARY KEY (id)
-);
+--CREATE TABLE certifications
+--(
+--    id              UUID                        NOT NULL,
+--    created_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+--    updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+--   code_rncp       VARCHAR(10),
+--    code_rs         VARCHAR(10),
+--   code_cpf        VARCHAR(10),
+--    code_certifinfo VARCHAR(10),
+--    nom             VARCHAR(255),
+--    CONSTRAINT pk_certifications PRIMARY KEY (id)
+--);
 
 CREATE TABLE romes
 (

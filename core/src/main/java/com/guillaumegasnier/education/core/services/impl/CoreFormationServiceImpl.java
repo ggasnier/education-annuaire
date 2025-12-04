@@ -1,9 +1,8 @@
 package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
-import com.guillaumegasnier.education.core.domains.formations.CertificationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
-import com.guillaumegasnier.education.core.domains.formations.RomeEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
 import com.guillaumegasnier.education.core.repositories.ActionFormationRepository;
 import com.guillaumegasnier.education.core.repositories.CertificationRepository;
 import com.guillaumegasnier.education.core.repositories.FormationRepository;

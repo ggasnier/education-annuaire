@@ -3,7 +3,7 @@ package com.guillaumegasnier.education.shell.services.impl;
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
-import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
@@ -143,6 +143,31 @@ public class ShellEntityServiceImpl implements ShellEntityService {
                     pk.setUai(dataset.getUai());
 
                     EtablissementOptionEntity entity = new EtablissementOptionEntity();
+                    entity.setPk(pk);
+                    entity.setEtablissement(etablissementOpt.get());
+
+                    return entity;
+                })
+                .toList();
+    }
+
+    @Override
+    public List<EtablissementContactEntity> toEtablissementContactEntity(EtablissementDataset dataset) {
+        Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
+
+        if (etablissementOpt.isEmpty()) {
+            log.warn("Pas d'établissement avec UAI {} pour etablissement", dataset.getUai());
+            return List.of();
+        }
+
+        return dataset.getContacts()
+                .stream()
+                .map(c -> {
+                    EtablissementContactPK pk = new EtablissementContactPK();
+                    pk.setContact(c.getContact());
+                    pk.setUai(dataset.getUai());
+
+                    EtablissementContactEntity entity = new EtablissementContactEntity();
                     entity.setPk(pk);
                     entity.setEtablissement(etablissementOpt.get());
 

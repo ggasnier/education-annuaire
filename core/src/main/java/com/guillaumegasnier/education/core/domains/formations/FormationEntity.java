@@ -2,7 +2,7 @@ package com.guillaumegasnier.education.core.domains.formations;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -89,8 +89,8 @@ public class FormationEntity extends AbstractEntity {
      * Cet élément permet de préciser le code d’une certification dans le service Certifinfo, dans les RNCP et RS de
      * France Compétences, ou son code CPF fourni par la Caisse des dépôts.
      */
-    @OneToMany
-    private Set<CertificationEntity> certifications = new HashSet<>();
+    //@OneToMany
+    //private Set<CertificationEntity> certifications = new HashSet<>();
 
     /**
      * Cet élément décrit le niveau de sortie de la formation.

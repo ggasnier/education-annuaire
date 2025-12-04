@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
+import com.guillaumegasnier.education.core.enums.Contact;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
@@ -214,13 +215,13 @@ public class EnEtablissementDataset implements EtablissementDataset {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 
         if (contactTelephone != null && !contactTelephone.isEmpty())
-            contacts.add(new ContactEtablissementDataset("telephone", contactTelephone));
+            contacts.add(new ContactEtablissementDataset(Contact.TEL, contactTelephone));
 
         if (contactMail != null && !contactMail.isEmpty())
-            contacts.add(new ContactEtablissementDataset("email", contactMail));
+            contacts.add(new ContactEtablissementDataset(Contact.EMAIL, contactMail));
 
         if (contactWeb != null && !contactWeb.isEmpty())
-            contacts.add(new ContactEtablissementDataset("web", contactWeb));
+            contacts.add(new ContactEtablissementDataset(Contact.WEB, contactWeb));
 
         return contacts;
     }

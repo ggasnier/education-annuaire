@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
-import com.guillaumegasnier.education.core.domains.organismes.OrganismeEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import org.springframework.lang.NonNull;
 
@@ -77,4 +77,6 @@ public interface CoreEtablissementService {
     void saveMetadata(List<EtablissementMetadataEntity> entities);
 
     List<EtablissementMetadataEntity> getMetadataListByUai(String uai);
+
+    void saveContacts(@NonNull List<EtablissementContactEntity> entities);
 }

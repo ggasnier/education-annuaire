@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 
-import com.guillaumegasnier.education.core.domains.references.DepartementEntity;
+import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.shell.datasets.references.*;
 import com.guillaumegasnier.education.shell.mappers.ReferenceMapper;

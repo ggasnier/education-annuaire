@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.core.services;
 
-import com.guillaumegasnier.education.core.domains.references.*;
+import com.guillaumegasnier.education.core.domains.territoires.*;
 import org.springframework.lang.NonNull;
 
 import java.util.List;

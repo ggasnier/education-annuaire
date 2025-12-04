@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.core.domains.organismes;
+package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.validations.ValidSiret;

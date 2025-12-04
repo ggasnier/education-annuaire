@@ -182,6 +182,15 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .toList());
 
             // Les contacts
+            coreEtablissementService.saveContacts(
+                    sub.stream()
+                            .flatMap(this::dedoublement)
+                            .map(shellEntityService::toEtablissementContactEntity)
+                            .flatMap(List::stream)
+                            .map(validatorService::toValidEntity)
+                            .filter(Objects::nonNull)
+                            .toList()
+            );
         }
 
         long endTime = System.nanoTime();
