@@ -1,12 +1,12 @@
 -- UTF-8 partout
 SET client_encoding = 'UTF8';
 
--- les tables de référence
+-- les tables des territoires
 
 -- pays
 CREATE TABLE pays
 (
-    code BPCHAR(2)    NOT NULL,
+    code BPCHAR(2)   NOT NULL,
     nom  VARCHAR(50) NOT NULL,
     CONSTRAINT pk_pays PRIMARY KEY (code)
 );
@@ -14,7 +14,7 @@ CREATE TABLE pays
 -- regions
 CREATE TABLE regions
 (
-    code       BPCHAR(2)                    NOT NULL,
+    code       BPCHAR(2)                   NOT NULL,
     nom        VARCHAR(50)                 NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE regions
 -- academies
 CREATE TABLE academies
 (
-    code       BPCHAR(2)                    NOT NULL,
+    code       BPCHAR(2)                   NOT NULL,
     nom        VARCHAR(100)                NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -47,12 +47,12 @@ ALTER TABLE departements
     ADD CONSTRAINT fk_departements_academies FOREIGN KEY (code_academie) REFERENCES academies (code);
 
 ALTER TABLE departements
-    ADD CONSTRAINT FK_departements_regions FOREIGN KEY (code_region) REFERENCES regions (code);
+    ADD CONSTRAINT fk_departements_regions FOREIGN KEY (code_region) REFERENCES regions (code);
 
 -- communes
 CREATE TABLE communes
 (
-    code             BPCHAR(5)                    NOT NULL,
+    code             BPCHAR(5)                   NOT NULL,
     nom              VARCHAR(255)                NOT NULL,
     code_pays        BPCHAR(2),
     code_departement BPCHAR(3),
