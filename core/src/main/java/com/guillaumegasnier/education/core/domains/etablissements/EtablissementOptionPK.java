@@ -6,18 +6,18 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @Embeddable
-public class OptionEtablissementPK implements Serializable {
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+public class EtablissementOptionPK implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

@@ -49,8 +49,8 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     @Override
-    public OptionEtablissementEntity toValidEntity(@NonNull OptionEtablissementEntity entity) {
-        return toValidEntity(entity, OptionEtablissementEntity.class);
+    public EtablissementOptionEntity toValidEntity(@NonNull EtablissementOptionEntity entity) {
+        return toValidEntity(entity, EtablissementOptionEntity.class);
     }
 
 //    @Override
@@ -64,13 +64,13 @@ public class ValidatorServiceImpl implements ValidatorService {
     }*/
 
     @Override
-    public SpecialiteEntity toValidEntity(@NonNull SpecialiteEntity entity) {
-        return toValidEntity(entity, SpecialiteEntity.class);
+    public EtablissementSpecialiteEntity toValidEntity(@NonNull EtablissementSpecialiteEntity entity) {
+        return toValidEntity(entity, EtablissementSpecialiteEntity.class);
     }
 
     @Override
-    public LangueEntity toValidEntity(@NonNull LangueEntity entity) {
-        return toValidEntity(entity, LangueEntity.class);
+    public EtablissementLangueEntity toValidEntity(@NonNull EtablissementLangueEntity entity) {
+        return toValidEntity(entity, EtablissementLangueEntity.class);
     }
 
     /*@Override

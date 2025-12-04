@@ -14,9 +14,6 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 
-/**
- * Remplace
- */
 @Getter
 @Setter
 @Embeddable
@@ -32,11 +29,10 @@ public class EtablissementSportPK implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(50)", length = 50)
     private Sport sport;
 
-    /**
-     * Section sportive ou sport etudes
-     */
+    @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "BPCHAR(2)", length = 2)
-    private String categorie;
+    private Sport.Categorie categorie;
 }

@@ -126,7 +126,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public List<OptionEtablissementEntity> toOptionEtablissementEntity(@NonNull EtablissementDataset dataset) {
+    public List<EtablissementOptionEntity> toEtablissementOptionEntity(@NonNull EtablissementDataset dataset) {
 
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
@@ -138,11 +138,11 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         return dataset.getOptions()
                 .stream()
                 .map(option -> {
-                    OptionEtablissementPK pk = new OptionEtablissementPK();
+                    EtablissementOptionPK pk = new EtablissementOptionPK();
                     pk.setOption(option);
                     pk.setUai(dataset.getUai());
 
-                    OptionEtablissementEntity entity = new OptionEtablissementEntity();
+                    EtablissementOptionEntity entity = new EtablissementOptionEntity();
                     entity.setPk(pk);
                     entity.setEtablissement(etablissementOpt.get());
 
@@ -152,7 +152,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public OptionEtablissementEntity toOptionEtablissementEntity(@NonNull OnisepDispositifDataset dataset) {
+    public EtablissementOptionEntity toEtablissementOptionEntity(@NonNull OnisepDispositifDataset dataset) {
 
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
@@ -161,11 +161,11 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             return null;
         }
 
-        OptionEtablissementPK pk = new OptionEtablissementPK();
+        EtablissementOptionPK pk = new EtablissementOptionPK();
         pk.setUai(dataset.getUai());
         pk.setOption(dataset.getOption());
 
-        OptionEtablissementEntity entity = new OptionEtablissementEntity();
+        EtablissementOptionEntity entity = new EtablissementOptionEntity();
         entity.setPk(pk);
         entity.setEtablissement(etablissementOpt.get());
 
@@ -173,15 +173,15 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public OptionEtablissementEntity toOptionEtablissementEntity(EuroscolDataset dataset) {
+    public EtablissementOptionEntity toEtablissementOptionEntity(EuroscolDataset dataset) {
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
         if (etablissementOpt.isPresent()) {
-            OptionEtablissementPK pk = new OptionEtablissementPK();
+            EtablissementOptionPK pk = new EtablissementOptionPK();
             pk.setUai(dataset.getUai());
             pk.setOption(OptionEtablissement.EUROSCOL);
 
-            OptionEtablissementEntity entity = new OptionEtablissementEntity();
+            EtablissementOptionEntity entity = new EtablissementOptionEntity();
             entity.setPk(pk);
             entity.setEtablissement(etablissementOpt.get());
 
@@ -193,7 +193,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
 
     @Nullable
     @Override
-    public OptionEtablissementEntity toOptionEtablissementEntity(@NonNull SectionBinationaleDataset dataset) {
+    public EtablissementOptionEntity toEtablissementOptionEntity(@NonNull SectionBinationaleDataset dataset) {
 
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
@@ -202,11 +202,11 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             return null;
         }
 
-        OptionEtablissementPK pk = new OptionEtablissementPK();
+        EtablissementOptionPK pk = new EtablissementOptionPK();
         pk.setUai(dataset.getUai());
         pk.setOption(dataset.getOption());
 
-        OptionEtablissementEntity entity = new OptionEtablissementEntity();
+        EtablissementOptionEntity entity = new EtablissementOptionEntity();
         entity.setPk(pk);
         entity.setEtablissement(etablissementOpt.get());
 
@@ -214,18 +214,18 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public List<OptionEtablissementEntity> toOptionEtablissementEntity(@NonNull SectionInternationaleDataset dataset) {
+    public List<EtablissementOptionEntity> toEtablissementOptionEntity(@NonNull SectionInternationaleDataset dataset) {
 
-        List<OptionEtablissementEntity> entities = new ArrayList<>();
+        List<EtablissementOptionEntity> entities = new ArrayList<>();
 
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
         if (etablissementOpt.isPresent()) {
             // Indicateur SI
-            OptionEtablissementPK pk = new OptionEtablissementPK();
+            EtablissementOptionPK pk = new EtablissementOptionPK();
             pk.setOption(OptionEtablissement.SECTION_INTERNATIONALE);
             pk.setUai(dataset.getUai());
-            OptionEtablissementEntity entity = new OptionEtablissementEntity();
+            EtablissementOptionEntity entity = new EtablissementOptionEntity();
             entity.setPk(pk);
             entity.setEtablissement(etablissementOpt.get());
             entities.add(entity);
@@ -233,11 +233,11 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             // indicateur BFI
             dataset.getNiveaux().forEach(niveau -> {
                 if (niveau.equals("BFI")) {
-                    var pk2 = new OptionEtablissementPK();
+                    var pk2 = new EtablissementOptionPK();
                     pk2.setOption(OptionEtablissement.BFI);
                     pk2.setUai(dataset.getUai());
 
-                    var entity2 = new OptionEtablissementEntity();
+                    var entity2 = new EtablissementOptionEntity();
                     entity2.setPk(pk2);
                     entity2.setEtablissement(etablissementOpt.get());
 
@@ -252,7 +252,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
 
     @Nullable
     @Override
-    public LangueEntity toLangueEntity(@NonNull LangueDataset dataset) {
+    public EtablissementLangueEntity toLangueEntity(@NonNull LangueDataset dataset) {
 
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
@@ -264,12 +264,12 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         Langue langue = Langue.transformation(dataset.getLangue());
 
         if (langue != null) {
-            LanguePK pk = new LanguePK();
+            EtablissementLanguePK pk = new EtablissementLanguePK();
             pk.setLangue(langue);
             pk.setUai(dataset.getUai());
             pk.setEnseignement(dataset.getEnseignement());
 
-            LangueEntity entity = new LangueEntity();
+            EtablissementLangueEntity entity = new EtablissementLangueEntity();
             entity.setPk(pk);
             entity.setEtablissement(etablissementOpt.get());
 
@@ -280,7 +280,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public List<SpecialiteEntity> toSpecialiteEntity(@NonNull SpecialitePremiereDataset dataset) {
+    public List<EtablissementSpecialiteEntity> toSpecialiteEntity(@NonNull SpecialitePremiereDataset dataset) {
 
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
@@ -291,11 +291,11 @@ public class ShellEntityServiceImpl implements ShellEntityService {
 
         return dataset.getSpecialites().stream().map(
                 specialiteBac -> {
-                    SpecialitePK pk = new SpecialitePK();
+                    EtablissementSpecialitePK pk = new EtablissementSpecialitePK();
                     pk.setUai(dataset.getUai());
                     pk.setSpecialite(specialiteBac);
 
-                    SpecialiteEntity entity = new SpecialiteEntity();
+                    EtablissementSpecialiteEntity entity = new EtablissementSpecialiteEntity();
                     entity.setPk(pk);
                     entity.setEtablissement(etablissementOpt.get());
 
@@ -331,7 +331,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public List<EtablissementSportEntity> toEtablissementSportEntity(SportDataset dataset, String categorie) {
+    public List<EtablissementSportEntity> toEtablissementSportEntity(SportDataset dataset, Sport.Categorie categorie) {
 
         Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
@@ -361,19 +361,19 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public List<LangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, String enseignement) {
+    public List<EtablissementLangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, String enseignement) {
         return dataset.getLangueList()
                 .stream()
                 .map(langue -> {
                             Optional<EtablissementEntity> etablissementOpt = coreEtablissementService.findEtablissement(dataset.getUai());
 
                             if (etablissementOpt.isPresent()) {
-                                LanguePK pk = new LanguePK();
+                                EtablissementLanguePK pk = new EtablissementLanguePK();
                                 pk.setLangue(langue);
                                 pk.setUai(dataset.getUai());
                                 pk.setEnseignement(enseignement);
 
-                                LangueEntity entity = new LangueEntity();
+                                EtablissementLangueEntity entity = new EtablissementLangueEntity();
                                 entity.setPk(pk);
                                 entity.setEtablissement(etablissementOpt.get());
 

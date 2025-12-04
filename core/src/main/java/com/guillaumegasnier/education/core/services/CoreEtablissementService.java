@@ -18,11 +18,11 @@ public interface CoreEtablissementService {
 
 //    void saveIPS(@NonNull List<IndicePositionSocialeEntity> entities);
 
-    void saveSpecialites(List<SpecialiteEntity> entities);
+    void saveSpecialites(List<EtablissementSpecialiteEntity> entities);
 
-    void saveLangues(List<LangueEntity> entities);
+    void saveLangues(List<EtablissementLangueEntity> entities);
 
-    void saveOptions(List<OptionEtablissementEntity> entities);
+    void saveOptions(List<EtablissementOptionEntity> entities);
 
     /**
      * Recherche d'un établissment par son UAI
@@ -40,9 +40,9 @@ public interface CoreEtablissementService {
 
 //    Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee);
 
-    List<OptionEtablissementEntity> getOptionListByUai(String uai);
+    List<EtablissementOptionEntity> getOptionListByUai(String uai);
 
-    List<LangueEntity> getLangueListByUai(String uai);
+    List<EtablissementLangueEntity> getLangueListByUai(String uai);
 
     List<EtablissementSportEntity> getSportListByUai(String uai);
 
@@ -60,7 +60,7 @@ public interface CoreEtablissementService {
 
     List<EtablissementEntity> findEtablissementListByDepartement(String code);
 
-    List<SpecialiteEntity> getSpecialiteListByUai(String uai);
+    List<EtablissementSpecialiteEntity> getSpecialiteListByUai(String uai);
 
     List<EtablissementEntity> findEtablissementListByCommune(String code);
 

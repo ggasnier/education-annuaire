@@ -27,8 +27,8 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final NatureRepository natureRepository;
     private final ContratRepository contratRepository;
     private final SpecialiteRepository specialiteRepository;
-    private final LangueRepository langueRepository;
-    private final OptionEtablissementRepository optionEtablissementRepository;
+    private final EtablissementLangueRepository langueRepository;
+    private final EtablissementOptionRepository optionEtablissementRepository;
     private final OrganismeRepository organismeRepository;
     private final EtablissementSportRepository etablissementSportRepository;
     private final EtablissementMetadataRepository etablissementMetadataRepository;
@@ -78,12 +78,12 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
-    public List<OptionEtablissementEntity> getOptionListByUai(String uai) {
+    public List<EtablissementOptionEntity> getOptionListByUai(String uai) {
         return optionEtablissementRepository.findAllByPkUai(uai);
     }
 
     @Override
-    public List<LangueEntity> getLangueListByUai(String uai) {
+    public List<EtablissementLangueEntity> getLangueListByUai(String uai) {
         return langueRepository.findAllByPkUaiOrderByPkEnseignementAscPkLangueAsc(uai);
     }
 
@@ -123,7 +123,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
-    public List<SpecialiteEntity> getSpecialiteListByUai(String uai) {
+    public List<EtablissementSpecialiteEntity> getSpecialiteListByUai(String uai) {
         return specialiteRepository.findAllByPkUai(uai);
     }
 
@@ -168,7 +168,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
-    public void saveSpecialites(List<SpecialiteEntity> entities) {
+    public void saveSpecialites(List<EtablissementSpecialiteEntity> entities) {
         specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les anciennes
     }
 
@@ -183,13 +183,13 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 //    }
 
     @Override
-    public void saveLangues(List<LangueEntity> entities) {
+    public void saveLangues(List<EtablissementLangueEntity> entities) {
         langueRepository.saveAll(entities);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void saveOptions(List<OptionEtablissementEntity> entities) {
+    public void saveOptions(List<EtablissementOptionEntity> entities) {
         optionEtablissementRepository.saveAll(entities);
         em.flush();
         em.clear();

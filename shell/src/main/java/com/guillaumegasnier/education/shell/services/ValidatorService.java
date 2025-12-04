@@ -8,13 +8,13 @@ public interface ValidatorService {
 
     EtablissementEntity toValidEntity(@NonNull EtablissementEntity entity);
 
-    OptionEtablissementEntity toValidEntity(@NonNull OptionEtablissementEntity entity);
+    EtablissementOptionEntity toValidEntity(@NonNull EtablissementOptionEntity entity);
 
     //SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity);
 
-    SpecialiteEntity toValidEntity(@NonNull SpecialiteEntity entity);
+    EtablissementSpecialiteEntity toValidEntity(@NonNull EtablissementSpecialiteEntity entity);
 
-    LangueEntity toValidEntity(@NonNull LangueEntity entity);
+    EtablissementLangueEntity toValidEntity(@NonNull EtablissementLangueEntity entity);
 
     //SportEtudeEntity toValidEntity(@NonNull SportEtudeEntity entity);
 

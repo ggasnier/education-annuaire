@@ -5,17 +5,21 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * LV1, LV2, LCA
+ * Section européenne
+ */
 @Getter
 @Setter
 @Entity
-@Table(name = "etablissements_specialites")
-public class SpecialiteEntity extends AbstractEntity {
+@Table(name = "etablissements_langues")
+public class EtablissementLangueEntity extends AbstractEntity {
 
     @EmbeddedId
-    private SpecialitePK pk;
+    private EtablissementLanguePK pk;
 
     @MapsId("uai")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_specialites_etablissements"), nullable = false)
+    @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_langues_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 }

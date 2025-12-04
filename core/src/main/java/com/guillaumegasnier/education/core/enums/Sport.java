@@ -158,4 +158,13 @@ public enum Sport {
             return this.name();
         return this.nom;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum Categorie {
+        SS("Sections Sportives"),
+        SE("Sport Etudes");
+
+        private final String nom;
+    }
 }

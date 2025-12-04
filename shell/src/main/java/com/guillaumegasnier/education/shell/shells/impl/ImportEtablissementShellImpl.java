@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.shells.impl;
 
+import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
 import com.guillaumegasnier.education.shell.shells.ImportEtablissementShell;
@@ -84,8 +85,8 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     @Override
     @ShellMethod(value = "Import sections sport études et sections sportives")
     public void importSports() {
-        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), "ss");
-        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), "se");
+        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), Sport.Categorie.SS);
+        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), Sport.Categorie.SE);
     }
 
     @Override

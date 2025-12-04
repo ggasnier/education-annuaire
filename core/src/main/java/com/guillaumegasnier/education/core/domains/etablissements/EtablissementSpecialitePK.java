@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
-import com.guillaumegasnier.education.core.enums.Langue;
+import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Setter
 @EqualsAndHashCode
 @Embeddable
-public class LanguePK implements Serializable {
+public class EtablissementSpecialitePK implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,11 +29,6 @@ public class LanguePK implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "BPCHAR(2)", length = 2)
-    private Langue langue;
-
-    @NotNull
-    @Column(columnDefinition = "BPCHAR(3)", length = 3)
-    private String enseignement;
-
+    @Column(columnDefinition = "VARCHAR(15)", length = 15)
+    private SpecialiteBac specialite;
 }

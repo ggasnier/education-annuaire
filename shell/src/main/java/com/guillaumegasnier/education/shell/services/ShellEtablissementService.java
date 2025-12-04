@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.services;
 
+import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.Effectifs;
 import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
@@ -27,7 +28,7 @@ public interface ShellEtablissementService {
 
     void createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets);
 
-    void createOrUpdateSports(@NonNull List<SportDataset> datasets, String categorie);
+    void createOrUpdateSports(@NonNull List<SportDataset> datasets, Sport.Categorie categorie);
 
     void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets);
 

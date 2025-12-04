@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
-import com.guillaumegasnier.education.core.services.CoreElasticService;
+import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.validations.Effectifs;
 import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
@@ -33,7 +33,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     private final EtablissementMapper etablissementMapper;
     private final CoreEtablissementService coreEtablissementService;
-    private final CoreElasticService coreElasticService;
     private final ShellEntityService shellEntityService;
     private final ValidatorService validatorService;
 
@@ -56,7 +55,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
-    public void createOrUpdateSports(@NonNull List<SportDataset> datasets, String categorie) {
+    public void createOrUpdateSports(@NonNull List<SportDataset> datasets, Sport.Categorie categorie) {
         coreEtablissementService.saveEtablissementSportEntity(datasets
                 .stream()
                 .map(dataset -> shellEntityService.toEtablissementSportEntity(dataset, categorie))
@@ -74,7 +73,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveOptions(datasets.stream()
                 .filter(d -> d.getOption() != null)
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                .map(shellEntityService::toOptionEtablissementEntity)
+                .map(shellEntityService::toEtablissementOptionEntity)
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
@@ -150,7 +149,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     public void createOrUpdateEuroscol(List<EuroscolDataset> datasets) {
 
         coreEtablissementService.saveOptions(datasets.stream()
-                .map(shellEntityService::toOptionEtablissementEntity)
+                .map(shellEntityService::toEtablissementOptionEntity)
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
@@ -176,7 +175,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             // Les options
             coreEtablissementService.saveOptions(sub.stream()
                     .flatMap(this::dedoublement)
-                    .map(shellEntityService::toOptionEtablissementEntity)
+                    .map(shellEntityService::toEtablissementOptionEntity)
                     .flatMap(List::stream)
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
@@ -309,7 +308,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     public void createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets) {
         // Indicateurs Section Internationnale et BFI
         coreEtablissementService.saveOptions(datasets.stream()
-                .map(shellEntityService::toOptionEtablissementEntity)
+                .map(shellEntityService::toEtablissementOptionEntity)
                 .flatMap(List::stream)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
@@ -326,7 +325,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     public void createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets) {
         coreEtablissementService.saveOptions(datasets
                 .stream()
-                .map(shellEntityService::toOptionEtablissementEntity)
+                .map(shellEntityService::toEtablissementOptionEntity)
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
