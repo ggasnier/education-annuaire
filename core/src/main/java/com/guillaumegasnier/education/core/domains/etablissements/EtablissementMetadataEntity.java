@@ -26,7 +26,7 @@ public class EtablissementMetadataEntity extends AbstractEntity {
     private EtablissementAnneePK pk;
 
     @MapsId("uai")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_metadatas_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 

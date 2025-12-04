@@ -1,3 +1,6 @@
 spring:
   application:
     name: web
+  datasource:
+    hikari:
+      read-only: true

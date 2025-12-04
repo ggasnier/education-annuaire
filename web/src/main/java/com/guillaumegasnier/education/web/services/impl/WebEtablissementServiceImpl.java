@@ -82,6 +82,7 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
                 coreEtablissementService.getSpecialiteListByUai(uai).stream().map(webEtablissementMapper::toSpecialiteBac).toList(),
                 webEtablissementMapper.toLangueWithCategorieDtoList(coreEtablissementService.getLangueListByUai(uai)),
                 webEtablissementMapper.toSportWithCategorieDtoList(coreEtablissementService.getSportListByUai(uai)),
+                coreEtablissementService.getContactListByUai(uai).stream().map(webEtablissementMapper::toContactDto).toList(),
                 coreEtablissementService.getMetadataListByUai(uai).stream().map(webEtablissementMapper::toMetadataDto).toList()
         );
     }

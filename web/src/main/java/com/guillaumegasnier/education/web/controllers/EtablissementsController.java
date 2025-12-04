@@ -34,6 +34,7 @@ public class EtablissementsController {
         model.addAttribute("specialites", details.specialites());
         model.addAttribute("langues", details.langues());
         model.addAttribute("sports", details.sports());
+        model.addAttribute("contacts", details.contacts());
         model.addAttribute("metadatats", details.metadatas());
 
         return "etablissements/details";

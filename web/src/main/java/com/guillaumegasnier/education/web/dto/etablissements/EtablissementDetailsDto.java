@@ -5,7 +5,6 @@ import com.guillaumegasnier.education.web.dto.EtablissementDto;
 
 import java.util.List;
 
-
 public record EtablissementDetailsDto(
 
         EtablissementDto etablissement,
@@ -17,6 +16,8 @@ public record EtablissementDetailsDto(
         List<LangueWithCategorieDto> langues,
 
         List<SportWithCategorieDto> sports,
+
+        List<ContactDto> contacts,
 
         List<MetadataDto> metadatas) {
 }

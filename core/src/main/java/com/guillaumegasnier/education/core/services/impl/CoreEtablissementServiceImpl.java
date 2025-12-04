@@ -170,6 +170,8 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Override
     public void saveMetadata(List<EtablissementMetadataEntity> entities) {
         etablissementMetadataRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 
     @Override
@@ -180,6 +182,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Override
     public void saveContacts(@NonNull List<EtablissementContactEntity> entities) {
         etablissementContactRepository.saveAll(entities);
+    }
+
+    @Override
+    public List<EtablissementContactEntity> getContactListByUai(String uai) {
+        return etablissementContactRepository.findAllByPkUai(uai);
     }
 
     @Override

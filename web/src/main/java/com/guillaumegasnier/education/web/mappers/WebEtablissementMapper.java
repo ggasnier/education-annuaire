@@ -105,7 +105,7 @@ public abstract class WebEtablissementMapper {
         Map<Langue.Categorie, List<EtablissementLangueEntity>> grouped = entities.stream()
                 .filter(d -> d != null && d.getPk().getEnseignement() != null)
                 .collect(
-                        Collectors.groupingBy(l -> Langue.Categorie.valueOf(l.getPk().getEnseignement().substring(0, 2).toUpperCase()),
+                        Collectors.groupingBy(l -> l.getPk().getCategorie(),
                                 LinkedHashMap::new,
                                 Collectors.toList()));
 
@@ -161,4 +161,8 @@ public abstract class WebEtablissementMapper {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Mapping(target = "valeur", source = "pk.valeur")
+    @Mapping(target = "nom", source = "pk.contact.nom")
+    public abstract ContactDto toContactDto(EtablissementContactEntity entity);
 }

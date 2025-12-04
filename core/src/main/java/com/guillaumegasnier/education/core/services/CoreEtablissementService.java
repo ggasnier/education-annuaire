@@ -82,4 +82,6 @@ public interface CoreEtablissementService {
     List<EtablissementMetadataEntity> getMetadataListByUai(String uai);
 
     void saveContacts(@NonNull List<EtablissementContactEntity> entities);
+
+    List<EtablissementContactEntity> getContactListByUai(String uai);
 }

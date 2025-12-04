@@ -325,105 +325,90 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
-    public <T extends Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset) {
+    public <T extends Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull T dataset) {
         var uai = dataset.getUai();
         var annee = dataset.getAnnee();
 
-        Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
+        log.info("1");
+        if (coreEtablissementService.isEtablissementExiste(uai)) {
+            log.info("2");
+            Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
 
-        if (metadataEntityOptional.isPresent()) {
-            var entity = metadataEntityOptional.get();
-            var metadatas = entity.getMetadatas();
-
-            if (dataset.getEffectifs() != null) {
-                metadatas.setEffectifs(dataset.getEffectifs());
-            }
-
-            entity.setMetadatas(metadatas);
-            return entity;
-        } else {
-            Optional<EtablissementEntity> etablissementEntityOptional = coreEtablissementService.findEtablissement(uai);
-
-            if (etablissementEntityOptional.isPresent()) {
-                var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), etablissementEntityOptional.get());
-
+            if (metadataEntityOptional.isPresent()) {
+                var entity = metadataEntityOptional.get();
                 var metadatas = entity.getMetadatas();
-
                 if (dataset.getEffectifs() != null) {
                     metadatas.setEffectifs(dataset.getEffectifs());
                 }
                 entity.setMetadatas(metadatas);
                 return entity;
             } else {
-                log.warn("Pas d'établissement avec UAI {} pour effectifs", uai);
-                return null;
+                log.info("3");
+                var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), coreEtablissementService.getEtablissementReferenceByUai(uai));
+                var metadatas = entity.getMetadatas();
+                if (dataset.getEffectifs() != null) {
+                    metadatas.setEffectifs(dataset.getEffectifs());
+                }
+                entity.setMetadatas(metadatas);
+                return entity;
             }
+        } else {
+            log.warn("Pas d'établissement avec UAI {} pour effectifs", uai);
+            return null;
         }
-
     }
 
     @Override
-    public <T extends IndicateurValeurAjoutee & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset) {
+    public <T extends IndicateurValeurAjoutee & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull T dataset) {
         var uai = dataset.getUai();
         var annee = dataset.getAnnee();
 
-        Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
+        if (coreEtablissementService.isEtablissementExiste(uai)) {
+            Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
 
-        if (metadataEntityOptional.isPresent()) {
-            var entity = metadataEntityOptional.get();
-            var metadatas = entity.getMetadatas();
-
-            metadatas.setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
-            entity.setMetadatas(metadatas);
-
-            return entity;
-        } else {
-            Optional<EtablissementEntity> etablissementEntityOptional = coreEtablissementService.findEtablissement(uai);
-
-            if (etablissementEntityOptional.isPresent()) {
-                var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), etablissementEntityOptional.get());
+            if (metadataEntityOptional.isPresent()) {
+                var entity = metadataEntityOptional.get();
                 var metadatas = entity.getMetadatas();
-
                 metadatas.setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
-
                 entity.setMetadatas(metadatas);
                 return entity;
             } else {
-                log.warn("Pas d'établissement avec UAI {} pour IVA", uai);
-                return null;
+                var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), coreEtablissementService.getEtablissementReferenceByUai(uai));
+                var metadatas = entity.getMetadatas();
+                metadatas.setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
+                entity.setMetadatas(metadatas);
+                return entity;
             }
+        } else {
+            log.warn("Pas d'établissement avec UAI {} pour IVA", uai);
+            return null;
         }
     }
 
     @Override
-    public <T extends IndicePositionSociale & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset) {
+    public <T extends IndicePositionSociale & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull T dataset) {
         var uai = dataset.getUai();
         var annee = dataset.getAnnee();
 
-        Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
+        if (coreEtablissementService.isEtablissementExiste(uai)) {
+            Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
 
-        if (metadataEntityOptional.isPresent()) {
-            var entity = metadataEntityOptional.get();
-            var metadatas = entity.getMetadatas();
-            metadatas.setIps(etablissementMapper.toIndicePositionSocialeDto(dataset));
-
-            entity.setMetadatas(metadatas);
-            return entity;
-        } else {
-            Optional<EtablissementEntity> etablissementEntityOptional = coreEtablissementService.findEtablissement(uai);
-
-            if (etablissementEntityOptional.isPresent()) {
-                var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), etablissementEntityOptional.get());
-
+            if (metadataEntityOptional.isPresent()) {
+                var entity = metadataEntityOptional.get();
                 var metadatas = entity.getMetadatas();
                 metadatas.setIps(etablissementMapper.toIndicePositionSocialeDto(dataset));
-
                 entity.setMetadatas(metadatas);
                 return entity;
             } else {
-                log.warn("Pas d'établissement avec UAI {} pour IPS", uai);
-                return null;
+                var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), coreEtablissementService.getEtablissementReferenceByUai(uai));
+                var metadatas = entity.getMetadatas();
+                metadatas.setIps(etablissementMapper.toIndicePositionSocialeDto(dataset));
+                entity.setMetadatas(metadatas);
+                return entity;
             }
+        } else {
+            log.warn("Pas d'établissement avec UAI {} pour IPS", uai);
+            return null;
         }
     }
 

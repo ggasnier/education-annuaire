@@ -55,6 +55,9 @@ class ShellEntityServiceImplTest {
 
         when(coreEtablissementService.findEtablissement(uaiExiste)).thenReturn(Optional.of(etablissementEntityExiste));
         when(coreEtablissementService.findEtablissement(uaiAbsent)).thenReturn(Optional.empty());
+        when(coreEtablissementService.isEtablissementExiste(uaiExiste)).thenReturn(true);
+        when(coreEtablissementService.isEtablissementExiste(uaiAbsent)).thenReturn(false);
+
     }
 
 
