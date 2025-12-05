@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
@@ -41,21 +42,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     int chunk;
 
     @Override
-    public void createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets) {
-
-        for (int i = 0; i < datasets.size(); i += chunk) {
-            List<? extends TravailOrganismeFormationDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
-            coreEtablissementService.saveOrganismes(sub.stream()
-                    .map(shellEntityService::toOrganismeEntity)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
-                    .toList());
-        }
-
-        log.info("Import terminé : {} organismes(s) traité(s).", datasets.size());
-    }
-
-    @Override
     public void createOrUpdateSports(@NonNull List<SportDataset> datasets, Sport.Categorie categorie) {
         coreEtablissementService.saveEtablissementSportEntity(datasets
                 .stream()
@@ -70,7 +56,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     @Override
     public void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets) {
 
-        // Enregistrement comme une option
         log.info("Import des dispositifs comme option");
         coreEtablissementService.saveOptions(datasets.stream()
                 .filter(d -> d.getOption() != null)
@@ -84,7 +69,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         // Le sport (section sportive et sport études)
 
         log.info("Import des dispositifs sections européennes");
-        // Les sections européennes
         coreEtablissementService.saveLangues(datasets.stream()
                 .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_EUROPEENNE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
@@ -95,7 +79,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .toList());
 
         log.info("Import des dispositifs sections langues orientales");
-        // Langues orientales
         coreEtablissementService.saveLangues(datasets.stream()
                 .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_ORIENTALE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
@@ -106,7 +89,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .toList());
 
         log.info("Import des dispositifs sections internationales");
-        // Sections internationales
         coreEtablissementService.saveLangues(datasets.stream()
                 .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_INTERNATIONALE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
@@ -117,7 +99,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .toList());
 
         log.info("Import des dispositifs sections bilingues");
-        // Sections internationales
         coreEtablissementService.saveLangues(datasets.stream()
                 .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_BILINGUE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
@@ -177,13 +158,13 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source) {
 
         long startTime = System.nanoTime();
 
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<? extends EtablissementDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
-
             // Les établissements
             coreEtablissementService.saveEtablissements(sub.stream()
                     .flatMap(this::dedoublement)

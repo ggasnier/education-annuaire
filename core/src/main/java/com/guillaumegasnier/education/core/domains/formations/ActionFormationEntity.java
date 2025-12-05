@@ -64,7 +64,7 @@ public class ActionFormationEntity extends AbstractEntity {
     @Column(columnDefinition = "UUID", nullable = false, updatable = false)
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "formation_id", foreignKey = @ForeignKey(name = "fk_actions_formations"), columnDefinition = "UUID", nullable = false)
     private FormationEntity formation;
 

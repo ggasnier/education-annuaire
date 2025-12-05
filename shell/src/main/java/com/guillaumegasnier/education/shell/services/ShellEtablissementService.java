@@ -26,8 +26,6 @@ public interface ShellEtablissementService {
 
     void createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets);
 
-    void createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets);
-
     void createOrUpdateSports(@NonNull List<SportDataset> datasets, Sport.Categorie categorie);
 
     void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets);

@@ -17,8 +17,6 @@ public interface ImportEtablissementShell {
 
     void importEtablissementsOnisepSup();
 
-    void importOrganismes();
-
     void importNatures();
 
     void importContrats();

@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
-import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
@@ -45,7 +44,27 @@ public class ValidatorServiceImpl implements ValidatorService {
 
     @Override
     public EtablissementEntity toValidEntity(@NonNull EtablissementEntity entity) {
-        return toValidEntity(entity, EtablissementEntity.class);
+        Set<ConstraintViolation<EtablissementEntity>> violations = validator.validate(entity);
+
+        if (violations.isEmpty()) {
+            return entity;
+        }
+
+        for (ConstraintViolation<EtablissementEntity> v : violations) {
+            if (v.getPropertyPath().toString().contains("siret") && violations.size() == 1) {
+                log.warn("UAI {} avec siret invalide {}", entity.getUai(), entity.getSiret());
+                entity.setSiret(null);
+                return entity;
+            } else {
+                log.error("Validation failed on {}.{}: {} ({})",
+                        entity.getClass().getSimpleName(),
+                        v.getPropertyPath(),
+                        v.getMessage(),
+                        v.getInvalidValue());
+            }
+        }
+
+        return null;
     }
 
     @Override

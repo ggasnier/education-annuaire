@@ -4,23 +4,18 @@ import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
 import com.guillaumegasnier.education.shell.shells.ImportEtablissementShell;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
 
 @ShellComponent
-public class ImportEtablissementShellImpl implements ImportEtablissementShell {
+@AllArgsConstructor
+public class ImportEtablissement implements ImportEtablissementShell {
 
     private final ShellEtablissementService shellEtablissementService;
     private final FileService fileService;
-
-    @Autowired
-    public ImportEtablissementShellImpl(ShellEtablissementService shellEtablissementService, FileService fileService) {
-        this.shellEtablissementService = shellEtablissementService;
-        this.fileService = fileService;
-    }
 
     @Override
     @ShellMethod(value = "Import établissements (ouverts)")
@@ -37,8 +32,8 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     @Override
     @ShellMethod(value = "Import de tous les établissements")
     public void importEtablissementsAll() {
-        importNatures();
-        importContrats();
+//        importNatures();
+//        importContrats();
         importEtablissementsEnOuverts();
         importEtablissementsEsr();
         importEtablissementsCarif();
@@ -62,12 +57,6 @@ public class ImportEtablissementShellImpl implements ImportEtablissementShell {
     @ShellMethod(value = "Import établissements (ONISEP SUP)")
     public void importEtablissementsOnisepSup() {
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SUP), "onisep");
-    }
-
-    @Override
-    @ShellMethod(value = "Import Organismes de formations")
-    public void importOrganismes() {
-        shellEtablissementService.createOrUpdateOrganismes(fileService.importCSV(TRAVAIL_ETABS));
     }
 
     @Override

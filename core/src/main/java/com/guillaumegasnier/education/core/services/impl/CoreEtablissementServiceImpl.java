@@ -19,6 +19,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 
@@ -55,7 +56,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS)
+    //@Transactional(propagation = Propagation.SUPPORTS)
     public Optional<EtablissementEntity> findEtablissement(@ValidUai String uai) {
         return etablissementRepository.findByUai(uai);
     }

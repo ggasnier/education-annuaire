@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.shell.services;
 
-import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
+import com.guillaumegasnier.education.shell.datasets.etablissements.TravailOrganismeFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
@@ -12,15 +12,15 @@ import java.util.List;
 
 public interface ShellFormationService {
 
-    String createOrUpdateCertificationsRncp(FICHES fiches);
+    void createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets);
 
-    String createOrUpdateFormationsCpf(@NonNull List<CPFFormationDataset> datasets);
+    void createOrUpdateFormationsCpf(@NonNull List<CPFFormationDataset> datasets);
 
-    String createOrUpdateFormationsCarif(@NonNull List<CarifFormationDataset> datasets);
+    void createOrUpdateFormationsCarif(@NonNull List<CarifFormationDataset> datasets);
 
     void createOrUpdateFormationsParcoursup(@NonNull List<ParcoursupFormationDataset> datasets);
 
-    String createOrUpdateFormationsOnisepEsr(@NonNull List<OnisepFormationDataset> datasets);
+    void createOrUpdateFormationsOnisepEsr(@NonNull List<OnisepFormationDataset> datasets);
 
-    String createOrUpdateFormationsOnisepLheo(@NonNull LheoSubtype lheoSubtype);
+    void createOrUpdateFormationsOnisepLheo(@NonNull LheoSubtype lheoSubtype);
 }

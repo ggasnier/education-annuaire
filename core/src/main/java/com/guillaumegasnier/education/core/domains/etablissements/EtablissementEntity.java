@@ -73,7 +73,7 @@ public class EtablissementEntity extends AbstractEntity {
     /**
      * Organisme de formation
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nda", foreignKey = @ForeignKey(name = "fk_etablissements_organismes"))
     private OrganismeEntity organisme;
 

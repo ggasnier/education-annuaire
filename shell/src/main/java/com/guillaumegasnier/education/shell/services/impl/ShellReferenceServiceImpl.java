@@ -5,7 +5,7 @@ import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.shell.datasets.references.*;
 import com.guillaumegasnier.education.shell.mappers.ReferenceMapper;
-import com.guillaumegasnier.education.shell.services.ShellReferenceService;
+import com.guillaumegasnier.education.shell.services.ShellTerritoireService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class ShellReferenceServiceImpl implements ShellReferenceService {
+public class ShellReferenceServiceImpl implements ShellTerritoireService {
 
     private final CoreReferenceService coreReferenceService;
     private final ReferenceMapper referenceMapper;
@@ -28,30 +28,30 @@ public class ShellReferenceServiceImpl implements ShellReferenceService {
     }
 
     @Override
-    public String createOrUpdatePays(@NonNull List<PaysDataset> datasets) {
+    public void createOrUpdatePays(@NonNull List<PaysDataset> datasets) {
         coreReferenceService.savePays(datasets.stream().map(referenceMapper::toPaysEntity).toList());
-        return String.format("Import terminé : %d pays enregistrée(s).", datasets.size());
+        String.format("Import terminé : %d pays enregistrée(s).", datasets.size());
     }
 
     @Override
-    public String createOrUpdateAcademies(@NonNull List<AcademieDataset> datasets) {
+    public void createOrUpdateAcademies(@NonNull List<AcademieDataset> datasets) {
         coreReferenceService.saveAcademies(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
                 .map(referenceMapper::toAcademieEntity)
                 .toList());
-        return String.format("Import terminé : %d académie(s) enregistrée(s).", datasets.size());
+        String.format("Import terminé : %d académie(s) enregistrée(s).", datasets.size());
     }
 
     @Override
-    public String createOrUpdateRegions(@NonNull List<RegionDataset> datasets) {
+    public void createOrUpdateRegions(@NonNull List<RegionDataset> datasets) {
         coreReferenceService.saveRegions(datasets.stream()
                 .map(referenceMapper::toRegionEntity)
                 .toList());
-        return String.format("Import terminé : %d région(s) enregistrée(s).", datasets.size());
+        String.format("Import terminé : %d région(s) enregistrée(s).", datasets.size());
     }
 
     @Override
-    public String createOrUpdateDepartements(@NonNull List<DepartementDataset> datasets, @NonNull HashMap<String, String> codeAcademieMap) {
+    public void createOrUpdateDepartements(@NonNull List<DepartementDataset> datasets, @NonNull HashMap<String, String> codeAcademieMap) {
         List<DepartementEntity> departements = datasets.stream()
                 .map(dataset -> {
                     DepartementEntity entity = referenceMapper.toDepartementEntity(dataset);
@@ -74,11 +74,11 @@ public class ShellReferenceServiceImpl implements ShellReferenceService {
 
         coreReferenceService.saveDepartements(departements);
 
-        return String.format("Import terminé : %d département(s) enregistré(s).", departements.size());
+        String.format("Import terminé : %d département(s) enregistré(s).", departements.size());
     }
 
     @Override
-    public String createOrUpdateCommunes(@NonNull List<CommuneDataset> datasets) {
+    public void createOrUpdateCommunes(@NonNull List<CommuneDataset> datasets) {
         var pays = coreReferenceService.getPays("FR");
 
         coreReferenceService.saveCommunes(datasets.stream().map(dataset -> {
@@ -94,7 +94,7 @@ public class ShellReferenceServiceImpl implements ShellReferenceService {
             return entity;
         }).toList());
 
-        return String.format("Import terminé : %d communes(s) enregistré(s).", datasets.size());
+        String.format("Import terminé : %d communes(s) enregistré(s).", datasets.size());
     }
 
     @Override

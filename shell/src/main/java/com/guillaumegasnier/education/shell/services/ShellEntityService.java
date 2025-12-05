@@ -16,6 +16,9 @@ import org.springframework.lang.NonNull;
 
 import java.util.List;
 
+/**
+ * Pour les établissemen
+ */
 public interface ShellEntityService {
 
     <T extends IndicePositionSociale & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
