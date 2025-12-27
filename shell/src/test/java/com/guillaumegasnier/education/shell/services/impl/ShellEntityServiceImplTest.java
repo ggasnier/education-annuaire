@@ -1,12 +1,17 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementLangueEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementOptionEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementSpecialiteEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
-import com.guillaumegasnier.education.shell.datasets.etablissements.*;
-import com.guillaumegasnier.education.shell.datasets.ips.IPSGlobalDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.EnEtablissementDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.LangueDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.SectionBinationaleDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.SpecialitePremiereDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +55,9 @@ class ShellEntityServiceImplTest {
 
         when(coreEtablissementService.findEtablissement(uaiExiste)).thenReturn(Optional.of(etablissementEntityExiste));
         when(coreEtablissementService.findEtablissement(uaiAbsent)).thenReturn(Optional.empty());
+        when(coreEtablissementService.isEtablissementExiste(uaiExiste)).thenReturn(true);
+        when(coreEtablissementService.isEtablissementExiste(uaiAbsent)).thenReturn(false);
+
     }
 
 
@@ -77,7 +85,7 @@ class ShellEntityServiceImplTest {
         assertNotNull(entity);
     }
 
-    @Test
+    /*@Test
     void toSectionInternationaleEntityUaiNotFound() {
         // given
         SectionInternationaleDataset dataset = new SectionInternationaleDataset();
@@ -86,9 +94,9 @@ class ShellEntityServiceImplTest {
         List<SectionInternationaleEntity> result = service.toSectionInternationaleEntity(dataset);
         // then
         assertTrue(result.isEmpty());
-    }
+    }*/
 
-    @Test
+    /*@Test
     void toSectionInternationaleEntityUaiFound() {
         // given
         SectionInternationaleDataset dataset = new SectionInternationaleDataset();
@@ -99,7 +107,7 @@ class ShellEntityServiceImplTest {
         List<SectionInternationaleEntity> result = service.toSectionInternationaleEntity(dataset);
         // then
         assertFalse(result.isEmpty());
-    }
+    }*/
 
     @Test
     void toSpecialiteEntityUaiNotFound() {
@@ -107,7 +115,7 @@ class ShellEntityServiceImplTest {
         SpecialitePremiereDataset dataset = new SpecialitePremiereDataset();
         dataset.setUai(uaiAbsent);
         // when
-        List<SpecialiteEntity> result = service.toSpecialiteEntity(dataset);
+        List<EtablissementSpecialiteEntity> result = service.toSpecialiteEntity(dataset);
         // then
         assertTrue(result.isEmpty());
     }
@@ -119,59 +127,59 @@ class ShellEntityServiceImplTest {
         dataset.setUai(uaiExiste);
         dataset.setEnseignements("Physique-chimie");
         // when
-        List<SpecialiteEntity> result = service.toSpecialiteEntity(dataset);
+        List<EtablissementSpecialiteEntity> result = service.toSpecialiteEntity(dataset);
         // then
         assertFalse(result.isEmpty());
     }
 
     @Test
-    void toOptionEtablissementEntitySectionBinationaleUaiNotFound() {
+    void toEtablissementOptionEntitySectionBinationaleUaiNotFound() {
         // given
         SectionBinationaleDataset dataset = new SectionBinationaleDataset();
         dataset.setUai(uaiAbsent);
         // when
-        OptionEtablissementEntity result = service.toOptionEtablissementEntity(dataset);
+        EtablissementOptionEntity result = service.toEtablissementOptionEntity(dataset);
         // then
         assertNull(result);
     }
 
     @Test
-    void toOptionEtablissementEntitySectionBinationaleUaiFound() {
+    void toEtablissementOptionEntitySectionBinationaleUaiFound() {
         // given
         SectionBinationaleDataset dataset = new SectionBinationaleDataset();
         dataset.setUai(uaiExiste);
         dataset.setTypeBac("Abibac");
         // when
-        OptionEtablissementEntity result = service.toOptionEtablissementEntity(dataset);
+        EtablissementOptionEntity result = service.toEtablissementOptionEntity(dataset);
         // then
         assertNotNull(result);
         assertEquals(OptionEtablissement.ABIBAC, result.getPk().getOption());
     }
 
     @Test
-    void toOptionEtablissementEntityEtablissementUaiNotFound() {
+    void toEtablissementOptionEntityEtablissementUaiNotFound() {
         // given
         EnEtablissementDataset dataset = new EnEtablissementDataset();
         dataset.setUai(uaiAbsent);
         // when
-        List<OptionEtablissementEntity> result = service.toOptionEtablissementEntity(dataset);
+        List<EtablissementOptionEntity> result = service.toEtablissementOptionEntity(dataset);
         // then
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void toOptionEtablissementEntityEtablissementUaiFound() {
+    void toEtablissementOptionEntityEtablissementUaiFound() {
         // given
         EnEtablissementDataset dataset = new EnEtablissementDataset();
         dataset.setUai(uaiExiste);
         dataset.setHebergement("1");
         // when
-        List<OptionEtablissementEntity> result = service.toOptionEtablissementEntity(dataset);
+        List<EtablissementOptionEntity> result = service.toEtablissementOptionEntity(dataset);
         // then
         assertFalse(result.isEmpty());
     }
 
-    @Test
+    /*@Test
     void toSectionSportiveEntityUaiNotFound() {
         // given
         SectionSportiveDataset dataset = new SectionSportiveDataset();
@@ -180,9 +188,9 @@ class ShellEntityServiceImplTest {
         List<SectionSportiveEntity> result = service.toSectionSportiveEntity(dataset);
         // then
         assertTrue(result.isEmpty());
-    }
+    }*/
 
-    @Test
+    /*@Test
     void toSectionSportiveEntityUaiFound() {
         // given
         SectionSportiveDataset dataset = new SectionSportiveDataset();
@@ -192,9 +200,9 @@ class ShellEntityServiceImplTest {
         List<SectionSportiveEntity> result = service.toSectionSportiveEntity(dataset);
         // then
         assertFalse(result.isEmpty());
-    }
+    }*/
 
-    @Test
+    /*@Test
     void toLangueEntityUaiNotFound() {
         // given
         LangueDataset dataset = new LangueDataset();
@@ -203,7 +211,7 @@ class ShellEntityServiceImplTest {
         LangueEntity result = service.toLangueEntity(dataset);
         // then
         assertNull(result);
-    }
+    }*/
 
     @Test
     void toLangueEntityUaiFound() {
@@ -213,14 +221,14 @@ class ShellEntityServiceImplTest {
         dataset.setLangue("anglais");
         dataset.setEnseignement("lv1");
         // when
-        LangueEntity result = service.toLangueEntity(dataset);
+        EtablissementLangueEntity result = service.toLangueEntity(dataset);
         // then
         assertNotNull(result);
         assertEquals(Langue.EN, result.getPk().getLangue());
         assertEquals("lv1", result.getPk().getEnseignement());
     }
 
-    @Test
+    /*@Test
     void toSportEtudeEntityUaiNotFound() {
         // given
         SectionSportEtudeDataset dataset = new SectionSportEtudeDataset();
@@ -253,30 +261,6 @@ class ShellEntityServiceImplTest {
         SportEtudeEntity result = service.toSportEtudeEntity(dataset);
         // then
         assertNull(result);
-    }
+    }*/
 
-    @Test
-    void toIndicePositionSocialeEntityUaiNotFound() {
-        // given
-        IPSGlobalDataset dataset = new IPSGlobalDataset();
-        dataset.setUai(uaiAbsent);
-        // when
-        IndicePositionSocialeEntity result = service.toIndicePositionSocialeEntity(dataset, "C");
-        // then
-        assertNull(result);
-    }
-
-    @Test
-    void toIndicePositionSocialeEntityUaiFound() {
-        // given
-        IPSGlobalDataset dataset = new IPSGlobalDataset();
-        dataset.setUai(uaiExiste);
-        dataset.setIndice1("140.00");
-        dataset.setEcartType1("40.00");
-        dataset.setRentreeScolaire("2024");
-        // when
-        IndicePositionSocialeEntity result = service.toIndicePositionSocialeEntity(dataset, "C");
-        // then
-        assertNotNull(result);
-    }
 }

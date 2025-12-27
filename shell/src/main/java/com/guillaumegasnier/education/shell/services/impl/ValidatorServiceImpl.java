@@ -44,35 +44,60 @@ public class ValidatorServiceImpl implements ValidatorService {
 
     @Override
     public EtablissementEntity toValidEntity(@NonNull EtablissementEntity entity) {
-        return toValidEntity(entity, EtablissementEntity.class);
+        Set<ConstraintViolation<EtablissementEntity>> violations = validator.validate(entity);
+
+        if (violations.isEmpty()) {
+            return entity;
+        }
+
+        for (ConstraintViolation<EtablissementEntity> v : violations) {
+            if (v.getPropertyPath().toString().contains("siret") && violations.size() == 1) {
+                log.warn("UAI {} avec siret invalide {}", entity.getUai(), entity.getSiret());
+                entity.setSiret(null);
+                return entity;
+            } else {
+                log.error("Validation failed on {}.{}: {} ({})",
+                        entity.getClass().getSimpleName(),
+                        v.getPropertyPath(),
+                        v.getMessage(),
+                        v.getInvalidValue());
+            }
+        }
+
+        return null;
     }
 
     @Override
-    public OptionEtablissementEntity toValidEntity(@NonNull OptionEtablissementEntity entity) {
-        return toValidEntity(entity, OptionEtablissementEntity.class);
+    public EtablissementOptionEntity toValidEntity(@NonNull EtablissementOptionEntity entity) {
+        return toValidEntity(entity, EtablissementOptionEntity.class);
     }
 
     @Override
-    public IndicePositionSocialeEntity toValidEntity(@NonNull IndicePositionSocialeEntity entity) {
-        return toValidEntity(entity, IndicePositionSocialeEntity.class);
+    public EtablissementContactEntity toValidEntity(@NonNull EtablissementContactEntity entity) {
+        return toValidEntity(entity, EtablissementContactEntity.class);
     }
 
-    @Override
+//    @Override
+//    public IndicePositionSocialeEntity toValidEntity(@NonNull IndicePositionSocialeEntity entity) {
+//        return toValidEntity(entity, IndicePositionSocialeEntity.class);
+//    }
+
+    /*@Override
     public SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity) {
         return toValidEntity(entity, SectionInternationaleEntity.class);
+    }*/
+
+    @Override
+    public EtablissementSpecialiteEntity toValidEntity(@NonNull EtablissementSpecialiteEntity entity) {
+        return toValidEntity(entity, EtablissementSpecialiteEntity.class);
     }
 
     @Override
-    public SpecialiteEntity toValidEntity(@NonNull SpecialiteEntity entity) {
-        return toValidEntity(entity, SpecialiteEntity.class);
+    public EtablissementLangueEntity toValidEntity(@NonNull EtablissementLangueEntity entity) {
+        return toValidEntity(entity, EtablissementLangueEntity.class);
     }
 
-    @Override
-    public LangueEntity toValidEntity(@NonNull LangueEntity entity) {
-        return toValidEntity(entity, LangueEntity.class);
-    }
-
-    @Override
+    /*@Override
     public SportEtudeEntity toValidEntity(@NonNull SportEtudeEntity entity) {
         return toValidEntity(entity, SportEtudeEntity.class);
     }
@@ -80,5 +105,15 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public SectionSportiveEntity toValidEntity(@NonNull SectionSportiveEntity entity) {
         return toValidEntity(entity, SectionSportiveEntity.class);
+    }*/
+
+    @Override
+    public EtablissementSportEntity toValidEntity(@NonNull EtablissementSportEntity entity) {
+        return toValidEntity(entity, EtablissementSportEntity.class);
+    }
+
+    @Override
+    public OrganismeEntity toValidEntity(@NonNull OrganismeEntity entity) {
+        return toValidEntity(entity, OrganismeEntity.class);
     }
 }

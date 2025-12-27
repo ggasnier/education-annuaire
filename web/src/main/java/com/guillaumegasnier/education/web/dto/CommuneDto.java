@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +9,8 @@ import lombok.Setter;
 @Schema(name = "Commune")
 public class CommuneDto {
 
-    @JsonProperty(value = "nom_departement")
-    protected String nomDepartement;
+    protected String code;
+
+    protected String nom;
+
 }

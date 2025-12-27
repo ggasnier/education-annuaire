@@ -2,20 +2,38 @@ package com.guillaumegasnier.education.shell.shells;
 
 public interface ImportFormationShell {
 
-    String importFormationsCpf();
+    /**
+     * Import de tous les organismes de formation
+     */
+    void importOrganismesFormations();
 
-    String importOrganismesFormations();
+    /**
+     * Formations disponibles sur mon compte formation
+     */
+    void importFormationsCpf();
 
-    String importFormationsOnisepIdf();
-  
-    String importFormationsCPF();
+    /**
+     * Formations disponibles sur l'espace Carif-Oref
+     *
+     */
+    void importFormationsCarif();
 
-    String importFormationsCarif();
+    /**
+     * Formations de l'inseignement supérieur et de la recherche listées par l'Onisep
+     *
+     */
+    void importFormationsOnisepEsr();
 
-    String importFormationsOnisepEsr();
+    /**
+     * Formations au format Lheo
+     *
+     */
+    void importFormationsOnisepLheo();
 
-    String importRncp();
+    /**
+     * Formations sur parcoursup
+     */
+    void importFormationsParcoursup();
 
-    String importRs();
 
 }

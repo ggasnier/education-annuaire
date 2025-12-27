@@ -15,17 +15,13 @@ public interface CoreEtablissementService {
 
     void saveContrats(@NonNull List<ContratEntity> entities);
 
-    void saveIPS(@NonNull List<IndicePositionSocialeEntity> entities);
+//    void saveIPS(@NonNull List<IndicePositionSocialeEntity> entities);
 
-    void saveSpecialites(List<SpecialiteEntity> entities);
+    void saveSpecialites(List<EtablissementSpecialiteEntity> entities);
 
-    void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities);
+    void saveLangues(List<EtablissementLangueEntity> entities);
 
-    void saveSectionsSporties(List<SectionSportiveEntity> entities);
-
-    void saveLangues(List<LangueEntity> entities);
-
-    void saveOptions(List<OptionEtablissementEntity> entities);
+    void saveOptions(List<EtablissementOptionEntity> entities);
 
     /**
      * Recherche d'un établissment par son UAI
@@ -35,26 +31,57 @@ public interface CoreEtablissementService {
      */
     Optional<EtablissementEntity> findEtablissement(@ValidUai String uai);
 
+    boolean isEtablissementExiste(@ValidUai String uai);
+
+    EtablissementEntity getEtablissementReferenceByUai(@ValidUai String uai);
+
+    Optional<OrganismeEntity> findOrganisme(String nda);
+
     Optional<NatureEntity> findNature(String codeNature);
 
     Optional<ContratEntity> findContrat(String codeContrat);
 
-    Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee);
+//    Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee);
 
-    List<OptionEtablissementEntity> getOptionListByUai(String uai);
+    List<EtablissementOptionEntity> getOptionListByUai(String uai);
 
-    List<LangueEntity> getLangueListByUai(String uai);
+    List<EtablissementLangueEntity> getLangueListByUai(String uai);
 
-    void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities);
+    List<EtablissementSportEntity> getSportListByUai(String uai);
 
-    List<SectionSportiveEntity> getSectionSportiveListByUai(String uai);
+    //void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities);
 
-    List<IndicePositionSocialeEntity> getIPSListByUai(String uai);
+    //List<SectionSportiveEntity> getSectionSportiveListByUai(String uai);
+
+//    List<IndicePositionSocialeEntity> getIPSListByUai(String uai);
 
     EtablissementEntity saveEtablissement(EtablissementEntity entity);
 
     List<EtablissementEntity> findAll();
 
-    List<EtablissementEntity> findEtablissementByNda(String numeroDeclarationActivite);
+//    List<EtablissementEntity> findEtablissementByNda(String numeroDeclarationActivite);
 
+    List<EtablissementEntity> findEtablissementListByDepartement(String code);
+
+    List<EtablissementSpecialiteEntity> getSpecialiteListByUai(String uai);
+
+    List<EtablissementEntity> findEtablissementListByCommune(String code);
+
+    void saveOrganisme(OrganismeEntity entity);
+
+    void saveOrganismes(List<OrganismeEntity> entities);
+
+    void saveEtablissementSportEntity(List<EtablissementSportEntity> entities);
+
+    int getNbrEtablissements();
+
+    Optional<EtablissementMetadataEntity> findMetadata(String uai, Integer annee);
+
+    void saveMetadata(List<EtablissementMetadataEntity> entities);
+
+    List<EtablissementMetadataEntity> getMetadataListByUai(String uai);
+
+    void saveContacts(@NonNull List<EtablissementContactEntity> entities);
+
+    List<EtablissementContactEntity> getContactListByUai(String uai);
 }

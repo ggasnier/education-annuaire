@@ -1,0 +1,34 @@
+package com.guillaumegasnier.education.core.domains.etablissements;
+
+import com.guillaumegasnier.education.core.enums.SpecialiteBac;
+import com.guillaumegasnier.education.core.validations.ValidUai;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
+public class EtablissementSpecialitePK implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @ValidUai
+    @Column(columnDefinition = "BPCHAR(8)", length = 8)
+    private String uai;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(15)", length = 15)
+    private SpecialiteBac specialite;
+}

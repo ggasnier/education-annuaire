@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 
+/**
+ * À fusionner avec Langue
+ */
 @Slf4j
 @Getter
 @AllArgsConstructor

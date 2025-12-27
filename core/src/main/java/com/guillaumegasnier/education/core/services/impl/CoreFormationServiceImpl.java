@@ -1,9 +1,9 @@
 package com.guillaumegasnier.education.core.services.impl;
 
-import com.guillaumegasnier.education.core.domains.formations.CertificationEntity;
+import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
-import com.guillaumegasnier.education.core.domains.formations.RomeEntity;
-import com.guillaumegasnier.education.core.repositories.CertificationRepository;
+import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
+import com.guillaumegasnier.education.core.repositories.ActionFormationRepository;
 import com.guillaumegasnier.education.core.repositories.FormationRepository;
 import com.guillaumegasnier.education.core.repositories.RomeRepository;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
@@ -20,14 +20,15 @@ import java.util.UUID;
 public class CoreFormationServiceImpl implements CoreFormationService {
 
     private final FormationRepository formationRepository;
+    private final ActionFormationRepository actionFormationRepository;
     private final RomeRepository romeRepository;
-    private final CertificationRepository certificationRepository;
+    //private final CertificationRepository certificationRepository;
 
     @Autowired
-    public CoreFormationServiceImpl(FormationRepository formationRepository, RomeRepository romeRepository, CertificationRepository certificationRepository) {
+    public CoreFormationServiceImpl(FormationRepository formationRepository, ActionFormationRepository actionFormationRepository, RomeRepository romeRepository) {
         this.formationRepository = formationRepository;
+        this.actionFormationRepository = actionFormationRepository;
         this.romeRepository = romeRepository;
-        this.certificationRepository = certificationRepository;
     }
 
     @Override
@@ -41,6 +42,11 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     }
 
     @Override
+    public void saveFormations(@NonNull List<FormationEntity> entities) {
+        formationRepository.saveAll(entities);
+    }
+
+    @Override
     public Optional<FormationEntity> findFormationByOnisepId(Integer onisepId) {
         return formationRepository.findByOnisepId(onisepId);
     }
@@ -50,7 +56,7 @@ public class CoreFormationServiceImpl implements CoreFormationService {
         romeRepository.saveAll(entities);
     }
 
-    @Override
+    /*@Override
     public Optional<CertificationEntity> findCertificationByRNCP(String codeRNCP) {
         return certificationRepository.findByCodeRNCP(codeRNCP);
     }
@@ -58,10 +64,25 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     @Override
     public void saveCertification(CertificationEntity entity) {
         certificationRepository.save(entity);
-    }
+    }*/
 
     @Override
     public Set<RomeEntity> getRomes(List<String> codes) {
         return romeRepository.findAllByCodeIn(codes);
+    }
+
+    @Override
+    public Optional<FormationEntity> findFormationByParcoursupId(Integer parcoursupId) {
+        return formationRepository.findByParcoursupId(parcoursupId);
+    }
+
+    @Override
+    public Optional<ActionFormationEntity> findActionFormationByParcoursupId(Integer parcoursupId) {
+        return actionFormationRepository.findByParcoursupId(parcoursupId);
+    }
+
+    @Override
+    public void saveActionFormation(List<ActionFormationEntity> entities) {
+        actionFormationRepository.saveAll(entities);
     }
 }

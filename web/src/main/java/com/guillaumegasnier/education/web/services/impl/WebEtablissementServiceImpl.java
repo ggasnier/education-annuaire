@@ -5,18 +5,15 @@ import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
-import com.guillaumegasnier.education.web.dto.LangueDto;
-import com.guillaumegasnier.education.web.dto.etablissements.IPSDto;
-import com.guillaumegasnier.education.web.dto.etablissements.OptionDto;
-import com.guillaumegasnier.education.web.dto.etablissements.SectionSportiveDto;
+import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDetailsDto;
 import com.guillaumegasnier.education.web.mappers.WebEtablissementMapper;
 import com.guillaumegasnier.education.web.services.WebEtablissementService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -37,26 +34,6 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
     @Override
     public Optional<EtablissementDto> findEtablissementByUai(String uai) {
         return coreEtablissementService.findEtablissement(uai).map(webEtablissementMapper::toEtablissementDto);
-    }
-
-    @Override
-    public List<OptionDto> getOptionListByUai(String uai) {
-        return coreEtablissementService.getOptionListByUai(uai).stream().map(webEtablissementMapper::toOptionDto).toList();
-    }
-
-    @Override
-    public List<LangueDto> getLangueListByUai(String uai) {
-        return coreEtablissementService.getLangueListByUai(uai).stream().map(webEtablissementMapper::toLangueDto).toList();
-    }
-
-    @Override
-    public List<SectionSportiveDto> getSectionSportiveListByUai(String uai) {
-        return coreEtablissementService.getSectionSportiveListByUai(uai).stream().map(webEtablissementMapper::toSectionSportiveDto).toList();
-    }
-
-    @Override
-    public List<IPSDto> getIPSListByUai(String uai) {
-        return coreEtablissementService.getIPSListByUai(uai).stream().map(webEtablissementMapper::toIndicePositionSocialeEntity).toList();
     }
 
     @Override
@@ -87,5 +64,26 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
         } else {
             return Optional.empty();
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public EtablissementDetailsDto findEtablissementDetailsDtoByUai(@NonNull String uai) {
+
+        Optional<EtablissementEntity> entity = coreEtablissementService.findEtablissement(uai);
+
+        if (entity.isEmpty()) {
+            return null;
+        }
+
+        return new EtablissementDetailsDto(
+                entity.map(webEtablissementMapper::toEtablissementDto).orElse(null),
+                coreEtablissementService.getOptionListByUai(uai).stream().map(webEtablissementMapper::toOptionDto).toList(),
+                coreEtablissementService.getSpecialiteListByUai(uai).stream().map(webEtablissementMapper::toSpecialiteBac).toList(),
+                webEtablissementMapper.toLangueWithCategorieDtoList(coreEtablissementService.getLangueListByUai(uai)),
+                webEtablissementMapper.toSportWithCategorieDtoList(coreEtablissementService.getSportListByUai(uai)),
+                coreEtablissementService.getContactListByUai(uai).stream().map(webEtablissementMapper::toContactDto).toList(),
+                coreEtablissementService.getMetadataListByUai(uai).stream().map(webEtablissementMapper::toMetadataDto).toList()
+        );
     }
 }

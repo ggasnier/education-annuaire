@@ -2,7 +2,7 @@ package com.guillaumegasnier.education.shell.mappers;
 
 import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
-import com.guillaumegasnier.education.core.domains.references.*;
+import com.guillaumegasnier.education.core.domains.territoires.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
 import com.guillaumegasnier.education.shell.datasets.references.*;
@@ -23,7 +23,7 @@ public abstract class ReferenceMapper {
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
     public abstract DepartementEntity toDepartementEntity(DepartementDataset dataset);
 
-    //@Mapping(target = "pays", ignore = true)
+    @Mapping(target = "pays", ignore = true)
     @Mapping(target = "departement", ignore = true)
     @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper

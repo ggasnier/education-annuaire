@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
+import com.guillaumegasnier.education.core.enums.Contact;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
@@ -133,11 +134,8 @@ public class EnEtablissementDataset implements EtablissementDataset {
     private String lyceeDesMetiers;
     @CsvBindByName(column = "Post_BAC")
     private String postBac;
-
-    @Override
-    public String getNomCommune() {
-        return nomCommune;
-    }
+    @CsvBindByName(column = "Appartenance_Education_Prioritaire")
+    private String educationPrioritaire;
 
     @Override
     public LocalDate getDateOuverture() {
@@ -207,17 +205,23 @@ public class EnEtablissementDataset implements EtablissementDataset {
     }
 
     @Override
+    public String getEducationPrioritaire() {
+        if (educationPrioritaire == null || educationPrioritaire.isBlank()) return null;
+        return educationPrioritaire;
+    }
+
+    @Override
     public List<ContactEtablissementDataset> getContacts() {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 
         if (contactTelephone != null && !contactTelephone.isEmpty())
-            contacts.add(new ContactEtablissementDataset("telephone", contactTelephone));
+            contacts.add(new ContactEtablissementDataset(Contact.TEL, contactTelephone));
 
         if (contactMail != null && !contactMail.isEmpty())
-            contacts.add(new ContactEtablissementDataset("email", contactMail));
+            contacts.add(new ContactEtablissementDataset(Contact.EMAIL, contactMail));
 
         if (contactWeb != null && !contactWeb.isEmpty())
-            contacts.add(new ContactEtablissementDataset("web", contactWeb));
+            contacts.add(new ContactEtablissementDataset(Contact.WEB, contactWeb));
 
         return contacts;
     }
@@ -244,6 +248,13 @@ public class EnEtablissementDataset implements EtablissementDataset {
         if (lyceeMilitaire != null && lyceeMilitaire.equals("1")) options.add(OptionEtablissement.LYCEE_MILITAIRE);
         if (lyceeDesMetiers != null && lyceeDesMetiers.equals("1")) options.add(OptionEtablissement.LYCEE_DES_METIERS);
         if (postBac != null && postBac.equals("1")) options.add(OptionEtablissement.POST_BAC);
+
+        if (educationPrioritaire != null) {
+            if (educationPrioritaire.equals("REP"))
+                options.add(OptionEtablissement.REP);
+            else if (educationPrioritaire.equals("REP+"))
+                options.add(OptionEtablissement.REPP);
+        }
 
         return options;
     }

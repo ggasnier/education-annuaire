@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import lombok.AllArgsConstructor;
+import com.guillaumegasnier.education.core.enums.Contact;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,10 +8,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ContactEtablissementDataset {
 
-    private String clef;
+    private Contact contact;
 
     private String valeur;
+
+    public ContactEtablissementDataset(Contact contact, String valeur) {
+        switch (contact) {
+            case TEL:
+            case FAX:
+            case WEB:
+            case EMAIL:
+            case TWITTER:
+            case FACEBOOK:
+            case LINKEDIN:
+            case YOUTUBE:
+            case WIKIPEDIA:
+                this.contact = contact;
+                this.valeur = valeur.trim();
+                break;
+        }
+    }
+
 }

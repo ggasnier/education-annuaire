@@ -6,12 +6,16 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface EtablissementRepository extends JpaRepository<EtablissementEntity, UUID> {
+public interface EtablissementRepository extends JpaRepository<EtablissementEntity, String> {
 
     Optional<EtablissementEntity> findByUai(String uai);
 
-    List<EtablissementEntity> findByNumeroDeclarationActivite(String numeroDeclarationActivite);
+    List<EtablissementEntity> findAllByCommuneDepartementCode(String code);
+
+    List<EtablissementEntity> findAllByCommuneCodeOrderByNatureAscNomAsc(String code);
+
+    int countByActif(boolean b);
+
 }

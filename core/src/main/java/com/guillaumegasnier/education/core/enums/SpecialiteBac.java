@@ -48,7 +48,7 @@ public enum SpecialiteBac {
     @Nullable
     public static SpecialiteBac transformation(@NonNull String s) {
         for (SpecialiteBac specialiteBac : SpecialiteBac.values()) {
-            if (specialiteBac.getNomOnisep().equals(s.trim())) {
+            if (specialiteBac.getNomOnisep().equalsIgnoreCase(s.trim())) {
                 return specialiteBac;
             }
         }

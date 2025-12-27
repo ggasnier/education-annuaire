@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static com.guillaumegasnier.education.core.enums.Contact.*;
+
 /**
  * identifiant interne
  * libellé
@@ -225,28 +227,28 @@ public class EsrEtablissementDataset implements EtablissementDataset {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 
         if (contactTelephone != null && !contactTelephone.isEmpty())
-            contacts.add(new ContactEtablissementDataset("telephone", contactTelephone));
+            contacts.add(new ContactEtablissementDataset(TEL, contactTelephone));
 
-        //if (contactMail != null && !contactMail.isEmpty())
-        //    contacts.add(new ContactEtablissementDataset("email", contactMail));
+        // if (contactMail != null && !contactMail.isEmpty())
+        //   contacts.add(new ContactEtablissementDataset("email", contactMail));
 
         if (contactWeb != null && !contactWeb.isEmpty())
-            contacts.add(new ContactEtablissementDataset("web", contactWeb));
+            contacts.add(new ContactEtablissementDataset(WEB, contactWeb));
 
         if (contactFacebook != null && !contactFacebook.isEmpty())
-            contacts.add(new ContactEtablissementDataset("facebook", contactFacebook));
+            contacts.add(new ContactEtablissementDataset(FACEBOOK, contactFacebook));
 
         if (contactTwitter != null && !contactTwitter.isEmpty())
-            contacts.add(new ContactEtablissementDataset("x", contactTwitter));
+            contacts.add(new ContactEtablissementDataset(TWITTER, contactTwitter));
 
         if (contactLinkedin != null && !contactLinkedin.isEmpty())
-            contacts.add(new ContactEtablissementDataset("linkedin", contactLinkedin));
+            contacts.add(new ContactEtablissementDataset(LINKEDIN, contactLinkedin));
 
         if (contactYoutube != null && !contactYoutube.isEmpty())
-            contacts.add(new ContactEtablissementDataset("youtube", contactYoutube));
+            contacts.add(new ContactEtablissementDataset(YOUTUBE, contactYoutube));
 
         if (contactWikipedia != null && !contactWikipedia.isEmpty())
-            contacts.add(new ContactEtablissementDataset("wikipedia", contactWikipedia));
+            contacts.add(new ContactEtablissementDataset(WIKIPEDIA, contactWikipedia));
 
         return contacts;
     }

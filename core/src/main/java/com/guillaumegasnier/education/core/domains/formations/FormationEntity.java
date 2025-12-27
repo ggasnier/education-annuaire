@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.core.domains.formations;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -73,7 +74,7 @@ public class FormationEntity extends AbstractEntity {
      * <p>
      * 4 mixte
      */
-    private String parcoursDeFormation;
+    private Integer parcoursDeFormation;
 
     /**
      * Cet élément décrit le niveau à l’entrée en formation. Ce niveau peut être souhaité ou exigé en fonction de la
@@ -88,8 +89,8 @@ public class FormationEntity extends AbstractEntity {
      * Cet élément permet de préciser le code d’une certification dans le service Certifinfo, dans les RNCP et RS de
      * France Compétences, ou son code CPF fourni par la Caisse des dépôts.
      */
-    @OneToMany
-    private Set<CertificationEntity> certifications = new HashSet<>();
+    //@OneToMany
+    //private Set<CertificationEntity> certifications = new HashSet<>();
 
     /**
      * Cet élément décrit le niveau de sortie de la formation.
@@ -99,17 +100,24 @@ public class FormationEntity extends AbstractEntity {
     private Integer codeNiveauSortie;
 
     /**
-     * Cet élément décrit une action de formation.
+     * Les actions de formation (établissements, dates, etc.)
      */
     @OneToMany(mappedBy = "formation")
     private List<ActionFormationEntity> actions = new ArrayList<>();
 
     /**
+     * Cet élément décrit l’établissement responsable de la formation.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_formations_etablissements"))
+    private EtablissementEntity etablissement;
+
+    /**
      * Cet élément décrit l’organisme de formation responsable de la formation.
      */
-    @ManyToOne
-    @JoinColumn(name = "etablissement_id", foreignKey = @ForeignKey(name = "fk_formations_etablissements"), columnDefinition = "UUID")
-    private EtablissementEntity etablissement;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nda", foreignKey = @ForeignKey(name = "fk_formations_etablissements"))
+    private OrganismeEntity organisme;
 
     /**
      * Cet identifiant permet de donner un identifiant à une action (qui dès lors devient un module). Cet identifiant
@@ -125,12 +133,19 @@ public class FormationEntity extends AbstractEntity {
      */
     private Integer positionnement;
 
+    /**
+     * Le numéro extrait de FOR.99999
+     */
     private Integer onisepId;
-    
+
+    /**
+     * Identifiant Parcoursup
+     */
+    private Integer parcoursupId;
+
     // contacts
     // url
     // modules
     // Modules prérequis
-
 
 }

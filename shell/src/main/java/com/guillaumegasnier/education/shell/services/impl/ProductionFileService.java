@@ -146,9 +146,13 @@ public class ProductionFileService implements FileService {
         final String scrollDuration = "5m";
         List<CarifEtablissementDataset> etablissementDatasetList = new ArrayList<>();
 
+        String body = """
+                
+                """;
+
         do {
             CarifEtablissementResponse response;
-            log.debug("Page : {}", page++);
+            log.info("Page : {}", page++);
 
             if (scrollId == null) {
                 // 1er appel
@@ -206,6 +210,7 @@ public class ProductionFileService implements FileService {
 
         String body = """
                 {
+                  "size": 1000,
                   "query": {
                     "bool": {
                       "must": [
@@ -223,7 +228,7 @@ public class ProductionFileService implements FileService {
                                     {
                                       "terms": {
                                         "tags.keyword": [
-                                          "2027"
+                                          "2026"
                                         ]
                                       }
                                     }
@@ -242,7 +247,7 @@ public class ProductionFileService implements FileService {
 
         do {
             CarifFormationResponse response;
-            log.debug("Page : {}", page++);
+            log.info("Page : {}", page++);
 
             if (scrollId == null) {
                 // 1er appel
@@ -302,9 +307,7 @@ public class ProductionFileService implements FileService {
         }
 
         try {
-            log.info("{}", outPath.getParent());
             Files.createDirectories(outPath.getParent());
-            Files.createFile(outPath);
         } catch (IOException e) {
             log.error("Impossible de créer un fichier pour {}: {}", sourcesDatasets, e.getMessage());
             return;
@@ -338,7 +341,7 @@ public class ProductionFileService implements FileService {
 
         try {
             Files.createDirectories(outPath.getParent());
-            Files.createFile(outPath);
+            //Files.createFile(outPath);
         } catch (IOException e) {
             log.error("Impossible de créer un fichier pour {}: {}", sourcesDatasets, e.getMessage());
             return;
@@ -356,8 +359,8 @@ public class ProductionFileService implements FileService {
 
                 StatefulBeanToCsv<T> beanToCsv = new StatefulBeanToCsvBuilder<T>(writer)
                         .withMappingStrategy(mappingStrategy)
-                        .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER) // ou CSVWriter.DEFAULT_QUOTE_CHARACTER
-                        .withSeparator(sourcesDatasets.getSeparator())
+                        .withQuotechar(CSVWriter.DEFAULT_QUOTE_CHARACTER) // comma forever
+                        .withSeparator(',')
                         .withOrderedResults(true)
                         .build();
 

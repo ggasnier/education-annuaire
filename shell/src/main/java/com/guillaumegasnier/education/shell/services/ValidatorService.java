@@ -1,23 +1,28 @@
 package com.guillaumegasnier.education.shell.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import org.springframework.lang.NonNull;
 
 public interface ValidatorService {
 
     EtablissementEntity toValidEntity(@NonNull EtablissementEntity entity);
 
-    OptionEtablissementEntity toValidEntity(@NonNull OptionEtablissementEntity entity);
+    EtablissementOptionEntity toValidEntity(@NonNull EtablissementOptionEntity entity);
 
-    IndicePositionSocialeEntity toValidEntity(@NonNull IndicePositionSocialeEntity entity);
+    EtablissementContactEntity toValidEntity(@NonNull EtablissementContactEntity entity);
 
-    SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity);
+    //SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity);
 
-    SpecialiteEntity toValidEntity(@NonNull SpecialiteEntity entity);
+    EtablissementSpecialiteEntity toValidEntity(@NonNull EtablissementSpecialiteEntity entity);
 
-    LangueEntity toValidEntity(@NonNull LangueEntity entity);
+    EtablissementLangueEntity toValidEntity(@NonNull EtablissementLangueEntity entity);
 
-    SportEtudeEntity toValidEntity(@NonNull SportEtudeEntity entity);
+    //SportEtudeEntity toValidEntity(@NonNull SportEtudeEntity entity);
 
-    SectionSportiveEntity toValidEntity(@NonNull SectionSportiveEntity entity);
+    //SectionSportiveEntity toValidEntity(@NonNull SectionSportiveEntity entity);
+
+    EtablissementSportEntity toValidEntity(@NonNull EtablissementSportEntity entity);
+
+    OrganismeEntity toValidEntity(@NonNull OrganismeEntity entity);
 }

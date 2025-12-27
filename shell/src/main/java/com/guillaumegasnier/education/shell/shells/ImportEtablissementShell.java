@@ -2,44 +2,37 @@ package com.guillaumegasnier.education.shell.shells;
 
 public interface ImportEtablissementShell {
 
-    /**
-     * Import de tous les établissements
-     *
-     * @return Message
-     */
-    String importEtablissementsAll();
+    void importEtablissements();
 
-    String importEtablissementsEsr();
+    void importEtablissementsEsr();
 
-    String importEtablissementsEnOuverts();
+    void importEtablissementsEnOuverts();
 
-    String importEtablissementsEnFermes();
+    void importEtablissementsEnFermes();
 
-    String importEtablissementsCarif();
+    void importEtablissementsCarif();
 
-    String importEtablissementsOnisepSup();
+    void importEtablissementsOnisepSup();
 
-    String importOrganismes();
+    void importSports();
 
-    String importNatures();
+    void importSectionsInternationales();
 
-    String importContrats();
+    void importLangues();
 
-    String importSectionsSportives();
+    void importSpecialites();
 
-    String importSectionsSportEtudes();
+    void importSectionsBinationales();
 
-    String importSectionsInternationales();
+    void importDispositifs();
 
-    String importLangues();
+    void importEuroscol();
 
-    String importSpecialites();
+    void importEffectifs();
 
-    String importSectionsBinationales();
+    void importIpsColleges();
 
-    String importIpsEcoles();
+    void importIvaColleges();
 
-    String importIpsColleges();
-
-    String importEtablissementsRecherche();
+    void importEtablissementsDetails();
 }

@@ -1,3 +1,8 @@
 spring:
   application:
     name: web
+  flyway:
+    enable: true
+    baseline-on-migrate: true
+    validate-on-migrate: true
+

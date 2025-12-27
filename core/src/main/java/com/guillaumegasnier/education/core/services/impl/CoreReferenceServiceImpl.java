@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.core.services.impl;
 
-import com.guillaumegasnier.education.core.domains.references.*;
+import com.guillaumegasnier.education.core.domains.territoires.*;
 import com.guillaumegasnier.education.core.repositories.*;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * TODO à renommer en CoreTerritoireServiceImpl
+ */
 @Slf4j
 @Service
 public class CoreReferenceServiceImpl implements CoreReferenceService {
@@ -77,17 +80,34 @@ public class CoreReferenceServiceImpl implements CoreReferenceService {
 
     @Override
     public Optional<CommuneEntity> findCommuneByNom(String nomCommune) {
+        if (nomCommune != null && nomCommune.isBlank())
+            return Optional.empty();
         try {
-            return communeRepository.findByNom(nomCommune);
+            return communeRepository.findByNomIgnoreCase(nomCommune);
         } catch (IncorrectResultSizeDataAccessException e) {
-            log.warn("Trop de résultats pour la commune {}", nomCommune);
+            log.debug("Trop de résultats pour la commune {}", nomCommune);
             return Optional.empty();
         }
     }
 
     @Override
+    public Optional<CommuneEntity> findCommuneByNomAndCodeRegion(String nomCommune, String codeRegion) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<DepartementEntity> findDepartement(String code) {
+        return departementRepository.findById(code);
+    }
+
+    @Override
     public PaysEntity getPays(String codePays) {
         return paysRepository.getReferenceById(codePays);
+    }
+
+    @Override
+    public List<DepartementEntity> getDepartements() {
+        return departementRepository.findAllByOrderByAcademieNomAscNomAsc();
     }
 
     @Override

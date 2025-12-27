@@ -1,11 +1,14 @@
 package com.guillaumegasnier.education.core.services;
 
-import com.guillaumegasnier.education.core.domains.references.*;
+import com.guillaumegasnier.education.core.domains.territoires.*;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * TODO à renommer en CoreTerritoireService
+ */
 public interface CoreReferenceService {
 
     Optional<CommuneEntity> findCommune(@NonNull String code);
@@ -28,5 +31,11 @@ public interface CoreReferenceService {
 
     Optional<CommuneEntity> findCommuneByNom(String nomCommune);
 
+    Optional<CommuneEntity> findCommuneByNomAndCodeRegion(String nomCommune, String codeRegion);
+
+    Optional<DepartementEntity> findDepartement(String code);
+
     PaysEntity getPays(String codePays);
+
+    List<DepartementEntity> getDepartements();
 }

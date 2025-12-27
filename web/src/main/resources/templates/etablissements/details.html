@@ -4,85 +4,317 @@
     <meta charset="UTF-8">
     <title th:text="${title}"></title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-gray-50">
 
-<main class="max-w-7xl mx-auto">
-    <section class="bg-white shadow p-4 mb-4">
-        <ul>
-            <li><span>UAI:</span> <span th:text="${etablissement.uai}"></span></li>
-            <li><span>SIRET:</span> <span th:text="${etablissement.siret}"></span></li>
-            <li><span>Nom:</span> <span th:text="${etablissement.nom}"></span></li>
-            <li><span>Adresse:</span> <span th:text="${etablissement.adresse}"></span></li>
-            <li><span>Complément:</span> <span th:text="${etablissement.complement}"></span></li>
-            <li><span>Code Postal:</span> <span th:text="${etablissement.codePostal}"></span></li>
-            <li><span>Commune:</span> <span th:text="${etablissement.nomCommune}"></span> (<span
-                    th:text="${etablissement.codeCommune}"></span>)
-            </li>
-            <li><span>Académie:</span> <span th:text="${etablissement.nomAcademie}"></span> (<span
-                    th:text="${etablissement.codeAcademie}"></span>)
-            </li>
+<header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between py-3">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <a class="flex items-center" href="index.html">
+                    <h1 class="text-xl font-light text-gray-700">
+                        <span class="text-blue-500">Forma</span><span class="text-red-500">koi</span><span
+                            class="text-green-500">?</span>
+                    </h1>
+                </a>
+            </div>
 
-            <li><span>Département:</span> <span th:text="${etablissement.nomDepartement}"></span> (<span
-                    th:text="${etablissement.codeDepartement}"></span>)
-            </li>
+            <!-- Barre de recherche compacte -->
+            <div class="flex-1 max-w-xl mx-2 md:mx-6" x-data="{ searchType: 'etablissements' }">
+                <div class="flex flex-col md:flex-row md:items-center">
+                    <!-- Champ de recherche -->
+                    <div class="flex items-center bg-white border border-gray-300 rounded-full shadow-sm hover:shadow-md transition-shadow duration-200 focus-within:shadow-md flex-1 mb-2 md:mb-0">
+                        <svg class="w-4 h-4 text-gray-400 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"></path>
+                        </svg>
+                        <input
+                                autocomplete="off"
+                                class="w-full py-2 px-3 text-sm border-none rounded-full focus:outline-none"
+                                placeholder="Rechercher un établissement..."
+                                type="text"
+                        >
+                    </div>
 
-            <li><span>Etat:</span> <span th:text="${etablissement.nomEtat}"></span> (<span
-                    th:text="${etablissement.codeEtat}"></span>)
-            </li>
-
-            <li><span>Nature:</span> <span th:text="${etablissement.nomNature}"></span> (<span
-                    th:text="${etablissement.codeNature}"></span>)
-            </li>
-            <li><span>Contrat:</span> <span th:text="${etablissement.nomContrat}"></span> (<span
-                    th:text="${etablissement.codeContrat}"></span>)
-            </li>
-        </ul>
-    </section>
-
-    <section class="bg-white shadow p-4 mb-4" th:if="${langues.size() > 0}">
-        <h2 class="text-xl font-semibold mb-4">Langues</h2>
-
-        <div class="flex flex-wrap gap-2">
-            <th:block th:each="langue : ${langues}">
-                <div class="border border-red-500 border-l-5 rounded-sm pb-0.5 pt-0.5 pl-1 pr-1"><span
-                        th:text="${langue.nom}"></span> (<span
-                        th:text="${langue.niveau}"></span>)
+                    <!-- Options de recherche -->
+                    <div class="flex items-center justify-center md:ml-4 space-x-3 md:space-x-4">
+                        <label class="flex items-center cursor-pointer text-xs">
+                            <input checked class="sr-only" name="searchType" type="radio" value="etablissements"
+                                   x-model="searchType">
+                            <div class="relative mr-1 md:mr-2">
+                                <div class="w-3 h-3 border border-gray-400 rounded-full"></div>
+                                <div :class="{'scale-50': searchType === 'etablissements'}"
+                                     class="absolute inset-0 w-3 h-3 bg-search-blue rounded-full scale-0 transition-transform"></div>
+                            </div>
+                            <span class="text-gray-600">Établissements</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer text-xs">
+                            <input class="sr-only" name="searchType" type="radio" value="formations"
+                                   x-model="searchType">
+                            <div class="relative mr-1 md:mr-2">
+                                <div class="w-3 h-3 border border-gray-400 rounded-full"></div>
+                                <div :class="{'scale-50': searchType === 'formations'}"
+                                     class="absolute inset-0 w-3 h-3 bg-search-blue rounded-full scale-0 transition-transform"></div>
+                            </div>
+                            <span class="text-gray-600">Formations</span>
+                        </label>
+                    </div>
                 </div>
-            </th:block>
+            </div>
+
+            <!--            <div class="flex items-center space-x-4 flex-shrink-0">-->
+            <!--                <a class="text-sm text-gray-600 hover:text-gray-800 transition-colors" href="./recherche">-->
+            <!--                    ← Retour aux résultats-->
+            <!--                </a>-->
+            <!--            </div>-->
         </div>
-    </section>
+    </div>
+</header>
 
-    <section class="bg-white shadow p-4 mb-4" th:if="${options.size() > 0}">
-        <th:block th:each="option : ${options}">
-            <div th:text="${option.nom}"></div>
-        </th:block>
-    </section>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+            <div class="flex-1">
+                <div class="flex items-center gap-3 mb-3">
+                    <h1 class="text-3xl font-bold text-gray-900" th:text="${etablissement.nom}"></h1>
 
-    <section class="bg-white shadow p-4 mb-4" th:if="${sectionSportives.size() > 0}">
-        <h2 class="text-xl font-semibold mb-4">Section(s) sportive(s)</h2>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800"
+                          th:if="${etablissement.actif}">
+                            Ouvert
+                    </span>
 
-        <th:block th:each="sectionSportive : ${sectionSportives}">
-            <span th:text="${sectionSportive.nom}"></span>
-        </th:block>
-    </section>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800"
+                          th:unless="${etablissement.actif}">
+                            Fermé
+                    </span>
+                </div>
+                <!--                <p class="text-lg text-gray-600 mb-2" th:text="${etablissement.nomNature}"></p>-->
+                <div class="flex items-center text-gray-500 mb-4">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                              stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2"></path>
+                        <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2"></path>
+                    </svg>
+                    <span th:text="${etablissement.adresse}"></span>&nbsp;<span
+                        th:text="${etablissement.codePostal}"></span>&nbsp;<span
+                        th:text="${etablissement.nomCommune}"></span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button class="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                              stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2"></path>
+                    </svg>
+                </button>
+                <button class="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
+                              stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <section class="bg-white shadow p-4 mb-4" th:if="${indices.size() > 0}">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Informations principales</h2>
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">UAI</dt>
+                        <dd class="text-sm text-gray-900" th:text="${etablissement.uai}"></dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">SIRET</dt>
+                        <dd class="text-sm text-gray-900" th:text="${etablissement.siret}"></dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Type</dt>
+                        <dd class="text-sm text-gray-900" th:text="${etablissement.nomNature}"></dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Statut</dt>
+                        <dd class="text-sm text-gray-900" th:text="${etablissement.nomContrat}">Public</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Ville</dt>
+                        <dd class="text-sm text-gray-900"><span th:text="${etablissement.nomCommune}">Paris</span></dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Département</dt>
+                        <dd class="text-sm text-gray-900"><span th:text="${etablissement.nomDepartement}"></span>&nbsp;(<span
+                                th:text="${etablissement.codeDepartement}"></span>)
+                        </dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Académie</dt>
+                        <dd class="text-sm text-gray-900" th:text="${etablissement.nomAcademie}"></dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Région</dt>
+                        <dd class="text-sm text-gray-900" th:text="${etablissement.nomRegion}">Île-de-France</dd>
+                    </div>
+                    <!--                    <div>-->
+                    <!--                        <dt class="text-sm font-medium text-gray-500">Effectifs</dt>-->
+                    <!--                        <dd class="text-sm text-gray-900">xxx</dd>-->
+                    <!--                    </div>-->
+                    <!--                    <div>-->
+                    <!--                        <dt class="text-sm font-medium text-gray-500">Pays</dt>-->
+                    <!--                        <dd class="text-sm text-gray-900" th:text="${etablissement.nomPays}">France</dd>-->
+                    <!--                    </div>-->
+                </div>
 
-        <table class="border-collapse table-auto border border-gray-400">
-            <tr>
-                <th>Année</th>
-            </tr>
+                <!-- Certification Qualiopi -->
+                <!--<div class="pt-4 border-t border-gray-200">
+                    <dt class="text-sm font-medium text-gray-500 mb-2">Certification Qualiopi</dt>
+                    <dd class="flex items-center">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                ✓ Certifié
+                            </span>
+                        <span class="ml-3 text-sm text-gray-600">Actions de formation, Actions de formation par apprentissage</span>
+                    </dd>
+                </div>-->
+            </div>
+        </div>
 
-            <tr th:each="indice : ${indices}">
-                <td class="border border-gray-300 p-1" th:text="${indice.annee}"></td>
-                <td class="border border-gray-300 p-1" th:text="${indice.valeur}"></td>
-                <td class="border border-gray-300 p-1" th:text="${indice.ecartType()}"></td>
-            </tr>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6" x-data="{ expanded: false }">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Autres Informations</h2>
+                <!--                <button @click="expanded = !expanded" class="text-blue-500 hover:text-blue-500-hover text-sm">-->
+                <!--                    <span x-show="!expanded">Voir tout</span>-->
+                <!--                    <span x-show="expanded">Réduire</span>-->
+                <!--                </button>-->
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <dt class="text-sm font-medium text-gray-700 mb-1">Divers</dt>
+                    <dd class="flex flex-wrap gap-2">
+                        <th:block th:each="option : ${options}">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800"
+                                  th:text="${option.nom}"></span>
+                        </th:block>
+                    </dd>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        </table>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6" x-data="{ expanded: false }">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Contacts</h2>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <dt class="text-sm font-medium text-gray-700 mb-1">Divers</dt>
+                    <dd class="flex flex-wrap gap-2">
+                        <th:block th:each="contact : ${contacts}">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800"
+                                  th:text="${contact.nom}"></span>
+                        </th:block>
+                    </dd>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    </section>
-</main>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Langues enseignées</h2>
+
+            <div class="space-y-3">
+                <div th:each="l : ${langues}">
+                    <dt class="text-sm font-medium text-gray-700 mb-2" th:text="${l.categorie.nom}"></dt>
+                    <dd class="flex flex-wrap gap-2">
+                        <th:block th:each="langue : ${l.langues}">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800"
+                            ><span th:text="${langue.emoji}"></span>&nbsp;<span
+                                    th:text="${langue.nom}"></span> &nbsp;<th:block
+                                    th:if="${l.categorie.name() == 'LV'}">(<span
+                                    th:text="${langue.enseignement}"></span>)</th:block></span>
+                        </th:block>
+                    </dd>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Sports</h2>
+            <div class="space-y-3">
+                <div th:each="s : ${sports}">
+                    <dt class="text-sm font-medium text-gray-700 mb-2" th:text="${s.categorie.nom}"></dt>
+                    <dd class="flex flex-wrap gap-2">
+                        <th:block th:each="sport : ${s.sections}">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800"
+                            ><span th:text="${sport.emoji}"></span>&nbsp;<span th:text="${sport.nom}"></span></span>
+                        </th:block>
+                    </dd>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6" th:if="${specialites.size() > 0}">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Enseignements de spécialités</h2>
+            <div class="space-y-3">
+                <th:block th:each="specialite : ${specialites}">
+                    <div th:text="${specialite.nom}"></div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-900 mb-6">Indices de Position Sociale (IPS) et Indicateurs de Valeur
+            Ajoutée
+            (IVA)</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                <tr class="border-b border-gray-200">
+                    <th class="text-left py-3 px-4 font-medium text-gray-900">Année</th>
+                    <th class="text-left py-3 px-4 font-medium text-gray-900">Effectifs</th>
+                    <th class="text-left py-3 px-4 font-medium text-gray-900">IPS</th>
+                    <th class="text-left py-3 px-4 font-medium text-gray-900">Écart-type</th>
+                    <th class="text-left py-3 px-4 font-medium text-gray-900">IPS Dép.</th>
+                    <th class="text-left py-3 px-4 font-medium text-gray-900">IPS Acad.</th>
+                    <th class="text-left py-3 px-4 font-medium text-gray-900">IPS Nat.</th>
+                    <th class="text-left py-3 px-4 font-medium text-gray-900">Taux réussite</th>
+                    <th class="text-left py-3 px-4 font-medium text-gray-900">Taux mentions</th>
+                    <th class="text-left py-3 px-4 font-medium text-gray-900">IVA</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="m : ${metadatats}">
+                    <td class="py-3 px-4 font-medium" th:text="${m.annee}"></td>
+                    <td class="py-3 px-4" th:text="${m.effectifs}"></td>
+                    <td class="py-3 px-4" th:text="${m.indice}"></td>
+                    <td class="py-3 px-4" th:text="${m.ecartType}"></td>
+                    <td class="py-3 px-4" th:text="${m.indiceDepartement}"></td>
+                    <td class="py-3 px-4" th:text="${m.indiceAcademie}"></td>
+                    <td class="py-3 px-4" th:text="${m.indiceNational}"></td>
+                    <td class="py-3 px-4" th:text="${m.tauxReussite}"></td>
+                    <td class="py-3 px-4" th:text="${m.tauxMentions}"></td>
+                    <td class="py-3 px-4" th:text="${m.valeurAjoutee}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>

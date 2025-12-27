@@ -1,8 +1,8 @@
 package com.guillaumegasnier.education.core.services;
 
-import com.guillaumegasnier.education.core.domains.formations.CertificationEntity;
+import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
-import com.guillaumegasnier.education.core.domains.formations.RomeEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -16,13 +16,21 @@ public interface CoreFormationService {
 
     void saveFormation(FormationEntity entity);
 
+    void saveFormations(@NonNull List<FormationEntity> entities);
+
     Optional<FormationEntity> findFormationByOnisepId(Integer onisepId);
 
     void saveRomes(List<RomeEntity> entities);
 
-    Optional<CertificationEntity> findCertificationByRNCP(String certificationCode);
+    //Optional<CertificationEntity> findCertificationByRNCP(String certificationCode);
 
-    void saveCertification(CertificationEntity entity);
+    //void saveCertification(CertificationEntity entity);
 
     Set<RomeEntity> getRomes(List<String> codes);
+
+    Optional<FormationEntity> findFormationByParcoursupId(Integer parcoursupId);
+
+    Optional<ActionFormationEntity> findActionFormationByParcoursupId(Integer codeInterneFormation);
+
+    void saveActionFormation(List<ActionFormationEntity> entities);
 }

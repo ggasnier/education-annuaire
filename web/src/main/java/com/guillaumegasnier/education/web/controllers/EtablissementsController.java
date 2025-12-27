@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.web.controllers;
 
+import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDetailsDto;
 import com.guillaumegasnier.education.web.services.WebEtablissementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,20 +23,20 @@ public class EtablissementsController {
     @GetMapping("/{uai}")
     public String getEtablissement(@PathVariable String uai, Model model) {
 
-        var etablissementDto = webEtablissementService.findEtablissementByUai(uai);
+        EtablissementDetailsDto details = webEtablissementService.findEtablissementDetailsDtoByUai(uai);
 
-        if (etablissementDto.isPresent()) {
-            model.addAttribute("title", etablissementDto.get().getNom());
-
-            model.addAttribute("etablissement", etablissementDto.get());
-            model.addAttribute("options", webEtablissementService.getOptionListByUai(uai));
-            model.addAttribute("langues", webEtablissementService.getLangueListByUai(uai));
-            model.addAttribute("sectionSportives", webEtablissementService.getSectionSportiveListByUai(uai));
-            model.addAttribute("indices", webEtablissementService.getIPSListByUai(uai));
-
-            return "etablissements/details";
-        } else {
+        if (details == null)
             return "etablissements/404";
-        }
+
+        model.addAttribute("title", details.etablissement().getNom());
+        model.addAttribute("etablissement", details.etablissement());
+        model.addAttribute("options", details.options());
+        model.addAttribute("specialites", details.specialites());
+        model.addAttribute("langues", details.langues());
+        model.addAttribute("sports", details.sports());
+        model.addAttribute("contacts", details.contacts());
+        model.addAttribute("metadatats", details.metadatas());
+
+        return "etablissements/details";
     }
 }

@@ -1,4 +1,4 @@
-APP_NAME=myapp
+APP_NAME=formakoi
 REGISTRY=ghcr.io/ggasnier
 WEB_IMAGE=$(REGISTRY)/$(APP_NAME)-web:latest
 SHELL_IMAGE=$(REGISTRY)/$(APP_NAME)-shell:latest

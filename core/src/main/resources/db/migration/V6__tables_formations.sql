@@ -1,0 +1,138 @@
+-- UTF-8 partout
+SET client_encoding = 'UTF8';
+
+-- TODO à déplacer dans referentiels
+CREATE TABLE certifications
+(
+    code       VARCHAR(255)                NOT NULL,
+    nom        VARCHAR(255)                NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    CONSTRAINT pk_certifications PRIMARY KEY (code)
+);
+
+-- TODO à déplacer dans referentiels
+CREATE TABLE romes
+(
+    code       CHAR(5)                     NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    nom        VARCHAR(255),
+    CONSTRAINT pk_romes PRIMARY KEY (code)
+);
+
+-- TODO à déplacer dans referentiels
+CREATE TABLE certifications_romes
+(
+    certification_code VARCHAR(255) NOT NULL,
+    rome_code          CHAR(5)      NOT NULL,
+    CONSTRAINT pk_certifications_romes PRIMARY KEY (certification_code, rome_code)
+);
+
+ALTER TABLE certifications_romes
+    ADD CONSTRAINT fk_certifications_romes_certification FOREIGN KEY (certification_code) REFERENCES certifications (code);
+
+ALTER TABLE certifications_romes
+    ADD CONSTRAINT fk_certifications_romes_romes FOREIGN KEY (rome_code) REFERENCES romes (code);
+
+CREATE TABLE formations
+(
+    id                    UUID                        NOT NULL,
+    created_at            TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at            TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    nom                   VARCHAR(255)                NOT NULL,
+    objectif              TEXT,
+    resultats             TEXT,
+    contenu               TEXT,
+    certifiante           BOOLEAN,
+    parcours_de_formation INTEGER,
+    code_niveau_entree    INTEGER,
+    code_niveau_sortie    INTEGER,
+    uai                   BPCHAR(8),
+    nda                   BPCHAR(11),
+    identifiant_module    TEXT,
+    positionnement        INTEGER,
+    onisep_id             INTEGER,
+    parcoursup_id         INTEGER,
+    CONSTRAINT pk_formations PRIMARY KEY (id)
+);
+
+ALTER TABLE formations
+    ADD CONSTRAINT fk_formations_etablissements FOREIGN KEY (uai) REFERENCES etablissements (uai);
+
+ALTER TABLE formations
+    ADD CONSTRAINT fk_formations_organismes FOREIGN KEY (nda) REFERENCES organismes (nda);
+
+
+CREATE TABLE formations_certifications
+(
+    formation_entity_id UUID         NOT NULL,
+    certifications_code VARCHAR(255) NOT NULL
+);
+
+ALTER TABLE formations_certifications
+    ADD CONSTRAINT uc_formations_certifications_certifications UNIQUE (certifications_code);
+
+ALTER TABLE formations_certifications
+    ADD CONSTRAINT fk_forcer_on_certification_entity FOREIGN KEY (certifications_code) REFERENCES certifications (code);
+
+ALTER TABLE formations_certifications
+    ADD CONSTRAINT fk_forcer_on_formation_entity FOREIGN KEY (formation_entity_id) REFERENCES formations (id);
+
+-- actions de formations
+CREATE TABLE formations_actions
+(
+    id                                UUID                        NOT NULL,
+    created_at                        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at                        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    formation_id                      UUID                        NOT NULL,
+    rythme_formation                  TEXT,
+    code_public_vise                  CHAR(5),
+    info_public_vise                  VARCHAR(250),
+    niveau_entree_obligatoire         BOOLEAN,
+    modalites_alternance              VARCHAR(255),
+    modalites_enseignement            INTEGER,
+    conditions_specifiques            TEXT,
+    prise_en_charge_frais_possible    BOOLEAN,
+    uai                               BPCHAR(8),
+    modalites_entrees_sorties         INTEGER,
+    url_action                        VARCHAR(255),
+    duree_cycle                       INTEGER,
+    session                           VARCHAR(255),
+    adresse_information               VARCHAR(255),
+    date_information                  DATE,
+    restauration                      VARCHAR(255),
+    hebergement                       VARCHAR(255),
+    transport                         VARCHAR(255),
+    acces_handicapes                  VARCHAR(255),
+    langue_formation                  BPCHAR(2),
+    modalites_recrutement             TEXT,
+    modalites_pedagogiques            VARCHAR(255),
+    code_modalite_pedagogique         VARCHAR(255),
+    equipement                        VARCHAR(255),
+    frais_restants                    VARCHAR(255),
+    code_perimetre_recrutement        VARCHAR(255),
+    infos_perimetre_recrutement       VARCHAR(255),
+    prix_horairettc                   VARCHAR(255),
+    prix_totalttc                     VARCHAR(255),
+    duree_indicative                  VARCHAR(255),
+    nombre_heures_centre              VARCHAR(255),
+    nombre_heures_entreprise          VARCHAR(255),
+    nombre_heures_total               VARCHAR(255),
+    detail_conditions_prise_en_charge VARCHAR(255),
+    conventionnement                  VARCHAR(255),
+    duree_conventionnee               VARCHAR(255),
+    organisme_formateur               VARCHAR(255),
+    organisme_financeur               VARCHAR(255),
+    onisep_id                         INTEGER,
+    parcoursup_id                     INTEGER,
+    CONSTRAINT pk_formations_actions PRIMARY KEY (id)
+);
+
+ALTER TABLE formations_actions
+    ADD CONSTRAINT FK_ACTIONS_FORMATIONS FOREIGN KEY (formation_id) REFERENCES formations (id);
+
+ALTER TABLE formations_actions
+    ADD CONSTRAINT FK_ACTIONS_FORMATIONS_ETABLISSEMENTS FOREIGN KEY (uai) REFERENCES etablissements (uai);
+
+-- sessions de formations

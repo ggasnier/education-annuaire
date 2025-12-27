@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface FormationRepository extends JpaRepository<FormationEntity, UUID> {
     Optional<FormationEntity> findByOnisepId(Integer onisepId);
+
+    Optional<FormationEntity> findByParcoursupId(Integer parcoursupId);
 }
