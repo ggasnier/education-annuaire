@@ -2,10 +2,7 @@ package com.guillaumegasnier.education.shell.shells;
 
 public interface ImportEtablissementShell {
 
-    /**
-     * Import de tous les établissements
-     */
-    void importEtablissementsAll();
+    void importEtablissements();
 
     void importEtablissementsEsr();
 
@@ -16,10 +13,6 @@ public interface ImportEtablissementShell {
     void importEtablissementsCarif();
 
     void importEtablissementsOnisepSup();
-
-    void importNatures();
-
-    void importContrats();
 
     void importSports();
 
@@ -41,5 +34,5 @@ public interface ImportEtablissementShell {
 
     void importIvaColleges();
 
-    void importDetailsAll();
+    void importEtablissementsDetails();
 }

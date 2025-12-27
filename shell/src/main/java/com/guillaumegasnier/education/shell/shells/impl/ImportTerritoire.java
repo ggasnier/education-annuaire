@@ -20,7 +20,7 @@ public class ImportTerritoire implements ImportTerritoireShell {
 
     @Override
     @ShellMethod(value = "Import toutes les références")
-    public void importTerritoiresAll() {
+    public void importTerritoires() {
         importPays();
         importRegions();
         importAcademies();

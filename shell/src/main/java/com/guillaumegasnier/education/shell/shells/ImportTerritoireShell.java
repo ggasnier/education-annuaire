@@ -2,7 +2,7 @@ package com.guillaumegasnier.education.shell.shells;
 
 public interface ImportTerritoireShell {
 
-    void importTerritoiresAll();
+    void importTerritoires();
 
     void importPays();
 

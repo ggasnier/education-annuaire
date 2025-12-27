@@ -14,9 +14,9 @@ public interface ShellEtablissementService {
 
     void createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source);
 
-    void createOrUpdateNatures(@NonNull List<NatureDataset> datasets);
+    //void createOrUpdateNatures(@NonNull List<NatureDataset> datasets);
 
-    void createOrUpdateContrats(@NonNull List<ContratDataset> datasets);
+    //void createOrUpdateContrats(@NonNull List<ContratDataset> datasets);
 
     void createOrUpdateLangues(@NonNull List<LangueDataset> datasets);
 

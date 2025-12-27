@@ -287,7 +287,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
                     .toList();
         } else {
             log.warn("Pas d'établissement avec UAI {} pour langues {}", dataset.getUai(), categorie);
-            return null;
+            return List.of();
         }
     }
 

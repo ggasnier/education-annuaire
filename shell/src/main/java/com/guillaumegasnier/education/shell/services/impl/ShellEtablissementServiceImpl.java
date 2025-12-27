@@ -84,6 +84,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
                 .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.LO))
                 .flatMap(List::stream)
+                .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
@@ -231,23 +232,28 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 });
     }
 
-    @Override
+    /*@Override
     public void createOrUpdateNatures(@NonNull List<NatureDataset> datasets) {
         coreEtablissementService.saveNatures(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
                 .map(etablissementMapper::toNatureEntity)
                 .toList());
         log.info("Import terminé : {} natures(s) enregistrée(s).", datasets.size());
-    }
+    }*/
 
-    @Override
+    /*@Override
+    public void createOrUpdateContrats(List<ContratDataset> datasets) {
+
+    }*/
+
+    /*@Override
     public void createOrUpdateContrats(@NonNull List<ContratDataset> datasets) {
         coreEtablissementService.saveContrats(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
                 .map(etablissementMapper::toContratEntity)
                 .toList());
         log.info("Import terminé : {} contrat(s) enregistré(s).", datasets.size());
-    }
+    }*/
 
     @Override
     public void createOrUpdateLangues(@NonNull List<LangueDataset> datasets) {
