@@ -34,6 +34,5 @@ public interface ImportFormationShell {
      * Formations sur parcoursup
      */
     void importFormationsParcoursup();
-
-
+    
 }

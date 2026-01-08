@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
+import com.guillaumegasnier.education.core.enums.Secteur;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 
 import java.time.LocalDate;
@@ -80,6 +81,10 @@ public interface EtablissementDataset extends Cloneable, Dataset {
 
     default Set<OptionEtablissement> getOptions() {
         return Collections.emptySet();
+    }
+
+    default Secteur getSecteur() {
+        return null;
     }
 
 }

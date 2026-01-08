@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
-import com.guillaumegasnier.education.core.validations.Effectifs;
 import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.Metadata;
 import com.opencsv.bean.CsvBindByName;
@@ -16,7 +15,7 @@ import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatDouble;
  */
 @Getter
 @Setter
-public class IPSCollege2023Dataset implements IndicePositionSociale, Effectifs, Metadata {
+public class IPSCollege2023Dataset implements IndicePositionSociale, Metadata {
 
     @CsvBindByName(column = "Rentrée scolaire")
     private String rentreeScolaire;

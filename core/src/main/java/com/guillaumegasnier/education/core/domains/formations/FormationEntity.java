@@ -8,7 +8,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Offre de formation
@@ -102,7 +104,7 @@ public class FormationEntity extends AbstractEntity {
     /**
      * Les actions de formation (établissements, dates, etc.)
      */
-    @OneToMany(mappedBy = "formation")
+    @OneToMany(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ActionFormationEntity> actions = new ArrayList<>();
 
     /**
@@ -147,5 +149,21 @@ public class FormationEntity extends AbstractEntity {
     // url
     // modules
     // Modules prérequis
+
+    /**
+     * Pour ajouter une action
+     */
+    public void addAction(ActionFormationEntity action) {
+        actions.add(action);
+        action.setFormation(this);
+    }
+
+    /**
+     * Pour retirer une action
+     */
+    public void removeAction(ActionFormationEntity action) {
+        actions.remove(action);
+        action.setFormation(null);
+    }
 
 }

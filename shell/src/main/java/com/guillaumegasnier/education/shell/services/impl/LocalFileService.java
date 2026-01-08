@@ -2,13 +2,16 @@ package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
+import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.opencsv.bean.CsvToBeanBuilder;
 import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
@@ -16,6 +19,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -120,6 +124,54 @@ public class LocalFileService implements FileService {
         } catch (Exception e) {
             log.error("Erreur lors de l'ouverture du fichier zip {} : {}", source.getLocalPath(), e.getMessage(), e);
         }
+
+        return null;
+    }
+
+    @Override
+    public LheoSubtype importLheoSubtypeFromZip(@NonNull SourcesDatasets sourcesDatasets) {
+        log.info("Début import {}", sourcesDatasets.getLocalPath());
+
+        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+
+        if (!Files.exists(outPath)) {
+            log.error("Le fichier xml {} n'existe pas", outPath.getFileName());
+            return null;
+        }
+
+        try (InputStream inputStream = Files.newInputStream(outPath)) {
+            JAXBContext context = JAXBContext.newInstance(LheoSubtype.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            JAXBElement<LheoSubtype> jaxbElement = unmarshaller.unmarshal(new StreamSource(inputStream), LheoSubtype.class);
+
+            return jaxbElement.getValue();
+
+//            lheoSubtype.getOffres().getFormation().forEach(formation -> {
+//
+//                if (formation.getNumero().startsWith("FOR.389")) {
+//                    log.info("{} {} {}", formation.getNumero(), formation.getIntituleFormation().getValue(), formation.getContactFormation().getFirst().getCoordonnees().getAdresse().getDenomination().getValue());
+//                }
+//            });
+
+//            String.format("Import terminé : %d formations(s) ONISEP enregistrée(s).", lheoSubtype.getOffres().getFormation().size());
+        } catch (JAXBException | IOException e) {
+//            String.format(e.getMessage(), e.getCause().getMessage());
+            log.error(e.getMessage());
+        }
+
+
+//        try (ZipFile zipFile = new ZipFile(source.getLocalPath())) {
+//            Enumeration<? extends ZipEntry> zipEnumeration = zipFile.entries();
+//
+//            while (zipEnumeration.hasMoreElements()) {
+//                ZipEntry zipEntry = zipEnumeration.nextElement();
+//                try (InputStream inputStream = new BufferedInputStream(zipFile.getInputStream(zipEntry))) {
+//                    return (LheoSubtype) jaxbContext.createUnmarshaller().unmarshal(inputStream);
+//                }
+//            }
+//        } catch (Exception e) {
+//            log.error("Erreur lors de l'ouverture du fichier zip {} : {}", source.getLocalPath(), e.getMessage(), e);
+//        }
 
         return null;
     }

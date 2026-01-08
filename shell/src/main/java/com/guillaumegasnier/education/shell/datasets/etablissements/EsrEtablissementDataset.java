@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
+import com.guillaumegasnier.education.core.enums.Secteur;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -152,6 +153,8 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     private String contactWikipedia;
     @CsvBindByName(column = "date_creation")
     private String dateOuverture;
+    @CsvBindByName(column = "secteur d'établissement")
+    private String secteurEtablissement;
 
     @Override
     public String getCodeCommune() {
@@ -163,6 +166,14 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     @Override
     public String getNomCommune() {
         return nomCommune;
+    }
+
+    @Override
+    public Secteur getSecteur() {
+        if (secteurEtablissement != null)
+            if (secteurEtablissement.equals("public")) return Secteur.PU;
+            else if (secteurEtablissement.equals("privé")) return Secteur.PV;
+        return null;
     }
 
     // compte_flickr

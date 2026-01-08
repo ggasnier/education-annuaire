@@ -4,6 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 
 @Schema(name = "Option")
-public record OptionDto(String code, String nom) {
+public record OptionDto(String code, String nom, String emoji) {
 
 }

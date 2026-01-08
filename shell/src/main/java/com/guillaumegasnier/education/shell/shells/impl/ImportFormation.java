@@ -43,7 +43,8 @@ public class ImportFormation implements ImportFormationShell {
     @Override
     @ShellMethod(value = "Import formations Onisep au format LHEO")
     public void importFormationsOnisepLheo() {
-        shellFormationService.createOrUpdateFormationsOnisepLheo(null);
+//        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_OCCITANIE));
+        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_CVL));
     }
 
     @Override

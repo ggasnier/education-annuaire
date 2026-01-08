@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
+import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementResponse;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
@@ -152,7 +153,6 @@ public class ProductionFileService implements FileService {
 
         do {
             CarifEtablissementResponse response;
-            log.info("Page : {}", page++);
 
             if (scrollId == null) {
                 // 1er appel
@@ -247,7 +247,6 @@ public class ProductionFileService implements FileService {
 
         do {
             CarifFormationResponse response;
-            log.info("Page : {}", page++);
 
             if (scrollId == null) {
                 // 1er appel
@@ -294,6 +293,11 @@ public class ProductionFileService implements FileService {
     @Override
     public FICHES importXmlFromZip(@NonNull SourcesDatasets source) {
         return null;
+    }
+
+    @Override
+    public LheoSubtype importLheoSubtypeFromZip(SourcesDatasets sourcesDatasets) {
+        return null; // TODO
     }
 
     @Override

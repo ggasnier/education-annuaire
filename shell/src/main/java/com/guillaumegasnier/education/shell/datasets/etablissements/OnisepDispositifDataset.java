@@ -88,10 +88,13 @@ public class OnisepDispositifDataset implements Dataset {
             case "unité pédagogique pour élèves allophones arrivants en collège (Classe pour non francophones)",
                  "unité pédagogique pour élèves allophones arrivants en lycée (Classe pour non francophones)" ->
                     OptionEtablissement.UPE2A;
-            case "classe à horaires aménagés arts et métiers du spectacle", "classe à horaires aménagés arts plastiques"
-            , "classe à horaires aménagés cinéma", "classe à horaires aménagés danse",
-                 "classe à horaires aménagés musique", "classe à horaires aménagés théâtre" ->
-                    OptionEtablissement.CL_H_AM;
+            // TODO à redécouper CHA_*
+            case "classe à horaires aménagés arts et métiers du spectacle",
+                 "classe à horaires aménagés arts plastiques",
+                 "classe à horaires aménagés cinéma",
+                 "classe à horaires aménagés danse",
+                 "classe à horaires aménagés musique",
+                 "classe à horaires aménagés théâtre" -> OptionEtablissement.CL_H_AM;
             case "section bilangue de collège", "section bilingue de langue régionale de collège",
                  "section bilingue de langue régionale de lycée" -> OptionEtablissement.SECTION_BILINGUE;
             case "section de langue orientale de lycée" -> OptionEtablissement.SECTION_ORIENTALE;

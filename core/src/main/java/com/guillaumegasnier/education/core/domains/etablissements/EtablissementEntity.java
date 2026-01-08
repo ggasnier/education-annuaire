@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
+import com.guillaumegasnier.education.core.enums.Secteur;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import jakarta.persistence.*;
@@ -42,6 +43,10 @@ public class EtablissementEntity extends AbstractEntity {
     private String nom;
 
     private Boolean actif;
+
+    @Column(columnDefinition = "BPCHAR(2)", length = 2)
+    @Enumerated(EnumType.STRING)
+    private Secteur secteur;
 
     @Column
     private LocalDate dateOuverture;

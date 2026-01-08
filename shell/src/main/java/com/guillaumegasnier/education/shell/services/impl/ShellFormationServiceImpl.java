@@ -12,6 +12,7 @@ import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationD
 import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
 import com.guillaumegasnier.education.shell.mappers.FormationMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
+import com.guillaumegasnier.education.shell.services.ShellFormationEntityService;
 import com.guillaumegasnier.education.shell.services.ShellFormationService;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
 import jakarta.xml.bind.JAXBContext;
@@ -42,6 +43,7 @@ public class ShellFormationServiceImpl implements ShellFormationService {
     private final CoreEtablissementService coreEtablissementService;
     private final ShellEntityService shellEntityService;
     private final ValidatorService validatorService;
+    private final ShellFormationEntityService shellFormationEntityService;
 
     @Value("${spring.jpa.properties.hibernate.jdbc.batch_size}")
     int chunk;
@@ -278,5 +280,23 @@ public class ShellFormationServiceImpl implements ShellFormationService {
 
     @Override
     public void createOrUpdateFormationsOnisepLheo(@NonNull LheoSubtype lheoSubtype) {
+
+        List<FormationEntity> formations =
+                lheoSubtype.getOffres().getFormation()
+                        .stream()
+                        .map(shellFormationEntityService::toFormationEntity)
+                        .collect(groupingBy(FormationEntity::getId))
+                        .values()
+                        .stream()
+                        .map(formationEntities -> {
+                            FormationEntity entity = formationEntities.getFirst();
+                            formationEntities.stream().map(FormationEntity::getActions).flatMap(Collection::stream).distinct().toList().forEach(entity::addAction);
+                            return entity;
+                        })
+                        .toList();
+
+        coreFormationService.saveFormations(formations);
+
+        log.info("Import terminé : {} formations ONISEP traitées.", lheoSubtype.getOffres().getFormation().size());
     }
 }

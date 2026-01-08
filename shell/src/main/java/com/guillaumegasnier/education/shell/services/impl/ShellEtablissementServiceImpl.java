@@ -24,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -125,9 +127,33 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     @Override
     public <T extends Effectifs & Metadata> void createOrUpdateEffectifs(@NonNull List<T> datasets) {
-        for (int i = 0; i < datasets.size(); i += chunk) {
+
+        record Clef(String uai, Integer annee) {
+        }
+
+
+        Map<Clef, Integer> grouped = datasets.stream().
+                collect(Collectors.groupingBy(
+                        item -> new Clef(item.getUai(), item.getAnnee()), Collectors.summingInt(T::getEffectifs)
+                ));
+
+        List<T> aggregatedData = grouped.entrySet().stream()
+                .map(entry -> {
+                    T t = datasets.stream()
+                            .filter(d -> d.getUai().equals(entry.getKey().uai()) && d.getAnnee().equals(entry.getKey().annee()))
+                            .findFirst()
+                            .orElse(null);
+                    if (t != null) {
+                        t.setEffectifs(entry.getValue());
+                    }
+                    return t;
+                })
+                .filter(Objects::nonNull)
+                .toList();
+
+        for (int i = 0; i < aggregatedData.size(); i += chunk) {
             log.info("i:{}", i);
-            List<T> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
+            List<T> sub = aggregatedData.subList(i, Math.min(i + chunk, aggregatedData.size()));
             coreEtablissementService.saveMetadata(
                     sub.stream()
                             .map(shellEntityService::toEtablissementMetadataEntity)

@@ -1,5 +1,9 @@
 package com.guillaumegasnier.education.shell.shells;
 
+import com.guillaumegasnier.education.core.validations.Effectifs;
+import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.shell.datasets.Dataset;
+
 public interface ImportEtablissementShell {
 
     void importEtablissements();
@@ -16,19 +20,15 @@ public interface ImportEtablissementShell {
 
     void importSports();
 
-    void importSectionsInternationales();
-
     void importLangues();
 
     void importSpecialites();
-
-    void importSectionsBinationales();
 
     void importDispositifs();
 
     void importEuroscol();
 
-    void importEffectifs();
+    <T extends Effectifs & Metadata & Dataset> void importEffectifs();
 
     void importIpsColleges();
 

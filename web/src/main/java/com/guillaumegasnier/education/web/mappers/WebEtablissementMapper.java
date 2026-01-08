@@ -3,6 +3,7 @@ package com.guillaumegasnier.education.web.mappers;
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
+import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.web.dto.CommuneDto;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public abstract class WebEtablissementMapper {
 
+    @Mapping(target = "nomSecteur", source = "secteur.nom")
+    @Mapping(target = "codeSecteur", source = "secteur")
     @Mapping(target = "nomEtat", ignore = true)
     @Mapping(target = "codeEtat", ignore = true)
     @Mapping(target = "codeContrat", source = "contrat.code")
@@ -37,6 +40,7 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "nomAcademie", source = "commune.departement.academie.nom")
     public abstract EtablissementDto toEtablissementDto(EtablissementEntity entity);
 
+    @Mapping(target = "emoji", source = "pk.option.emoji")
     @Mapping(target = "nom", source = "pk.option.nom")
     @Mapping(target = "code", source = "pk.option")
     public abstract OptionDto toOptionDto(EtablissementOptionEntity enity);
@@ -165,4 +169,27 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "valeur", source = "pk.valeur")
     @Mapping(target = "nom", source = "pk.contact.nom")
     public abstract ContactDto toContactDto(EtablissementContactEntity entity);
+
+    public List<OptionWithCategorieDto> toOptionWithCategorieDto(List<EtablissementOptionEntity> entities) {
+        if (entities == null) return Collections.emptyList();
+
+        Map<OptionEtablissement.Categorie, List<EtablissementOptionEntity>> grouped = entities.stream()
+                .filter(d -> d != null && d.getPk().getOption().getCategorie() != null)
+                .collect(
+                        Collectors.groupingBy(l -> l.getPk().getOption().getCategorie(),
+                                LinkedHashMap::new,
+                                Collectors.toList()));
+
+        return grouped.entrySet().stream()
+                .map(entry -> {
+                    OptionEtablissement.Categorie categorie = entry.getKey();
+                    List<OptionDto> options = entry.getValue().stream()
+                            .filter(Objects::nonNull)
+                            .map(this::toOptionDto)
+                            .toList();
+                    return new OptionWithCategorieDto(categorie, options);
+                })
+                .sorted(Comparator.comparing(c -> c.getCategorie().getOrdre()))
+                .collect(Collectors.toList());
+    }
 }

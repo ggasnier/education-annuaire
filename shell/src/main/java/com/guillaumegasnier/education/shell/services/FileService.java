@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.services;
 
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
+import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
@@ -35,4 +36,6 @@ public interface FileService {
     List<CarifFormationDataset> importCarifFormations(@NonNull SourcesDatasets source);
 
     FICHES importXmlFromZip(@NonNull SourcesDatasets source);
+
+    LheoSubtype importLheoSubtypeFromZip(@NonNull SourcesDatasets sourcesDatasets);
 }

@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.enums;
 
 import com.guillaumegasnier.education.core.enums.Sources;
+import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.*;
 import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationDataset;
@@ -57,6 +58,8 @@ public enum SourcesDatasets {
     // Erea
 
     EFFECTIFS_COLLEGE("Effectifs d’élèves en collège", EN, "https://www.data.gouv.fr/api/1/datasets/r/6bf59bae-3c3b-40f5-ad8e-f05b0b2ac271", "effectifs_college.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsCollegeDataset.class),
+    EFFECTIFS_LYCEES_GT("Effectifs d’élèves en lycée d'enseignement général et technologique", EN, "https://www.data.gouv.fr/api/1/datasets/r/74335ea1-17da-4794-8ba2-4ae19c21f981", "effectifs_lycees_gt.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsLyceeDataset.class),
+    EFFECTIFS_LYCEES_PRO("Effectifs d’élèves en lycée professionnel", EN, "https://www.data.gouv.fr/api/1/datasets/r/204c9fbf-5e88-4a69-a922-1ad1b369115c", "effectifs_lycees_pro.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsLyceeDataset.class),
 
     // Compléments
     SECTIONS_SPORTIVES("Sections Sportives Scolaires", EN, "https://www.data.gouv.fr/api/1/datasets/r/c479b9b8-8224-46ef-b2f4-f6a3468726fc", "sections_sportives.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),
@@ -79,6 +82,8 @@ public enum SourcesDatasets {
     FORMATIONS_ONISEP_ESR("Idéo-Actions de formation initiale-Univers enseignement supérieur", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/45f9fab2-adcd-49b1-8c9c-ef5d6ea90e9e", "formations_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepFormationDataset.class),
 
     // LHEO
+    FORMATIONS_LHEO_OCCITANIE("Idéo-Actions de formation-Occitanie", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/f2300f7b-21a3-4470-8a5b-55dd6cf4c09f", "lheo_action_Occitanie.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_CVL("Idéo-Actions de formation-Centre-Val de Loire", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/4e6d4012-bb6c-4d0d-b7ac-1cee7b1a18a8", "lheo_action_CVL.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
 
     // Default
     NULL(null, AUTRE, null, null, null, ',', null, null);

@@ -1,12 +1,17 @@
 package com.guillaumegasnier.education.shell.shells.impl;
 
 import com.guillaumegasnier.education.core.enums.Sport;
+import com.guillaumegasnier.education.core.validations.Effectifs;
+import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
 import com.guillaumegasnier.education.shell.shells.ImportEtablissementShell;
 import lombok.AllArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+
+import java.util.List;
 
 import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
 
@@ -67,6 +72,9 @@ public class ImportEtablissement implements ImportEtablissementShell {
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SUP), "onisep");
     }
 
+    /**
+     * Import des sections sportives et des sections sport-études
+     */
     @Override
     @ShellMethod(value = "Import sections sport études et sections sportives")
     public void importSports() {
@@ -74,28 +82,27 @@ public class ImportEtablissement implements ImportEtablissementShell {
         shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), Sport.Categorie.SE);
     }
 
-    @Override
-    @ShellMethod(value = "Import sections internationales")
-    public void importSectionsInternationales() {
-        shellEtablissementService.createOrUpdateSectionsInternationales(fileService.importCSV(SECTIONS_INTERNATIONALES));
-    }
-
+    /**
+     * <p>Import des infos sur les langues :</p>
+     * <ul>
+     *     <li>Les langues : lv1, lv2, lca</li>
+     *     <li>Les sections internationales</li>
+     *     <li>Les sections binationales</li>
+     *     <li>Les sections européennes sont importées via les dispositifs</li>
+     * </ul>
+     */
     @Override
     @ShellMethod(value = "Import langues dans les collèges et lycées")
     public void importLangues() {
         shellEtablissementService.createOrUpdateLangues(fileService.importCSV(LANGUES));
+        shellEtablissementService.createOrUpdateSectionsInternationales(fileService.importCSV(SECTIONS_INTERNATIONALES));
+        shellEtablissementService.createOrUpdateSectionsBinationales(fileService.importCSV(BINATIONALES));
     }
 
     @Override
     @ShellMethod(value = "Import spécialités de première générale")
     public void importSpecialites() {
         shellEtablissementService.createOrUpdateSpecialites(fileService.importCSV(SPECIALITES));
-    }
-
-    @Override
-    @ShellMethod(value = "Import sections binationales")
-    public void importSectionsBinationales() {
-        shellEtablissementService.createOrUpdateSectionsBinationales(fileService.importCSV(BINATIONALES));
     }
 
     @Override
@@ -112,8 +119,11 @@ public class ImportEtablissement implements ImportEtablissementShell {
 
     @Override
     @ShellMethod(value = "Import des effectifs des établissements")
-    public void importEffectifs() {
-        shellEtablissementService.createOrUpdateEffectifs(fileService.importCSV(EFFECTIFS_COLLEGE));
+    public <T extends Effectifs & Metadata & Dataset> void importEffectifs() {
+        List<T> effectifs = fileService.importCSV(EFFECTIFS_COLLEGE);
+        effectifs.addAll(fileService.importCSV(EFFECTIFS_LYCEES_GT));
+        effectifs.addAll(fileService.importCSV(EFFECTIFS_LYCEES_PRO));
+        shellEtablissementService.createOrUpdateEffectifs(effectifs);
     }
 
     @Override
@@ -135,8 +145,6 @@ public class ImportEtablissement implements ImportEtablissementShell {
     public void importEtablissementsDetails() {
         importDispositifs();
         importLangues();
-        importSectionsBinationales();
-        importSectionsInternationales();
         importSports();
         importSpecialites();
     }

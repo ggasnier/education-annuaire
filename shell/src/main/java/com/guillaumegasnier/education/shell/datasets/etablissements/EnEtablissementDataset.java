@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.Contact;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
+import com.guillaumegasnier.education.core.enums.Secteur;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -75,11 +76,12 @@ public class EnEtablissementDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "Identifiant_de_l_etablissement")
     private String uai;
-
     @CsvBindByName(column = "SIREN_SIRET")
     private String siret;
     @CsvBindByName(column = "Nom_etablissement")
     private String nom;
+    @CsvBindByName(column = "Statut_public_prive")
+    private String statutPublicPrive;
     @CsvBindByName(column = "Adresse_1")
     private String adresse;
     @CsvBindByName(column = "Adresse_2")
@@ -208,6 +210,14 @@ public class EnEtablissementDataset implements EtablissementDataset {
     public String getEducationPrioritaire() {
         if (educationPrioritaire == null || educationPrioritaire.isBlank()) return null;
         return educationPrioritaire;
+    }
+
+    @Override
+    public Secteur getSecteur() {
+        if (statutPublicPrive != null)
+            if (statutPublicPrive.equals("Public")) return Secteur.PU;
+            else if (statutPublicPrive.equals("Privé")) return Secteur.PV;
+        return null;
     }
 
     @Override

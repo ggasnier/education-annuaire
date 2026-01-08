@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
+import com.guillaumegasnier.education.core.enums.Secteur;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,11 +49,12 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "code UAI")
     private String uai;
-
     @CsvBindByName(column = "n° SIRET")
     private String siret;
     @CsvBindByName(column = "nom")
     private String nom;
+    @CsvBindByName(column = "statut")
+    private String statut;
     @CsvBindByName(column = "adresse")
     private String adresse;
     @CsvBindByName(column = "CP")
@@ -113,6 +115,14 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     @Override
     public UUID getId() {
         return UUID.nameUUIDFromBytes(uai.getBytes());
+    }
+
+    @Override
+    public Secteur getSecteur() {
+        if (statut != null)
+            if (statut.equals("public")) return Secteur.PU;
+            else if (statut.equals("privé")) return Secteur.PV;
+        return null;
     }
 
     @Override

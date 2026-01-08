@@ -9,7 +9,7 @@ public record EtablissementDetailsDto(
 
         EtablissementDto etablissement,
 
-        List<OptionDto> options,
+        List<OptionWithCategorieDto> options,
 
         List<SpecialiteBac> specialites,
 

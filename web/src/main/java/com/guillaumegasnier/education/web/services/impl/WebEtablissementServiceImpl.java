@@ -78,7 +78,7 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
 
         return new EtablissementDetailsDto(
                 entity.map(webEtablissementMapper::toEtablissementDto).orElse(null),
-                coreEtablissementService.getOptionListByUai(uai).stream().map(webEtablissementMapper::toOptionDto).toList(),
+                webEtablissementMapper.toOptionWithCategorieDto(coreEtablissementService.getOptionListByUai(uai)),
                 coreEtablissementService.getSpecialiteListByUai(uai).stream().map(webEtablissementMapper::toSpecialiteBac).toList(),
                 webEtablissementMapper.toLangueWithCategorieDtoList(coreEtablissementService.getLangueListByUai(uai)),
                 webEtablissementMapper.toSportWithCategorieDtoList(coreEtablissementService.getSportListByUai(uai)),
