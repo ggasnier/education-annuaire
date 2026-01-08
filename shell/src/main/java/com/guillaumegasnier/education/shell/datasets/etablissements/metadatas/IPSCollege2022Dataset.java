@@ -22,8 +22,6 @@ public class IPSCollege2022Dataset implements IndicePositionSociale, Metadata {
     private String rentreeScolaire;
     @CsvBindByName(column = "UAI")
     private String uai;
-    @CsvBindByName(column = "Effectifs")
-    private String effectifs;
     @CsvBindByName(column = "IPS")
     private String indice;
     @CsvBindByName(column = "Ecart-type de l'IPS")

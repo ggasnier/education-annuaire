@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class IPSCollege2022DatasetTest {
 
@@ -22,14 +21,6 @@ class IPSCollege2022DatasetTest {
 
         assertEquals(Double.parseDouble("123.4"), dataset.getIndice());
         assertEquals(Double.parseDouble("123.5"), dataset.getEcartType());
-    }
-
-    @Test
-    void testEffectifs() {
-        dataset.setEffectifs("124");
-        assertEquals(124, dataset.getEffectifs());
-        dataset.setEffectifs("NA");
-        assertNull(dataset.getEffectifs());
     }
 
     @Test
