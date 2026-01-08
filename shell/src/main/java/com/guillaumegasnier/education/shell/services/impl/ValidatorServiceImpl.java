@@ -77,6 +77,11 @@ public class ValidatorServiceImpl implements ValidatorService {
         return toValidEntity(entity, EtablissementContactEntity.class);
     }
 
+    @Override
+    public EtablissementJPOEntity toValidEntity(@NonNull EtablissementJPOEntity entity) {
+        return toValidEntity(entity, EtablissementJPOEntity.class);
+    }
+
 //    @Override
 //    public IndicePositionSocialeEntity toValidEntity(@NonNull IndicePositionSocialeEntity entity) {
 //        return toValidEntity(entity, IndicePositionSocialeEntity.class);

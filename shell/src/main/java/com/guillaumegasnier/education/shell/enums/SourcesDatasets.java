@@ -39,7 +39,10 @@ public enum SourcesDatasets {
     ESR_ETABS_OUVERTS("Etablissements de l'enseignement supérieur", ESR, "https://www.data.gouv.fr/api/1/datasets/r/bcc3229a-beb2-4077-a8d8-50a065dfbbfa", "etablissements_ouverts.csv", StandardCharsets.UTF_8, ';', "GET", EsrEtablissementDataset.class),
     CARIF_ETABS_OUVERTS("Liste des organismes", CARIF, "https://catalogue-apprentissage.intercariforef.org/api/v1/es/search/etablissements/", "etablissements_ouverts.json", StandardCharsets.UTF_8, ',', "POST", CarifEtablissementResponse.class),
     ONISEP_ETABS_SUP("Idéo-Structures d'enseignement supérieur", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa586da5c4b6/5fa586da5c4b6.csv", "etablissements_ouverts_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepEtablissementSupDataset.class),
+    ONISEP_ETABS_SEC("Idéo-Structures d'enseignement secondaire", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa5816ac6a6e/5fa5816ac6a6e.csv", "etablissements_ouverts_sec.csv", StandardCharsets.UTF_8, ';', "GET", OnisepEtablissementSupDataset.class),
     TRAVAIL_ETABS("Liste Publique des Organismes de Formation", MTEDS, "https://www.data.gouv.fr/api/1/datasets/r/ac59a0f5-fa83-4b82-bf12-3c5806d4f19f", "organismes_formations.csv", StandardCharsets.UTF_8, ';', "GET", TravailOrganismeFormationDataset.class),
+    MASA_ETABS("RefEA : Liste des établissements proposant des formations agricoles 2025-2026", MASA, "https://www.data.gouv.fr/api/1/datasets/r/3f56237d-db7a-4957-9d5d-f4b529d6bc36", "etablissements.csv", StandardCharsets.UTF_8, ';', "GET", MasaEtablissementDataset.class),
+
 
     // Indicateurs valeur ajoutée
     IVA_COLLEGES("Indicateurs de valeur ajoutée des collèges", EN, "https://www.data.gouv.fr/api/1/datasets/r/a230247a-8aea-4112-be41-bc008c0d6966", "iva_colleges.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeCollegeDataset.class),

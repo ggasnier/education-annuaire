@@ -6,9 +6,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.guillaumegasnier.education.core.enums.Contact.TEL;
 
@@ -47,6 +52,13 @@ import static com.guillaumegasnier.education.core.enums.Contact.TEL;
 @ToString
 public class OnisepEtablissementSupDataset implements EtablissementDataset {
 
+    private static final Pattern pattern = Pattern.compile(
+            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*(.*?)\\s*$"
+    );
+
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH'h'mm");
+
     @CsvBindByName(column = "code UAI")
     private String uai;
     @CsvBindByName(column = "n° SIRET")
@@ -69,6 +81,8 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     private String cedex;
     @CsvBindByName(column = "téléphone")
     private String contactTelephone;
+    @CsvBindByName(column = "journées portes ouvertes")
+    private String jpo;
 
     @Override
     public String getSiret() {
@@ -133,5 +147,32 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
             contacts.add(new ContactEtablissementDataset(TEL, contactTelephone));
 
         return contacts;
+    }
+
+    @Override
+    public List<JPODataset> getJPO() {
+        List<JPODataset> jpoList = new ArrayList<>();
+
+        if (jpo != null && !jpo.isBlank()) {
+
+            String[] journees = jpo.split("\\|");
+
+            for (String journee : journees) {
+                Matcher matcher = pattern.matcher(journee.trim());
+
+                if (matcher.find()) {
+                    JPODataset jpo = new JPODataset();
+                    jpo.setUai(this.getUai());
+                    jpo.setDate(LocalDate.parse(matcher.group(1), dateFormatter));
+                    jpo.setHeureDebut(LocalTime.parse(matcher.group(2), timeFormatter));
+                    jpo.setHeureFin(LocalTime.parse(matcher.group(3), timeFormatter));
+                    jpo.setCommentaire(matcher.group(4).trim());
+
+                    jpoList.add(jpo);
+                }
+            }
+        }
+
+        return jpoList;
     }
 }

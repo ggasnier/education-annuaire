@@ -18,6 +18,8 @@ public interface ImportEtablissementShell {
 
     void importEtablissementsOnisepSup();
 
+    void importEtablissementsMasa();
+
     void importSports();
 
     void importLangues();

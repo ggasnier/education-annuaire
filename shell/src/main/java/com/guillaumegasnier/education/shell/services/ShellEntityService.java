@@ -33,6 +33,8 @@ public interface ShellEntityService {
 
     List<EtablissementContactEntity> toEtablissementContactEntity(@NonNull EtablissementDataset dataset);
 
+    List<EtablissementJPOEntity> toEtablissementJPOEntity(@NonNull EtablissementDataset dataset);
+
     EtablissementOptionEntity toEtablissementOptionEntity(@NonNull OnisepDispositifDataset dataset);
 
     EtablissementOptionEntity toEtablissementOptionEntity(@NonNull EuroscolDataset dataset);

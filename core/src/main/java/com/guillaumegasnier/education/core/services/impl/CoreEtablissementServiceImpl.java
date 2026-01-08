@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.repositories.*;
+import com.guillaumegasnier.education.core.repositories.etablissements.EtablissementJPORepository;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import jakarta.persistence.EntityManager;
@@ -33,6 +34,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final EtablissementSportRepository etablissementSportRepository;
     private final EtablissementMetadataRepository etablissementMetadataRepository;
     private final EtablissementContactRepository etablissementContactRepository;
+    private final EtablissementJPORepository etablissementJPORepository;
 
     @PersistenceContext
     private EntityManager em;
@@ -188,6 +190,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Override
     public List<EtablissementContactEntity> getContactListByUai(String uai) {
         return etablissementContactRepository.findAllByPkUai(uai);
+    }
+
+    @Override
+    public void saveJPO(@NonNull List<EtablissementJPOEntity> entities) {
+        etablissementJPORepository.saveAll(entities);
     }
 
     @Override

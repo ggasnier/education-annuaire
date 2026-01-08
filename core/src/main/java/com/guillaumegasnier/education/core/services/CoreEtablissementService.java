@@ -84,4 +84,6 @@ public interface CoreEtablissementService {
     void saveContacts(@NonNull List<EtablissementContactEntity> entities);
 
     List<EtablissementContactEntity> getContactListByUai(String uai);
+
+    void saveJPO(List<EtablissementJPOEntity> entities);
 }

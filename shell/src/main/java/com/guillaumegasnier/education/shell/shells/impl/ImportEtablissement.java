@@ -70,6 +70,13 @@ public class ImportEtablissement implements ImportEtablissementShell {
     @ShellMethod(value = "Import établissements (ONISEP SUP)")
     public void importEtablissementsOnisepSup() {
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SUP), "onisep");
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SEC), "onisep");
+    }
+
+    @Override
+    @ShellMethod(value = "Import établissements (MASA)")
+    public void importEtablissementsMasa() {
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(MASA_ETABS), "masa");
     }
 
     /**

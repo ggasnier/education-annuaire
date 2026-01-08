@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.shell.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
-import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import org.springframework.lang.NonNull;
 
 public interface ValidatorService {
@@ -11,6 +10,8 @@ public interface ValidatorService {
     EtablissementOptionEntity toValidEntity(@NonNull EtablissementOptionEntity entity);
 
     EtablissementContactEntity toValidEntity(@NonNull EtablissementContactEntity entity);
+
+    EtablissementJPOEntity toValidEntity(@NonNull EtablissementJPOEntity entity);
 
     //SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity);
 

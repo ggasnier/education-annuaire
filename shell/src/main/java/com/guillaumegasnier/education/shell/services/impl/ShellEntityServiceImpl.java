@@ -147,6 +147,27 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
+    public List<EtablissementJPOEntity> toEtablissementJPOEntity(@NonNull EtablissementDataset dataset) {
+        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+            return dataset.getJPO()
+                    .stream()
+                    .map(j -> {
+                        var entity = new EtablissementJPOEntity();
+                        entity.setPk(new EtablissementJPOPK(j.getUai(), j.getDate()));
+                        entity.setEtablissement(coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
+                        entity.setHeureDebut(j.getHeureDebut());
+                        entity.setHeureFin(j.getHeureFin());
+                        entity.setCommentaire(j.getCommentaire());
+                        return entity;
+                    })
+                    .toList();
+        } else {
+            log.warn("Pas d'établissement avec UAI {} pour jpo", dataset.getUai());
+            return List.of();
+        }
+    }
+
+    @Override
     public EtablissementOptionEntity toEtablissementOptionEntity(@NonNull OnisepDispositifDataset dataset) {
         if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
             return new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), dataset.getOption()), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));

@@ -87,4 +87,8 @@ public interface EtablissementDataset extends Cloneable, Dataset {
         return null;
     }
 
+    default List<JPODataset> getJPO() {
+        return Collections.emptyList();
+    }
+
 }

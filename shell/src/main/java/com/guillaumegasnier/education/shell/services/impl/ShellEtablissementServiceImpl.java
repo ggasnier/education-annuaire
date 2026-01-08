@@ -219,6 +219,18 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             .filter(Objects::nonNull)
                             .toList()
             );
+
+            // Les journees portes ouvertes
+            coreEtablissementService.saveJPO(
+                    sub.stream()
+                            .flatMap(this::dedoublement)
+                            .map(shellEntityService::toEtablissementJPOEntity)
+                            .flatMap(List::stream)
+                            .map(validatorService::toValidEntity)
+                            .filter(Objects::nonNull)
+                            .toList());
+
+
         }
 
         long endTime = System.nanoTime();
