@@ -327,7 +327,6 @@ public class ShellEntityServiceImpl implements ShellEntityService {
                     .map(langue -> {
                                 var e = new EtablissementLangueEntity(new EtablissementLanguePK(dataset.getUai(), langue, categorie, ""), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
                                 e.addSource(source);
-                                log.info("Source {} pour {}", e.getSources(), dataset.getUai());
                                 return e;
                             }
                     )
