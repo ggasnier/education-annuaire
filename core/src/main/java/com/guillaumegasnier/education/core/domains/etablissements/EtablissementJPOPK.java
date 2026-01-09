@@ -24,5 +24,7 @@ public class EtablissementJPOPK implements Serializable {
     @Column(columnDefinition = "BPCHAR(8)", length = 8)
     private String uai;
 
-    private LocalDate date;
+    private LocalDate dateDebut;
+
+    private LocalDate dateFin;
 }

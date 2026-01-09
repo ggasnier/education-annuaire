@@ -14,7 +14,9 @@ public class JPODataset {
 
     private String uai;
 
-    private LocalDate date;
+    private LocalDate dateDebut;
+
+    private LocalDate dateFin;
 
     private LocalTime heureDebut;
 

@@ -198,6 +198,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    public List<EtablissementJPOEntity> getJourneesPortesOuvertes(String uai) {
+        return etablissementJPORepository.findAllByPkUaiOrderByPkDateDebut(uai);
+    }
+
+    @Override
     public void saveSpecialites(List<EtablissementSpecialiteEntity> entities) {
         specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les anciennes
     }

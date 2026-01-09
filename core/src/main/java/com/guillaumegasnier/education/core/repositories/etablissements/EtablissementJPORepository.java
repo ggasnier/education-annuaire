@@ -5,6 +5,10 @@ import com.guillaumegasnier.education.core.domains.etablissements.EtablissementJ
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EtablissementJPORepository extends JpaRepository<EtablissementJPOEntity, EtablissementJPOPK> {
+
+    List<EtablissementJPOEntity> findAllByPkUaiOrderByPkDateDebut(String uai);
 }

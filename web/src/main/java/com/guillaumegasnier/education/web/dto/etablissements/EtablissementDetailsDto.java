@@ -19,5 +19,7 @@ public record EtablissementDetailsDto(
 
         List<ContactDto> contacts,
 
+        List<JPODto> journees,
+
         List<MetadataDto> metadatas) {
 }

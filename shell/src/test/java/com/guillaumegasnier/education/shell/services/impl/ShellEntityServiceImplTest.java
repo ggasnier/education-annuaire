@@ -8,11 +8,9 @@ import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
-import com.guillaumegasnier.education.shell.datasets.etablissements.EnEtablissementDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.LangueDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.SectionBinationaleDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.SpecialitePremiereDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,6 +23,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@Slf4j
 class ShellEntityServiceImplTest {
 
     @Mock
@@ -57,9 +56,7 @@ class ShellEntityServiceImplTest {
         when(coreEtablissementService.findEtablissement(uaiAbsent)).thenReturn(Optional.empty());
         when(coreEtablissementService.isEtablissementExiste(uaiExiste)).thenReturn(true);
         when(coreEtablissementService.isEtablissementExiste(uaiAbsent)).thenReturn(false);
-
     }
-
 
     @Test
     void toEtablissementEntityUaiNotFound() {
@@ -83,6 +80,19 @@ class ShellEntityServiceImplTest {
         EtablissementEntity entity = service.toEtablissementEntity(dataset, "test");
 
         assertNotNull(entity);
+    }
+
+    @Test
+    void toLangueEntityTest() {
+        OnisepDispositifDataset dataset = new OnisepDispositifDataset();
+        dataset.setUai(uaiExiste);
+        dataset.setNom("section européenne de lycée général et technologique");
+        dataset.setEnseignement("anglais");
+
+        List<EtablissementLangueEntity> entity = service.toLangueEntity(dataset, Langue.Categorie.LO, "onisep");
+        assertEquals(1, entity.size());
+        assertNotNull(entity.getFirst().getSources());
+        log.info(entity.getFirst().getSources().toString());
     }
 
     /*@Test
@@ -115,7 +125,7 @@ class ShellEntityServiceImplTest {
         SpecialitePremiereDataset dataset = new SpecialitePremiereDataset();
         dataset.setUai(uaiAbsent);
         // when
-        List<EtablissementSpecialiteEntity> result = service.toSpecialiteEntity(dataset);
+        List<EtablissementSpecialiteEntity> result = service.toSpecialiteEntity(dataset, "en");
         // then
         assertTrue(result.isEmpty());
     }
@@ -127,7 +137,7 @@ class ShellEntityServiceImplTest {
         dataset.setUai(uaiExiste);
         dataset.setEnseignements("Physique-chimie");
         // when
-        List<EtablissementSpecialiteEntity> result = service.toSpecialiteEntity(dataset);
+        List<EtablissementSpecialiteEntity> result = service.toSpecialiteEntity(dataset, "en");
         // then
         assertFalse(result.isEmpty());
     }
@@ -138,7 +148,7 @@ class ShellEntityServiceImplTest {
         SectionBinationaleDataset dataset = new SectionBinationaleDataset();
         dataset.setUai(uaiAbsent);
         // when
-        EtablissementOptionEntity result = service.toEtablissementOptionEntity(dataset);
+        EtablissementOptionEntity result = service.toEtablissementOptionEntity(dataset, "en");
         // then
         assertNull(result);
     }
@@ -150,7 +160,7 @@ class ShellEntityServiceImplTest {
         dataset.setUai(uaiExiste);
         dataset.setTypeBac("Abibac");
         // when
-        EtablissementOptionEntity result = service.toEtablissementOptionEntity(dataset);
+        EtablissementOptionEntity result = service.toEtablissementOptionEntity(dataset, "en");
         // then
         assertNotNull(result);
         assertEquals(OptionEtablissement.ABIBAC, result.getPk().getOption());
@@ -162,7 +172,7 @@ class ShellEntityServiceImplTest {
         EnEtablissementDataset dataset = new EnEtablissementDataset();
         dataset.setUai(uaiAbsent);
         // when
-        List<EtablissementOptionEntity> result = service.toEtablissementOptionEntity(dataset);
+        List<EtablissementOptionEntity> result = service.toEtablissementOptionEntity(dataset, "en");
         // then
         assertTrue(result.isEmpty());
     }
@@ -174,7 +184,7 @@ class ShellEntityServiceImplTest {
         dataset.setUai(uaiExiste);
         dataset.setHebergement("1");
         // when
-        List<EtablissementOptionEntity> result = service.toEtablissementOptionEntity(dataset);
+        List<EtablissementOptionEntity> result = service.toEtablissementOptionEntity(dataset, "en");
         // then
         assertFalse(result.isEmpty());
     }
@@ -221,7 +231,7 @@ class ShellEntityServiceImplTest {
         dataset.setLangue("anglais");
         dataset.setEnseignement("lv1");
         // when
-        EtablissementLangueEntity result = service.toLangueEntity(dataset);
+        EtablissementLangueEntity result = service.toLangueEntity(dataset, "en");
         // then
         assertNotNull(result);
         assertEquals(Langue.EN, result.getPk().getLangue());

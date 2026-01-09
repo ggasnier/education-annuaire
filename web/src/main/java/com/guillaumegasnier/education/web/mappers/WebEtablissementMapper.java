@@ -192,4 +192,8 @@ public abstract class WebEtablissementMapper {
                 .sorted(Comparator.comparing(c -> c.getCategorie().getOrdre()))
                 .collect(Collectors.toList());
     }
+
+    @Mapping(target = "dateFin", source = "pk.dateFin")
+    @Mapping(target = "dateDebut", source = "pk.dateDebut")
+    abstract public JPODto toJPODto(EtablissementJPOEntity etablissementJPOEntity);
 }

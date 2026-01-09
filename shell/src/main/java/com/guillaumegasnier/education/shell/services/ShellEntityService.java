@@ -29,39 +29,31 @@ public interface ShellEntityService {
 
     <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, String source);
 
-    List<EtablissementOptionEntity> toEtablissementOptionEntity(@NonNull EtablissementDataset dataset);
+    List<EtablissementOptionEntity> toEtablissementOptionEntity(@NonNull EtablissementDataset dataset, @NonNull String source);
 
-    List<EtablissementContactEntity> toEtablissementContactEntity(@NonNull EtablissementDataset dataset);
+    List<EtablissementContactEntity> toEtablissementContactEntity(@NonNull EtablissementDataset dataset, @NonNull String source);
 
-    List<EtablissementJPOEntity> toEtablissementJPOEntity(@NonNull EtablissementDataset dataset);
+    List<EtablissementJPOEntity> toEtablissementJPOEntity(@NonNull EtablissementDataset dataset, @NonNull String source);
 
-    EtablissementOptionEntity toEtablissementOptionEntity(@NonNull OnisepDispositifDataset dataset);
+    EtablissementOptionEntity toEtablissementOptionEntity(@NonNull OnisepDispositifDataset dataset, @NonNull String source);
 
-    EtablissementOptionEntity toEtablissementOptionEntity(@NonNull EuroscolDataset dataset);
+    EtablissementOptionEntity toEtablissementOptionEntity(@NonNull EuroscolDataset dataset, @NonNull String source);
 
-    //List<SectionSportiveEntity> toSectionSportiveEntity(@NonNull SectionSportiveDataset dataset);
+    EtablissementOptionEntity toEtablissementOptionEntity(@NonNull SectionBinationaleDataset dataset, @NonNull String source);
 
-    EtablissementOptionEntity toEtablissementOptionEntity(@NonNull SectionBinationaleDataset dataset);
+    List<EtablissementOptionEntity> toEtablissementOptionEntity(@NonNull SectionInternationaleDataset dataset, @NonNull String source);
 
-    List<EtablissementOptionEntity> toEtablissementOptionEntity(@NonNull SectionInternationaleDataset dataset);
+    List<EtablissementSpecialiteEntity> toSpecialiteEntity(@NonNull SpecialitePremiereDataset dataset, @NonNull String source);
 
-    //List<SectionInternationaleEntity> toSectionInternationaleEntity(@NonNull SectionInternationaleDataset dataset);
-
-//    IndicePositionSocialeEntity toIndicePositionSocialeEntity(@NonNull IPSDataset dataset, @NonNull String categorie);
-
-    List<EtablissementSpecialiteEntity> toSpecialiteEntity(@NonNull SpecialitePremiereDataset dataset);
-
-    //SportEtudeEntity toSportEtudeEntity(@NonNull SectionSportEtudeDataset dataset);
-
-    EtablissementLangueEntity toLangueEntity(@NonNull LangueDataset dataset);
+    EtablissementLangueEntity toLangueEntity(@NonNull LangueDataset dataset, @NonNull String source);
 
     FormationEntity findFormationByOnisepId(OnisepFormationDataset dataset);
 
     OrganismeEntity toOrganismeEntity(@NonNull TravailOrganismeFormationDataset dataset);
 
-    List<EtablissementSportEntity> toEtablissementSportEntity(@NonNull SportDataset dataset, @NonNull Sport.Categorie categorie);
+    List<EtablissementSportEntity> toEtablissementSportEntity(@NonNull SportDataset dataset, @NonNull Sport.Categorie categorie, @NonNull String source);
 
-    List<EtablissementLangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, @NonNull Langue.Categorie categorie);
+    List<EtablissementLangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, @NonNull Langue.Categorie categorie, @NonNull String source);
 
     ActionFormationEntity toActionFormationEntity(@NonNull ParcoursupFormationDataset parcoursupFormationDataset, @NonNull FormationEntity entity);
 }

@@ -86,4 +86,6 @@ public interface CoreEtablissementService {
     List<EtablissementContactEntity> getContactListByUai(String uai);
 
     void saveJPO(List<EtablissementJPOEntity> entities);
+
+    List<EtablissementJPOEntity> getJourneesPortesOuvertes(String uai);
 }

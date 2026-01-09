@@ -4,13 +4,14 @@ SET client_encoding = 'UTF8';
 CREATE TABLE etablissements_jpo
 (
     uai         CHAR(8)                     NOT NULL,
-    date        date                        NOT NULL,
+    date_debut  date                        NOT NULL,
+    date_fin    date                        NOT NULL,
     heure_debut time WITHOUT TIME ZONE,
     heure_fin   time WITHOUT TIME ZONE,
     commentaire TEXT,
     created_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    CONSTRAINT pk_etablissements_jpo PRIMARY KEY (uai, date)
+    CONSTRAINT pk_etablissements_jpo PRIMARY KEY (uai, date_debut, date_fin)
 );
 
 ALTER TABLE etablissements_jpo

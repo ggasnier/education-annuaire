@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
-import com.guillaumegasnier.education.core.domains.AbstractEntity;
+import com.guillaumegasnier.education.core.domains.AbstractSourcesEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "etablissements_sports")
-public class EtablissementSportEntity extends AbstractEntity {
+public class EtablissementSportEntity extends AbstractSourcesEntity {
 
     @EmbeddedId
     private EtablissementSportPK pk;

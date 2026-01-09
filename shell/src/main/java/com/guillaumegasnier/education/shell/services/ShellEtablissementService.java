@@ -12,23 +12,19 @@ import java.util.List;
 
 public interface ShellEtablissementService {
 
-    void createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source);
+    void createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, @NonNull String source);
 
-    //void createOrUpdateNatures(@NonNull List<NatureDataset> datasets);
+    void createOrUpdateLangues(@NonNull List<LangueDataset> datasets, @NonNull String source);
 
-    //void createOrUpdateContrats(@NonNull List<ContratDataset> datasets);
+    void createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets, @NonNull String source);
 
-    void createOrUpdateLangues(@NonNull List<LangueDataset> datasets);
+    void createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets, @NonNull String source);
 
-    void createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets);
+    void createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets, @NonNull String source);
 
-    void createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets);
+    void createOrUpdateSports(@NonNull List<SportDataset> datasets, Sport.Categorie categorie, @NonNull String source);
 
-    void createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets);
-
-    void createOrUpdateSports(@NonNull List<SportDataset> datasets, Sport.Categorie categorie);
-
-    void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets);
+    void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets, @NonNull String source);
 
     <T extends IndicePositionSociale & Metadata> void createOrUpdateIPS(@NonNull List<T> datasets);
 
@@ -36,5 +32,5 @@ public interface ShellEtablissementService {
 
     <T extends IndicateurValeurAjoutee & Metadata> void createOrUpdateIVA(@NonNull List<T> datasets);
 
-    void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets);
+    void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets, @NonNull String source);
 }

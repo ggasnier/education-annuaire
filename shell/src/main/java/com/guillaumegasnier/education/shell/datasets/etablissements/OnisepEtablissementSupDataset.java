@@ -6,16 +6,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static com.guillaumegasnier.education.core.enums.Contact.TEL;
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatJPODataset;
 
 /**
  * code UAI
@@ -51,13 +49,6 @@ import static com.guillaumegasnier.education.core.enums.Contact.TEL;
 @Setter
 @ToString
 public class OnisepEtablissementSupDataset implements EtablissementDataset {
-
-    private static final Pattern pattern = Pattern.compile(
-            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*(.*?)\\s*$"
-    );
-
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH'h'mm");
 
     @CsvBindByName(column = "code UAI")
     private String uai;
@@ -151,28 +142,10 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
 
     @Override
     public List<JPODataset> getJPO() {
-        List<JPODataset> jpoList = new ArrayList<>();
-
-        if (jpo != null && !jpo.isBlank()) {
-
-            String[] journees = jpo.split("\\|");
-
-            for (String journee : journees) {
-                Matcher matcher = pattern.matcher(journee.trim());
-
-                if (matcher.find()) {
-                    JPODataset jpo = new JPODataset();
-                    jpo.setUai(this.getUai());
-                    jpo.setDate(LocalDate.parse(matcher.group(1), dateFormatter));
-                    jpo.setHeureDebut(LocalTime.parse(matcher.group(2), timeFormatter));
-                    jpo.setHeureFin(LocalTime.parse(matcher.group(3), timeFormatter));
-                    jpo.setCommentaire(matcher.group(4).trim());
-
-                    jpoList.add(jpo);
-                }
-            }
-        }
-
-        return jpoList;
+        if (jpo != null && !jpo.isBlank())
+            return Stream.of(jpo.split("\\|"))
+                    .map(input -> formatJPODataset(this.getUai(), input.trim()))
+                    .toList();
+        return Collections.emptyList();
     }
 }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6" th:fragment="bloc">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Informations principales</h2>
+    <div class="space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <dt class="text-sm font-medium text-gray-500">UAI</dt>
+                <dd class="text-sm text-gray-900" th:text="${etablissement.uai}"></dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">SIRET</dt>
+                <dd class="text-sm text-gray-900" th:text="${etablissement.siret}"></dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Type</dt>
+                <dd class="text-sm text-gray-900" th:text="${etablissement.nomNature}"></dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Secteur</dt>
+                <dd class="text-sm text-gray-900" th:text="${etablissement.nomSecteur}"></dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Contrat</dt>
+                <dd class="text-sm text-gray-900" th:text="${etablissement.nomContrat}"></dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Ville</dt>
+                <dd class="text-sm text-gray-900"><span th:text="${etablissement.nomCommune}"></span></dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Département</dt>
+                <dd class="text-sm text-gray-900"><span
+                        th:text="${etablissement.nomDepartement}"></span>&nbsp;(<span
+                        th:text="${etablissement.codeDepartement}"></span>)
+                </dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Académie</dt>
+                <dd class="text-sm text-gray-900" th:text="${etablissement.nomAcademie}"></dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Région</dt>
+                <dd class="text-sm text-gray-900" th:text="${etablissement.nomRegion}"></dd>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
