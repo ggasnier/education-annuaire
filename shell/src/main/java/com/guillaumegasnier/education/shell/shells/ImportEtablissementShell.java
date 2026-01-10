@@ -43,4 +43,6 @@ public interface ImportEtablissementShell {
     void importEtablissementsMetadatas();
 
     void importEtablissementsRecherche();
+
+    void importEtablissementsRecherche();
 }

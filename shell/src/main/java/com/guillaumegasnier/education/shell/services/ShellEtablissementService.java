@@ -37,6 +37,9 @@ public interface ShellEtablissementService {
 
     <T extends IndicateurValeurAjoutee & Metadata> void createOrUpdateIVA(@NonNull List<T> datasets);
 
+    void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets);
+
+    void importEtablissementsRecherche();
     void createOrUpdateJpo(@NonNull List<MasaJpoDataset> datasets, @NonNull String masa);
 
     void importEtablissementsRecherche();
