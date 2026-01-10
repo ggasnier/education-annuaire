@@ -19,4 +19,7 @@ public interface EtablissementRepository extends JpaRepository<EtablissementEnti
     Optional<EtablissementEntity> findByMasaId(String masaId);
 
     int countByActif(boolean b);
+
+    List<EtablissementEntity> findAllByActif(boolean b);
+
 }
