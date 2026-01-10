@@ -17,5 +17,4 @@ public interface EtablissementRepository extends JpaRepository<EtablissementEnti
     List<EtablissementEntity> findAllByCommuneCodeOrderByNatureAscNomAsc(String code);
 
     int countByActif(boolean b);
-
 }

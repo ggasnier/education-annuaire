@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -32,6 +33,7 @@ import static com.guillaumegasnier.education.shell.mappers.DateMapper.toLocalDat
 
 @Slf4j
 @Service
+@Transactional
 public class ShellEntityServiceImpl implements ShellEntityService {
 
     private final CoreReferenceService coreReferenceService;
@@ -79,6 +81,10 @@ public class ShellEntityServiceImpl implements ShellEntityService {
             entity.setActif(dataset.isActif());
         }
 
+        if (dataset.getExternalId() != null) {
+            entity.addIdentifiant(coreEtablissementService.findIdentifiant(entity, dataset.getExternalId().getKey(), dataset.getExternalId().getValue()));
+        }
+
         entity.addSource(source);
 
         return entity;
@@ -113,6 +119,10 @@ public class ShellEntityServiceImpl implements ShellEntityService {
         }
         if (dataset.getCodeContrat() != null) {
             coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
+        }
+
+        if (dataset.getExternalId() != null) {
+            entity.addIdentifiant(new EtablissementIdentifiantEntity(entity, dataset.getExternalId().getKey(), dataset.getExternalId().getValue()));
         }
 
         entity.addSource(source);

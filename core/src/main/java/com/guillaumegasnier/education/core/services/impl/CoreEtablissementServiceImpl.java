@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.repositories.*;
+import com.guillaumegasnier.education.core.repositories.etablissements.EtablissementIdentifiantRepository;
 import com.guillaumegasnier.education.core.repositories.etablissements.EtablissementJPORepository;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.validations.ValidUai;
@@ -35,6 +36,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final EtablissementMetadataRepository etablissementMetadataRepository;
     private final EtablissementContactRepository etablissementContactRepository;
     private final EtablissementJPORepository etablissementJPORepository;
+    private final EtablissementIdentifiantRepository etablissementIdentifiantRepository;
 
     @PersistenceContext
     private EntityManager em;
@@ -200,6 +202,12 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Override
     public List<EtablissementJPOEntity> getJourneesPortesOuvertes(String uai) {
         return etablissementJPORepository.findAllByPkUaiOrderByPkDateDebut(uai);
+    }
+
+    @Override
+    public EtablissementIdentifiantEntity findIdentifiant(EtablissementEntity entity, String clef, String valeur) {
+        return etablissementIdentifiantRepository.findByPkUaiAndPkClefAndPkValeur(entity.getUai(), clef, valeur)
+                .orElseGet(() -> etablissementIdentifiantRepository.save(new EtablissementIdentifiantEntity(entity, clef, valeur)));
     }
 
     @Override

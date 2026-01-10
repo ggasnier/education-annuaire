@@ -12,6 +12,8 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -78,9 +80,17 @@ public class EtablissementEntity extends AbstractSourcesEntity {
     @JoinColumn(name = "nda", foreignKey = @ForeignKey(name = "fk_etablissements_organismes"))
     private OrganismeEntity organisme;
 
+    @OneToMany(mappedBy = "etablissement", cascade = CascadeType.ALL)
+    private Set<EtablissementIdentifiantEntity> identifiants = new HashSet<>();
+
     public NatureEntity getNature() {
         if (nature == null) return new NatureEntity("$", "Non renseigné");
         return nature;
+    }
+
+    public void addIdentifiant(EtablissementIdentifiantEntity identifiant) {
+        identifiants.add(identifiant);
+        identifiant.setEtablissement(this);
     }
 
 }

@@ -88,4 +88,6 @@ public interface CoreEtablissementService {
     void saveJPO(List<EtablissementJPOEntity> entities);
 
     List<EtablissementJPOEntity> getJourneesPortesOuvertes(String uai);
+
+    EtablissementIdentifiantEntity findIdentifiant(EtablissementEntity entity, String key, String value);
 }

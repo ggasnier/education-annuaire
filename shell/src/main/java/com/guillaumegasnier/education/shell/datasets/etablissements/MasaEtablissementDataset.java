@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.AbstractMap;
 import java.util.UUID;
 
 @Getter
@@ -15,7 +16,8 @@ public class MasaEtablissementDataset implements EtablissementDataset {
 
     //Année scolaire
     //uai_id_cdn
-    //Code DGER
+    @CsvBindByName(column = "Code DGER")
+    private String masaId;
     //Type
     @CsvBindByName(column = "Libellé administratif")
     private String nom;
@@ -63,6 +65,18 @@ public class MasaEtablissementDataset implements EtablissementDataset {
     private String adresse5;
     @CsvBindByName(column = "adressepostale_ligne6")
     private String adresse6;
+
+    @Override
+    public String getSiret() {
+        if (siret == null) return null;
+        if (siret.isBlank()) return null;
+        return siret;
+    }
+
+    @Override
+    public AbstractMap.SimpleEntry<String, String> getExternalId() {
+        return new AbstractMap.SimpleEntry<>("MASA", masaId);
+    }
 
     @Override
     public Secteur getSecteur() {
@@ -117,7 +131,8 @@ public class MasaEtablissementDataset implements EtablissementDataset {
             case "LEGTPA" -> "307"; // Lycée d'enseignement général, technologique et professionnel agricole
             case "EREA" -> "370"; // Etablissement régional d'enseignement adapté / Lycée d'enseignement adapté
             default -> {
-                System.out.println(uai + ";" + this.nomNature);
+                // TODO mapping à continuer
+                //System.out.println(uai + ";" + this.nomNature);
                 yield null;
             }
         };

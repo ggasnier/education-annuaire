@@ -23,6 +23,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN, uses = {DateMapper.class})
 public abstract class EtablissementMapper {
 
+    @Mapping(target = "identifiants", ignore = true)
     @Mapping(target = "organisme", ignore = true)
     @Mapping(target = "nature", ignore = true)
     @Mapping(target = "contrat", ignore = true)

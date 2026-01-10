@@ -5,10 +5,7 @@ import com.guillaumegasnier.education.core.enums.Secteur;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 
 public interface EtablissementDataset extends Cloneable, Dataset {
@@ -91,4 +88,12 @@ public interface EtablissementDataset extends Cloneable, Dataset {
         return Collections.emptyList();
     }
 
+    /**
+     * Permet de stocker un id autre que l'UAI
+     *
+     * @return un HasMap avec le code de l'identifiant externe et l'identifiant externe
+     */
+    default AbstractMap.SimpleEntry<String, String> getExternalId() {
+        return null;
+    }
 }
