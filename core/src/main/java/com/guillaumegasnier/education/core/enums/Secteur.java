@@ -3,16 +3,12 @@ package com.guillaumegasnier.education.core.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Deprecated
 @Getter
 @AllArgsConstructor
-public enum EtatEtablissement {
+public enum Secteur {
 
-    O("Ouvert"),
-    F("Fermé"),
-    C("À fermer"),
-    A("À ouvrir");
+    PU("Public"),
+    PV("Privé");
 
     private final String nom;
-
 }
