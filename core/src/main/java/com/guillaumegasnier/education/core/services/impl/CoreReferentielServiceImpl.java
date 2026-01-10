@@ -12,5 +12,4 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CoreReferentielServiceImpl implements CoreReferentielService {
 
-    private final CoreReferentielService coreReferentielService;
 }

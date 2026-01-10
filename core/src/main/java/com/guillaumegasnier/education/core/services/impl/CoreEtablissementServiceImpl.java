@@ -56,7 +56,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
-    //@Transactional(propagation = Propagation.SUPPORTS)
+    // @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<EtablissementEntity> findEtablissement(@ValidUai String uai) {
         return etablissementRepository.findByUai(uai);
     }
@@ -103,15 +103,16 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         return etablissementSportRepository.findAllByPkUaiOrderByPkCategorie(uai);
     }
 
-//    @Override
-//    public void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities) {
-//        sportEtudeRepository.saveAll(entities);
-//    }
+    // @Override
+    // public void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities)
+    // {
+    // sportEtudeRepository.saveAll(entities);
+    // }
 
-//    @Override
-//    public List<SectionSportiveEntity> getSectionSportiveListByUai(String uai) {
-//        return sectionSportiveRepository.findAllByPkUai(uai);
-//    }
+    // @Override
+    // public List<SectionSportiveEntity> getSectionSportiveListByUai(String uai) {
+    // return sectionSportiveRepository.findAllByPkUai(uai);
+    // }
 
     @Override
     public EtablissementEntity saveEtablissement(EtablissementEntity entity) {
@@ -123,10 +124,12 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         return etablissementRepository.findAll();
     }
 
-//    @Override
-//    public List<EtablissementEntity> findEtablissementByNda(String numeroDeclarationActivite) {
-//        return etablissementRepository.findByNumeroDeclarationActivite(numeroDeclarationActivite);
-//    }
+    // @Override
+    // public List<EtablissementEntity> findEtablissementByNda(String
+    // numeroDeclarationActivite) {
+    // return
+    // etablissementRepository.findByNumeroDeclarationActivite(numeroDeclarationActivite);
+    // }
 
     @Override
     public List<EtablissementEntity> findEtablissementListByDepartement(String code) {
@@ -192,18 +195,22 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 
     @Override
     public void saveSpecialites(List<EtablissementSpecialiteEntity> entities) {
-        specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les anciennes
+        specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les
+                                                // anciennes
     }
 
-    /*@Override
-    public void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities) {
-        sectionInternationaleRepository.saveAll(entities);
-    }*/
+    /*
+     * @Override
+     * public void saveSectionsInternationales(@NonNull
+     * List<SectionInternationaleEntity> entities) {
+     * sectionInternationaleRepository.saveAll(entities);
+     * }
+     */
 
-//    @Override
-//    public void saveSectionsSporties(List<SectionSportiveEntity> entities) {
-//        sectionSportiveRepository.saveAll(entities);
-//    }
+    // @Override
+    // public void saveSectionsSporties(List<SectionSportiveEntity> entities) {
+    // sectionSportiveRepository.saveAll(entities);
+    // }
 
     @Override
     public void saveLangues(List<EtablissementLangueEntity> entities) {
@@ -216,5 +223,10 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         optionEtablissementRepository.saveAll(entities);
         em.flush();
         em.clear();
+    }
+
+    @Override
+    public List<EtablissementEntity> findEtablissementsActif() {
+        return etablissementRepository.findAllByActif(true);
     }
 }

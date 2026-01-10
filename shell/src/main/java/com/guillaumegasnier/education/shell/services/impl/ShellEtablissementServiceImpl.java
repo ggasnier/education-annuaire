@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.core.validations.Effectifs;
 import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
@@ -35,6 +36,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     private final EtablissementMapper etablissementMapper;
     private final CoreEtablissementService coreEtablissementService;
+    private final CoreRechercheService coreRechercheService;
     private final ShellEntityService shellEntityService;
     private final ValidatorService validatorService;
 
@@ -70,7 +72,8 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
         log.info("Import des dispositifs sections européennes");
         coreEtablissementService.saveLangues(datasets.stream()
-                .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_EUROPEENNE))
+                .filter(d -> d.getOption() != null
+                        && d.getOption().equals(OptionEtablissement.SECTION_EUROPEENNE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
                 .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.EU))
                 .flatMap(List::stream)
@@ -80,7 +83,8 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
         log.info("Import des dispositifs sections langues orientales");
         coreEtablissementService.saveLangues(datasets.stream()
-                .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_ORIENTALE))
+                .filter(d -> d.getOption() != null
+                        && d.getOption().equals(OptionEtablissement.SECTION_ORIENTALE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
                 .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.LO))
                 .flatMap(List::stream)
@@ -91,7 +95,8 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
         log.info("Import des dispositifs sections internationales");
         coreEtablissementService.saveLangues(datasets.stream()
-                .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_INTERNATIONALE))
+                .filter(d -> d.getOption() != null
+                        && d.getOption().equals(OptionEtablissement.SECTION_INTERNATIONALE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
                 .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.SI))
                 .flatMap(List::stream)
@@ -101,7 +106,8 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
         log.info("Import des dispositifs sections bilingues");
         coreEtablissementService.saveLangues(datasets.stream()
-                .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_BILINGUE))
+                .filter(d -> d.getOption() != null
+                        && d.getOption().equals(OptionEtablissement.SECTION_BILINGUE))
                 .filter(d -> d.getUai() != null && !d.getUai().isBlank())
                 .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.BI))
                 .flatMap(List::stream)
@@ -160,12 +166,14 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public void createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source) {
+    public void createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets,
+                                             String source) {
 
         long startTime = System.nanoTime();
 
         for (int i = 0; i < datasets.size(); i += chunk) {
-            List<? extends EtablissementDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
+            List<? extends EtablissementDataset> sub = datasets.subList(i,
+                    Math.min(i + chunk, datasets.size()));
             // Les établissements
             coreEtablissementService.saveEtablissements(sub.stream()
                     .flatMap(this::dedoublement)
@@ -191,8 +199,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             .flatMap(List::stream)
                             .map(validatorService::toValidEntity)
                             .filter(Objects::nonNull)
-                            .toList()
-            );
+                            .toList());
         }
 
         long endTime = System.nanoTime();
@@ -206,19 +213,20 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     /**
-     * <p>Dédoublement des datasets</p>
+     * <p>
+     * Dédoublement des datasets
+     * </p>
      * <ul>
-     *     <li>UAI séparés par ";"</li>
-     *     <li>SIRET séparés par ","</li>
+     * <li>UAI séparés par ";"</li>
+     * <li>SIRET séparés par ","</li>
      * </ul>
      */
     public Stream<EtablissementDataset> dedoublement(@NonNull EtablissementDataset etablissementDataset) {
         return Stream.of(etablissementDataset)
-                .flatMap(dataset ->
-                        Arrays.stream(dataset.getUai().split(";"))
-                                .map(String::trim)
-                                .filter(uai -> !uai.isEmpty())
-                                .map(dataset::cloneWithUai))
+                .flatMap(dataset -> Arrays.stream(dataset.getUai().split(";"))
+                        .map(String::trim)
+                        .filter(uai -> !uai.isEmpty())
+                        .map(dataset::cloneWithUai))
                 .flatMap(dataset -> {
                     String siretField = dataset.getSiret();
                     if (siretField == null || siretField.isBlank()) {
@@ -232,28 +240,36 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 });
     }
 
-    /*@Override
-    public void createOrUpdateNatures(@NonNull List<NatureDataset> datasets) {
-        coreEtablissementService.saveNatures(datasets.stream()
-                .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
-                .map(etablissementMapper::toNatureEntity)
-                .toList());
-        log.info("Import terminé : {} natures(s) enregistrée(s).", datasets.size());
-    }*/
+    /*
+     * @Override
+     * public void createOrUpdateNatures(@NonNull List<NatureDataset> datasets) {
+     * coreEtablissementService.saveNatures(datasets.stream()
+     * .filter(dataset -> dataset.getDateFin() != null &&
+     * dataset.getDateFin().isEmpty())
+     * .map(etablissementMapper::toNatureEntity)
+     * .toList());
+     * log.info("Import terminé : {} natures(s) enregistrée(s).", datasets.size());
+     * }
+     */
 
-    /*@Override
-    public void createOrUpdateContrats(List<ContratDataset> datasets) {
+    /*
+     * @Override
+     * public void createOrUpdateContrats(List<ContratDataset> datasets) {
+     *
+     * }
+     */
 
-    }*/
-
-    /*@Override
-    public void createOrUpdateContrats(@NonNull List<ContratDataset> datasets) {
-        coreEtablissementService.saveContrats(datasets.stream()
-                .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
-                .map(etablissementMapper::toContratEntity)
-                .toList());
-        log.info("Import terminé : {} contrat(s) enregistré(s).", datasets.size());
-    }*/
+    /*
+     * @Override
+     * public void createOrUpdateContrats(@NonNull List<ContratDataset> datasets) {
+     * coreEtablissementService.saveContrats(datasets.stream()
+     * .filter(dataset -> dataset.getDateFin() != null &&
+     * dataset.getDateFin().isEmpty())
+     * .map(etablissementMapper::toContratEntity)
+     * .toList());
+     * log.info("Import terminé : {} contrat(s) enregistré(s).", datasets.size());
+     * }
+     */
 
     @Override
     public void createOrUpdateLangues(@NonNull List<LangueDataset> datasets) {
@@ -311,4 +327,13 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         log.info("Import terminé : {} sections binationale enregistrée(s).", datasets.size());
     }
 
+    @Override
+    public void importEtablissementsRecherche() {
+        coreRechercheService.saveEtablissements(
+                coreEtablissementService
+                        .findEtablissementsActif()
+                        .stream()
+                        .map(etablissementMapper::toRechercheEtablissementEntity)
+                        .toList());
+    }
 }

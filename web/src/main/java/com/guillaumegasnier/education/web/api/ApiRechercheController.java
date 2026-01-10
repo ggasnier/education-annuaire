@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.web.api;
 
-import com.guillaumegasnier.education.web.dto.FacetteRechercheDto;
-import com.guillaumegasnier.education.web.dto.ResultatRechercheDto;
+import com.guillaumegasnier.education.core.dto.RechercheFacetteDTO;
+import com.guillaumegasnier.education.core.dto.RechercheResultatsDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -20,7 +20,7 @@ public interface ApiRechercheController {
             tags = {"Recherche"}
     )
     @GetMapping("/resultats")
-    default ResponseEntity<ResultatRechercheDto> getResultatRecherche(@RequestParam MultiValueMap<String, String> facettes) {
+    default ResponseEntity<RechercheResultatsDTO> getResultatRecherche(@RequestParam MultiValueMap<String, String> facettes) {
         return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
     }
 
@@ -29,7 +29,7 @@ public interface ApiRechercheController {
             tags = {"Recherche"}
     )
     @GetMapping("/facettes")
-    default ResponseEntity<List<FacetteRechercheDto>> getFacetteRecherche(@RequestParam MultiValueMap<String, String> facettes) throws IOException {
+    default ResponseEntity<List<RechercheFacetteDTO>> getFacetteRecherche(@RequestParam MultiValueMap<String, String> facettes) throws IOException {
         return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
     }
 }

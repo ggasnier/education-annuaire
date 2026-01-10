@@ -18,4 +18,6 @@ public interface EtablissementRepository extends JpaRepository<EtablissementEnti
 
     int countByActif(boolean b);
 
+    List<EtablissementEntity> findAllByActif(boolean b);
+
 }

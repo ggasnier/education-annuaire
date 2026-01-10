@@ -15,7 +15,7 @@ public interface CoreEtablissementService {
 
     void saveContrats(@NonNull List<ContratEntity> entities);
 
-//    void saveIPS(@NonNull List<IndicePositionSocialeEntity> entities);
+    // void saveIPS(@NonNull List<IndicePositionSocialeEntity> entities);
 
     void saveSpecialites(List<EtablissementSpecialiteEntity> entities);
 
@@ -41,7 +41,7 @@ public interface CoreEtablissementService {
 
     Optional<ContratEntity> findContrat(String codeContrat);
 
-//    Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee);
+    // Optional<IndicePositionSocialeEntity> findIPS(String uai, int annee);
 
     List<EtablissementOptionEntity> getOptionListByUai(String uai);
 
@@ -49,17 +49,18 @@ public interface CoreEtablissementService {
 
     List<EtablissementSportEntity> getSportListByUai(String uai);
 
-    //void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities);
+    // void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities);
 
-    //List<SectionSportiveEntity> getSectionSportiveListByUai(String uai);
+    // List<SectionSportiveEntity> getSectionSportiveListByUai(String uai);
 
-//    List<IndicePositionSocialeEntity> getIPSListByUai(String uai);
+    // List<IndicePositionSocialeEntity> getIPSListByUai(String uai);
 
     EtablissementEntity saveEtablissement(EtablissementEntity entity);
 
     List<EtablissementEntity> findAll();
 
-//    List<EtablissementEntity> findEtablissementByNda(String numeroDeclarationActivite);
+    // List<EtablissementEntity> findEtablissementByNda(String
+    // numeroDeclarationActivite);
 
     List<EtablissementEntity> findEtablissementListByDepartement(String code);
 
@@ -84,4 +85,6 @@ public interface CoreEtablissementService {
     void saveContacts(@NonNull List<EtablissementContactEntity> entities);
 
     List<EtablissementContactEntity> getContactListByUai(String uai);
+
+    List<EtablissementEntity> findEtablissementsActif();
 }

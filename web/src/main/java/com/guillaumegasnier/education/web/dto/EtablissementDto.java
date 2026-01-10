@@ -2,7 +2,6 @@ package com.guillaumegasnier.education.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,9 +45,6 @@ public class EtablissementDto {
 
     @JsonProperty(value = "code_nature")
     protected String codeNature;
-
-    @JsonProperty(value = "code_etat")
-    protected EtatEtablissement codeEtat;
 
     @JsonProperty(value = "code_commune")
     protected String codeCommune;

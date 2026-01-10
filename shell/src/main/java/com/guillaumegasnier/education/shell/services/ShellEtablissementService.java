@@ -14,9 +14,9 @@ public interface ShellEtablissementService {
 
     void createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, String source);
 
-    //void createOrUpdateNatures(@NonNull List<NatureDataset> datasets);
+    // void createOrUpdateNatures(@NonNull List<NatureDataset> datasets);
 
-    //void createOrUpdateContrats(@NonNull List<ContratDataset> datasets);
+    // void createOrUpdateContrats(@NonNull List<ContratDataset> datasets);
 
     void createOrUpdateLangues(@NonNull List<LangueDataset> datasets);
 
@@ -37,4 +37,6 @@ public interface ShellEtablissementService {
     <T extends IndicateurValeurAjoutee & Metadata> void createOrUpdateIVA(@NonNull List<T> datasets);
 
     void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets);
+
+    void importEtablissementsRecherche();
 }
