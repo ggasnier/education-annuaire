@@ -21,6 +21,10 @@
                  th:if="${recherche.total > 0}">
                 <span th:text="${recherche.total}"></span> résultats pour : <span
                     class="font-semibold text-gray-900" th:text="${recherche.q}"></span>
+            <div th:if="${resultats.total > 0}" class="bg-white p-4 rounded-lg shadow mb-6 hover:shadow-md transition">
+                <span th:text="${resultats.total}"></span> résultats pour : <span
+                    class="font-semibold text-gray-900"
+                    th:text="${resultats.q}"></span>
             </div>
 
             <th:block th:each="resultat : ${recherche.resultats}">
@@ -29,6 +33,12 @@
                             <span th:class="'inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase ' + (${resultat.nomSecteur} == 'Public' ? 'bg-green-600 text-white' : 'bg-indigo-600 text-white')"
                                   th:if="${resultat.nomSecteur}"
                                   th:text="${resultat.nomSecteur}">Secteur</span>
+            <th:block th:each="resultat : ${resultats.resultats}">
+                <div class="bg-white p-4 rounded-lg shadow mb-6 hover:shadow-md transition">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-semibold text-blue-700 hover:underline cursor-pointer"
+                        ><a th:href="@{/etablissements/{uai}(uai=${resultat.id})}"
+                            th:text="${resultat.nom}"></a></h2>
                     </div>
                     <div class="flex items-start justify-between">
                         <div class="flex-1">
@@ -114,10 +124,28 @@
         <div class="w-1/4 p-4 bg-white rounded-lg shadow">
             <h3 class="text-lg font-semibold mb-4">Filtres</h3>
 
+            <div th:each="facette : ${facettes.facettes}" class="mb-6"
+             th:if="${facette.valeurs != null and facette.valeurs.size() > 0}">
+            <h4 class="font-medium mb-2" th:text="${facette.nom}"></h4>
             <div class="mb-6" th:each="facette : ${recherche.facettes}"
                  th:if="${facette.valeurs != null and facette.valeurs.size() > 0}">
                 <h4 class="font-medium mb-2" th:text="${facette.nom}"></h4>
 
+            <div class="space-y-1">
+                <label class="flex items-center justify-between w-full" th:each="valeur : ${facette.valeurs}">
+                    <div class="flex items-center">
+                        <input type="checkbox"
+                               th:name="${facette.code}"
+                               th:value="${valeur.code}"
+                               class="mr-2 text-blue-600"
+                               th:onchange="this.form.submit()">
+                        <span class="text-sm text-gray-700" th:text="${valeur.nom}"></span>
+                    </div>
+                    <span class="text-sm text-gray-400" th:text="'(' + ${valeur.total} + ')'"></span>
+                </label>
+            </div>
+        </div><!--facettes-->
+    </div>
                 <div class="space-y-1">
                     <label class="flex items-center justify-between w-full" th:each="valeur : ${facette.valeurs}">
                         <div class="flex items-center">

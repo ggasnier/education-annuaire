@@ -1,5 +1,7 @@
 package com.guillaumegasnier.education.web.api;
 
+import com.guillaumegasnier.education.core.dto.RechercheFacetteDTO;
+import com.guillaumegasnier.education.core.dto.RechercheResultatsDTO;
 import com.guillaumegasnier.education.core.dto.RechercheDTO;
 import com.guillaumegasnier.education.core.dto.RechercheFacetteDTO;
 import com.guillaumegasnier.education.core.dto.RechercheResultatsDTO;
@@ -40,6 +42,7 @@ public interface ApiRechercheController {
     )
     @GetMapping("/recherche")
     default ResponseEntity<RechercheDTO> getRecherche(@RequestParam MultiValueMap<String, String> facettes) {
+    default ResponseEntity<List<RechercheFacetteDTO>> getFacetteRecherche(@RequestParam MultiValueMap<String, String> facettes) throws IOException {
         return ResponseEntity.status(NOT_IMPLEMENTED).body(null);
     }
 }
