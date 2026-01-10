@@ -14,29 +14,24 @@ import java.util.regex.Pattern;
 public class ShellUtil {
 
     private static final Pattern ENDING_PATTERN = Pattern.compile("([A-Z]+)\\.(\\d+)$");
-    private static final Pattern RNCP_PATTERN =
-            Pattern.compile("https://www\\.francecompetences\\.fr/recherche/rncp/(\\d+)/?$", Pattern.CASE_INSENSITIVE);
-
+    private static final Pattern RNCP_PATTERN = Pattern
+            .compile("https://www\\.francecompetences\\.fr/recherche/rncp/(\\d+)/?$", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_JPO_1 = Pattern.compile(
-            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*(.*?)\\s*$"
-    );
+            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*([^\\n]{0,255})\\s*$");
     private static final Pattern PATTERN_JPO_2 = Pattern.compile(
-            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s*(.*?)\\s*$"
-    );
+            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s*([^\\n]{0,255})\\s*$");
     private static final Pattern PATTERN_JPO_3 = Pattern.compile(
-            "du\\s+(\\d{2}/\\d{2}/\\d{4})\\s+au\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*(.*?)\\s*$"
-    );
+            "du\\s+(\\d{2}/\\d{2}/\\d{4})\\s+au\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*([^\\n]{0,255})\\s*$");
     private static final Pattern PATTERN_JPO_4 = Pattern.compile(
-            "du\\s+(\\d{2}/\\d{2}/\\d{4})\\s+au\\s+(\\d{2}/\\d{2}/\\d{4})\\s*(.*?)\\s*$"
-    );
+            "du\\s+(\\d{2}/\\d{2}/\\d{4})\\s+au\\s+(\\d{2}/\\d{2}/\\d{4})\\s*([^\\n]{0,255})\\s*$");
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH'h'mm");
 
-
     @Nullable
     public static Integer extractOnisepId(String url) {
-        if (url == null) return null;
+        if (url == null)
+            return null;
 
         Matcher matcher = ENDING_PATTERN.matcher(url);
         return matcher.find() ? Integer.parseInt(matcher.group(2)) : null;
@@ -44,7 +39,8 @@ public class ShellUtil {
 
     @Nullable
     public static String extractRncpCode(String url) {
-        if (url == null) return null;
+        if (url == null)
+            return null;
 
         Matcher matcher = RNCP_PATTERN.matcher(url);
         return matcher.find() ? "RNCP" + matcher.group(1) : null;
