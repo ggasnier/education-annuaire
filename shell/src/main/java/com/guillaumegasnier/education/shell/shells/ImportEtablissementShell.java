@@ -39,4 +39,6 @@ public interface ImportEtablissementShell {
     void importIvaColleges();
 
     void importEtablissementsDetails();
+
+    void importEtablissementsRecherche();
 }

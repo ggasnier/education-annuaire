@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.web.mappers;
 
-import com.guillaumegasnier.education.core.domains.recherche.ResultatEntity;
+import com.guillaumegasnier.education.core.domains.recherche.RechercheEtablissementEntity;
 import com.guillaumegasnier.education.web.dto.ResultatRechercheDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,6 +13,6 @@ public abstract class WebRechercheMapper {
     @Mapping(target = "size", ignore = true)
     @Mapping(target = "results", ignore = true)
     @Mapping(target = "page", ignore = true)
-    public abstract ResultatRechercheDto toResultatRechercheDto(ResultatEntity entity);
+    public abstract ResultatRechercheDto toResultatRechercheDto(RechercheEtablissementEntity entity);
 
 }

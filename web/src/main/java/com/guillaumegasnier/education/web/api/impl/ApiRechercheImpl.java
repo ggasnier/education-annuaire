@@ -1,9 +1,10 @@
 package com.guillaumegasnier.education.web.api.impl;
 
+import com.guillaumegasnier.education.core.dto.RechercheCriteria;
+import com.guillaumegasnier.education.core.dto.RechercheFacetteDTO;
+import com.guillaumegasnier.education.core.dto.RechercheResultatsDTO;
+import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.web.api.ApiRechercheController;
-import com.guillaumegasnier.education.web.dto.FacetteRechercheDto;
-import com.guillaumegasnier.education.web.dto.ResultatRechercheDto;
-import com.guillaumegasnier.education.web.services.RechercheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -20,20 +21,20 @@ import java.util.List;
 @RequestMapping("/api/v1/recherche")
 public class ApiRechercheImpl implements ApiRechercheController {
 
-    private final RechercheService rechercheService;
+    private final CoreRechercheService coreRechercheService;
 
     @Autowired
-    public ApiRechercheImpl(RechercheService rechercheService) {
-        this.rechercheService = rechercheService;
+    public ApiRechercheImpl(CoreRechercheService coreRechercheService) {
+        this.coreRechercheService = coreRechercheService;
     }
 
     @Override
-    public ResponseEntity<ResultatRechercheDto> getResultatRecherche(@RequestParam MultiValueMap<String, String> facettes) {
-        return ResponseEntity.ok(rechercheService.recherche(facettes));
+    public ResponseEntity<RechercheResultatsDTO> getResultatRecherche(@RequestParam MultiValueMap<String, String> facettes) {
+        return ResponseEntity.ok(coreRechercheService.searchEtablissements(new RechercheCriteria(facettes)));
     }
 
     @Override
-    public ResponseEntity<List<FacetteRechercheDto>> getFacetteRecherche(@RequestParam MultiValueMap<String, String> facettes) throws IOException {
-        return ResponseEntity.ok(rechercheService.facette(facettes));
+    public ResponseEntity<List<RechercheFacetteDTO>> getFacetteRecherche(@RequestParam MultiValueMap<String, String> facettes) throws IOException {
+        return ResponseEntity.ok(coreRechercheService.searchEtablissementsFacettes(new RechercheCriteria(facettes)));
     }
 }
