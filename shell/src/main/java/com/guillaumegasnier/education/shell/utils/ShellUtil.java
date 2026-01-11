@@ -1,6 +1,8 @@
 package com.guillaumegasnier.education.shell.utils;
 
 import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 
@@ -11,17 +13,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ShellUtil {
 
     private static final Pattern ENDING_PATTERN = Pattern.compile("([A-Z]+)\\.(\\d+)$");
     private static final Pattern RNCP_PATTERN = Pattern
             .compile("https://www\\.francecompetences\\.fr/recherche/rncp/(\\d+)/?$", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_JPO_1 = Pattern.compile(
-            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*([^\\n]{0,255})\\s*$");
+            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*([^\\n]{0,255})\\s*$", Pattern.CANON_EQ);
     private static final Pattern PATTERN_JPO_2 = Pattern.compile(
             "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s*([^\\n]{0,255})\\s*$");
     private static final Pattern PATTERN_JPO_3 = Pattern.compile(
-            "du\\s+(\\d{2}/\\d{2}/\\d{4})\\s+au\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*([^\\n]{0,255})\\s*$");
+            "du\\s+(\\d{2}/\\d{2}/\\d{4})\\s+au\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*([^\\n]{0,255})\\s*$", Pattern.CANON_EQ);
     private static final Pattern PATTERN_JPO_4 = Pattern.compile(
             "du\\s+(\\d{2}/\\d{2}/\\d{4})\\s+au\\s+(\\d{2}/\\d{2}/\\d{4})\\s*([^\\n]{0,255})\\s*$");
 

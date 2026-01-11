@@ -142,14 +142,9 @@ public class ProductionFileService implements FileService {
 
         String scrollId = null;
         int totalFetched = 0;
-        int page = 1;
         int totalRecupere = 0;
         final String scrollDuration = "5m";
         List<CarifEtablissementDataset> etablissementDatasetList = new ArrayList<>();
-
-        String body = """
-                
-                """;
 
         do {
             CarifEtablissementResponse response;
@@ -203,7 +198,6 @@ public class ProductionFileService implements FileService {
 
         String scrollId = null;
         int totalFetched = 0;
-        int page = 1;
         int totalRecupere = 0;
         final String scrollDuration = "5m";
         List<CarifFormationDataset> formationDatasetList = new ArrayList<>();

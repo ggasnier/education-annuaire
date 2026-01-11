@@ -19,6 +19,7 @@ import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
 @AllArgsConstructor
 public class ImportEtablissement implements ImportEtablissementShell {
 
+    private static final String ONISEP = "onisep";
     private final ShellEtablissementService shellEtablissementService;
     private final FileService fileService;
 
@@ -69,8 +70,8 @@ public class ImportEtablissement implements ImportEtablissementShell {
     @Override
     @ShellMethod(value = "Import établissements (ONISEP SUP)")
     public void importEtablissementsOnisepSup() {
-        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SUP), "onisep");
-        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SEC), "onisep");
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SUP), ONISEP);
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SEC), ONISEP);
     }
 
     @Override
@@ -85,7 +86,6 @@ public class ImportEtablissement implements ImportEtablissementShell {
     @Override
     @ShellMethod(value = "Import sections sport études et sections sportives")
     public void importSports() {
-        // TODO source
         shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), Sport.Categorie.SS, "en");
         shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), Sport.Categorie.SE, "en");
     }
@@ -110,13 +110,13 @@ public class ImportEtablissement implements ImportEtablissementShell {
     @Override
     @ShellMethod(value = "Import spécialités de première générale")
     public void importSpecialites() {
-        shellEtablissementService.createOrUpdateSpecialites(fileService.importCSV(SPECIALITES), "onisep");
+        shellEtablissementService.createOrUpdateSpecialites(fileService.importCSV(SPECIALITES), ONISEP);
     }
 
     @Override
     @ShellMethod(value = "Import des dispositifs des établissements")
     public void importDispositifs() {
-        shellEtablissementService.createOrUpdateDispositifs(fileService.importCSV(DISPOSITIFS), "onisep");
+        shellEtablissementService.createOrUpdateDispositifs(fileService.importCSV(DISPOSITIFS), ONISEP);
     }
 
     @Override

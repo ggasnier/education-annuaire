@@ -80,9 +80,13 @@ public class MasaEtablissementDataset implements EtablissementDataset {
 
     @Override
     public Secteur getSecteur() {
-        if (secteur != null)
-            if (secteur.equals("Privé")) return Secteur.PV;
-            else if (secteur.equals("Public")) return Secteur.PU;
+        if (secteur != null) {
+            if (secteur.equals("Privé")) {
+                return Secteur.PV;
+            } else if (secteur.equals("Public")) {
+                return Secteur.PU;
+            }
+        }
         return null;
     }
 
@@ -130,11 +134,7 @@ public class MasaEtablissementDataset implements EtablissementDataset {
             case "CFA", "CFA privé" -> "605"; // Organisme de formation - Centre de formation d'apprentis
             case "LEGTPA" -> "307"; // Lycée d'enseignement général, technologique et professionnel agricole
             case "EREA" -> "370"; // Etablissement régional d'enseignement adapté / Lycée d'enseignement adapté
-            default -> {
-                // TODO mapping à continuer
-                //System.out.println(uai + ";" + this.nomNature);
-                yield null;
-            }
+            default -> null;
         };
 
     }

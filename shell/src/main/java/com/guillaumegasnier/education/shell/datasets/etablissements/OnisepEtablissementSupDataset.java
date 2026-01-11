@@ -124,9 +124,13 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
 
     @Override
     public Secteur getSecteur() {
-        if (statut != null)
-            if (statut.equals("public")) return Secteur.PU;
-            else if (statut.equals("privé")) return Secteur.PV;
+        if (statut != null) {
+            if (statut.equals("public")) {
+                return Secteur.PU;
+            } else if (statut.equals("privé")) {
+                return Secteur.PV;
+            }
+        }
         return null;
     }
 

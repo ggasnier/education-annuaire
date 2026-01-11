@@ -170,9 +170,13 @@ public class EsrEtablissementDataset implements EtablissementDataset {
 
     @Override
     public Secteur getSecteur() {
-        if (secteurEtablissement != null)
-            if (secteurEtablissement.equals("public")) return Secteur.PU;
-            else if (secteurEtablissement.equals("privé")) return Secteur.PV;
+        if (secteurEtablissement != null) {
+            if (secteurEtablissement.equals("public")) {
+                return Secteur.PU;
+            } else if (secteurEtablissement.equals("privé")) {
+                return Secteur.PV;
+            }
+        }
         return null;
     }
 
@@ -239,9 +243,6 @@ public class EsrEtablissementDataset implements EtablissementDataset {
 
         if (contactTelephone != null && !contactTelephone.isEmpty())
             contacts.add(new ContactEtablissementDataset(TEL, contactTelephone));
-
-        // if (contactMail != null && !contactMail.isEmpty())
-        //   contacts.add(new ContactEtablissementDataset("email", contactMail));
 
         if (contactWeb != null && !contactWeb.isEmpty())
             contacts.add(new ContactEtablissementDataset(WEB, contactWeb));
