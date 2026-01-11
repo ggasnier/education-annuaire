@@ -5,7 +5,10 @@ import com.guillaumegasnier.education.core.enums.Secteur;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 
 public interface EtablissementDataset extends Cloneable, Dataset {
@@ -13,8 +16,6 @@ public interface EtablissementDataset extends Cloneable, Dataset {
     EtablissementDataset cloneWithUai(String uai);
 
     EtablissementDataset cloneWithSiret(String siret);
-
-    UUID getId();
 
     default String getUai() {
         return null;
@@ -41,10 +42,6 @@ public interface EtablissementDataset extends Cloneable, Dataset {
     String getCodeCommune();
 
     default String getNomCommune() {
-        return null;
-    }
-
-    default String getCodePays() {
         return null;
     }
 

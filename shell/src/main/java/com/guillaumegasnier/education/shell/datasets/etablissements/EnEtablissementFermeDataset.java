@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 /**
  * numero_uai
@@ -129,11 +128,6 @@ public class EnEtablissementFermeDataset implements EtablissementDataset {
         } catch (CloneNotSupportedException e) {
             return null;
         }
-    }
-
-    @Override
-    public UUID getId() {
-        return UUID.nameUUIDFromBytes(uai.getBytes());
     }
 
 }

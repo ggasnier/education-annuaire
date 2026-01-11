@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static com.guillaumegasnier.education.core.enums.Contact.*;
 
@@ -231,12 +230,6 @@ public class EsrEtablissementDataset implements EtablissementDataset {
         return null;
     }
 
-
-    @Override
-    public String getCodePays() {
-        return "";
-    }
-
     @Override
     public List<ContactEtablissementDataset> getContacts() {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
@@ -285,11 +278,6 @@ public class EsrEtablissementDataset implements EtablissementDataset {
         } catch (CloneNotSupportedException e) {
             return null;
         }
-    }
-
-    @Override
-    public UUID getId() {
-        return UUID.nameUUIDFromBytes(uai.getBytes());
     }
 
 }

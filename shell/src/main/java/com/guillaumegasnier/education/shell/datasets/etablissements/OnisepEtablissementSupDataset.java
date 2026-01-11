@@ -9,7 +9,6 @@ import lombok.ToString;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static com.guillaumegasnier.education.core.enums.Contact.TEL;
@@ -115,11 +114,6 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
         } catch (CloneNotSupportedException e) {
             return null;
         }
-    }
-
-    @Override
-    public UUID getId() {
-        return UUID.nameUUIDFromBytes(uai.getBytes());
     }
 
     @Override

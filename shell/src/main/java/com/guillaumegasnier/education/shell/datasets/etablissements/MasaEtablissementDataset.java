@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.AbstractMap;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -115,11 +114,6 @@ public class MasaEtablissementDataset implements EtablissementDataset {
     @Override
     public Boolean isActif() {
         return dateFinValidite.isBlank();
-    }
-
-    @Override
-    public UUID getId() {
-        return UUID.nameUUIDFromBytes(uai.getBytes());
     }
 
     @Override

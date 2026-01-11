@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.Contact;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,10 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ContactEtablissementDatasetTest {
 
     ContactEtablissementDataset dataset;
-
-    @BeforeEach
-    void setUp() {
-    }
 
     @Test
     void constructorTest() {

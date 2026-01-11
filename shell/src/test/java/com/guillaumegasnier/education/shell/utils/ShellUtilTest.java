@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.shell.utils;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -10,10 +9,6 @@ import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatJPOData
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShellUtilTest {
-
-    @BeforeEach
-    void setUp() {
-    }
 
     @Test
     void formatJPODatasetTestNull() {
@@ -112,10 +107,14 @@ class ShellUtilTest {
     void formatJPODatasetTest2() {
         var input = "du 06/03/2026 au 07/03/2026";
         var output = formatJPODataset("0333596E", input);
+        assertNotNull(output);
+        assertEquals(LocalDate.parse("2026-03-06"), output.getDateDebut());
 
         input = "du 06/03/2026 au 07/03/2026 (de 13h30 à 18h le vendredi, de 9h à 13h le samedi, toutes les formations)";
         output = formatJPODataset("0333596E", input);
-
+        assertNotNull(output);
+        assertEquals(LocalDate.parse("2026-03-06"), output.getDateDebut());
+        assertNotNull(output.getCommentaire());
     }
 
 }

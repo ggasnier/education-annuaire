@@ -9,7 +9,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Type_etablissement
@@ -150,7 +153,7 @@ public class EnEtablissementDataset implements EtablissementDataset {
         if (adresse == null) return null;
         if (adresse.isBlank()) return null;
         if (adresse.length() > 50) return adresse.substring(0, 50);
-        return adresse;
+        return adresse.trim();
     }
 
     @Override
@@ -176,11 +179,6 @@ public class EnEtablissementDataset implements EtablissementDataset {
     }
 
     @Override
-    public UUID getId() {
-        return UUID.nameUUIDFromBytes(uai.getBytes());
-    }
-
-    @Override
     public String getSiret() {
         if (siret == null) return null;
         if (siret.isBlank()) return null;
@@ -192,13 +190,7 @@ public class EnEtablissementDataset implements EtablissementDataset {
         if (complement == null) return null;
         if (complement.isBlank()) return null;
         if (complement.length() > 50) return complement.substring(0, 50);
-        return complement;
-    }
-
-    // TODO
-    @Override
-    public String getCodePays() {
-        return "FR";
+        return complement.trim();
     }
 
     @Override
@@ -214,9 +206,13 @@ public class EnEtablissementDataset implements EtablissementDataset {
 
     @Override
     public Secteur getSecteur() {
-        if (statutPublicPrive != null)
-            if (statutPublicPrive.equals("Public")) return Secteur.PU;
-            else if (statutPublicPrive.equals("Privé")) return Secteur.PV;
+        if (statutPublicPrive != null) {
+            if (statutPublicPrive.equals("Public")) {
+                return Secteur.PU;
+            } else if (statutPublicPrive.equals("Privé")) {
+                return Secteur.PV;
+            }
+        }
         return null;
     }
 

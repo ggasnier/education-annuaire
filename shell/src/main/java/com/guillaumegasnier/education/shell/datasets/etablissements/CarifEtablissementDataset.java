@@ -8,7 +8,10 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -279,18 +282,6 @@ public class CarifEtablissementDataset implements EtablissementDataset {
             copy.setSiret(siret);
             return copy;
         } catch (CloneNotSupportedException e) {
-            return null;
-        }
-    }
-
-    // todo
-    @Override
-    public UUID getId() {
-        if (getUai() != null)
-            return UUID.nameUUIDFromBytes(getUai().getBytes());
-        else if (numeroDeclarationActivite != null)
-            return UUID.nameUUIDFromBytes(numeroDeclarationActivite.getBytes());
-        else {
             return null;
         }
     }
