@@ -59,7 +59,7 @@ public class LocalFileService implements FileService {
 
     @Override
     public <T extends Dataset> List<T> importCSV(@NonNull SourcesDatasets sourcesDatasets) {
-        log.info("Début import {}", sourcesDatasets.getLocalPath());
+        log.info("Début import csv {}", sourcesDatasets.getLocalPath());
 
         Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
 
@@ -98,13 +98,13 @@ public class LocalFileService implements FileService {
 
     @Override
     public FICHES importXmlFromZip(@NonNull SourcesDatasets source) {
-        log.info("Début import {}", source.getLocalPath());
+        log.info("Début import zip {}", source.getLocalPath());
 
         JAXBContext jaxbContext = null;
         try {
             jaxbContext = JAXBContext.newInstance(FICHES.class);
         } catch (JAXBException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
 
         if (!Files.exists(Path.of(source.getLocalPath()))) {
@@ -130,7 +130,7 @@ public class LocalFileService implements FileService {
 
     @Override
     public LheoSubtype importLheoSubtypeFromZip(@NonNull SourcesDatasets sourcesDatasets) {
-        log.info("Début import {}", sourcesDatasets.getLocalPath());
+        log.info("Début import zip {}", sourcesDatasets.getLocalPath());
 
         Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
 
@@ -146,32 +146,9 @@ public class LocalFileService implements FileService {
 
             return jaxbElement.getValue();
 
-//            lheoSubtype.getOffres().getFormation().forEach(formation -> {
-//
-//                if (formation.getNumero().startsWith("FOR.389")) {
-//                    log.info("{} {} {}", formation.getNumero(), formation.getIntituleFormation().getValue(), formation.getContactFormation().getFirst().getCoordonnees().getAdresse().getDenomination().getValue());
-//                }
-//            });
-
-//            String.format("Import terminé : %d formations(s) ONISEP enregistrée(s).", lheoSubtype.getOffres().getFormation().size());
         } catch (JAXBException | IOException e) {
-//            String.format(e.getMessage(), e.getCause().getMessage());
             log.error(e.getMessage());
         }
-
-
-//        try (ZipFile zipFile = new ZipFile(source.getLocalPath())) {
-//            Enumeration<? extends ZipEntry> zipEnumeration = zipFile.entries();
-//
-//            while (zipEnumeration.hasMoreElements()) {
-//                ZipEntry zipEntry = zipEnumeration.nextElement();
-//                try (InputStream inputStream = new BufferedInputStream(zipFile.getInputStream(zipEntry))) {
-//                    return (LheoSubtype) jaxbContext.createUnmarshaller().unmarshal(inputStream);
-//                }
-//            }
-//        } catch (Exception e) {
-//            log.error("Erreur lors de l'ouverture du fichier zip {} : {}", source.getLocalPath(), e.getMessage(), e);
-//        }
 
         return null;
     }

@@ -49,18 +49,6 @@ public abstract class WebEtablissementMapper {
         return entity.getPk().getSpecialite();
     }
 
-//    @Mapping(target = "nom", source = "pk.sport.nom")
-//    @Mapping(target = "code", source = "pk.sport")
-//    public abstract SectionSportiveDto toSectionSportiveDto(SectionSportiveEntity entity);
-
-//    @Mapping(target = "uai", source = "pk.uai")
-//    @Mapping(target = "nomCategorie", source = "categorie") // TODO
-//    @Mapping(target = "codeCategorie", source = "categorie") // TODO
-//    @Mapping(target = "valeur", source = "indice")
-//    @Mapping(target = "annee", source = "pk.annee")
-//    public abstract IPSDto toIndicePositionSocialeEntity(IndicePositionSocialeEntity entity);
-
-
     public List<NatureWithEtablissementsDto> groupbyNature(List<EtablissementEntity> etablissements) {
         if (etablissements == null) return Collections.emptyList();
 
@@ -74,10 +62,10 @@ public abstract class WebEtablissementMapper {
                     List<EtablissementDto> etablissementDtoList = entry.getValue().stream()
                             .filter(Objects::nonNull)
                             .map(this::toEtablissementDto)
-                            .collect(Collectors.toList());
+                            .toList();
                     return new NatureWithEtablissementsDto(natureDto, etablissementDtoList);
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<CommuneWithEtablissementsDto> groupByCommune(List<EtablissementEntity> etablissements) {
@@ -93,10 +81,10 @@ public abstract class WebEtablissementMapper {
                     List<EtablissementDto> etablissementDtoList = entry.getValue().stream()
                             .filter(Objects::nonNull)
                             .map(this::toEtablissementDto)
-                            .collect(Collectors.toList());
+                            .toList();
                     return new CommuneWithEtablissementsDto(communeDto, etablissementDtoList);
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public abstract CommuneDto toCommuneDto(CommuneEntity key);
@@ -122,7 +110,7 @@ public abstract class WebEtablissementMapper {
                             .toList();
                     return new LangueWithCategorieDto(categorie, langues);
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private LangueDto toLangueDto(EtablissementLangueEntity entity) {
@@ -163,7 +151,7 @@ public abstract class WebEtablissementMapper {
                             .toList();
                     return new SportWithCategorieDto(entry.getKey(), sports);
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Mapping(target = "valeur", source = "pk.valeur")
@@ -190,10 +178,10 @@ public abstract class WebEtablissementMapper {
                     return new OptionWithCategorieDto(categorie, options);
                 })
                 .sorted(Comparator.comparing(c -> c.getCategorie().getOrdre()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Mapping(target = "dateFin", source = "pk.dateFin")
     @Mapping(target = "dateDebut", source = "pk.dateDebut")
-    abstract public JPODto toJPODto(EtablissementJPOEntity etablissementJPOEntity);
+    public abstract JPODto toJPODto(EtablissementJPOEntity etablissementJPOEntity);
 }

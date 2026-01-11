@@ -73,11 +73,12 @@ public class ShellFormationEntityServiceImpl implements ShellFormationEntityServ
             entity.setId(UUID.nameUUIDFromBytes(actionOnisepId.getBytes()));
             entity.setRythmeFormation(actionType.getRythmeFormation().getValue());
             entity.setCodePublicVise(actionType.getCodePublicVise().getFirst().getValue());
-            if (actionType.getLieuDeFormation().getFirst().getCodeUAILieuFormation() != null)
-                if (coreEtablissementService.isEtablissementExiste(actionType.getLieuDeFormation().getFirst().getCodeUAILieuFormation().getCodeUAI().getValue()))
-                    entity.setEtablissement(coreEtablissementService.getEtablissementReferenceByUai(actionType.getLieuDeFormation().getFirst().getCodeUAILieuFormation().getCodeUAI().getValue()));
+            if (actionType.getLieuDeFormation().getFirst().getCodeUAILieuFormation() != null &&
+                    coreEtablissementService.isEtablissementExiste(actionType.getLieuDeFormation().getFirst()
+                            .getCodeUAILieuFormation().getCodeUAI().getValue())) {
+                entity.setEtablissement(coreEtablissementService.getEtablissementReferenceByUai(actionType.getLieuDeFormation().getFirst().getCodeUAILieuFormation().getCodeUAI().getValue()));
+            }
 
-            // TODO
             entity.setOnisepId(Integer.parseInt(actionOnisepId));
             entities.add(entity);
         });
