@@ -23,7 +23,6 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "nomSecteur", source = "secteur.nom")
     @Mapping(target = "codeSecteur", source = "secteur")
     @Mapping(target = "nomEtat", ignore = true)
-    @Mapping(target = "codeEtat", ignore = true)
     @Mapping(target = "codeContrat", source = "contrat.code")
     @Mapping(target = "nomContrat", source = "contrat.nom")
     @Mapping(target = "nomPays", ignore = true)
