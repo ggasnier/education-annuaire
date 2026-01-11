@@ -17,8 +17,11 @@ import org.springframework.lang.NonNull;
 import java.util.List;
 
 /**
- * Pour les établissemen
+ * Pour les établissements
+ *
+ * @deprecated à déplacer dans EtablissementEntityService et FormationEntityService
  */
+@Deprecated
 public interface ShellEntityService {
 
     <T extends IndicePositionSociale & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
@@ -47,6 +50,13 @@ public interface ShellEntityService {
 
     EtablissementLangueEntity toLangueEntity(@NonNull LangueDataset dataset, @NonNull String source);
 
+    /**
+     * voir {@link com.guillaumegasnier.education.shell.transformers.EtablissementTransformer}
+     *
+     * @param dataset
+     * @return
+     */
+    @Deprecated
     FormationEntity findFormationByOnisepId(OnisepFormationDataset dataset);
 
     OrganismeEntity toOrganismeEntity(@NonNull TravailOrganismeFormationDataset dataset);
@@ -55,5 +65,6 @@ public interface ShellEntityService {
 
     List<EtablissementLangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, @NonNull Langue.Categorie categorie, @NonNull String source);
 
+    @Deprecated
     ActionFormationEntity toActionFormationEntity(@NonNull ParcoursupFormationDataset parcoursupFormationDataset, @NonNull FormationEntity entity);
 }

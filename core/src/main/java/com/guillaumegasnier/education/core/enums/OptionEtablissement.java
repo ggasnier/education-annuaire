@@ -40,9 +40,9 @@ public enum OptionEtablissement {
     SPORT_ETUDES("Sport études", "🏆", Categorie.SPORT),
 
     // Enseignement
-    ULIS("ULIS", "🤝", Categorie.ENSEIGNEMENT),
+    ULIS("Unités Localisées pour l'Inclusion Scolaire (ULIS)", "🤝", Categorie.ENSEIGNEMENT),
     APPRENTISSAGE("Apprentissage", "🎓", Categorie.ENSEIGNEMENT),
-    SEGPA("Segpa", "📖", Categorie.ENSEIGNEMENT),
+    SEGPA("Section d'Enseignement Général et Professionnel Adapté (SEGPA)", "📖", Categorie.ENSEIGNEMENT),
     POST_BAC("Post BAC", "🎓", Categorie.ENSEIGNEMENT),
     CPGE("CPGE", "📚", Categorie.ENSEIGNEMENT),
     @Deprecated
@@ -53,12 +53,13 @@ public enum OptionEtablissement {
     CHA_DANSE("Classe à horaires aménagés danse", "", Categorie.ENSEIGNEMENT),
     CHA_MUSIQUE("Classe à horaires aménagés musique", "", Categorie.ENSEIGNEMENT),
     CHA_THEATRE("Classe à horaires aménagés théâtre", "", Categorie.ENSEIGNEMENT),
+    CHAMS("Classes à horaires aménagés mathématiques et sciences", "", Categorie.ENSEIGNEMENT),
     BREVET_MER("Brevet d'initiation à la mer", "", Categorie.ENSEIGNEMENT),
     BREVET_AERO("Brevet d'initiation aéronautique (BIA)", "", Categorie.ENSEIGNEMENT),
     PREPA_METIERS("Classe de 3e \"prépa-métiers\"", "", Categorie.ENSEIGNEMENT),
     FORAINS("Classe pour enfants de familles itinérantes et de voyageurs", "", Categorie.ENSEIGNEMENT),
     RELAIS("Dispositif relais", "", Categorie.ENSEIGNEMENT),
-    UPE2A("Unité pédagogique pour élèves allophones arrivants", "🌐", Categorie.ENSEIGNEMENT);
+    UPE2A("Unité pédagogique pour élèves allophones arrivants (UPE2A)", "🌐", Categorie.ENSEIGNEMENT);
 
     private final String nom;
     private final String emoji;

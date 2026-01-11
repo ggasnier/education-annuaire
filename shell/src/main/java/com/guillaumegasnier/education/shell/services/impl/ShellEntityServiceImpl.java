@@ -19,8 +19,8 @@ import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormat
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.mappers.FormationMapper;
 import com.guillaumegasnier.education.shell.services.ShellEntityService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -34,22 +34,15 @@ import static com.guillaumegasnier.education.shell.mappers.DateMapper.toLocalDat
 @Slf4j
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ShellEntityServiceImpl implements ShellEntityService {
 
     private final CoreReferenceService coreReferenceService;
     private final CoreEtablissementService coreEtablissementService;
-    private final CoreFormationService coreFormationService;
     private final EtablissementMapper etablissementMapper;
-    private final FormationMapper formationMapper;
 
-    @Autowired
-    public ShellEntityServiceImpl(CoreReferenceService coreReferenceService, CoreEtablissementService coreEtablissementService, CoreFormationService coreFormationService, EtablissementMapper etablissementMapper, FormationMapper formationMapper) {
-        this.coreReferenceService = coreReferenceService;
-        this.coreEtablissementService = coreEtablissementService;
-        this.coreFormationService = coreFormationService;
-        this.etablissementMapper = etablissementMapper;
-        this.formationMapper = formationMapper;
-    }
+    private final CoreFormationService coreFormationService;
+    private final FormationMapper formationMapper;
 
     @Override
     public <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, @NonNull String source) {
@@ -59,7 +52,7 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     private <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityOld(@NonNull EtablissementEntity entity, @NonNull T dataset, @NonNull String source) {
-        // Ne mettre à jour les champs que si ils sont renseignés
+        // Ne mettre à jour les champs que s'ils sont renseignés
 
         if (dataset.getCodeNature() != null) {
             coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
@@ -132,13 +125,23 @@ public class ShellEntityServiceImpl implements ShellEntityService {
 
     @Override
     public List<EtablissementOptionEntity> toEtablissementOptionEntity(@NonNull EtablissementDataset dataset, @NonNull String source) {
+
         if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
             return dataset.getOptions()
                     .stream()
                     .map(option -> {
-                        var e = new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), option), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
-                        e.addSource(source);
-                        return e;
+
+                        Optional<EtablissementOptionEntity> o = coreEtablissementService.findOption(dataset.getUai(), option);
+
+                        if (o.isPresent()) {
+                            var o2 = o.get();
+                            o2.addSource(source);
+                            return o2;
+                        } else {
+                            var e = new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), option), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
+                            e.addSource(source);
+                            return e;
+                        }
                     })
                     .toList();
         } else {
@@ -189,38 +192,66 @@ public class ShellEntityServiceImpl implements ShellEntityService {
 
     @Override
     public EtablissementOptionEntity toEtablissementOptionEntity(@NonNull OnisepDispositifDataset dataset, @NonNull String source) {
-        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
-            var e = new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), dataset.getOption()), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
-            e.addSource(source);
-            return e;
+
+        Optional<EtablissementOptionEntity> o = coreEtablissementService.findOption(dataset.getUai(), dataset.getOption());
+
+        if (o.isPresent()) {
+            var o2 = o.get();
+            o2.addSource(source);
+            return o2;
         } else {
-            log.warn("Pas d'établissement avec UAI {} pour dispositifs {}", dataset.getUai(), dataset.getOption());
-            return null;
+            if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+                var e = new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), dataset.getOption()), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
+                e.addSource(source);
+                return e;
+            } else {
+                log.warn("Pas d'établissement avec UAI {} pour dispositifs {}", dataset.getUai(), dataset.getOption());
+                return null;
+            }
         }
     }
 
     @Override
     public EtablissementOptionEntity toEtablissementOptionEntity(@NonNull EuroscolDataset dataset, @NonNull String source) {
-        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
-            var e = new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), OptionEtablissement.EUROSCOL), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
-            e.addSource(source);
-            return e;
+
+        Optional<EtablissementOptionEntity> o = coreEtablissementService.findOption(dataset.getUai(), OptionEtablissement.EUROSCOL);
+
+        if (o.isPresent()) {
+            var o2 = o.get();
+            o2.addSource(source);
+            return o2;
         } else {
-            log.warn("Pas d'établissement avec UAI {} pour Euroscol", dataset.getUai());
-            return null;
+
+            if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+                var e = new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), OptionEtablissement.EUROSCOL), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
+                e.addSource(source);
+                return e;
+            } else {
+                log.warn("Pas d'établissement avec UAI {} pour Euroscol", dataset.getUai());
+                return null;
+            }
         }
     }
 
     @Nullable
     @Override
     public EtablissementOptionEntity toEtablissementOptionEntity(@NonNull SectionBinationaleDataset dataset, @NonNull String source) {
-        if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
-            var e = new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), dataset.getOption()), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
-            e.addSource(source);
-            return e;
+
+        Optional<EtablissementOptionEntity> o = coreEtablissementService.findOption(dataset.getUai(), dataset.getOption());
+
+        if (o.isPresent()) {
+            var o2 = o.get();
+            o2.addSource(source);
+            return o2;
         } else {
-            log.warn("Pas d'établissement avec UAI {} pour sections binationales", dataset.getUai());
-            return null;
+            if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
+                var e = new EtablissementOptionEntity(new EtablissementOptionPK(dataset.getUai(), dataset.getOption()), coreEtablissementService.getEtablissementReferenceByUai(dataset.getUai()));
+                e.addSource(source);
+                return e;
+            } else {
+                log.warn("Pas d'établissement avec UAI {} pour sections binationales", dataset.getUai());
+                return null;
+            }
         }
     }
 

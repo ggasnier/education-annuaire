@@ -13,16 +13,10 @@ public interface ValidatorService {
 
     EtablissementJPOEntity toValidEntity(@NonNull EtablissementJPOEntity entity);
 
-    //SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity);
-
     EtablissementSpecialiteEntity toValidEntity(@NonNull EtablissementSpecialiteEntity entity);
 
     EtablissementLangueEntity toValidEntity(@NonNull EtablissementLangueEntity entity);
-
-    //SportEtudeEntity toValidEntity(@NonNull SportEtudeEntity entity);
-
-    //SectionSportiveEntity toValidEntity(@NonNull SectionSportiveEntity entity);
-
+    
     EtablissementSportEntity toValidEntity(@NonNull EtablissementSportEntity entity);
 
     OrganismeEntity toValidEntity(@NonNull OrganismeEntity entity);

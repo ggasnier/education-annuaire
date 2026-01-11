@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.repositories.*;
 import com.guillaumegasnier.education.core.repositories.etablissements.EtablissementIdentifiantRepository;
 import com.guillaumegasnier.education.core.repositories.etablissements.EtablissementJPORepository;
@@ -208,6 +209,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     public EtablissementIdentifiantEntity findIdentifiant(EtablissementEntity entity, String clef, String valeur) {
         return etablissementIdentifiantRepository.findByPkUaiAndPkClefAndPkValeur(entity.getUai(), clef, valeur)
                 .orElseGet(() -> etablissementIdentifiantRepository.save(new EtablissementIdentifiantEntity(entity, clef, valeur)));
+    }
+
+    @Override
+    public Optional<EtablissementOptionEntity> findOption(String uai, OptionEtablissement option) {
+        return optionEtablissementRepository.findByPkUaiAndPkOption(uai, option);
     }
 
     @Override

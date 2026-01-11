@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import org.springframework.lang.NonNull;
 
@@ -14,8 +15,6 @@ public interface CoreEtablissementService {
     void saveNatures(@NonNull List<NatureEntity> entities);
 
     void saveContrats(@NonNull List<ContratEntity> entities);
-
-//    void saveIPS(@NonNull List<IndicePositionSocialeEntity> entities);
 
     void saveSpecialites(List<EtablissementSpecialiteEntity> entities);
 
@@ -90,4 +89,6 @@ public interface CoreEtablissementService {
     List<EtablissementJPOEntity> getJourneesPortesOuvertes(String uai);
 
     EtablissementIdentifiantEntity findIdentifiant(EtablissementEntity entity, String key, String value);
+
+    Optional<EtablissementOptionEntity> findOption(String uai, OptionEtablissement option);
 }

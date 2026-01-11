@@ -76,7 +76,7 @@ public class OnisepDispositifDataset implements Dataset {
     private String contactWeb;
 
     public OptionEtablissement getOption() {
-        return switch (nom) {
+        var i = switch (nom) {
             case "classe sport-études en collège", "classe sport-études en lycée" -> OptionEtablissement.SPORT_ETUDES;
             case "section sportive de collège", "section sportive de lycée" -> OptionEtablissement.SECTION_SPORT;
             case "section Abibac (double délivrance des baccalauréats français et allemand)" ->
@@ -98,6 +98,7 @@ public class OnisepDispositifDataset implements Dataset {
             case "classe à horaires aménagés danse" -> CHA_DANSE;
             case "classe à horaires aménagés musique" -> CHA_MUSIQUE;
             case "classe à horaires aménagés théâtre" -> CHA_THEATRE;
+            case "classes à horaires aménagés mathématiques et sciences" -> CHAMS;
             case "section bilangue de collège",
                  "section bilingue de langue régionale de collège",
                  "section bilingue de langue régionale de lycée" -> OptionEtablissement.SECTION_BILINGUE;
@@ -112,6 +113,11 @@ public class OnisepDispositifDataset implements Dataset {
             case "dispositif relais" -> RELAIS;
             default -> null;
         };
+
+        if (i == null) {
+            log.warn("Option non mappée {} pour {}", nom, uai);
+        }
+        return i;
     }
 
     public List<Langue> getLangueList() {
