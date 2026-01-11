@@ -45,7 +45,19 @@ public enum OptionEtablissement {
     SEGPA("Segpa", "📖", Categorie.ENSEIGNEMENT),
     POST_BAC("Post BAC", "🎓", Categorie.ENSEIGNEMENT),
     CPGE("CPGE", "📚", Categorie.ENSEIGNEMENT),
+    @Deprecated
     CL_H_AM("Classe à horaires aménagés", "⏰", Categorie.ENSEIGNEMENT),
+    CHA_ARTS("Classe à horaires aménagés arts et métiers du spectacle", "", Categorie.ENSEIGNEMENT),
+    CHA_ARTS2("Classe à horaires aménagés arts plastiques", "", Categorie.ENSEIGNEMENT),
+    CHA_CINE("Classe à horaires aménagés cinéma", "", Categorie.ENSEIGNEMENT),
+    CHA_DANSE("Classe à horaires aménagés danse", "", Categorie.ENSEIGNEMENT),
+    CHA_MUSIQUE("Classe à horaires aménagés musique", "", Categorie.ENSEIGNEMENT),
+    CHA_THEATRE("Classe à horaires aménagés théâtre", "", Categorie.ENSEIGNEMENT),
+    BREVET_MER("Brevet d'initiation à la mer", "", Categorie.ENSEIGNEMENT),
+    BREVET_AERO("Brevet d'initiation aéronautique (BIA)", "", Categorie.ENSEIGNEMENT),
+    PREPA_METIERS("Classe de 3e \"prépa-métiers\"", "", Categorie.ENSEIGNEMENT),
+    FORAINS("Classe pour enfants de familles itinérantes et de voyageurs", "", Categorie.ENSEIGNEMENT),
+    RELAIS("Dispositif relais", "", Categorie.ENSEIGNEMENT),
     UPE2A("Unité pédagogique pour élèves allophones arrivants", "🌐", Categorie.ENSEIGNEMENT);
 
     private final String nom;

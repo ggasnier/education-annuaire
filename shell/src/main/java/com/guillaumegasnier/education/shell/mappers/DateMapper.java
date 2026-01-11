@@ -1,14 +1,13 @@
 package com.guillaumegasnier.education.shell.mappers;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import org.mapstruct.Mapper;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Mapper(componentModel = "spring")
 public class DateMapper {
 
     @Nullable

@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -79,8 +78,6 @@ public class EnEtablissementFermeDataset implements EtablissementDataset {
     private String codeNature;
 
     private String codeContrat;
-
-    private EtatEtablissement etat = EtatEtablissement.F;
 
     @CsvBindByName(column = "date_ouverture")
     private String dateOuverture;
