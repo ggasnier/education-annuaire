@@ -63,6 +63,8 @@ public interface ShellEntityService {
 
     List<EtablissementSportEntity> toEtablissementSportEntity(@NonNull SportDataset dataset, @NonNull Sport.Categorie categorie, @NonNull String source);
 
+    List<EtablissementSportEntity> toEtablissementSportEntity(@NonNull OnisepDispositifDataset dataset, @NonNull Sport.Categorie categorie, @NonNull String source);
+
     List<EtablissementLangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, @NonNull Langue.Categorie categorie, @NonNull String source);
 
     @Deprecated

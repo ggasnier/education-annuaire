@@ -361,6 +361,11 @@ public class ShellEntityServiceImpl implements ShellEntityService {
     }
 
     @Override
+    public List<EtablissementSportEntity> toEtablissementSportEntity(OnisepDispositifDataset dataset, Sport.Categorie categorie, String source) {
+        return List.of();
+    }
+
+    @Override
     public List<EtablissementLangueEntity> toLangueEntity(@NonNull OnisepDispositifDataset dataset, @NonNull Langue.Categorie categorie, @NonNull String source) {
         if (coreEtablissementService.isEtablissementExiste(dataset.getUai())) {
             return dataset.getLangueList()
