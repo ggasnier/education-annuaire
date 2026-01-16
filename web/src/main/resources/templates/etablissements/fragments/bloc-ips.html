@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 lg:col-span-2" th:fragment="bloc"
-     th:if="${metadatats != null && metadatats.size() > 0}">
+     th:if="${metadatas != null && metadatas.size() > 0}">
     <h2 class="text-xl font-semibold text-gray-900 mb-4">Indices de Position Sociale (IPS) et Indicateurs de Valeur
         Ajoutée (IVA)</h2>
     <div class="overflow-x-auto">
@@ -22,7 +22,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="m : ${metadatats}">
+            <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="m : ${metadatas}">
                 <td class="py-3 px-4 font-medium" th:text="${m.annee}"></td>
                 <td class="py-3 px-4" th:text="${m.effectifs}"></td>
                 <td class="py-3 px-4" th:text="${m.indice}"></td>
