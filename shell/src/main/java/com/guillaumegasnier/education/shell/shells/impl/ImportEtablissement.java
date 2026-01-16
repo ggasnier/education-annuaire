@@ -52,6 +52,7 @@ public class ImportEtablissement implements ImportEtablissementShell {
         importEtablissementsEsr();
         importEtablissementsCarif();
         importEtablissementsOnisepSup();
+        importEtablissementsMasa();
         importEtablissementsEnFermes();
     }
 

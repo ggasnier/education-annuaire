@@ -1,8 +1,7 @@
 package com.guillaumegasnier.education.core.domains.formations;
 
-import com.guillaumegasnier.education.core.domains.AbstractEntity;
+import com.guillaumegasnier.education.core.domains.AbstractSourcesEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -21,7 +20,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "formations")
-public class FormationEntity extends AbstractEntity {
+public class FormationEntity extends AbstractSourcesEntity {
 
     @Id
     @Column(columnDefinition = "UUID", nullable = false, updatable = false)

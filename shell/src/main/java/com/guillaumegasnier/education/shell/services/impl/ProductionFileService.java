@@ -16,6 +16,9 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.Unmarshaller;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
@@ -26,6 +29,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -290,8 +294,54 @@ public class ProductionFileService implements FileService {
     }
 
     @Override
-    public LheoSubtype importLheoSubtypeFromZip(SourcesDatasets sourcesDatasets) {
-        return null; // TODO
+    public LheoSubtype importLheoSubtypeFromZip(@NonNull SourcesDatasets sourcesDatasets) {
+        log.info("Fichier zip : {}", sourcesDatasets.getUrl());
+
+        try {
+            // Télécharger le fichier zip depuis sourcesDatasets.getUrl()
+            log.info("Téléchargement du fichier ZIP depuis : {}", sourcesDatasets.getUrl());
+            URL url = new URL(sourcesDatasets.getUrl());
+
+            try (InputStream inputStream = url.openStream();
+                 java.util.zip.ZipInputStream zipInputStream = new java.util.zip.ZipInputStream(inputStream)) {
+
+                // Extraire du fichier zip le fichier xml (il y en a un seul)
+                java.util.zip.ZipEntry entry;
+                while ((entry = zipInputStream.getNextEntry()) != null) {
+                    if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
+                        log.info("Fichier XML trouvé : {}", entry.getName());
+
+                        // Enregistrer le fichier en local
+                        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+                        Files.createDirectories(outPath.getParent());
+
+                        // Copier le contenu du zip vers le fichier local
+                        try (OutputStream outputStream = Files.newOutputStream(outPath)) {
+                            byte[] buffer = new byte[8192];
+                            int bytesRead;
+                            while ((bytesRead = zipInputStream.read(buffer)) != -1) {
+                                outputStream.write(buffer, 0, bytesRead);
+                            }
+                        }
+                        log.info("Fichier XML enregistré dans : {}", outPath.toAbsolutePath());
+
+                        // Renvoyer le contenu du fichier xml dans la classe LheoSubtype avec JAXB
+                        JAXBContext context = JAXBContext.newInstance(LheoSubtype.class);
+                        Unmarshaller unmarshaller = context.createUnmarshaller();
+                        JAXBElement<LheoSubtype> jaxbElement = unmarshaller.unmarshal(new StreamSource(outPath.toFile()), LheoSubtype.class);
+                        log.info("Fichier XML parsé avec succès");
+
+                        return jaxbElement.getValue();
+                    }
+                }
+
+                log.error("Aucun fichier XML trouvé dans le ZIP");
+                return null;
+            }
+        } catch (Exception e) {
+            log.error("Erreur lors de l'import du fichier LHEO : {}", e.getMessage(), e);
+            return null;
+        }
     }
 
     @Override

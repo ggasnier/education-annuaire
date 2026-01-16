@@ -1,7 +1,10 @@
 package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
+import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
+import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.repositories.*;
 import com.guillaumegasnier.education.core.repositories.etablissements.EtablissementIdentifiantRepository;
 import com.guillaumegasnier.education.core.repositories.etablissements.EtablissementJPORepository;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -149,18 +153,26 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveOrganisme(OrganismeEntity entity) {
         organismeRepository.save(entity);
+
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveOrganismes(List<OrganismeEntity> entities) {
         organismeRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveEtablissementSportEntity(List<EtablissementSportEntity> entities) {
         etablissementSportRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 
     @Override
@@ -174,6 +186,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveMetadata(List<EtablissementMetadataEntity> entities) {
         etablissementMetadataRepository.saveAll(entities);
         em.flush();
@@ -186,8 +199,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveContacts(@NonNull List<EtablissementContactEntity> entities) {
         etablissementContactRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 
     @Override
@@ -196,8 +212,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveJPO(@NonNull List<EtablissementJPOEntity> entities) {
         etablissementJPORepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 
     @Override
@@ -217,8 +236,26 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    public Optional<EtablissementSportEntity> findSport(String uai, Sport sport, Sport.Categorie categorie) {
+        return etablissementSportRepository.findByPkUaiAndPkSportAndPkCategorie(uai, sport, categorie);
+    }
+
+    @Override
+    public Optional<EtablissementJPOEntity> findJPO(String uai, LocalDate dateDebut, LocalDate dateFin) {
+        return etablissementJPORepository.findByPkUaiAndPkDateDebutAndPkDateFin(uai, dateDebut, dateFin);
+    }
+
+    @Override
+    public Optional<EtablissementLangueEntity> findLangue(String uai, Langue langue, Langue.Categorie categorie, String enseignement) {
+        return langueRepository.findByPkUaiAndPkLangueAndPkCategorieAndPkEnseignement(uai, langue, categorie, enseignement);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveSpecialites(List<EtablissementSpecialiteEntity> entities) {
         specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les anciennes
+        em.flush();
+        em.clear();
     }
 
     /*@Override
@@ -232,8 +269,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 //    }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveLangues(List<EtablissementLangueEntity> entities) {
         langueRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 
     @Override

@@ -1,12 +1,26 @@
 package com.guillaumegasnier.education.shell.transformers;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
-import com.guillaumegasnier.education.shell.dto.*;
+import com.guillaumegasnier.education.core.validations.Effectifs;
+import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
+import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
+import com.guillaumegasnier.education.shell.dto.etablissements.*;
 import org.springframework.lang.NonNull;
 
 public interface EtablissementTransformer {
 
-    EtablissementJPOEntity toEtablissementJPOEntity(@NonNull JPODTO dto, @NonNull String source);
+    <T extends IndicePositionSociale & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
+
+    <T extends Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
+
+    <T extends IndicateurValeurAjoutee & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset);
+
+    <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, @NonNull String source);
+
+    EtablissementJPOEntity toEtablissementJPOEntity(@NonNull JPODataset dto, @NonNull String source);
 
     EtablissementContactEntity toEtablissementContactEntity(@NonNull ContactDTO dto, @NonNull String source);
 

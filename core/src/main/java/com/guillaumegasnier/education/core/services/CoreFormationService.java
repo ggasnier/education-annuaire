@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
 import org.springframework.lang.NonNull;
 
@@ -33,4 +34,8 @@ public interface CoreFormationService {
     Optional<ActionFormationEntity> findActionFormationByParcoursupId(Integer codeInterneFormation);
 
     void saveActionFormation(List<ActionFormationEntity> entities);
+
+    void saveOrganismes(List<OrganismeEntity> entities);
+
+    Optional<ActionFormationEntity> findActionFormation(UUID id);
 }

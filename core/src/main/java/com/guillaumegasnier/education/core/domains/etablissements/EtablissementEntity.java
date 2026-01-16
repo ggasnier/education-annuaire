@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.domains.AbstractSourcesEntity;
+import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
 import com.guillaumegasnier.education.core.enums.Secteur;
 import com.guillaumegasnier.education.core.validations.ValidSiret;

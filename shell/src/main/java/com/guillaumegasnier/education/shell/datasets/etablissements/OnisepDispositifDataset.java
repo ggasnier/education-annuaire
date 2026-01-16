@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
+import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
@@ -124,6 +125,17 @@ public class OnisepDispositifDataset implements Dataset {
         if (getOption().equals(OptionEtablissement.SECTION_EUROPEENNE) || getOption().equals(OptionEtablissement.SECTION_ORIENTALE) || getOption().equals(OptionEtablissement.SECTION_INTERNATIONALE) || getOption().equals(OptionEtablissement.SECTION_BILINGUE)) {
             return Stream.of(enseignement.split(","))
                     .map(Langue::transformation)
+                    .filter(Objects::nonNull)
+                    .toList();
+        }
+        return Collections.emptyList();
+    }
+
+    public List<Sport> getSportList() {
+        if (getOption().equals(SPORT_ETUDES) || getOption().equals(SECTION_SPORT)) {
+            return Stream.of(enseignement.split(","))
+                    .map(String::toUpperCase)
+                    .map(Sport::transformation)
                     .filter(Objects::nonNull)
                     .toList();
         }

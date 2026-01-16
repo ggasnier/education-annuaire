@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.shell.dto;
+package com.guillaumegasnier.education.shell.dto.etablissements;
 
 import com.guillaumegasnier.education.core.enums.Sport;
 

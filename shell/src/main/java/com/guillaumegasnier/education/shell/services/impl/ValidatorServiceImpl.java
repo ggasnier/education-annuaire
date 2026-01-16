@@ -1,6 +1,9 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
@@ -120,5 +123,16 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public OrganismeEntity toValidEntity(@NonNull OrganismeEntity entity) {
         return toValidEntity(entity, OrganismeEntity.class);
+    }
+
+    @Override
+    public FormationEntity toValidEntity(@NonNull FormationEntity entity) {
+        return toValidEntity(entity, FormationEntity.class);
+
+    }
+
+    @Override
+    public ActionFormationEntity toValidEntity(@NonNull ActionFormationEntity entity) {
+        return toValidEntity(entity, ActionFormationEntity.class);
     }
 }

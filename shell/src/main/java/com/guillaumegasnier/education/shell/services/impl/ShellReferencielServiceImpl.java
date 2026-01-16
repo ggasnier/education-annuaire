@@ -5,7 +5,6 @@ import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
-import com.guillaumegasnier.education.shell.services.ReferentielEntityService;
 import com.guillaumegasnier.education.shell.services.ShellReferencielService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShellReferencielServiceImpl implements ShellReferencielService {
 
-    private final ReferentielEntityService referentielEntityService;
     private final CoreEtablissementService coreEtablissementService;
     private final EtablissementMapper etablissementMapper;
 

@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
@@ -9,9 +8,11 @@ import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
-import com.guillaumegasnier.education.shell.services.ShellEntityService;
+import com.guillaumegasnier.education.shell.dto.etablissements.OptionDTO;
+import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
+import com.guillaumegasnier.education.shell.transformers.EtablissementTransformer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +36,9 @@ import java.util.stream.Stream;
 public class ShellEtablissementServiceImpl implements ShellEtablissementService {
 
     private final CoreEtablissementService coreEtablissementService;
-    private final ShellEntityService shellEntityService;
+    private final EtablissementTransformer etablissementTransformer;
+    private final EtablissementMapper etablissementMapper;
+    //private final ShellEntityService shellEntityService;
     private final ValidatorService validatorService;
 
     @Value("${spring.jpa.properties.hibernate.jdbc.batch_size}")
@@ -43,101 +46,62 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     @Override
     public void createOrUpdateSports(@NonNull List<SportDataset> datasets, Sport.Categorie categorie, @NonNull String source) {
-        coreEtablissementService.saveEtablissementSportEntity(datasets
-                .stream()
-                .map(dataset -> shellEntityService.toEtablissementSportEntity(dataset, categorie, source))
-                .flatMap(List::stream)
-                .map(validatorService::toValidEntity)
-                .filter(Objects::nonNull)
-                .toList());
+        for (int i = 0; i < datasets.size(); i += chunk) {
+            List<SportDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
+            coreEtablissementService.saveEtablissementSportEntity(sub.stream()
+                    .map(dataset -> etablissementMapper.toSportDTO(dataset, categorie))
+                    .flatMap(List::stream)
+                    .map(dto -> etablissementTransformer.toEtablissementSportEntity(dto, source))
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList());
+        }
         log.info("Import terminé : {} sports enregistré(s).", datasets.size());
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets, @NonNull String source) {
-
-        log.info("Import des dispositifs comme option");
-        coreEtablissementService.saveOptions(datasets.stream()
-                .filter(d -> d.getOption() != null)
-                .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                .map(o -> shellEntityService.toEtablissementOptionEntity(o, source))
-                .filter(Objects::nonNull)
-                .map(validatorService::toValidEntity)
-                .filter(Objects::nonNull)
-                .toList());
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<OnisepDispositifDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
-
 
             log.info("Import des dispositifs comme option");
             coreEtablissementService.saveOptions(sub.stream()
                     .filter(d -> d.getOption() != null)
                     .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                    .map(o -> shellEntityService.toEtablissementOptionEntity(o, source))
+                    .map(etablissementMapper::toOptionDTO)
+                    .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList());
+
+            log.info("Import des dispositifs sports");
+            coreEtablissementService.saveEtablissementSportEntity(sub.stream()
+                    .filter(d -> d.getOption() != null &&
+                            (d.getOption().equals(OptionEtablissement.SPORT_ETUDES) ||
+                                    d.getOption().equals(OptionEtablissement.SECTION_SPORT)))
+                    .filter(d -> d.getUai() != null && !d.getUai().isBlank())
+                    .map(dataset -> etablissementMapper.toSportDTO(dataset, OptionEtablissement.SECTION_SPORT))
+                    .flatMap(List::stream)
+                    .map(dto -> etablissementTransformer.toEtablissementSportEntity(dto, source))
                     .filter(Objects::nonNull)
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
                     .toList());
 
-        log.info("Import des dispositifs sport-études");
-        coreEtablissementService.saveEtablissementSportEntity(datasets.stream()
-                .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SPORT_ETUDES))
-                .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                .map(s -> shellEntityService.toEtablissementSportEntity(s, Sport.Categorie.SE, source))
-                .flatMap(List::stream)
-                .filter(Objects::nonNull)
-                .map(validatorService::toValidEntity)
-                .filter(Objects::nonNull)
-                .toList());
-
-        log.info("Import des dispositifs sections sportives");
-        coreEtablissementService.saveEtablissementSportEntity(datasets.stream()
-                .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_SPORT))
-                .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                .map(s -> shellEntityService.toEtablissementSportEntity(s, Sport.Categorie.SS, source))
-                .flatMap(List::stream)
-                .filter(Objects::nonNull)
-                .map(validatorService::toValidEntity)
-                .filter(Objects::nonNull)
-                .toList());
-
-            log.info("Import des dispositifs sections européennes");
+            log.info("Import des dispositifs langues");
             coreEtablissementService.saveLangues(sub.stream()
-                    .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_EUROPEENNE))
+                    .filter(d -> d.getOption() != null &&
+                            (d.getOption().equals(OptionEtablissement.SECTION_EUROPEENNE) ||
+                                    d.getOption().equals(OptionEtablissement.SECTION_INTERNATIONALE) ||
+                                    d.getOption().equals(OptionEtablissement.SECTION_BILINGUE) ||
+                                    d.getOption().equals(OptionEtablissement.SECTION_ORIENTALE))
+                    )
                     .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                    .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.EU, source))
+                    .map(etablissementMapper::toLangueDTO)
                     .flatMap(List::stream)
-                    .map(validatorService::toValidEntity)
+                    .map(dto -> etablissementTransformer.toEtablissementLangueEntity(dto, source))
                     .filter(Objects::nonNull)
-                    .toList());
-
-            log.info("Import des dispositifs sections langues orientales");
-            coreEtablissementService.saveLangues(sub.stream()
-                    .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_ORIENTALE))
-                    .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                    .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.LO, source))
-                    .flatMap(List::stream)
-                    .filter(Objects::nonNull)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
-                    .toList());
-
-            log.info("Import des dispositifs sections internationales");
-            coreEtablissementService.saveLangues(sub.stream()
-                    .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_INTERNATIONALE))
-                    .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                    .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.SI, source))
-                    .flatMap(List::stream)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
-                    .toList());
-
-            log.info("Import des dispositifs sections bilingues");
-            coreEtablissementService.saveLangues(sub.stream()
-                    .filter(d -> d.getOption() != null && d.getOption().equals(OptionEtablissement.SECTION_BILINGUE))
-                    .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                    .map(l -> shellEntityService.toLangueEntity(l, Langue.Categorie.BI, source))
-                    .flatMap(List::stream)
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
                     .toList());
@@ -151,7 +115,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<T> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
             coreEtablissementService.saveMetadata(sub.stream()
-                    .map(shellEntityService::toEtablissementMetadataEntity)
+                    .map(etablissementTransformer::toEtablissementMetadataEntity)
                     .filter(Objects::nonNull)
                     .toList());
         }
@@ -187,7 +151,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             List<T> sub = aggregatedData.subList(i, Math.min(i + chunk, aggregatedData.size()));
             coreEtablissementService.saveMetadata(
                     sub.stream()
-                            .map(shellEntityService::toEtablissementMetadataEntity)
+                            .map(etablissementTransformer::toEtablissementMetadataEntity)
                             .filter(Objects::nonNull)
                             .toList());
         }
@@ -198,7 +162,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<T> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
             coreEtablissementService.saveMetadata(sub.stream()
-                    .map(shellEntityService::toEtablissementMetadataEntity)
+                    .map(etablissementTransformer::toEtablissementMetadataEntity)
                     .filter(Objects::nonNull)
                     .toList());
         }
@@ -207,7 +171,8 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     @Override
     public void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveOptions(datasets.stream()
-                .map(o -> shellEntityService.toEtablissementOptionEntity(o, source))
+                .map(dataset -> new OptionDTO(dataset.getUai(), OptionEtablissement.EUROSCOL))
+                .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
@@ -225,7 +190,8 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             // Les établissements
             coreEtablissementService.saveEtablissements(sub.stream()
                     .flatMap(this::dedoublement)
-                    .map(dataset -> shellEntityService.toEtablissementEntity(dataset, source))
+                    .map(dataset -> etablissementTransformer.toEtablissementEntity(dataset, source))
+                    .filter(Objects::nonNull)
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
                     .toList());
@@ -233,8 +199,9 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             // Les options
             coreEtablissementService.saveOptions(sub.stream()
                     .flatMap(this::dedoublement)
-                    .map(dataset -> shellEntityService.toEtablissementOptionEntity(dataset, source))
+                    .map(etablissementMapper::toOptionDTO)
                     .flatMap(List::stream)
+                    .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
                     .toList());
@@ -243,8 +210,10 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             coreEtablissementService.saveContacts(
                     sub.stream()
                             .flatMap(this::dedoublement)
-                            .map(c -> shellEntityService.toEtablissementContactEntity(c, source))
+                            .map(etablissementMapper::toContactDTO)
                             .flatMap(List::stream)
+                            .map(dto -> etablissementTransformer.toEtablissementContactEntity(dto, source))
+                            .filter(Objects::nonNull)
                             .map(validatorService::toValidEntity)
                             .filter(Objects::nonNull)
                             .toList()
@@ -254,11 +223,15 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             coreEtablissementService.saveJPO(
                     sub.stream()
                             .flatMap(this::dedoublement)
-                            .map(j -> shellEntityService.toEtablissementJPOEntity(j, source))
+                            .map(etablissementMapper::toJPODTO)
                             .flatMap(List::stream)
+                            .filter(Objects::nonNull)
+                            .map(dto -> etablissementTransformer.toEtablissementJPOEntity(dto, source))
                             .map(validatorService::toValidEntity)
                             .filter(Objects::nonNull)
                             .toList());
+
+            // Les identifiants externes
         }
 
         long endTime = System.nanoTime();
@@ -298,11 +271,13 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 });
     }
 
+
     @Override
     public void createOrUpdateLangues(@NonNull List<LangueDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveLangues(datasets
                 .stream()
-                .map(l -> shellEntityService.toLangueEntity(l, source))
+                .map(etablissementMapper::toLangueDTO)
+                .map(dto -> etablissementTransformer.toEtablissementLangueEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
@@ -310,12 +285,15 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         log.info("Import terminé : {} langues enregistrée(s).", datasets.size());
     }
 
+    // TODO
     @Override
     public void createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveSpecialites(datasets
                 .stream()
-                .map(s -> shellEntityService.toSpecialiteEntity(s, source))
+                .map(etablissementMapper::toSpecialiteDTO)
                 .flatMap(List::stream)
+                .map(dto -> etablissementTransformer.toEtablissementSpecialiteEntity(dto, source))
+                .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
@@ -323,33 +301,36 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets, @NonNull String source) {
         // Indicateurs Section Internationnale et BFI
         coreEtablissementService.saveOptions(datasets.stream()
-                .map(o -> shellEntityService.toEtablissementOptionEntity(o, source))
+                .map(etablissementMapper::toOptionDTO)
                 .flatMap(List::stream)
+                .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
+                .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
 
-        // Details langues
-        // TODO
+        // TODO Détails langues
 
         log.info("Import terminé : {} sections internationale(s).", datasets.size());
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveOptions(datasets
                 .stream()
-                .map(o -> shellEntityService.toEtablissementOptionEntity(o, source))
+                .map(etablissementMapper::toOptionDTO)
+                .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
 
-        // Details langues
-        // TODO
+        // TODO Détails langues
 
         log.info("Import terminé : {} sections binationale enregistrée(s).", datasets.size());
     }

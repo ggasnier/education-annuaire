@@ -23,11 +23,11 @@ public enum Sport {
     ARBITRAGE_BASKET_BALL("Arbitrage Basket-ball", "🏀🏁", List.of("ARBITRAGE BASKET-BALL")),
     ARBITRAGE_FOOTBALL("Arbitrage football", "⚽🏁", List.of("ARBITRAGE FOOTBALL")),
     ARBITRAGE_SPORTIF("Arbitrage sportif", "🏁", List.of("ARBITRAGE SPORTIF")),
-    ATHLETISME("Athlétisme", "🏃", List.of("ATHLETISME")),
+    ATHLETISME("Athlétisme", "🏃", List.of("ATHLETISME", "ATHLÉTISME")),
     AVIRON("Aviron", "🚣", List.of("AVIRON")),
     BADMINTON("Badminton", "🏸", List.of("BADMINTON")),
     BASEBALL("Baseball", "⚾", List.of("BASEBALL")),
-    BASKET_BALL("Basket-ball", "🏀", List.of("BASKET-BALL")),
+    BASKET_BALL("Basket-ball", "🏀", List.of("BASKET-BALL", "BASKET")),
     BASKET_BALL_F("Basket-ball (féminin)", "🏀", List.of("BASKET-BALL FÉMININ")),
     BASKET_BALL_M("Basket-ball (masculin)", "🏀", List.of("BASKET-BALL MASCULIN")),
     BEACH_VOLLEY("Beach-volley", "🏐", List.of("BEACH VOLLEY")),
@@ -37,7 +37,7 @@ public enum Sport {
     BOXE_ANGLAISE("Boxe anglaise", "🥊", List.of("BOXE ANGLAISE")),
     BOXE_FRANCAISE("Boxe française", "🥊", List.of("BOXE FRANCAISE")),
     BOXE_THAI("Muay-thaï", "🥊", List.of("BOXE THAI")),
-    CANOE_KAYAK("", "🛶", List.of("CANOE KAYAK", "CANOE ET CANOE KAYAK")),
+    CANOE_KAYAK("", "🛶", List.of("CANOE KAYAK", "CANOE ET CANOE KAYAK", "CANOË-KAYAK")),
     CHAR_A_VOILES("", "⛵", List.of("CHAR A VOILES")),
     COURSE_ORIENTATION("Course d'orientation", "🧭", List.of("COURSE D'ORIENTATION")),
     CYCLISME("Cyclisme", "🚴", List.of("CYCLISME")),
@@ -45,7 +45,7 @@ public enum Sport {
     CYCLISME_PISTE("Cyclisme sur piste", "🚴", List.of("CYCLISME PISTE")),
     DANSE("Danse", "💃", List.of("DANSE SPORTIVE", "DANSE")),
     DISCIPLINES_NORDIQUES("", "🎿", List.of("DISCIPLINES NORDIQUES")),
-    EQUITATION("Equitation", "🏇", List.of("EQUITATION", "HIPPOLOGIE ET EQUITATION", "HIPPOLOGIE & EQUITATION")),
+    EQUITATION("Equitation", "🏇", List.of("EQUITATION", "HIPPOLOGIE ET EQUITATION", "HIPPOLOGIE & EQUITATION", "ÉQUITATION")),
     ESCALADE("Escalade", "🧗", List.of("ESCALADE")),
     ESCRIME("Escrime", "🤺", List.of("ESCRIME")),
     FOOTBALL("Football", "⚽", List.of("FOOTBALL")),
@@ -100,7 +100,7 @@ public enum Sport {
     ROLLER("", "🛼", List.of("ROLLER")),
     RAID_MULTISPORTS("", "🏃🚴🛶", List.of("RAID MULTISPORTS")),
     RAQUETTE("", "🎾", List.of("RAQUETTE")),
-    RUGBY("Rugby à XV", "🏉", List.of("RUGBY")),
+    RUGBY("Rugby à XV", "🏉", List.of("RUGBY", "RUGBY (SANS PRÉCISION)")),
     RUGBY_MIXTE("Rugby (mixte)", "🏉", List.of("RUGBY (MIXTE)")),
     RUGBY_13("Rugby à XIII", "🏉", List.of("RUGBY À 13")),
     RUGBY_F("Rugby (féminin)", "🏉", List.of("RUGBY FEMININ")),
@@ -126,14 +126,14 @@ public enum Sport {
     TENNIS("Tennis", "🎾", List.of("TENNIS")),
     TENNIS_DE_TABLE("Tennis de table", "🏓", List.of("TENNIS DE TABLE")),
     TIR("", "🔫", List.of("TIR")),
-    TIR_ARC("", "🏹", List.of("TIR A L'ARC")),
+    TIR_ARC("", "🏹", List.of("TIR A L'ARC", "TIR À L'ARC")),
     TRAMPOLINE("", "🤸", List.of("TRAMPOLINE")),
     TRIATHLON("Triathlon", "🏊🚴🏃", List.of("TRIATHLON")),
     TUMBLING("", "🤸", List.of("TUMBLING")),
     ULTIMATE("", "🥏", List.of("ULTIMATE")),
     VOILE("", "⛵", List.of("VOILE")),
     VOL_LIBRE("", "🪂", List.of("VOL LIBRE")),
-    VOLLEY_BALL("Volley-ball", "🏐", List.of("VOLLEY BALL")),
+    VOLLEY_BALL("Volley-ball", "🏐", List.of("VOLLEY BALL", "VOLLEY-BALL")),
     VOLTIGE_EQUESTRE("", "🏇", List.of("VOLTIGE ÉQUESTRE")),
     VTT("", "🚵", List.of("VTT")),
     WATER_POLO("Water-polo", "🤽", List.of("WATER POLO", "WATER-POLO"));
@@ -149,7 +149,7 @@ public enum Sport {
                 return sport;
             }
         }
-        log.info("Pas de sport trouvé pour {}", s);
+        log.info("Pas de sport trouvé pour {}", s.trim());
         return null;
     }
 

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+@Deprecated
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class ShellFormationEntityServiceImpl implements ShellFormationEntityServ
 
     private final CoreEtablissementService coreEtablissementService;
 
+    @Deprecated
     @Override
     public FormationEntity toFormationEntity(@NonNull FormationType dataset) {
 
@@ -62,6 +64,7 @@ public class ShellFormationEntityServiceImpl implements ShellFormationEntityServ
 
         return entity;
     }
+
 
     protected List<ActionFormationEntity> toActions(@NonNull FormationType dataset) {
 

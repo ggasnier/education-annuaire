@@ -82,11 +82,12 @@ public enum SourcesDatasets {
     FORMATIONS_CPF("Moncompteformation - L'offre de formation", CDC, "https://www.data.gouv.fr/api/1/datasets/r/205a72c5-725a-40c0-9c39-073454bdd553", "formations.csv", StandardCharsets.UTF_8, ';', "GET", CPFFormationDataset.class),
     FORMATIONS_PARCOURSUP("Cartographie des formations Parcoursup", ESR, "https://www.data.gouv.fr/api/1/datasets/r/19e77c6b-9e90-4673-aaed-276b77ac9c69", "formations_parcoursup.csv", StandardCharsets.UTF_8, ';', "GET", ParcoursupFormationDataset.class),
     FORMATIONS_CARIF("Liste des formations", CARIF, "https://catalogue-apprentissage.intercariforef.org/api/v1/es/search/formation/", "formations.json", StandardCharsets.UTF_8, ',', "POST", CarifFormationResponse.class),
-    FORMATIONS_ONISEP_ESR("Idéo-Actions de formation initiale-Univers enseignement supérieur", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/45f9fab2-adcd-49b1-8c9c-ef5d6ea90e9e", "formations_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepFormationDataset.class),
+    FORMATIONS_ONISEP_ESR("Idéo-Actions de formation initiale-Univers enseignement supérieur", ONISEP, "https://api.opendata.onisep.fr/downloads/605344579a7d7/605344579a7d7.csv", "formations_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepFormationDataset.class),
 
     // LHEO
     FORMATIONS_LHEO_OCCITANIE("Idéo-Actions de formation-Occitanie", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/f2300f7b-21a3-4470-8a5b-55dd6cf4c09f", "lheo_action_Occitanie.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
     FORMATIONS_LHEO_CVL("Idéo-Actions de formation-Centre-Val de Loire", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/4e6d4012-bb6c-4d0d-b7ac-1cee7b1a18a8", "lheo_action_CVL.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_IDF("Idéo-Actions de formation-Ile-de-France", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa41861a282c/5fa41861a282c.zip", "lheo_action_IDF.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
 
     // Default
     NULL(null, AUTRE, null, null, null, ',', null, null);

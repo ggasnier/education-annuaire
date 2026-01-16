@@ -1,9 +1,8 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
-import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
+import com.guillaumegasnier.education.shell.datasets.FormationType;
 import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.datasets.etablissements.TravailOrganismeFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationDataset;
@@ -11,23 +10,17 @@ import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDa
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
 import com.guillaumegasnier.education.shell.mappers.FormationMapper;
-import com.guillaumegasnier.education.shell.services.ShellEntityService;
-import com.guillaumegasnier.education.shell.services.ShellFormationEntityService;
 import com.guillaumegasnier.education.shell.services.ShellFormationService;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBElement;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
+import com.guillaumegasnier.education.shell.transformers.FormationTransformer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.transform.stream.StreamSource;
-import java.io.File;
 import java.util.*;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -40,10 +33,8 @@ public class ShellFormationServiceImpl implements ShellFormationService {
 
     private final FormationMapper formationMapper;
     private final CoreFormationService coreFormationService;
-    private final CoreEtablissementService coreEtablissementService;
-    private final ShellEntityService shellEntityService;
     private final ValidatorService validatorService;
-    private final ShellFormationEntityService shellFormationEntityService;
+    private final FormationTransformer formationTransformer;
 
     @Value("${spring.jpa.properties.hibernate.jdbc.batch_size}")
     int chunk;
@@ -52,8 +43,9 @@ public class ShellFormationServiceImpl implements ShellFormationService {
     public void createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets) {
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<? extends TravailOrganismeFormationDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
-            coreEtablissementService.saveOrganismes(sub.stream()
-                    .map(shellEntityService::toOrganismeEntity)
+            coreFormationService.saveOrganismes(sub.stream()
+                    .map(formationTransformer::toOrganismeEntity)
+                    .filter(Objects::nonNull)
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
                     .toList());
@@ -62,101 +54,118 @@ public class ShellFormationServiceImpl implements ShellFormationService {
     }
 
     @Override
-    public void createOrUpdateFormationsCpf(@NonNull List<CPFFormationDataset> datasets) {
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void createOrUpdateFormationsOnisepEsr(@NonNull List<OnisepFormationDataset> datasets) {
+        int size = datasets.size();
+        for (int i = 0; i < size; i += chunk) {
+            List<? extends OnisepFormationDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
+            log.info("Import formations et actions {}/{}", i, size);
 
-        datasets.forEach(dataset -> {
-            log.info(dataset.toString());
-        });
+            // Les formations
+            coreFormationService.saveFormations(sub.stream()
+                    .map(formationMapper::toFormationDTO)
+                    .distinct() // On ne garde que les formations
+                    .map(formationTransformer::recalculId) // On recalcule l'Id
+                    .map(dto -> formationTransformer.toFormationEntity(dto, "onisep"))
+                    .filter(Objects::nonNull)
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList()
+            );
 
-        String.format("Import terminé : %d formations(s) CPF enregistrée(s).", datasets.size());
+            // Les actions de formations
+            coreFormationService.saveActionFormation(sub.stream()
+                    .map(formationMapper::toActionFormationDTO)
+                    .map(dto -> formationTransformer.toActionFormationEntity(dto, "onisep"))
+                    .filter(Objects::nonNull)
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList());
+        }
+
+        log.info("Import terminé : {} formations ONISEP ESR traitées.", size);
     }
 
     @Override
-    public void createOrUpdateFormationsOnisepEsr(@NonNull List<OnisepFormationDataset> datasets) {
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void createOrUpdateFormationsCarif(@NonNull List<CarifFormationDataset> datasets) {
+        int size = datasets.size();
+        for (int i = 0; i < size; i += chunk) {
+            List<? extends CarifFormationDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
+            log.info("Import formations et actions {}/{}", i, size);
 
-        datasets.stream()
-                .collect(groupingBy(OnisepFormationDataset::getFormationId))
-                .forEach((id, datasetList) -> {
-                    OnisepFormationDataset dataset = datasetList.getFirst();
-                    Optional<FormationEntity> formationEntityOptional = coreFormationService.findFormationByOnisepId(dataset.getFormationOnisepId());
+            // Les formations
+            coreFormationService.saveFormations(sub.stream()
+                    .map(formationMapper::toFormationDTO)
+                    .filter(dto -> dto.getId() != null)
+                    .distinct() // On ne garde que les formations
+                    .map(formationTransformer::recalculId) // On recalcule l'Id
+                    .map(dto -> formationTransformer.toFormationEntity(dto, "carif"))
+                    .filter(Objects::nonNull)
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList()
 
-//                    EtablissementEntity etablissementEntity = null;
+            );
 
-//                    Optional<EtablissementEntity> etablissementEntityOptional = coreEtablissementService.findEtablissement(dataset.getEtablissementUai());
-//
-//                    if (etablissementEntityOptional.isPresent()) {
-//                        etablissementEntity = etablissementEntityOptional.get();
-//                    }
+            // Les actions de formations TODO
+//            coreFormationService.saveActionFormation(sub.stream()
+//                    .map(formationMapper::toActionFormationDTO)
+//                    .map(dto -> formationTransformer.toActionFormationEntity(dto, "carif"))
+//                    .toList());
 
-                    FormationEntity formationEntity = null;
-                    formationEntity = formationEntityOptional.orElseGet(() -> formationMapper.toFormationEntity(dataset));
-//                    formationEntity.setEtablissement(etablissementEntity);
 
-                    coreFormationService.saveFormation(formationEntity);
+//            List<FormationDTO> sub1 = sub.stream()
+//                    .map(formationMapper::toFormationDTO)
+//                    .toList();
 
-                    if (dataset.getFormationOnisepId().equals(1112)) {
 
-                        ActionFormationEntity actionFormationEntity = null;
-
-                        datasets.forEach(ds -> {
-                            log.info("{}/{}/{}", ds.getEtablissementUai(), ds.getEtablissementNom(), ds.getActionFormationOnisepId());
-                        });
-                    }
-                });
-
-        //return String.format("Import terminé : %d formationss Onisep enregistré(s.", datasets.size());
-    }
-
-    @Deprecated
-    public void createOrUpdateFormationsOnisepIdf() {
-
-        try {
-            JAXBContext context = JAXBContext.newInstance(LheoSubtype.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            JAXBElement<LheoSubtype> jaxbElement = unmarshaller.unmarshal(new StreamSource(new File("datasets/lheo_action_IDF.xml")), LheoSubtype.class);
-            LheoSubtype lheoSubtype = jaxbElement.getValue();
-
-            lheoSubtype.getOffres().getFormation().forEach(formation -> {
-
-                if (formation.getNumero().startsWith("FOR.389")) {
-                    log.info("{} {} {}", formation.getNumero(), formation.getIntituleFormation().getValue(), formation.getContactFormation().getFirst().getCoordonnees().getAdresse().getDenomination().getValue());
-                }
-            });
-
-            String.format("Import terminé : %d formations(s) ONISEP enregistrée(s).", lheoSubtype.getOffres().getFormation().size());
-        } catch (JAXBException e) {
-            String.format(e.getMessage(), e.getCause().getMessage());
         }
 
+        log.info("Import terminé : {} formations carif traitées.", datasets.size());
     }
 
-    public String createOrUpdateFormations(@NonNull List<CPFFormationDataset> datasets) {
+//    @Deprecated
+//    public void createOrUpdateFormationsOnisepIdf() {
+//
+//        try {
+//            JAXBContext context = JAXBContext.newInstance(LheoSubtype.class);
+//            Unmarshaller unmarshaller = context.createUnmarshaller();
+//            JAXBElement<LheoSubtype> jaxbElement = unmarshaller.unmarshal(new StreamSource(new File("datasets/lheo_action_IDF.xml")), LheoSubtype.class);
+//            LheoSubtype lheoSubtype = jaxbElement.getValue();
+//
+//            lheoSubtype.getOffres().getFormation().forEach(formation -> {
+//
+//                if (formation.getNumero().startsWith("FOR.389")) {
+//                    log.info("{} {} {}", formation.getNumero(), formation.getIntituleFormation().getValue(), formation.getContactFormation().getFirst().getCoordonnees().getAdresse().getDenomination().getValue());
+//                }
+//            });
+//
+//            String.format("Import terminé : %d formations(s) ONISEP enregistrée(s).", lheoSubtype.getOffres().getFormation().size());
+//        } catch (JAXBException e) {
+//            String.format(e.getMessage(), e.getCause().getMessage());
+//        }
+//
+//    }
 
-        Map<UUID, List<CPFFormationDataset>> group = datasets.stream().collect(groupingBy(CPFFormationDataset::getId));
-
-        group.forEach((id, datasetList) -> {
-            Optional<FormationEntity> formationEntityOptional = coreFormationService.findFormation(id);
-
-            if (formationEntityOptional.isPresent()) {
-
-            } else {
-                FormationEntity entity = formationMapper.toFormationEntity(datasetList.getFirst());
-                coreFormationService.saveFormation(entity);
-            }
-        });
-
-
-        return String.format("Import terminé : %d formations traitées.", datasets.size());
-    }
-
-    public String createOrUpdateFormationsOnisep(@NonNull List<OnisepFormationDataset> datasets) {
-
-        datasets.stream().collect(groupingBy(OnisepFormationDataset::getFormationOnisepId)).forEach((onisepId, datasetList) -> {
-            FormationEntity formation = shellEntityService.findFormationByOnisepId(datasetList.getFirst());
-        });
-
-        return "OK";
-    }
+//    public String createOrUpdateFormations(@NonNull List<CPFFormationDataset> datasets) {
+//
+//        Map<UUID, List<CPFFormationDataset>> group = datasets.stream().collect(groupingBy(CPFFormationDataset::getId));
+//
+//        group.forEach((id, datasetList) -> {
+//            Optional<FormationEntity> formationEntityOptional = coreFormationService.findFormation(id);
+//
+//            if (formationEntityOptional.isPresent()) {
+//
+//            } else {
+//                FormationEntity entity = formationMapper.toFormationEntity(datasetList.getFirst());
+//                coreFormationService.saveFormation(entity);
+//            }
+//        });
+//
+//
+//        return String.format("Import terminé : %d formations traitées.", datasets.size());
+//    }
 
    /* @Override
     public void createOrUpdateCertificationsRncp(@NonNull FICHES fiches) {
@@ -214,11 +223,6 @@ public class ShellFormationServiceImpl implements ShellFormationService {
 //    }
 
     @Override
-    public void createOrUpdateFormationsCarif(@NonNull List<CarifFormationDataset> datasets) {
-        String.format("Import terminé : %d formations carif traitées.", datasets.size());
-    }
-
-    @Override
     public void createOrUpdateFormationsParcoursup(@NonNull List<ParcoursupFormationDataset> datasets) {
 
         Map<Integer, List<ParcoursupFormationDataset>> group = datasets
@@ -260,10 +264,10 @@ public class ShellFormationServiceImpl implements ShellFormationService {
             // 2. Les actions de formation
             log.info("Nombre d'actions de formations : {}", actions.size());
 
-            coreFormationService.saveActionFormation(actions
-                    .stream()
-                    .map(a -> shellEntityService.toActionFormationEntity(a, entity))
-                    .toList());
+//            coreFormationService.saveActionFormation(actions
+//                    .stream()
+//                    .map(a -> shellEntityService.toActionFormationEntity(a, entity))
+//                    .toList());
         });
 
 //        Map<String, List<ParcoursupFormationDataset>> group = datasets.stream().collect(groupingBy(ParcoursupFormationDataset::getCodeInterneFormation));
@@ -279,24 +283,43 @@ public class ShellFormationServiceImpl implements ShellFormationService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateFormationsOnisepLheo(@NonNull LheoSubtype lheoSubtype) {
+        List<FormationType> datasets = lheoSubtype.getOffres().getFormation();
+        var size = datasets.size();
 
-        List<FormationEntity> formations =
-                lheoSubtype.getOffres().getFormation()
-                        .stream()
-                        .map(shellFormationEntityService::toFormationEntity)
-                        .collect(groupingBy(FormationEntity::getId))
-                        .values()
-                        .stream()
-                        .map(formationEntities -> {
-                            FormationEntity entity = formationEntities.getFirst();
-                            formationEntities.stream().map(FormationEntity::getActions).flatMap(Collection::stream).distinct().toList().forEach(entity::addAction);
-                            return entity;
-                        })
-                        .toList();
+        for (int i = 0; i < size; i += chunk) {
+            List<? extends FormationType> sub = datasets.subList(i, Math.min(i + chunk, size));
 
-        coreFormationService.saveFormations(formations);
+            // Les formations
+            coreFormationService.saveFormations(sub.stream()
+                    .map(formationMapper::toFormationDTO)
+                    .distinct()
+                    .map(dto -> formationTransformer.toFormationEntity(dto, "lheo"))
+                    .filter(Objects::nonNull)
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList());
 
-        log.info("Import terminé : {} formations ONISEP traitées.", lheoSubtype.getOffres().getFormation().size());
+            // Les actions
+            coreFormationService.saveActionFormation(sub.stream()
+                    .map(formationMapper::toActionFormationDTO)
+                    .flatMap(List::stream)
+                    .distinct()
+                    .map(dto -> formationTransformer.toActionFormationEntity(dto, "lheo"))
+                    .filter(Objects::nonNull)
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList());
+
+        }
+
+        log.info("Import terminé : {} formations LHEO traitées.", size);
+    }
+
+    @Override
+    public void createOrUpdateFormationsCpf(@NonNull List<CPFFormationDataset> datasets) {
+
+        log.info("Import terminé : {} formationss CPF traitées.", datasets.size());
     }
 }

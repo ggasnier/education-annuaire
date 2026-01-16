@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.core.domains.etablissements;
+package com.guillaumegasnier.education.core.domains.formations;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.GroupeSpecialiteFormationEntity;

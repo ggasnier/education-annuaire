@@ -40,11 +40,13 @@ public class ImportFormation implements ImportFormationShell {
         shellFormationService.createOrUpdateFormationsOnisepEsr(fileService.importCSV(FORMATIONS_ONISEP_ESR));
     }
 
+    // TODO
     @Override
     @ShellMethod(value = "Import formations Onisep au format LHEO")
     public void importFormationsOnisepLheo() {
-        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_OCCITANIE));
-        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_CVL));
+//        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_OCCITANIE));
+//        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_CVL));
+        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_IDF));
     }
 
     @Override

@@ -2,14 +2,20 @@ package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
 import com.guillaumegasnier.education.core.repositories.ActionFormationRepository;
 import com.guillaumegasnier.education.core.repositories.FormationRepository;
+import com.guillaumegasnier.education.core.repositories.OrganismeRepository;
 import com.guillaumegasnier.education.core.repositories.RomeRepository;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,12 +29,33 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     private final ActionFormationRepository actionFormationRepository;
     private final RomeRepository romeRepository;
     //private final CertificationRepository certificationRepository;
+    private final OrganismeRepository organismeRepository;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Autowired
-    public CoreFormationServiceImpl(FormationRepository formationRepository, ActionFormationRepository actionFormationRepository, RomeRepository romeRepository) {
+    public CoreFormationServiceImpl(FormationRepository formationRepository, ActionFormationRepository actionFormationRepository, RomeRepository romeRepository, OrganismeRepository organismeRepository) {
         this.formationRepository = formationRepository;
         this.actionFormationRepository = actionFormationRepository;
         this.romeRepository = romeRepository;
+        this.organismeRepository = organismeRepository;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveFormations(@NonNull List<FormationEntity> entities) {
+        formationRepository.saveAll(entities);
+        em.flush();
+        em.clear();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveActionFormation(@NonNull List<ActionFormationEntity> entities) {
+        actionFormationRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 
     @Override
@@ -39,11 +66,6 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     @Override
     public void saveFormation(FormationEntity entity) {
         formationRepository.save(entity);
-    }
-
-    @Override
-    public void saveFormations(@NonNull List<FormationEntity> entities) {
-        formationRepository.saveAll(entities);
     }
 
     @Override
@@ -81,8 +103,14 @@ public class CoreFormationServiceImpl implements CoreFormationService {
         return actionFormationRepository.findByParcoursupId(parcoursupId);
     }
 
+
     @Override
-    public void saveActionFormation(List<ActionFormationEntity> entities) {
-        actionFormationRepository.saveAll(entities);
+    public void saveOrganismes(List<OrganismeEntity> entities) {
+        organismeRepository.saveAll(entities);
+    }
+
+    @Override
+    public Optional<ActionFormationEntity> findActionFormation(UUID id) {
+        return actionFormationRepository.findById(id);
     }
 }

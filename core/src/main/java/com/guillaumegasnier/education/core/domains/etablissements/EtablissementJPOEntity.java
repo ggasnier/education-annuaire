@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
-import com.guillaumegasnier.education.core.domains.AbstractEntity;
+import com.guillaumegasnier.education.core.domains.AbstractSourcesEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "etablissements_jpo")
-public class EtablissementJPOEntity extends AbstractEntity {
+public class EtablissementJPOEntity extends AbstractSourcesEntity {
 
     @EmbeddedId
     private EtablissementJPOPK pk;

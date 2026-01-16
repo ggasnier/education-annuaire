@@ -1,10 +1,14 @@
 package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
+import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
+import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.ValidUai;
 import org.springframework.lang.NonNull;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,4 +95,10 @@ public interface CoreEtablissementService {
     EtablissementIdentifiantEntity findIdentifiant(EtablissementEntity entity, String key, String value);
 
     Optional<EtablissementOptionEntity> findOption(String uai, OptionEtablissement option);
+
+    Optional<EtablissementSportEntity> findSport(String uai, Sport sport, Sport.Categorie categorie);
+
+    Optional<EtablissementJPOEntity> findJPO(String uai, LocalDate dateDebut, LocalDate dateFin);
+
+    Optional<EtablissementLangueEntity> findLangue(String uai, Langue langue, Langue.Categorie categorie, String enseignement);
 }
