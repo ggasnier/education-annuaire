@@ -113,4 +113,9 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     public Optional<ActionFormationEntity> findActionFormation(UUID id) {
         return actionFormationRepository.findById(id);
     }
+
+    @Override
+    public List<ActionFormationEntity> findFormations(String uai) {
+        return actionFormationRepository.findAllByEtablissementUaiOrderByFormationNom(uai);
+    }
 }

@@ -111,6 +111,19 @@ public class FormationTransformerImpl implements FormationTransformer {
 
     // TODO à compléter
     private ActionFormationEntity toActionFormationEntityOld(ActionFormationEntity entity, @NonNull ActionFormationDTO dto, @NonNull String source) {
+
+        if (entity.getModalitesEntreesSorties() == null && dto.getModalitesEntreesSorties() != null)
+            entity.setModalitesEntreesSorties(dto.getModalitesEntreesSorties());
+
+        if (entity.getUrlAction() == null && dto.getUrlAction() != null)
+            entity.setUrlAction(dto.getUrlAction());
+
+        if (entity.getDureeIndicative() == null && dto.getDureeIndicative() != null)
+            entity.setDureeIndicative(dto.getDureeIndicative());
+
+        if (entity.getAccesHandicapes() == null && dto.getAccesHandicapes() != null)
+            entity.setAccesHandicapes(dto.getAccesHandicapes());
+
         return entity;
     }
 

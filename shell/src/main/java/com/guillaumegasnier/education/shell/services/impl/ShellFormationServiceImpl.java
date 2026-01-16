@@ -291,15 +291,15 @@ public class ShellFormationServiceImpl implements ShellFormationService {
         for (int i = 0; i < size; i += chunk) {
             List<? extends FormationType> sub = datasets.subList(i, Math.min(i + chunk, size));
 
-            // Les formations
-            coreFormationService.saveFormations(sub.stream()
-                    .map(formationMapper::toFormationDTO)
-                    .distinct()
-                    .map(dto -> formationTransformer.toFormationEntity(dto, "lheo"))
-                    .filter(Objects::nonNull)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
-                    .toList());
+//            // Les formations
+//            coreFormationService.saveFormations(sub.stream()
+//                    .map(formationMapper::toFormationDTO)
+//                    .distinct()
+//                    .map(dto -> formationTransformer.toFormationEntity(dto, "lheo"))
+//                    .filter(Objects::nonNull)
+//                    .map(validatorService::toValidEntity)
+//                    .filter(Objects::nonNull)
+//                    .toList());
 
             // Les actions
             coreFormationService.saveActionFormation(sub.stream()

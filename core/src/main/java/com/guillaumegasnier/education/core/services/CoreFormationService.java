@@ -38,4 +38,6 @@ public interface CoreFormationService {
     void saveOrganismes(List<OrganismeEntity> entities);
 
     Optional<ActionFormationEntity> findActionFormation(UUID id);
+
+    List<ActionFormationEntity> findFormations(String uai);
 }

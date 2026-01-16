@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.web.mappers;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
@@ -183,4 +184,7 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "dateFin", source = "pk.dateFin")
     @Mapping(target = "dateDebut", source = "pk.dateDebut")
     public abstract JPODto toJPODto(EtablissementJPOEntity etablissementJPOEntity);
+
+    @Mapping(target = "nom", source = "formation.nom")
+    public abstract FormationDto toFormationDto(ActionFormationEntity entity);
 }

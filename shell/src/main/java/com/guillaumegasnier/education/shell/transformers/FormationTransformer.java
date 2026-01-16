@@ -17,9 +17,7 @@ public interface FormationTransformer {
         return null;
     }
 
-    default ActionFormationEntity toActionFormationEntity(@NonNull ActionFormationDTO dto, @NonNull String source) {
-        return null;
-    }
+    ActionFormationEntity toActionFormationEntity(@NonNull ActionFormationDTO dto, @NonNull String source);
 
     default FormationDTO recalculId(@NonNull FormationDTO dto) {
         return dto;

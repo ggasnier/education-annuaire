@@ -37,7 +37,7 @@ public class EtablissementsController {
         model.addAttribute("contacts", details.contacts());
         model.addAttribute("journees", details.journees());
         model.addAttribute("metadatas", details.metadatas());
-
+        model.addAttribute("formations", details.formations());
         return "etablissements/details";
     }
 }

@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.web.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreReferenceService;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
@@ -21,12 +22,14 @@ import java.util.Optional;
 public class WebEtablissementServiceImpl implements WebEtablissementService {
 
     private final CoreEtablissementService coreEtablissementService;
+    private final CoreFormationService coreFormationService;
     private final CoreReferenceService coreReferenceService;
     private final WebEtablissementMapper webEtablissementMapper;
 
     @Autowired
-    public WebEtablissementServiceImpl(CoreEtablissementService coreEtablissementService, CoreReferenceService coreReferenceService, WebEtablissementMapper webEtablissementMapper) {
+    public WebEtablissementServiceImpl(CoreEtablissementService coreEtablissementService, CoreFormationService coreFormationService, CoreReferenceService coreReferenceService, WebEtablissementMapper webEtablissementMapper) {
         this.coreEtablissementService = coreEtablissementService;
+        this.coreFormationService = coreFormationService;
         this.coreReferenceService = coreReferenceService;
         this.webEtablissementMapper = webEtablissementMapper;
     }
@@ -84,7 +87,7 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
                 webEtablissementMapper.toSportWithCategorieDtoList(coreEtablissementService.getSportListByUai(uai)),
                 coreEtablissementService.getContactListByUai(uai).stream().map(webEtablissementMapper::toContactDto).toList(),
                 coreEtablissementService.getJourneesPortesOuvertes(uai).stream().map(webEtablissementMapper::toJPODto).toList(),
-                coreEtablissementService.getMetadataListByUai(uai).stream().map(webEtablissementMapper::toMetadataDto).toList()
-        );
+                coreEtablissementService.getMetadataListByUai(uai).stream().map(webEtablissementMapper::toMetadataDto).toList(),
+                coreFormationService.findFormations(uai).stream().map(webEtablissementMapper::toFormationDto).distinct().toList());
     }
 }

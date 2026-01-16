@@ -21,5 +21,8 @@ public record EtablissementDetailsDto(
 
         List<JPODto> journees,
 
-        List<MetadataDto> metadatas) {
+        List<MetadataDto> metadatas,
+
+        List<FormationDto> formations
+) {
 }

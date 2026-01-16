@@ -300,11 +300,47 @@ public abstract class FormationMapper {
             ActionFormationDTO dto = new ActionFormationDTO();
             String formationOnisepId = formationType.getNumero().split("[._]")[1];
             String actionOnisepId = actionType.getNumero().split("[._]")[3];
+
             dto.setId(UUID.nameUUIDFromBytes(actionOnisepId.getBytes()));
             dto.setRythmeFormation(actionType.getRythmeFormation().getValue());
             dto.setCodePublicVise(actionType.getCodePublicVise().getFirst().getValue());
+            dto.setNiveauEntreeObligatoire("1".equals(actionType.getNiveauEntreeObligatoire().getValue()));
+
+            if (actionType.getModalitesAlternance().getValue() != null && !"-".equals(actionType.getModalitesAlternance().getValue()))
+                dto.setModalitesAlternance(actionType.getModalitesAlternance().getValue());
+
+            dto.setModalitesEnseignement(Integer.parseInt(actionType.getModalitesEnseignement().getValue()));
+
+            if (actionType.getConditionsSpecifiques().getValue() != null && !"-".equals(actionType.getConditionsSpecifiques().getValue()))
+                dto.setConditionsSpecifiques(actionType.getConditionsSpecifiques().getValue());
+
+            dto.setPriseEnChargeFraisPossible("1".equals(actionType.getPriseEnChargeFraisPossible().getValue()));
+
             if (actionType.getLieuDeFormation().getFirst().getCodeUAILieuFormation() != null)
                 dto.setUai(actionType.getLieuDeFormation().getFirst().getCodeUAILieuFormation().getCodeUAI().getValue());
+
+            dto.setModalitesEntreesSorties(Integer.parseInt(actionType.getModalitesEntreesSorties().getValue()));
+
+            if (actionType.getUrlAction() != null && actionType.getUrlAction().getUrlweb().getFirst() != null)
+                dto.setUrlAction(actionType.getUrlAction().getUrlweb().getFirst().getValue());
+
+            if (actionType.getDureeCycle() != null)
+                dto.setDureeCycle((int) actionType.getDureeCycle().getValue());
+
+            if (actionType.getHebergement() != null)
+                dto.setHebergement(actionType.getHebergement().getValue());
+
+            if (actionType.getTransport() != null)
+                dto.setTransport(actionType.getTransport().getValue());
+
+            if (actionType.getAccesHandicapes() != null)
+                dto.setAccesHandicapes(actionType.getAccesHandicapes().getValue());
+
+            if (actionType.getDureeIndicative() != null)
+                dto.setDureeIndicative(actionType.getDureeIndicative().getValue());
+
+            if (actionType.getModalitesRecrutement() != null)
+                dto.setModalitesRecrutement(actionType.getModalitesRecrutement().getValue());
 
             // TODO
             dto.setOnisepId(Integer.parseInt(actionOnisepId));
