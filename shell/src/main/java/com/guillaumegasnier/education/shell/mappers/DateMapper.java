@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 @Mapper(componentModel = "spring")
-public class DateMapper {
+public abstract class DateMapper {
 
     @Nullable
     public static LocalDate toLocalDate(String date) {

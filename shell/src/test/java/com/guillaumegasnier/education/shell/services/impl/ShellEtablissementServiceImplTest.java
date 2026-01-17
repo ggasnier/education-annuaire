@@ -4,7 +4,6 @@ import com.guillaumegasnier.education.core.domains.etablissements.EtablissementE
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EnEtablissementDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
-import com.guillaumegasnier.education.shell.services.ShellEntityService;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,8 +22,8 @@ class ShellEtablissementServiceImplTest {
     private EtablissementMapper etablissementMapper;
     @Mock
     private CoreEtablissementService coreEtablissementService;
-    @Mock
-    private ShellEntityService shellEntityService;
+    //@Mock
+    //private ShellEntityService shellEntityService;
     @Mock
     private ValidatorService validatorService;
     @InjectMocks

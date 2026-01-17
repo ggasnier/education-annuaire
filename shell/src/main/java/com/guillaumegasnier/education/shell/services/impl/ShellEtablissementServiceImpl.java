@@ -38,7 +38,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     private final CoreEtablissementService coreEtablissementService;
     private final EtablissementTransformer etablissementTransformer;
     private final EtablissementMapper etablissementMapper;
-    //private final ShellEntityService shellEntityService;
     private final ValidatorService validatorService;
 
     @Value("${spring.jpa.properties.hibernate.jdbc.batch_size}")
