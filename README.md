@@ -15,17 +15,53 @@
     - [X] Départements
     - [X] Communes
 - [ ] Partie Établissements
-    - [X] Structures
+    - [X] Structure
     - [X] Nature
     - [X] Public/Privé (secteur)
     - [X] Contrat
     - [ ] Options
+        - [ ] Structure
+        - [ ] Comodités
+        - [ ] Labels
+        - [ ] Sections langues
+        - [ ] Sections cultures
+        - [ ] Sport
+        - [ ] Enseignement
+        - [ ] Autre
+        - [ ] PMR (à approfondir)
+    - [ ] Contacts
+        - [ ] Site web
+        - [ ] Réseaux sociaux
+        - [ ] Tél et fax
     - [ ] Langues
-        - [X] LV1, LV2, CA
+        - [X] LV1, LV2, LCA
         - [X] Sections internationales
+        - [ ] Sections langues orientales
+        - [ ] Sections binationales
+        - [ ] Autre
+    - [ ] Sport
+        - [ ] Sections sportives
+        - [ ] Sections sport-études
+    - [ ] Journées portes ouvertes
+        - [ ] Onisep
+        - [ ] Masa
+    - [ ] Indicateurs
+        - [X] Effectifs
+        - [ ] IPS
+        - [ ] IVA
+        - [ ] Personnels
 - [ ] Partie Formations
     - [ ] Structure
+    - [ ] Formations
+        - [ ] Onisep ESR
+        - [ ] LHEO
+        - [ ] CPF
+        - [ ] Parcoursup
+        - [ ] Carif
+        - [ ] Masa
+        - [ ] Autre
     - [ ] RNCP/RS
-    - [ ] Parcoursup
-    - [ ] Alternance
+    - [ ] Organisme de formation
 - [ ] Recherche
+    - [ ] Etablissements
+    - [ ] Formations
