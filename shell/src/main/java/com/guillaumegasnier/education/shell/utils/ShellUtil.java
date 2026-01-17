@@ -4,8 +4,13 @@ import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -114,5 +119,17 @@ public class ShellUtil {
             return null;
         String trimmed = raw.trim();
         return trimmed.startsWith(",") ? trimmed.substring(1).trim() : trimmed;
+    }
+
+    public static long toNormalizedId(@NonNull String namespace, @NonNull String sourceId) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(
+                    (namespace + ":" + sourceId).getBytes(StandardCharsets.UTF_8)
+            );
+            return ByteBuffer.wrap(hash).getLong() & Long.MAX_VALUE;
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

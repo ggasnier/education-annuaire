@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatJPODataset;
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.toNormalizedId;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShellUtilTest {
@@ -115,6 +116,13 @@ class ShellUtilTest {
         assertNotNull(output);
         assertEquals(LocalDate.parse("2026-03-06"), output.getDateDebut());
         assertNotNull(output.getCommentaire());
+    }
+
+    @Test
+    void toNormalizedIdTest() {
+        assertEquals(7284277920559019884L, toNormalizedId("FOR", "123"));
+        assertEquals(4343121766331849245L, toNormalizedId("AF", "123"));
+        assertEquals(854590640471599778L, toNormalizedId("UAI", "0061355R"));
     }
 
 }

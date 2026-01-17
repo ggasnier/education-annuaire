@@ -29,7 +29,7 @@ import java.util.Objects;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN, uses = {DateMapper.class})
 public abstract class EtablissementMapper {
 
-    private static Langue.Categorie toLangueCategorie(OptionEtablissement option) {
+    public static Langue.Categorie toLangueCategorie(OptionEtablissement option) {
         return switch (option) {
             case OptionEtablissement.SECTION_EUROPEENNE -> Langue.Categorie.EU;
             case OptionEtablissement.SECTION_INTERNATIONALE -> Langue.Categorie.SI;
@@ -39,12 +39,56 @@ public abstract class EtablissementMapper {
         };
     }
 
-    private static Sport.Categorie toSportCategorie(OptionEtablissement option) {
+    public static Sport.Categorie toSportCategorie(OptionEtablissement option) {
         return switch (option) {
             case OptionEtablissement.SECTION_SPORT -> Sport.Categorie.SS;
             case OptionEtablissement.SPORT_ETUDES -> Sport.Categorie.SE;
             default -> null;
         };
+    }
+
+    public static List<SportDTO> toSportDTO(@NonNull SportDataset dataset, @NonNull Sport.Categorie categorie) {
+        return dataset.getSectionList()
+                .stream()
+                .map(String::toUpperCase)
+                .map(Sport::transformation)
+                .filter(Objects::nonNull)
+                .map(sport -> new SportDTO(dataset.getUai(), sport, categorie))
+                .toList();
+    }
+
+    public static OptionDTO toOptionDTO(@NonNull OnisepDispositifDataset dataset) {
+        return new OptionDTO(dataset.getUai(), dataset.getOption());
+    }
+
+    public static List<SportDTO> toSportDTO(@NonNull OnisepDispositifDataset dataset, @NonNull OptionEtablissement option) {
+        return dataset.getSportList().stream().map(sport ->
+                new SportDTO(dataset.getUai(), sport, toSportCategorie(option))
+        ).toList();
+    }
+
+    public static LangueDTO toLangueDTO(@NonNull LangueDataset dataset) {
+        return new LangueDTO(dataset.getUai(), Langue.transformation(dataset.getLangue()), Langue.Categorie.LV, dataset.getEnseignement());
+    }
+
+    public static List<ContactDTO> toContactDTO(@NonNull EtablissementDataset dataset) {
+        return dataset.getContacts().stream()
+                .map(contact -> new ContactDTO(dataset.getUai(), contact.getContact(), contact.getValeur()))
+                .toList();
+    }
+
+    public static List<JPODataset> toJPODTO(@NonNull EtablissementDataset dataset) {
+        return dataset.getJPO();
+    }
+
+    public static List<SpecialiteDTO> toSpecialiteDTO(@NonNull SpecialitePremiereDataset dataset) {
+        return dataset.getSpecialites().stream().map(
+                specialite -> new SpecialiteDTO(dataset.getUai(), specialite)
+        ).toList();
+    }
+
+    public static OptionDTO toOptionDTO(@NonNull SectionBinationaleDataset dataset) {
+        return new OptionDTO(dataset.getUai(), dataset.getOption());
     }
 
     @Mapping(target = "identifiants", ignore = true)
@@ -108,38 +152,10 @@ public abstract class EtablissementMapper {
         return iva;
     }
 
-    public List<SportDTO> toSportDTO(@NonNull SportDataset dataset, @NonNull Sport.Categorie categorie) {
-        return dataset.getSectionList()
-                .stream()
-                .map(String::toUpperCase)
-                .map(Sport::transformation)
-                .filter(Objects::nonNull)
-                .map(sport -> new SportDTO(dataset.getUai(), sport, categorie))
-                .toList();
-    }
-
-    public OptionDTO toOptionDTO(@NonNull OnisepDispositifDataset dataset) {
-        return new OptionDTO(dataset.getUai(), dataset.getOption());
-    }
-
-    public List<SportDTO> toSportDTO(@NonNull OnisepDispositifDataset dataset, @NonNull OptionEtablissement option) {
-        return dataset.getSportList().stream().map(sport ->
-                new SportDTO(dataset.getUai(), sport, toSportCategorie(option))
-        ).toList();
-    }
-
     public List<LangueDTO> toLangueDTO(@NonNull OnisepDispositifDataset dataset) {
         return dataset.getLangueList().stream()
                 .map(langue -> new LangueDTO(dataset.getUai(), langue, toLangueCategorie(dataset.getOption()), ""))
                 .toList();
-    }
-
-    public LangueDTO toLangueDTO(@NonNull LangueDataset dataset) {
-        return new LangueDTO(dataset.getUai(), Langue.transformation(dataset.getLangue()), Langue.Categorie.LV, dataset.getEnseignement());
-    }
-
-    public OptionDTO toOptionDTO(@NonNull SectionBinationaleDataset dataset) {
-        return new OptionDTO(dataset.getUai(), dataset.getOption());
     }
 
     public List<OptionDTO> toOptionDTO(@NonNull SectionInternationaleDataset dataset) {
@@ -163,21 +179,5 @@ public abstract class EtablissementMapper {
         return dataset.getOptions().stream()
                 .map(option -> new OptionDTO(dataset.getUai(), option)
                 ).toList();
-    }
-
-    public List<ContactDTO> toContactDTO(@NonNull EtablissementDataset dataset) {
-        return dataset.getContacts().stream()
-                .map(contact -> new ContactDTO(dataset.getUai(), contact.getContact(), contact.getValeur()))
-                .toList();
-    }
-
-    public List<JPODataset> toJPODTO(@NonNull EtablissementDataset dataset) {
-        return dataset.getJPO();
-    }
-
-    public List<SpecialiteDTO> toSpecialiteDTO(@NonNull SpecialitePremiereDataset dataset) {
-        return dataset.getSpecialites().stream().map(
-                specialite -> new SpecialiteDTO(dataset.getUai(), specialite)
-        ).toList();
     }
 }

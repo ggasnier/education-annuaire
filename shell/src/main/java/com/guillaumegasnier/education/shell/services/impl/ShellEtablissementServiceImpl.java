@@ -48,7 +48,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<SportDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
             coreEtablissementService.saveEtablissementSportEntity(sub.stream()
-                    .map(dataset -> etablissementMapper.toSportDTO(dataset, categorie))
+                    .map(dataset -> EtablissementMapper.toSportDTO(dataset, categorie))
                     .flatMap(List::stream)
                     .map(dto -> etablissementTransformer.toEtablissementSportEntity(dto, source))
                     .map(validatorService::toValidEntity)
@@ -68,7 +68,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             coreEtablissementService.saveOptions(sub.stream()
                     .filter(d -> d.getOption() != null)
                     .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                    .map(etablissementMapper::toOptionDTO)
+                    .map(EtablissementMapper::toOptionDTO)
                     .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
@@ -80,7 +80,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             (d.getOption().equals(OptionEtablissement.SPORT_ETUDES) ||
                                     d.getOption().equals(OptionEtablissement.SECTION_SPORT)))
                     .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                    .map(dataset -> etablissementMapper.toSportDTO(dataset, OptionEtablissement.SECTION_SPORT))
+                    .map(dataset -> EtablissementMapper.toSportDTO(dataset, OptionEtablissement.SECTION_SPORT))
                     .flatMap(List::stream)
                     .map(dto -> etablissementTransformer.toEtablissementSportEntity(dto, source))
                     .filter(Objects::nonNull)
@@ -209,7 +209,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             coreEtablissementService.saveContacts(
                     sub.stream()
                             .flatMap(this::dedoublement)
-                            .map(etablissementMapper::toContactDTO)
+                            .map(EtablissementMapper::toContactDTO)
                             .flatMap(List::stream)
                             .map(dto -> etablissementTransformer.toEtablissementContactEntity(dto, source))
                             .filter(Objects::nonNull)
@@ -222,7 +222,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             coreEtablissementService.saveJPO(
                     sub.stream()
                             .flatMap(this::dedoublement)
-                            .map(etablissementMapper::toJPODTO)
+                            .map(EtablissementMapper::toJPODTO)
                             .flatMap(List::stream)
                             .filter(Objects::nonNull)
                             .map(dto -> etablissementTransformer.toEtablissementJPOEntity(dto, source))
@@ -275,7 +275,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     public void createOrUpdateLangues(@NonNull List<LangueDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveLangues(datasets
                 .stream()
-                .map(etablissementMapper::toLangueDTO)
+                .map(EtablissementMapper::toLangueDTO)
                 .map(dto -> etablissementTransformer.toEtablissementLangueEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
@@ -284,12 +284,11 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         log.info("Import terminé : {} langues enregistrée(s).", datasets.size());
     }
 
-    // TODO
     @Override
     public void createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveSpecialites(datasets
                 .stream()
-                .map(etablissementMapper::toSpecialiteDTO)
+                .map(EtablissementMapper::toSpecialiteDTO)
                 .flatMap(List::stream)
                 .map(dto -> etablissementTransformer.toEtablissementSpecialiteEntity(dto, source))
                 .filter(Objects::nonNull)
@@ -322,7 +321,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     public void createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveOptions(datasets
                 .stream()
-                .map(etablissementMapper::toOptionDTO)
+                .map(EtablissementMapper::toOptionDTO)
                 .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)

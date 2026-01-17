@@ -1,0 +1,20 @@
+package com.guillaumegasnier.education.shell.mappers;
+
+import com.guillaumegasnier.education.shell.datasets.FormationType;
+import com.guillaumegasnier.education.shell.dto.formations.FormationDTO;
+import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class FormationMapperTest {
+
+    private final FormationMapper mapper = Mappers.getMapper(FormationMapper.class);
+    
+    @Test
+    void toFormationDTO2Test() {
+        FormationType formationType = new FormationType();
+        FormationDTO dto = mapper.toFormationDTO2(formationType);
+        assertNotNull(dto);
+    }
+}
