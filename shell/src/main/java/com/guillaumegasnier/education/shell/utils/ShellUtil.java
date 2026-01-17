@@ -20,13 +20,13 @@ public class ShellUtil {
     private static final Pattern RNCP_PATTERN = Pattern
             .compile("https://www\\.francecompetences\\.fr/recherche/rncp/(\\d+)/?$", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_JPO_1 = Pattern.compile(
-            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*(\\d+)\\s*$", Pattern.CANON_EQ);
+            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*(.*?)\\s*$", Pattern.CANON_EQ);
     private static final Pattern PATTERN_JPO_2 = Pattern.compile(
-            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s*(\\d+)\\s*$");
+            "le\\s+(\\d{2}/\\d{2}/\\d{4})\\s*(.*?)\\s*$");
     private static final Pattern PATTERN_JPO_3 = Pattern.compile(
-            "du\\s+(\\d{2}/\\d{2}/\\d{4})\\s+au\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*(\\d+)\\s*$", Pattern.CANON_EQ);
+            "du\\s+(\\d{2}/\\d{2}/\\d{4})\\s+au\\s+(\\d{2}/\\d{2}/\\d{4})\\s+de\\s+(\\d{2}h\\d{2})\\s+à\\s+(\\d{2}h\\d{2})\\s*(.*?)\\s*$", Pattern.CANON_EQ);
     private static final Pattern PATTERN_JPO_4 = Pattern.compile(
-            "du\\s+(\\d{2}/\\d{2}/\\d{4})\\s+au\\s+(\\d{2}/\\d{2}/\\d{4})\\s*(\\d+)\\s*$");
+            "du\\s+(\\d{2}/\\d{2}/\\d{4})\\s+au\\s+(\\d{2}/\\d{2}/\\d{4})\\s*(.*?)\\s*$");
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH'h'mm");
