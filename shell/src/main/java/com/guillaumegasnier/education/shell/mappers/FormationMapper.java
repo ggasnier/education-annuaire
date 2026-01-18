@@ -6,6 +6,7 @@ import com.guillaumegasnier.education.shell.datasets.ActionType;
 import com.guillaumegasnier.education.shell.datasets.FormationType;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
+import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
 import com.guillaumegasnier.education.shell.dto.formations.ActionFormationDTO;
 import com.guillaumegasnier.education.shell.dto.formations.FormationDTO;
 import org.mapstruct.Mapper;
@@ -170,7 +171,7 @@ public abstract class FormationMapper {
 
         String formationOnisepId = formationType.getNumero().split("[._]")[1];
         // UUID
-        dto.setId(UUID.nameUUIDFromBytes(formationOnisepId.getBytes()));
+        dto.setId(UUID.nameUUIDFromBytes(("FOR" + formationOnisepId).getBytes()));
         // Nom de la formation
         dto.setNom(formationType.getIntituleFormation().getValue());
         // Objectifs de la formation
@@ -259,4 +260,21 @@ public abstract class FormationMapper {
                 .map(this::toActionFormationDTO)
                 .toList();
     }
+
+    @Mapping(target = "id", source = "formationId")
+    @Mapping(target = "nom", source = "nomFormation")
+    @Mapping(target = "objectif", ignore = true)
+    @Mapping(target = "resultats", ignore = true)
+    @Mapping(target = "contenu", ignore = true)
+    @Mapping(target = "certifiante", ignore = true)
+    @Mapping(target = "parcoursDeFormation", ignore = true)
+    @Mapping(target = "codeNiveauEntree", ignore = true)
+    @Mapping(target = "codeNiveauSortie", ignore = true)
+    @Mapping(target = "uai", ignore = true)
+    @Mapping(target = "nda", ignore = true)
+    @Mapping(target = "identifiantModule", ignore = true)
+    @Mapping(target = "positionnement", ignore = true)
+    @Mapping(target = "parcoursupId", source = "codeFormation")
+    @Mapping(target = "onisepId", ignore = true)
+    public abstract FormationDTO toFormationDTO(ParcoursupFormationDataset dataset);
 }

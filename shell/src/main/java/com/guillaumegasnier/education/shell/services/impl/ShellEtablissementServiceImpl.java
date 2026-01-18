@@ -183,10 +183,12 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     public void createOrUpdateEtablissements(@NonNull List<? extends EtablissementDataset> datasets, @NonNull String source) {
 
         long startTime = System.nanoTime();
+        int size = datasets.size();
 
-        for (int i = 0; i < datasets.size(); i += chunk) {
-            List<? extends EtablissementDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
+        for (int i = 0; i < size; i += chunk) {
+            List<? extends EtablissementDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
             // Les établissements
+            log.info("Import établissements {}/{}", i, size);
             coreEtablissementService.saveEtablissements(sub.stream()
                     .flatMap(this::dedoublement)
                     .map(dataset -> etablissementTransformer.toEtablissementEntity(dataset, source))
@@ -196,6 +198,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .toList());
 
             // Les options
+            log.info("Import options {}/{}", i, size);
             coreEtablissementService.saveOptions(sub.stream()
                     .flatMap(this::dedoublement)
                     .map(etablissementMapper::toOptionDTO)
@@ -206,6 +209,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .toList());
 
             // Les contacts
+            log.info("Import contacts {}/{}", i, size);
             coreEtablissementService.saveContacts(
                     sub.stream()
                             .flatMap(this::dedoublement)
@@ -219,6 +223,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             );
 
             // Les journees portes ouvertes
+            log.info("Import JPO {}/{}", i, size);
             coreEtablissementService.saveJPO(
                     sub.stream()
                             .flatMap(this::dedoublement)

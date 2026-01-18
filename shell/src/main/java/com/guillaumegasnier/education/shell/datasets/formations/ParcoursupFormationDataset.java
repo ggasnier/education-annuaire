@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @ToString
@@ -15,7 +17,7 @@ public class ParcoursupFormationDataset implements Dataset {
     private String annee;
 
     @CsvBindByName(column = "Identifiant de l'établissement")
-    private String uai;
+    private String uaiEtablissement;
 
     @CsvBindByName(column = "Nom de l'établissement")
     private String nomEtablissement;
@@ -56,6 +58,9 @@ public class ParcoursupFormationDataset implements Dataset {
     @CsvBindByName(column = "Commune")
     private String commune;
 
+    /**
+     * Lien vers l'action de formation sur Parcoursup
+     */
     @CsvBindByName(column = "Lien vers la fiche formation")
     private String lienFormation;
 
@@ -94,4 +99,8 @@ public class ParcoursupFormationDataset implements Dataset {
      */
     @CsvBindByName(column = "code_formation")
     private Integer codeFormation;
+
+    public UUID getFormationId() {
+        return UUID.nameUUIDFromBytes(("PS" + codeFormation).getBytes());
+    }
 }

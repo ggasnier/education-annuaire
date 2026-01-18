@@ -10,16 +10,11 @@ import org.springframework.lang.NonNull;
 
 public interface FormationTransformer {
 
-
     OrganismeEntity toOrganismeEntity(@NonNull TravailOrganismeFormationDataset dataset);
 
-    default FormationEntity toFormationEntity(@NonNull FormationDTO dto, String source) {
-        return null;
-    }
+    FormationEntity toFormationEntity(@NonNull FormationDTO dto, String source);
 
     ActionFormationEntity toActionFormationEntity(@NonNull ActionFormationDTO dto, @NonNull String source);
 
-    default FormationDTO recalculId(@NonNull FormationDTO dto) {
-        return dto;
-    }
+    FormationDTO recalculId(@NonNull FormationDTO dto);
 }

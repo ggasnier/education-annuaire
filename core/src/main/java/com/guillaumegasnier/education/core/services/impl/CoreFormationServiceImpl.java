@@ -2,12 +2,14 @@ package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
 import com.guillaumegasnier.education.core.repositories.ActionFormationRepository;
 import com.guillaumegasnier.education.core.repositories.FormationRepository;
 import com.guillaumegasnier.education.core.repositories.OrganismeRepository;
 import com.guillaumegasnier.education.core.repositories.RomeRepository;
+import com.guillaumegasnier.education.core.repositories.formations.LienOnisepRepository;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -30,16 +32,18 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     private final RomeRepository romeRepository;
     //private final CertificationRepository certificationRepository;
     private final OrganismeRepository organismeRepository;
+    private final LienOnisepRepository lienOnisepRepository;
 
     @PersistenceContext
     private EntityManager em;
 
     @Autowired
-    public CoreFormationServiceImpl(FormationRepository formationRepository, ActionFormationRepository actionFormationRepository, RomeRepository romeRepository, OrganismeRepository organismeRepository) {
+    public CoreFormationServiceImpl(FormationRepository formationRepository, ActionFormationRepository actionFormationRepository, RomeRepository romeRepository, OrganismeRepository organismeRepository, LienOnisepRepository lienOnisepRepository) {
         this.formationRepository = formationRepository;
         this.actionFormationRepository = actionFormationRepository;
         this.romeRepository = romeRepository;
         this.organismeRepository = organismeRepository;
+        this.lienOnisepRepository = lienOnisepRepository;
     }
 
     @Override
@@ -117,5 +121,10 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     @Override
     public List<ActionFormationEntity> findFormations(String uai) {
         return actionFormationRepository.findAllByEtablissementUaiOrderByFormationNom(uai);
+    }
+
+    @Override
+    public Optional<LienOnisepEntity> findLienOnisep(String clef, String valeur) {
+        return lienOnisepRepository.findByPkClefAndPkValeur(clef, valeur);
     }
 }

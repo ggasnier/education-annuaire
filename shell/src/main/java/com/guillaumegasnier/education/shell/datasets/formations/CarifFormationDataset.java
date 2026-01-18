@@ -464,7 +464,7 @@ public class CarifFormationDataset implements Dataset {
 
     public UUID getFormationId() {
         if (getFormationOnisepId() != null)
-            return UUID.nameUUIDFromBytes(getFormationOnisepId().toString().getBytes());
+            return UUID.nameUUIDFromBytes(("AF" + getFormationOnisepId()).getBytes());
         else {
             log.warn("Pas d'onisepId de formation pour {}", cleMinistereEducatif);
             return null;

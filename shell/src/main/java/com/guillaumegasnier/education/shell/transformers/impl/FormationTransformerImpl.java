@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.transformers.impl;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
@@ -18,6 +19,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import static com.guillaumegasnier.education.shell.mappers.DateMapper.toLocalDate;
 
 @Slf4j
@@ -32,24 +36,22 @@ public class FormationTransformerImpl implements FormationTransformer {
     private final FormationMapper formationMapper;
     private final EtablissementMapper etablissementMapper;
 
-//    @Override
-//    public FormationEntity toFormationEntity(@NonNull OnisepFormationDataset dataset) {
-//        var entity = coreFormationService.findFormationByOnisepId(dataset.getFormationOnisepId());
-//
-//        if (entity.isPresent()) {
-//            return entity.get();
-//            // TODO mise à jour
-//        } else {
-//            Optional<EtablissementEntity> etablissementEntityOpt = coreEtablissementService.findEtablissement(dataset.getEtablissementUai());
-//            if (etablissementEntityOpt.isEmpty()) {
-//                log.warn("Rien trouvé avec {}/{}/{}/{}", dataset.getEtablissementUai(), dataset.getEtablissmentOnisepId(), dataset.getEtablissementNom(), dataset.getEtablissementAdresse());
-//                return null;
-//            }
-//            FormationEntity formationEntity = formationMapper.toFormationEntity(dataset, etablissementEntityOpt.get());
-//            coreFormationService.saveFormation(formationEntity);
-//            return formationEntity;
-//        }
-//    }
+    @Override
+    public FormationDTO recalculId(@NonNull FormationDTO dto) {
+        // Si on a déjà l'onisepId c'est bon
+        if (dto.getOnisepId() != null && dto.getOnisepId() > 0)
+            return dto;
+
+        if (dto.getParcoursupId() != null && dto.getParcoursupId() > 0) {
+            Optional<LienOnisepEntity> opt = coreFormationService.findLienOnisep("PS", dto.getParcoursupId().toString());
+            if (opt.isPresent()) {
+                dto.setOnisepId(opt.get().getPk().getOnisepId());
+                dto.setId(UUID.nameUUIDFromBytes(("FOR" + dto.getOnisepId()).getBytes()));
+            }
+            return dto;
+        }
+        return dto;
+    }
 
     @Override
     public OrganismeEntity toOrganismeEntity(@NonNull TravailOrganismeFormationDataset dataset) {
@@ -130,9 +132,7 @@ public class FormationTransformerImpl implements FormationTransformer {
     private FormationEntity toFormationEntityNew(@NonNull FormationDTO dto, @NonNull String source) {
 
         FormationEntity entity = formationMapper.toFormationEntity(dto);
-
         // Etablissement responsable de la formation
-
         // Organisme responsable de la formation
 
         // Source des données
@@ -144,6 +144,22 @@ public class FormationTransformerImpl implements FormationTransformer {
     private FormationEntity toFormationEntityOld(@NonNull FormationEntity entity, @NonNull FormationDTO dto, @NonNull String source) {
 
         // TODO pour le moment on ne met rien à jour
+        // Les ids
+        if (entity.getOnisepId() == null && dto.getOnisepId() != null)
+            entity.setOnisepId(dto.getOnisepId());
+        if (entity.getParcoursupId() == null && dto.getParcoursupId() != null)
+            entity.setParcoursupId(dto.getParcoursupId());
+
+        if (entity.getOnisepId() != null && dto.getOnisepId() != null) {
+            if (!entity.getOnisepId().equals(dto.getOnisepId())) {
+                log.warn("Erreur avec l'onisep_id : {} vs {}", entity.getOnisepId(), dto.getOnisepId());
+            }
+        }
+        /*if (entity.getParcoursupId() != null && dto.getParcoursupId() != null) {
+            if (!entity.getParcoursupId().equals(dto.getParcoursupId())) {
+                log.warn("Erreur avec le parcoursup_id : {} vs {}", entity.getParcoursupId(), dto.getParcoursupId());
+            }
+        }*/
 
         entity.addSource(source);
 

@@ -44,9 +44,22 @@ public class ImportFormation implements ImportFormationShell {
     @Override
     @ShellMethod(value = "Import formations Onisep au format LHEO")
     public void importFormationsOnisepLheo() {
-//        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_OCCITANIE));
-//        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_CVL));
+        // Métropole
+        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_BFC));
+        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_CVL));
+        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_NORMANDIE));
+        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_BRETAGNE));
+        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_LOIRE));
+        //
+        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_OCCITANIE));
+        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_ARA));
         shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_IDF));
+
+        // DOM-TOM
+        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_MAYOTTE));
+        shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_GUYANE));
+
+
     }
 
     @Override

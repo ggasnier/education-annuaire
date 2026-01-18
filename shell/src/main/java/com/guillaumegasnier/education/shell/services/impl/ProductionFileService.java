@@ -11,11 +11,7 @@ import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDa
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationResponse;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import com.guillaumegasnier.education.shell.services.FileService;
-import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.bean.HeaderColumnNameMappingStrategy;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.Unmarshaller;
@@ -42,7 +38,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 
 @Slf4j
 @Service
@@ -118,6 +113,24 @@ public class ProductionFileService implements FileService {
         @SuppressWarnings("unchecked")
         Class<T> clazz = (Class<T>) source.getDatasetClass();
 
+        // Sauvegarde du CSV
+        openFile(source.getUrl(), source.getCharset(), source.getHttpMethod()).ifPresentOrElse(reader -> {
+            Path outPath = Paths.get("datasets", source.getSource().name().toLowerCase(), source.getLocalPath());
+            try {
+                Files.createDirectories(outPath.getParent());
+                try (BufferedWriter writer = Files.newBufferedWriter(outPath, source.getCharset())) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        writer.write(line);
+                        writer.newLine();
+                    }
+                }
+                log.info("CSV sauvegardé dans : {}", outPath.toAbsolutePath());
+            } catch (Exception e) {
+                log.error("Erreur lors de la sauvegarde du CSV brut : {}", e.getMessage(), e);
+            }
+        }, () -> log.error("Impossible de lire le fichier : {}", source.getUrl()));
+
         openFile(source.getUrl(), source.getCharset(), source.getHttpMethod()).ifPresentOrElse(reader -> {
             try (reader) {
                 List<T> beans = new CsvToBeanBuilder<T>(reader)
@@ -132,8 +145,6 @@ public class ProductionFileService implements FileService {
                 log.error("Erreur pendant le parsing CSV : {}", e.getMessage(), e);
             }
         }, () -> log.error("Impossible de lire le fichier : {}", source.getUrl()));
-
-        saveResultAsCsv(result, source);
 
         log.info("Fin import {}, lignes importées : {}", source.getNom(), result.size());
         return result;
@@ -164,9 +175,12 @@ public class ProductionFileService implements FileService {
             } else {
                 // appels suivants
                 response = restClient.post()
-                        .uri(String.format(source.getUrl() + "scroll?scroll=%s&scroll_id=%s", scrollDuration, URLEncoder.encode(scrollId, StandardCharsets.UTF_8)))
+                        .uri(String.format(source.getUrl() + "scroll?scroll=%s&scroll_id=%s", scrollDuration,
+                                URLEncoder.encode(scrollId, StandardCharsets.UTF_8)))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .body(String.format("{\"scroll\": true,\"scroll_id\": \"%1$s\",\"activeQuery\":{\"scroll\": \"1m\",\"scroll_id\": \"%1$s\"}}", scrollId))
+                        .body(String.format(
+                                "{\"scroll\": true,\"scroll_id\": \"%1$s\",\"activeQuery\":{\"scroll\": \"1m\",\"scroll_id\": \"%1$s\"}}",
+                                scrollId))
                         .retrieve()
                         .body(CarifEtablissementResponse.class);
             }
@@ -242,7 +256,6 @@ public class ProductionFileService implements FileService {
                 }
                 """;
 
-
         do {
             CarifFormationResponse response;
 
@@ -257,9 +270,12 @@ public class ProductionFileService implements FileService {
             } else {
                 // appels suivants
                 response = restClient.post()
-                        .uri(String.format(source.getUrl() + "scroll?scroll=%s&scroll_id=%s", scrollDuration, URLEncoder.encode(scrollId, StandardCharsets.UTF_8)))
+                        .uri(String.format(source.getUrl() + "scroll?scroll=%s&scroll_id=%s", scrollDuration,
+                                URLEncoder.encode(scrollId, StandardCharsets.UTF_8)))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .body(String.format("{\"scroll\": true,\"scroll_id\": \"%1$s\",\"activeQuery\":{\"scroll\": \"1m\",\"scroll_id\": \"%1$s\"}}", scrollId))
+                        .body(String.format(
+                                "{\"scroll\": true,\"scroll_id\": \"%1$s\",\"activeQuery\":{\"scroll\": \"1m\",\"scroll_id\": \"%1$s\"}}",
+                                scrollId))
                         .retrieve()
                         .body(CarifFormationResponse.class);
             }
@@ -295,11 +311,11 @@ public class ProductionFileService implements FileService {
 
     @Override
     public LheoSubtype importLheoSubtypeFromZip(@NonNull SourcesDatasets sourcesDatasets) {
-        log.info("Fichier zip : {}", sourcesDatasets.getUrl());
+        log.info("Début import {}", sourcesDatasets.getNom());
 
         try {
             // Télécharger le fichier zip depuis sourcesDatasets.getUrl()
-            log.info("Téléchargement du fichier ZIP depuis : {}", sourcesDatasets.getUrl());
+            //log.info("Téléchargement du fichier ZIP depuis : {}", sourcesDatasets.getUrl());
             URL url = new URL(sourcesDatasets.getUrl());
 
             try (InputStream inputStream = url.openStream();
@@ -311,8 +327,12 @@ public class ProductionFileService implements FileService {
                     if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
                         log.info("Fichier XML trouvé : {}", entry.getName());
 
+                        if (!entry.getName().equals(sourcesDatasets.getLocalPath()))
+                            log.warn("Erreur de paramétrage sur le fichier local : {} vs {}", entry.getName(), sourcesDatasets.getLocalPath());
+
                         // Enregistrer le fichier en local
-                        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+                        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(),
+                                sourcesDatasets.getLocalPath());
                         Files.createDirectories(outPath.getParent());
 
                         // Copier le contenu du zip vers le fichier local
@@ -328,8 +348,9 @@ public class ProductionFileService implements FileService {
                         // Renvoyer le contenu du fichier xml dans la classe LheoSubtype avec JAXB
                         JAXBContext context = JAXBContext.newInstance(LheoSubtype.class);
                         Unmarshaller unmarshaller = context.createUnmarshaller();
-                        JAXBElement<LheoSubtype> jaxbElement = unmarshaller.unmarshal(new StreamSource(outPath.toFile()), LheoSubtype.class);
-                        log.info("Fichier XML parsé avec succès");
+                        JAXBElement<LheoSubtype> jaxbElement = unmarshaller
+                                .unmarshal(new StreamSource(outPath.toFile()), LheoSubtype.class);
+                        //log.info("Fichier XML parsé avec succès");
 
                         return jaxbElement.getValue();
                     }
@@ -347,7 +368,8 @@ public class ProductionFileService implements FileService {
     @Override
     public <T> void saveResultAsJson(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
 
-        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(),
+                sourcesDatasets.getLocalPath());
 
         if (result == null || result.isEmpty()) {
             log.warn("Aucun résultat à sauvegarder pour la source: {}", sourcesDatasets);
@@ -377,10 +399,11 @@ public class ProductionFileService implements FileService {
         }
     }
 
-    @Override
+    /*@Override
     public <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
 
-        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(),
+                sourcesDatasets.getLocalPath());
 
         if (result == null || result.isEmpty()) {
             log.warn("Aucun résultat à sauvegarder pour la source: {}", sourcesDatasets);
@@ -389,7 +412,7 @@ public class ProductionFileService implements FileService {
 
         try {
             Files.createDirectories(outPath.getParent());
-            //Files.createFile(outPath);
+            // Files.createFile(outPath);
         } catch (IOException e) {
             log.error("Impossible de créer un fichier pour {}: {}", sourcesDatasets, e.getMessage());
             return;
@@ -418,6 +441,6 @@ public class ProductionFileService implements FileService {
         } catch (Exception e) {
             throw new IllegalStateException("Erreur lors de l'écriture du CSV: " + e.getMessage(), e);
         }
-    }
+    }*/
 
 }

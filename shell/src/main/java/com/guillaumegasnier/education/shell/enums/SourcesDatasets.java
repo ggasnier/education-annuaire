@@ -85,8 +85,25 @@ public enum SourcesDatasets {
     FORMATIONS_ONISEP_ESR("Idéo-Actions de formation initiale-Univers enseignement supérieur", ONISEP, "https://api.opendata.onisep.fr/downloads/605344579a7d7/605344579a7d7.csv", "formations_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepFormationDataset.class),
 
     // LHEO
-    FORMATIONS_LHEO_OCCITANIE("Idéo-Actions de formation-Occitanie", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/f2300f7b-21a3-4470-8a5b-55dd6cf4c09f", "lheo_action_Occitanie.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
-    FORMATIONS_LHEO_CVL("Idéo-Actions de formation-Centre-Val de Loire", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/4e6d4012-bb6c-4d0d-b7ac-1cee7b1a18a8", "lheo_action_CVL.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    // DOM-TOM
+    FORMATIONS_LHEO_MAYOTTE("Idéo-Actions de formation-Mayotte", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa51a6dd5680/5fa51a6dd5680.zip", "lheo_action_Mayotte.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_GUYANE("Idéo-Actions de formation-Guyane", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa516ecd124e/5fa516ecd124e.zip", "lheo_action_Guyane.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    // Martinique
+    // Guadeloupe
+    // La Réunion
+
+    // Métropole
+    FORMATIONS_LHEO_BFC("Idéo-Actions de formation-Bourgogne-Franche-Comté", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa43d3021ee4/5fa43d3021ee4.zip", "lheo_action_BFC.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_CVL("Idéo-Actions de formation-Centre-Val de Loire", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa43eda089f9/5fa43eda089f9.zip", "lheo_action_CVL.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_NORMANDIE("Idéo-Actions de formation-Normandie", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa43baf8d2cc/5fa43baf8d2cc.zip", "lheo_action_Normandie.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_BRETAGNE("Idéo-Actions de formation-Bretagne", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa51a6dd5680/5fa51a6dd5680.zip", "lheo_action_Bretagne.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_LOIRE("Idéo-Actions de formation-Pays de la Loire", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa439b13180d/5fa439b13180d.zip", "lheo_action_PDL.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    // Grand Est
+    // Provence-Alpes-Côte d’Azur
+    // Hauts-de-France
+    // Nouvelle-Aquitaine
+    FORMATIONS_LHEO_OCCITANIE("Idéo-Actions de formation-Occitanie", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa432469f421/5fa432469f421.zip", "lheo_action_Occitanie.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_ARA("Idéo-Actions de formation-Auvergne-Rhône-Alpes", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/63d11a26-d25d-4886-aeb5-402558e19827", "lheo_action_AURA.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
     FORMATIONS_LHEO_IDF("Idéo-Actions de formation-Ile-de-France", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa41861a282c/5fa41861a282c.zip", "lheo_action_IDF.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
 
     // Default

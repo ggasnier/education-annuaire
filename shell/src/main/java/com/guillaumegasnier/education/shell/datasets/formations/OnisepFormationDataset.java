@@ -114,10 +114,10 @@ public class OnisepFormationDataset implements Dataset {
     }
 
     public UUID getFormationId() {
-        return UUID.nameUUIDFromBytes(getFormationOnisepId().toString().getBytes());
+        return UUID.nameUUIDFromBytes(("FOR" + getFormationOnisepId()).getBytes());
     }
 
     public UUID getActionFormationId() {
-        return UUID.nameUUIDFromBytes(getActionFormationOnisepId().toString().getBytes());
+        return UUID.nameUUIDFromBytes(("AF" + getActionFormationOnisepId()).getBytes());
     }
 }

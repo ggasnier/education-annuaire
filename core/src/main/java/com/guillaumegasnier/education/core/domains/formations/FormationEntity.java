@@ -148,21 +148,4 @@ public class FormationEntity extends AbstractSourcesEntity {
     // url
     // modules
     // Modules prérequis
-
-    /**
-     * Pour ajouter une action
-     */
-    public void addAction(ActionFormationEntity action) {
-        actions.add(action);
-        action.setFormation(this);
-    }
-
-    /**
-     * Pour retirer une action
-     */
-    public void removeAction(ActionFormationEntity action) {
-        actions.remove(action);
-        action.setFormation(null);
-    }
-
 }

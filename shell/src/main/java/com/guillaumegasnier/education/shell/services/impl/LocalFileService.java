@@ -71,7 +71,7 @@ public class LocalFileService implements FileService {
             try (reader) {
                 List<T> beans = new CsvToBeanBuilder<T>(reader)
                         .withType(clazz)
-                        .withSeparator(',')
+                        .withSeparator(sourcesDatasets.getSeparator())
                         .build()
                         .parse();
 

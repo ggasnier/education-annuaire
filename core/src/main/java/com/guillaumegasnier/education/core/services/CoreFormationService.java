@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
 import org.springframework.lang.NonNull;
@@ -40,4 +41,6 @@ public interface CoreFormationService {
     Optional<ActionFormationEntity> findActionFormation(UUID id);
 
     List<ActionFormationEntity> findFormations(String uai);
+
+    Optional<LienOnisepEntity> findLienOnisep(String clef, String valeur);
 }
