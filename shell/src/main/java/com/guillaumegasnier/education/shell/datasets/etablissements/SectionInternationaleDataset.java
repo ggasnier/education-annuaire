@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.validations.ValidUai;
+import com.guillaumegasnier.education.core.validations.etablissements.ValidUai;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;

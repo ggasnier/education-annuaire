@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.shell.shells;
 
-import com.guillaumegasnier.education.core.validations.Effectifs;
-import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
+import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 
 public interface ImportEtablissementShell {

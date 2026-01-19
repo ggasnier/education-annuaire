@@ -4,10 +4,10 @@ import com.guillaumegasnier.education.core.domains.etablissements.EtablissementM
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
-import com.guillaumegasnier.education.core.validations.Effectifs;
-import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
-import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
-import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
+import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.dto.etablissements.OptionDTO;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;

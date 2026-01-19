@@ -2,11 +2,11 @@ package com.guillaumegasnier.education.shell.transformers.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
-import com.guillaumegasnier.education.core.services.CoreReferenceService;
-import com.guillaumegasnier.education.core.validations.Effectifs;
-import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
-import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
-import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.core.services.CoreTerritoireService;
+import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
+import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
 import com.guillaumegasnier.education.shell.dto.etablissements.*;
@@ -28,7 +28,7 @@ import java.util.Optional;
 public class EtablissementTransformerImpl implements EtablissementTransformer {
 
     private final CoreEtablissementService coreEtablissementService;
-    private final CoreReferenceService coreReferenceService;
+    private final CoreTerritoireService coreTerritoireService;
     private final EtablissementMapper etablissementMapper;
 
     @Override
@@ -164,11 +164,11 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
         EtablissementEntity entity = etablissementMapper.toEntity(dataset);
 
         if (dataset.getCodeCommune() != null && !dataset.getCodeCommune().isBlank()) {
-            var communeOptional = coreReferenceService.findCommune(dataset.getCodeCommune());
+            var communeOptional = coreTerritoireService.findCommune(dataset.getCodeCommune());
             if (communeOptional.isPresent()) {
                 entity.setCommune(communeOptional.get());
             } else {
-                communeOptional = coreReferenceService.findCommuneByNom(dataset.getNomCommune());
+                communeOptional = coreTerritoireService.findCommuneByNom(dataset.getNomCommune());
                 if (communeOptional.isPresent()) {
                     entity.setCommune(communeOptional.get());
                 } else {
@@ -176,7 +176,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
                 }
             }
         } else if (dataset.getNomCommune() != null && !dataset.getNomCommune().isBlank()) {
-            var communeOptional = coreReferenceService.findCommuneByNom(dataset.getNomCommune());
+            var communeOptional = coreTerritoireService.findCommuneByNom(dataset.getNomCommune());
 
             if (communeOptional.isPresent()) {
                 entity.setCommune(communeOptional.get());
@@ -199,7 +199,6 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
 
         return entity;
     }
-
 
     @Override
     public EtablissementJPOEntity toEtablissementJPOEntity(@NonNull JPODataset dto, @NonNull String source) {

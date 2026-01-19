@@ -5,7 +5,7 @@ import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
-import com.guillaumegasnier.education.core.validations.ValidUai;
+import com.guillaumegasnier.education.core.validations.etablissements.ValidUai;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;

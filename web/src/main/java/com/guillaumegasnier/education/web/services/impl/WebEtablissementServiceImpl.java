@@ -3,14 +3,14 @@ package com.guillaumegasnier.education.web.services.impl;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
-import com.guillaumegasnier.education.core.services.CoreReferenceService;
+import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDetailsDto;
 import com.guillaumegasnier.education.web.mappers.WebEtablissementMapper;
 import com.guillaumegasnier.education.web.services.WebEtablissementService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,20 +19,13 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class WebEtablissementServiceImpl implements WebEtablissementService {
 
     private final CoreEtablissementService coreEtablissementService;
     private final CoreFormationService coreFormationService;
-    private final CoreReferenceService coreReferenceService;
+    private final CoreTerritoireService coreReferenceService;
     private final WebEtablissementMapper webEtablissementMapper;
-
-    @Autowired
-    public WebEtablissementServiceImpl(CoreEtablissementService coreEtablissementService, CoreFormationService coreFormationService, CoreReferenceService coreReferenceService, WebEtablissementMapper webEtablissementMapper) {
-        this.coreEtablissementService = coreEtablissementService;
-        this.coreFormationService = coreFormationService;
-        this.coreReferenceService = coreReferenceService;
-        this.webEtablissementMapper = webEtablissementMapper;
-    }
 
     @Override
     public Optional<EtablissementDto> findEtablissementByUai(String uai) {

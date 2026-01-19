@@ -1,0 +1,22 @@
+package com.guillaumegasnier.education.core.repositories.etablissements;
+
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface EtablissementRepository extends JpaRepository<EtablissementEntity, String> {
+
+    Optional<EtablissementEntity> findByUai(String uai);
+
+    List<EtablissementEntity> findAllByCommuneDepartementCode(String code);
+
+    List<EtablissementEntity> findAllByCommuneCodeOrderByNatureAscNomAsc(String code);
+
+    Optional<EtablissementEntity> findByMasaId(String masaId);
+
+    int countByActif(boolean b);
+}

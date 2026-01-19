@@ -5,7 +5,7 @@ import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
 import com.guillaumegasnier.education.core.enums.Secteur;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
-import com.guillaumegasnier.education.core.validations.ValidUai;
+import com.guillaumegasnier.education.core.validations.etablissements.ValidUai;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

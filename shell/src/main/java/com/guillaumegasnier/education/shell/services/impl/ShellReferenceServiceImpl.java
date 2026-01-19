@@ -2,12 +2,12 @@ package com.guillaumegasnier.education.shell.services.impl;
 
 
 import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity;
-import com.guillaumegasnier.education.core.services.CoreReferenceService;
+import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.shell.datasets.references.*;
 import com.guillaumegasnier.education.shell.mappers.ReferenceMapper;
 import com.guillaumegasnier.education.shell.services.ShellTerritoireService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +16,11 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ShellReferenceServiceImpl implements ShellTerritoireService {
 
-    private final CoreReferenceService coreReferenceService;
+    private final CoreTerritoireService coreReferenceService;
     private final ReferenceMapper referenceMapper;
-
-    @Autowired
-    public ShellReferenceServiceImpl(CoreReferenceService coreReferenceService, ReferenceMapper referenceMapper) {
-        this.coreReferenceService = coreReferenceService;
-        this.referenceMapper = referenceMapper;
-    }
 
     @Override
     public void createOrUpdatePays(@NonNull List<PaysDataset> datasets) {

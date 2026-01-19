@@ -4,13 +4,13 @@ import com.guillaumegasnier.education.core.domains.etablissements.EtablissementE
 import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
 import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
-import com.guillaumegasnier.education.core.services.CoreReferenceService;
+import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.web.dto.etablissements.CommuneWithEtablissementsDto;
 import com.guillaumegasnier.education.web.dto.etablissements.NatureWithEtablissementsDto;
 import com.guillaumegasnier.education.web.dto.references.AcademieWithDepartementsDto;
 import com.guillaumegasnier.education.web.mappers.WebEtablissementMapper;
 import com.guillaumegasnier.education.web.mappers.WebReferenceMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,20 +22,13 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
+@RequiredArgsConstructor
 public class IndexController {
 
-    private final CoreReferenceService coreReferenceService;
+    private final CoreTerritoireService coreTerritoireService;
     private final CoreEtablissementService coreEtablissementService;
     private final WebReferenceMapper webReferenceMapper;
     private final WebEtablissementMapper webEtablissementMapper;
-
-    @Autowired
-    public IndexController(CoreReferenceService coreReferenceService, CoreEtablissementService coreEtablissementService, WebReferenceMapper webReferenceMapper, WebEtablissementMapper webEtablissementMapper) {
-        this.coreReferenceService = coreReferenceService;
-        this.coreEtablissementService = coreEtablissementService;
-        this.webReferenceMapper = webReferenceMapper;
-        this.webEtablissementMapper = webEtablissementMapper;
-    }
 
     @GetMapping("")
     public String getHome(Model model) {
@@ -52,7 +45,7 @@ public class IndexController {
 
         model.addAttribute("title", "Academies");
 
-        List<DepartementEntity> departementEntityList = coreReferenceService.getDepartements();
+        List<DepartementEntity> departementEntityList = coreTerritoireService.getDepartements();
 
         List<AcademieWithDepartementsDto> academies = webReferenceMapper.groupByAcademie(departementEntityList);
 
@@ -61,10 +54,9 @@ public class IndexController {
         return "academies.html";
     }
 
-
     @GetMapping("/communes/{code}")
     public String getCommune(@PathVariable String code, Model model) {
-        Optional<CommuneEntity> communeEntityOptional = coreReferenceService.findCommune(code);
+        Optional<CommuneEntity> communeEntityOptional = coreTerritoireService.findCommune(code);
 
         if (communeEntityOptional.isPresent()) {
             var entity = communeEntityOptional.get();
@@ -83,7 +75,7 @@ public class IndexController {
     @GetMapping("/departements/{code}")
     public String getDepartement(@PathVariable String code, Model model) {
 
-        Optional<DepartementEntity> departementEntityOptional = coreReferenceService.findDepartement(code);
+        Optional<DepartementEntity> departementEntityOptional = coreTerritoireService.findDepartement(code);
 
         if (departementEntityOptional.isPresent()) {
             var entity = departementEntityOptional.get();

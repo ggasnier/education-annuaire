@@ -2,7 +2,7 @@ package com.guillaumegasnier.education.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
-import com.guillaumegasnier.education.core.validations.ValidUai;
+import com.guillaumegasnier.education.core.validations.etablissements.ValidUai;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;

@@ -28,4 +28,13 @@ class EtablissementEntityTest {
         assertEquals(sources, entity.getSources());
     }
 
+    @Test
+    void getNatureTest() {
+        var nature = new NatureEntity("$", "Non renseigné");
+        var nature2 = new NatureEntity("123", "Lorem ipsum dolor sit amet");
+        assertEquals(nature, entity.getNature());
+        entity.setNature(nature2);
+        assertEquals(nature2, entity.getNature());
+    }
+
 }

@@ -1,8 +1,8 @@
 package com.guillaumegasnier.education.shell.shells.impl;
 
 import com.guillaumegasnier.education.core.enums.Sport;
-import com.guillaumegasnier.education.core.validations.Effectifs;
-import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
+import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;

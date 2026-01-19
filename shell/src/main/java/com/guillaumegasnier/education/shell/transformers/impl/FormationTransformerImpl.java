@@ -6,7 +6,7 @@ import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
-import com.guillaumegasnier.education.core.services.CoreReferenceService;
+import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.TravailOrganismeFormationDataset;
 import com.guillaumegasnier.education.shell.dto.formations.ActionFormationDTO;
 import com.guillaumegasnier.education.shell.dto.formations.FormationDTO;
@@ -30,7 +30,7 @@ import static com.guillaumegasnier.education.shell.mappers.DateMapper.toLocalDat
 @RequiredArgsConstructor
 public class FormationTransformerImpl implements FormationTransformer {
 
-    private final CoreReferenceService coreReferenceService;
+    private final CoreTerritoireService coreTerritoireService;
     private final CoreFormationService coreFormationService;
     private final CoreEtablissementService coreEtablissementService;
     private final FormationMapper formationMapper;
@@ -62,7 +62,7 @@ public class FormationTransformerImpl implements FormationTransformer {
 
     private OrganismeEntity toOrganismeEntityNew(TravailOrganismeFormationDataset dataset) {
         var o = etablissementMapper.toOrganismeEntity(dataset);
-        coreReferenceService.findCommuneByNom(dataset.getNomCommune()).ifPresent(o::setCommune);
+        coreTerritoireService.findCommuneByNom(dataset.getNomCommune()).ifPresent(o::setCommune);
         return o;
     }
 
