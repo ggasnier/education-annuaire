@@ -1,10 +1,14 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
+import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Secteur;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -62,12 +66,18 @@ public class MasaEtablissementDataset implements EtablissementDataset {
     private String adresse5;
     @CsvBindByName(column = "adressepostale_ligne6")
     private String adresse6;
+    @CsvBindByName(column = "uai_code_commune")
+    private String codeCommune;
+    @CsvBindByName(column = "Internat")
+    private String hebergement;
+    @CsvBindByName(column = "Demi-pension")
+    private String restauration;
 
     @Override
     public String getSiret() {
         if (siret == null) return null;
         if (siret.isBlank()) return null;
-        return siret;
+        return siret.replace(" ", "");
     }
 
     @Override
@@ -106,12 +116,15 @@ public class MasaEtablissementDataset implements EtablissementDataset {
 
     @Override
     public Boolean isActif() {
+        if (dateFinValidite == null)
+            return true;
         return dateFinValidite.isBlank();
     }
 
     @Override
     public String getCodeNature() {
-        return switch (this.nomNature) {
+        if (nomNature == null) return null;
+        return switch (nomNature) {
             case "MFREO" -> "380";
             case "Lycée polyvalent" -> "306"; // Lycée polyvalent
             case "LEAP", "LPA" -> "320"; // Lycée professionnel
@@ -148,9 +161,15 @@ public class MasaEtablissementDataset implements EtablissementDataset {
     }
 
     @Override
-    public String getCodeCommune() {
-        return null;
+    public Set<OptionEtablissement> getOptions() {
+        Set<OptionEtablissement> options = new HashSet<>();
+
+        if (restauration != null && restauration.equals("Oui")) options.add(OptionEtablissement.RESTAURATION);
+        if (hebergement != null && hebergement.equals("Oui")) options.add(OptionEtablissement.HEBERGEMENT);
+
+        return options;
     }
+    
     //adressegeographique_ligne1
     //adressegeographique_ligne2
     //adressegeographique_ligne3
@@ -162,9 +181,6 @@ public class MasaEtablissementDataset implements EtablissementDataset {
     //uainiveau1_libelle_administratif
     //uainiveau2_codedger
     //uainiveau2_libelle_administratif
-    //uai_code_commune
-    //Internat
-    //Demi-pension
     //Résidence élèves
     //Date des données
     //coordonnees_geo
