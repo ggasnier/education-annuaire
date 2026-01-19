@@ -27,4 +27,6 @@ public interface ValidatorService {
     FormationEntity toValidEntity(@NonNull FormationEntity entity);
 
     ActionFormationEntity toValidEntity(@NonNull ActionFormationEntity entity);
+
+    EtablissementMasaEntity toValidEntity(@NonNull EtablissementMasaEntity entity);
 }

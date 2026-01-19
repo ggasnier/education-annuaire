@@ -84,14 +84,12 @@ public class EtablissementEntity extends AbstractSourcesEntity {
     @OneToMany(mappedBy = "etablissement", cascade = CascadeType.ALL)
     private Set<EtablissementIdentifiantEntity> identifiants = new HashSet<>();
 
+    @OneToOne(mappedBy = "etablissement")
+    private EtablissementMasaEntity masa;
+
     public NatureEntity getNature() {
         if (nature == null) return new NatureEntity("$", "Non renseigné");
         return nature;
-    }
-
-    public void addIdentifiant(EtablissementIdentifiantEntity identifiant) {
-        identifiants.add(identifiant);
-        identifiant.setEtablissement(this);
     }
 
 }

@@ -296,4 +296,10 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
         return null;
     }
 
+    @Override
+    public EtablissementMasaEntity toEtablissementMasaEntity(@NonNull MasaDTO dto) {
+
+        return null;
+    }
+
 }

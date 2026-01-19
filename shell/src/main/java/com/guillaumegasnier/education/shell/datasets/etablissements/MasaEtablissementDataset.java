@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.AbstractMap;
-
 @Getter
 @Setter
 @ToString
@@ -70,11 +68,6 @@ public class MasaEtablissementDataset implements EtablissementDataset {
         if (siret == null) return null;
         if (siret.isBlank()) return null;
         return siret;
-    }
-
-    @Override
-    public AbstractMap.SimpleEntry<String, String> getExternalId() {
-        return new AbstractMap.SimpleEntry<>("MASA", masaId);
     }
 
     @Override

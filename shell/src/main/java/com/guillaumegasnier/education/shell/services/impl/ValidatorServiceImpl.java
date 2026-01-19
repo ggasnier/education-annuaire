@@ -135,4 +135,9 @@ public class ValidatorServiceImpl implements ValidatorService {
     public ActionFormationEntity toValidEntity(@NonNull ActionFormationEntity entity) {
         return toValidEntity(entity, ActionFormationEntity.class);
     }
+
+    @Override
+    public EtablissementMasaEntity toValidEntity(@NonNull EtablissementMasaEntity entity) {
+        return toValidEntity(entity, EtablissementMasaEntity.class);
+    }
 }
