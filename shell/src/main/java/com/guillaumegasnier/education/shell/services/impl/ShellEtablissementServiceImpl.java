@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementMasaEntity;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
@@ -48,7 +49,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<SportDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
             coreEtablissementService.saveEtablissementSportEntity(sub.stream()
-                    .map(dataset -> EtablissementMapper.toSportDTO(dataset, categorie))
+                    .map(dataset -> etablissementMapper.toSportDTO(dataset, categorie))
                     .flatMap(List::stream)
                     .map(dto -> etablissementTransformer.toEtablissementSportEntity(dto, source))
                     .map(validatorService::toValidEntity)
@@ -68,7 +69,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             coreEtablissementService.saveOptions(sub.stream()
                     .filter(d -> d.getOption() != null)
                     .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                    .map(EtablissementMapper::toOptionDTO)
+                    .map(etablissementMapper::toOptionDTO)
                     .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
@@ -80,7 +81,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             (d.getOption().equals(OptionEtablissement.SPORT_ETUDES) ||
                                     d.getOption().equals(OptionEtablissement.SECTION_SPORT)))
                     .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-                    .map(dataset -> EtablissementMapper.toSportDTO(dataset, OptionEtablissement.SECTION_SPORT))
+                    .map(dataset -> etablissementMapper.toSportDTO(dataset, OptionEtablissement.SECTION_SPORT))
                     .flatMap(List::stream)
                     .map(dto -> etablissementTransformer.toEtablissementSportEntity(dto, source))
                     .filter(Objects::nonNull)
@@ -213,7 +214,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             coreEtablissementService.saveContacts(
                     sub.stream()
                             .flatMap(this::dedoublement)
-                            .map(EtablissementMapper::toContactDTO)
+                            .map(etablissementMapper::toContactDTO)
                             .flatMap(List::stream)
                             .map(dto -> etablissementTransformer.toEtablissementContactEntity(dto, source))
                             .filter(Objects::nonNull)
@@ -227,7 +228,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             coreEtablissementService.saveJPO(
                     sub.stream()
                             .flatMap(this::dedoublement)
-                            .map(EtablissementMapper::toJPODTO)
+                            .map(etablissementMapper::toJPODTO)
                             .flatMap(List::stream)
                             .filter(Objects::nonNull)
                             .map(dto -> etablissementTransformer.toEtablissementJPOEntity(dto, source))
@@ -236,6 +237,16 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             .toList());
 
             // Les identifiants externes
+            // TODO masaId
+            List<EtablissementMasaEntity> k = sub.stream()
+                    .filter(dataset -> dataset.getUai() != null && dataset.getMasaId() != null)
+                    .map(etablissementMapper::toMasaDTO)
+                    .map(etablissementTransformer::toEtablissementMasaEntity)
+                    .filter(Objects::nonNull)
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList();
+
         }
 
         long endTime = System.nanoTime();
@@ -280,7 +291,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     public void createOrUpdateLangues(@NonNull List<LangueDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveLangues(datasets
                 .stream()
-                .map(EtablissementMapper::toLangueDTO)
+                .map(etablissementMapper::toLangueDTO)
                 .map(dto -> etablissementTransformer.toEtablissementLangueEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
@@ -293,7 +304,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     public void createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveSpecialites(datasets
                 .stream()
-                .map(EtablissementMapper::toSpecialiteDTO)
+                .map(etablissementMapper::toSpecialiteDTO)
                 .flatMap(List::stream)
                 .map(dto -> etablissementTransformer.toEtablissementSpecialiteEntity(dto, source))
                 .filter(Objects::nonNull)
@@ -306,7 +317,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateSectionsInternationales(@NonNull List<SectionInternationaleDataset> datasets, @NonNull String source) {
-        // Indicateurs Section Internationnale et BFI
+        // Indicateurs Section Internationale et BFI
         coreEtablissementService.saveOptions(datasets.stream()
                 .map(etablissementMapper::toOptionDTO)
                 .flatMap(List::stream)
@@ -326,7 +337,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     public void createOrUpdateSectionsBinationales(@NonNull List<SectionBinationaleDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveOptions(datasets
                 .stream()
-                .map(EtablissementMapper::toOptionDTO)
+                .map(etablissementMapper::toOptionDTO)
                 .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)

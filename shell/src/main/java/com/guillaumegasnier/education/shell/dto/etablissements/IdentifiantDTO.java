@@ -1,4 +1,4 @@
 package com.guillaumegasnier.education.shell.dto.etablissements;
 
-public record IdentifiantDTO() {
+public record IdentifiantDTO(String clef, String valeur) {
 }

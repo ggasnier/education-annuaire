@@ -4,7 +4,6 @@ import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
-import com.guillaumegasnier.education.core.domains.recherche.DocumentEntity;
 import com.guillaumegasnier.education.core.dto.IndicateurValeurAjouteeDto;
 import com.guillaumegasnier.education.core.dto.IndicePositionSocialeDto;
 import com.guillaumegasnier.education.core.enums.Langue;
@@ -29,17 +28,8 @@ import java.util.Objects;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN, uses = {DateMapper.class})
 public abstract class EtablissementMapper {
 
-    public static Langue.Categorie toLangueCategorie(OptionEtablissement option) {
-        return switch (option) {
-            case OptionEtablissement.SECTION_EUROPEENNE -> Langue.Categorie.EU;
-            case OptionEtablissement.SECTION_INTERNATIONALE -> Langue.Categorie.SI;
-            case OptionEtablissement.SECTION_BILINGUE -> Langue.Categorie.BI;
-            case OptionEtablissement.SECTION_ORIENTALE -> Langue.Categorie.LO;
-            default -> null;
-        };
-    }
-
-    public static Sport.Categorie toSportCategorie(OptionEtablissement option) {
+    // Le sport
+    public Sport.Categorie toSportCategorie(OptionEtablissement option) {
         return switch (option) {
             case OptionEtablissement.SECTION_SPORT -> Sport.Categorie.SS;
             case OptionEtablissement.SPORT_ETUDES -> Sport.Categorie.SE;
@@ -47,7 +37,7 @@ public abstract class EtablissementMapper {
         };
     }
 
-    public static List<SportDTO> toSportDTO(@NonNull SportDataset dataset, @NonNull Sport.Categorie categorie) {
+    public List<SportDTO> toSportDTO(@NonNull SportDataset dataset, @NonNull Sport.Categorie categorie) {
         return dataset.getSectionList()
                 .stream()
                 .map(String::toUpperCase)
@@ -57,40 +47,83 @@ public abstract class EtablissementMapper {
                 .toList();
     }
 
-    public static OptionDTO toOptionDTO(@NonNull OnisepDispositifDataset dataset) {
-        return new OptionDTO(dataset.getUai(), dataset.getOption());
-    }
-
-    public static List<SportDTO> toSportDTO(@NonNull OnisepDispositifDataset dataset, @NonNull OptionEtablissement option) {
+    public List<SportDTO> toSportDTO(@NonNull OnisepDispositifDataset dataset, @NonNull OptionEtablissement option) {
         return dataset.getSportList().stream().map(sport ->
                 new SportDTO(dataset.getUai(), sport, toSportCategorie(option))
         ).toList();
     }
 
-    public static LangueDTO toLangueDTO(@NonNull LangueDataset dataset) {
+    // Les langues
+    public Langue.Categorie toLangueCategorie(OptionEtablissement option) {
+        return switch (option) {
+            case OptionEtablissement.SECTION_EUROPEENNE -> Langue.Categorie.EU;
+            case OptionEtablissement.SECTION_INTERNATIONALE -> Langue.Categorie.SI;
+            case OptionEtablissement.SECTION_BILINGUE -> Langue.Categorie.BI;
+            case OptionEtablissement.SECTION_ORIENTALE -> Langue.Categorie.LO;
+            default -> null;
+        };
+    }
+
+    public LangueDTO toLangueDTO(@NonNull LangueDataset dataset) {
         return new LangueDTO(dataset.getUai(), Langue.transformation(dataset.getLangue()), Langue.Categorie.LV, dataset.getEnseignement());
     }
 
-    public static List<ContactDTO> toContactDTO(@NonNull EtablissementDataset dataset) {
+    public List<LangueDTO> toLangueDTO(@NonNull OnisepDispositifDataset dataset) {
+        return dataset.getLangueList().stream()
+                .map(langue -> new LangueDTO(dataset.getUai(), langue, toLangueCategorie(dataset.getOption()), ""))
+                .toList();
+    }
+
+    // Les options
+    public OptionDTO toOptionDTO(@NonNull OnisepDispositifDataset dataset) {
+        return new OptionDTO(dataset.getUai(), dataset.getOption());
+    }
+
+    public OptionDTO toOptionDTO(@NonNull SectionBinationaleDataset dataset) {
+        return new OptionDTO(dataset.getUai(), dataset.getOption());
+    }
+
+    public List<OptionDTO> toOptionDTO(@NonNull SectionInternationaleDataset dataset) {
+        List<OptionDTO> dtos = new ArrayList<>();
+        // Indicateur SI
+        dtos.add(new OptionDTO(dataset.getUai(), OptionEtablissement.SECTION_INTERNATIONALE));
+        // Indicateur BFI
+        dataset.getNiveaux().forEach(niveau -> {
+            if (niveau.equals("BFI")) {
+                dtos.add(new OptionDTO(dataset.getUai(), OptionEtablissement.BFI));
+            }
+        });
+        return dtos;
+    }
+
+    public List<OptionDTO> toOptionDTO(@NonNull EtablissementDataset dataset) {
+        return dataset.getOptions().stream()
+                .map(option -> new OptionDTO(dataset.getUai(), option)
+                ).toList();
+    }
+
+    // Les contacts
+    public List<ContactDTO> toContactDTO(@NonNull EtablissementDataset dataset) {
         return dataset.getContacts().stream()
                 .map(contact -> new ContactDTO(dataset.getUai(), contact.getContact(), contact.getValeur()))
                 .toList();
     }
 
-    public static List<JPODataset> toJPODTO(@NonNull EtablissementDataset dataset) {
+    // Les journées portes ouvertes
+    public List<JPODataset> toJPODTO(@NonNull EtablissementDataset dataset) {
         return dataset.getJPO();
     }
 
-    public static List<SpecialiteDTO> toSpecialiteDTO(@NonNull SpecialitePremiereDataset dataset) {
+    public abstract MasaDTO toMasaDTO(EtablissementDataset dataset);
+
+    // Les spécialités du BAC
+    public List<SpecialiteDTO> toSpecialiteDTO(@NonNull SpecialitePremiereDataset dataset) {
         return dataset.getSpecialites().stream().map(
                 specialite -> new SpecialiteDTO(dataset.getUai(), specialite)
         ).toList();
     }
 
-    public static OptionDTO toOptionDTO(@NonNull SectionBinationaleDataset dataset) {
-        return new OptionDTO(dataset.getUai(), dataset.getOption());
-    }
-
+    // Les entitées JPA
     @Mapping(target = "identifiants", ignore = true)
     @Mapping(target = "organisme", ignore = true)
     @Mapping(target = "nature", ignore = true)
@@ -110,18 +143,6 @@ public abstract class EtablissementMapper {
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
     public abstract ContratEntity toContratEntity(ContratDataset dataset);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "nomNature", source = "nature.nom")
-    @Mapping(target = "nomContrat", source = "contrat.nom")
-    @Mapping(target = "nomCommune", source = "commune.nom")
-    @Mapping(target = "docType", constant = "etablissements")
-    @Mapping(target = "docId", source = "uai")
-    @Mapping(target = "description", ignore = true) // TODO
-    @Mapping(target = "codeNature", source = "nature.code")
-    @Mapping(target = "codeContrat", source = "contrat.code")
-    @Mapping(target = "codeCommune", source = "commune.code")
-    public abstract DocumentEntity toDocumentEntity(EtablissementEntity etablissementEntity);
-
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "groupes", ignore = true)
     @Mapping(target = "nda", source = "numeroDeclarationActivite")
@@ -130,6 +151,7 @@ public abstract class EtablissementMapper {
     @Mapping(target = "certificationQualiopi", ignore = true)
     public abstract OrganismeEntity toOrganismeEntity(TravailOrganismeFormationDataset dataset);
 
+    // Les metadatas
     public <T extends IndicePositionSociale & Metadata> IndicePositionSocialeDto toIndicePositionSocialeDto(T dataset) {
         IndicePositionSocialeDto ips = new IndicePositionSocialeDto();
         ips.setIndice(dataset.getIndice());
@@ -150,34 +172,5 @@ public abstract class EtablissementMapper {
         IndicateurValeurAjouteeDto iva = new IndicateurValeurAjouteeDto();
         iva.setResultats(dataset.getResultats());
         return iva;
-    }
-
-    public List<LangueDTO> toLangueDTO(@NonNull OnisepDispositifDataset dataset) {
-        return dataset.getLangueList().stream()
-                .map(langue -> new LangueDTO(dataset.getUai(), langue, toLangueCategorie(dataset.getOption()), ""))
-                .toList();
-    }
-
-    public List<OptionDTO> toOptionDTO(@NonNull SectionInternationaleDataset dataset) {
-        List<OptionDTO> dtos = new ArrayList<>();
-        // Indicateur SI
-        dtos.add(new OptionDTO(dataset.getUai(), OptionEtablissement.SECTION_INTERNATIONALE));
-        // Indicateur BFI
-        dataset.getNiveaux().forEach(niveau -> {
-            if (niveau.equals("BFI")) {
-                dtos.add(new OptionDTO(dataset.getUai(), OptionEtablissement.BFI));
-            }
-        });
-        return dtos;
-    }
-
-    public EtablissementDTO toEtablissementDTO(@NonNull EtablissementDataset dataset) {
-        return null;
-    }
-
-    public List<OptionDTO> toOptionDTO(@NonNull EtablissementDataset dataset) {
-        return dataset.getOptions().stream()
-                .map(option -> new OptionDTO(dataset.getUai(), option)
-                ).toList();
     }
 }
