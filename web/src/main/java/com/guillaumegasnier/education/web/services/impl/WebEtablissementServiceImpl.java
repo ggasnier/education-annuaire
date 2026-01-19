@@ -24,7 +24,7 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
 
     private final CoreEtablissementService coreEtablissementService;
     private final CoreFormationService coreFormationService;
-    private final CoreTerritoireService coreReferenceService;
+    private final CoreTerritoireService coreTerritoireService;
     private final WebEtablissementMapper webEtablissementMapper;
 
     @Override
@@ -47,7 +47,7 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
                 coreEtablissementService.findNature(dto.getCodeNature()).ifPresent(entity::setNature);
             }
             if (dto.getCodeCommune() != null) {
-                coreReferenceService.findCommune(dto.getCodeCommune()).ifPresent(entity::setCommune);
+                coreTerritoireService.findCommune(dto.getCodeCommune()).ifPresent(entity::setCommune);
             }
             if (dto.getCodeContrat() != null) {
                 coreEtablissementService.findContrat(dto.getCodeContrat()).ifPresent(entity::setContrat);

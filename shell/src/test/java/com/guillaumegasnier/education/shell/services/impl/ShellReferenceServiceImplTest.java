@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.services.CoreReferenceService;
+import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.shell.datasets.references.AcademieDataset;
 import com.guillaumegasnier.education.shell.datasets.references.PaysDataset;
 import com.guillaumegasnier.education.shell.datasets.references.RegionDataset;
@@ -16,7 +16,7 @@ import java.util.List;
 class ShellReferenceServiceImplTest {
 
     @Mock
-    private CoreReferenceService coreReferenceService;
+    private CoreTerritoireService coreTerritoireService;
 
     @Mock
     private ReferenceMapper referenceMapper;

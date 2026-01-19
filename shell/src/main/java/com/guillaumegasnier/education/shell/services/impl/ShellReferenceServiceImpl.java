@@ -19,18 +19,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShellReferenceServiceImpl implements ShellTerritoireService {
 
-    private final CoreTerritoireService coreReferenceService;
+    private final CoreTerritoireService coreTerritoireService;
     private final ReferenceMapper referenceMapper;
 
     @Override
     public void createOrUpdatePays(@NonNull List<PaysDataset> datasets) {
-        coreReferenceService.savePays(datasets.stream().map(referenceMapper::toPaysEntity).toList());
+        coreTerritoireService.savePays(datasets.stream().map(referenceMapper::toPaysEntity).toList());
         String.format("Import terminé : %d pays enregistrée(s).", datasets.size());
     }
 
     @Override
     public void createOrUpdateAcademies(@NonNull List<AcademieDataset> datasets) {
-        coreReferenceService.saveAcademies(datasets.stream()
+        coreTerritoireService.saveAcademies(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
                 .map(referenceMapper::toAcademieEntity)
                 .toList());
@@ -39,7 +39,7 @@ public class ShellReferenceServiceImpl implements ShellTerritoireService {
 
     @Override
     public void createOrUpdateRegions(@NonNull List<RegionDataset> datasets) {
-        coreReferenceService.saveRegions(datasets.stream()
+        coreTerritoireService.saveRegions(datasets.stream()
                 .map(referenceMapper::toRegionEntity)
                 .toList());
         String.format("Import terminé : %d région(s) enregistrée(s).", datasets.size());
@@ -54,34 +54,34 @@ public class ShellReferenceServiceImpl implements ShellTerritoireService {
                     // Association à une région si le code est renseigné
                     String codeRegion = dataset.getCodeRegion();
                     if (codeRegion != null && !codeRegion.isEmpty()) {
-                        entity.setRegion(coreReferenceService.getRegion(codeRegion));
+                        entity.setRegion(coreTerritoireService.getRegion(codeRegion));
                     }
 
                     // Association à une académie si le mapping existe
                     String codeAcademie = codeAcademieMap.get(dataset.getCode());
                     if (codeAcademie != null && !codeAcademie.isEmpty()) {
-                        entity.setAcademie(coreReferenceService.getAcademie(codeAcademie));
+                        entity.setAcademie(coreTerritoireService.getAcademie(codeAcademie));
                     }
 
                     return entity;
                 })
                 .toList();
 
-        coreReferenceService.saveDepartements(departements);
+        coreTerritoireService.saveDepartements(departements);
 
         String.format("Import terminé : %d département(s) enregistré(s).", departements.size());
     }
 
     @Override
     public void createOrUpdateCommunes(@NonNull List<CommuneDataset> datasets) {
-        var pays = coreReferenceService.getPays("FR");
+        var pays = coreTerritoireService.getPays("FR");
 
-        coreReferenceService.saveCommunes(datasets.stream().map(dataset -> {
+        coreTerritoireService.saveCommunes(datasets.stream().map(dataset -> {
             var entity = referenceMapper.toCommuneEntity(dataset);
             if (!dataset.getCodeDepartement().isEmpty()) {
-                entity.setDepartement(coreReferenceService.getDepartement(dataset.getCodeDepartement()));
+                entity.setDepartement(coreTerritoireService.getDepartement(dataset.getCodeDepartement()));
             } else {
-                entity.setDepartement(coreReferenceService.getDepartement(dataset.getCode().substring(0, 2)));
+                entity.setDepartement(coreTerritoireService.getDepartement(dataset.getCode().substring(0, 2)));
             }
 
             entity.setPays(pays);
