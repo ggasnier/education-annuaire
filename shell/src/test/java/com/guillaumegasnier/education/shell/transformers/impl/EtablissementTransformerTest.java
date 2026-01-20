@@ -102,7 +102,7 @@ class EtablissementTransformerTest {
         when(coreEtablissementService.findJPO(uaiAbsent, LocalDate.parse("2026-01-01"), LocalDate.parse("2026-01-01"))).thenReturn(Optional.of(new EtablissementJPOEntity()));
         JPODataset dataset = new JPODataset();
         dataset.setUai(uaiAbsent);
-        assertNotNull(transformer.toEtablissementJPOEntity(dataset, "en"));
+        assertNull(transformer.toEtablissementJPOEntity(dataset, "en"));
 
         when(coreEtablissementService.findJPO(uaiExiste, LocalDate.parse("2026-01-01"), LocalDate.parse("2026-01-01"))).thenReturn(Optional.of(new EtablissementJPOEntity()));
         dataset = new JPODataset();

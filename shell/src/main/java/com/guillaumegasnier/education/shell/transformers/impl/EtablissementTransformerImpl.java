@@ -196,12 +196,17 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
         if (opt.isPresent()) {
             entity = opt.get();
         } else {
-            entity = new EtablissementJPOEntity();
-            entity.setPk(new EtablissementJPOPK(dto.getUai(), dto.getDateDebut(), dto.getDateFin()));
-            entity.setHeureFin(dto.getHeureDebut());
-            entity.setHeureFin(dto.getHeureFin());
-            entity.setCommentaire(dto.getCommentaire());
-            entity.setEtablissement(coreEtablissementService.getEtablissementReferenceByUai(dto.getUai()));
+            if (coreEtablissementService.isEtablissementExiste(dto.getUai())) {
+                entity = new EtablissementJPOEntity();
+                entity.setPk(new EtablissementJPOPK(dto.getUai(), dto.getDateDebut(), dto.getDateFin()));
+                entity.setHeureFin(dto.getHeureDebut());
+                entity.setHeureFin(dto.getHeureFin());
+                entity.setCommentaire(dto.getCommentaire());
+                entity.setEtablissement(coreEtablissementService.getEtablissementReferenceByUai(dto.getUai()));
+            } else {
+                log.warn("Etablissement {} non trouvé pour JPO {} & {}", dto.getUai(), dto.getDateDebut(), dto.getDateFin());
+                return null;
+            }
         }
 
         entity.addSource(source);
