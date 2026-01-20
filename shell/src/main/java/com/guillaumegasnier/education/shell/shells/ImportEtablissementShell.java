@@ -20,6 +20,8 @@ public interface ImportEtablissementShell {
 
     void importEtablissementsMasa();
 
+    void importEtablissementsJpo();
+
     void importSports();
 
     void importLangues();

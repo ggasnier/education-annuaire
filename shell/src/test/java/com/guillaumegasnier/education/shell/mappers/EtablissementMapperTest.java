@@ -4,9 +4,7 @@ import com.guillaumegasnier.education.core.domains.etablissements.EtablissementE
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
-import com.guillaumegasnier.education.shell.datasets.etablissements.EsrEtablissementDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.OnisepDispositifDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.SportDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
@@ -81,6 +79,25 @@ class EtablissementMapperTest {
 
     @Test
     void toLangueDTOTest() {
+
+    }
+
+    @Test
+    void toJPODTOTest() {
+
+        MasaJpoDataset dataset = new MasaJpoDataset();
+        dataset.setMasaId("00100233");
+
+        dataset.setDateDebut("2026-01-30");
+        dataset.setDateFin("2026-01-30");
+        dataset.setCommentaire("de 17h30 à 20h");
+
+        JPODataset dto = mapper.toJPODTO(dataset);
+        assertNotNull(dto);
+        assertNotNull(dto.getUai());
+        assertNotNull(dto.getDateDebut());
+        assertNotNull(dto.getDateFin());
+
 
     }
 }

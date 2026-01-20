@@ -114,6 +114,11 @@ public abstract class EtablissementMapper {
         return dataset.getJPO();
     }
 
+    @Mapping(target = "uai", source = "masaId") // a transformer plus tard
+    @Mapping(target = "heureFin", ignore = true)
+    @Mapping(target = "heureDebut", ignore = true)
+    public abstract JPODataset toJPODTO(MasaJpoDataset dataset);
+
     public abstract MasaDTO toMasaDTO(EtablissementDataset dataset);
 
     // Les spécialités du BAC

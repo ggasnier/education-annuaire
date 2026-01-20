@@ -81,6 +81,12 @@ public class ImportEtablissement implements ImportEtablissementShell {
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(MASA_ETABS), "masa");
     }
 
+    @Override
+    @ShellMethod(value = "Import des Journées Portes Ouvertes")
+    public void importEtablissementsJpo() {
+        shellEtablissementService.createOrUpdateJpo(fileService.importCSV(MASA_JPO), "masa");
+    }
+
     /**
      * Import des sections sportives et des sections sport-études
      */

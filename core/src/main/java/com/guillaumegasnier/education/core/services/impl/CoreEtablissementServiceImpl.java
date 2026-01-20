@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
+import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.repositories.etablissements.*;
 import com.guillaumegasnier.education.core.repositories.formations.OrganismeRepository;
@@ -41,6 +42,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     private final EtablissementContactRepository etablissementContactRepository;
     private final EtablissementJPORepository etablissementJPORepository;
     private final EtablissementIdentifiantRepository etablissementIdentifiantRepository;
+    private final EtablissementMasaRepository etablissementMasaRepository;
 
     @PersistenceContext
     private EntityManager em;
@@ -111,16 +113,6 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         return etablissementSportRepository.findAllByPkUaiOrderByPkCategorie(uai);
     }
 
-//    @Override
-//    public void saveSectionsSportEtudes(@NonNull List<SportEtudeEntity> entities) {
-//        sportEtudeRepository.saveAll(entities);
-//    }
-
-//    @Override
-//    public List<SectionSportiveEntity> getSectionSportiveListByUai(String uai) {
-//        return sectionSportiveRepository.findAllByPkUai(uai);
-//    }
-
     @Override
     public EtablissementEntity saveEtablissement(EtablissementEntity entity) {
         return etablissementRepository.save(entity);
@@ -130,11 +122,6 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     public List<EtablissementEntity> findAll() {
         return etablissementRepository.findAll();
     }
-
-//    @Override
-//    public List<EtablissementEntity> findEtablissementByNda(String numeroDeclarationActivite) {
-//        return etablissementRepository.findByNumeroDeclarationActivite(numeroDeclarationActivite);
-//    }
 
     @Override
     public List<EtablissementEntity> findEtablissementListByDepartement(String code) {
@@ -219,6 +206,15 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+
+    public void saveMasa(@NonNull List<EtablissementMasaEntity> entities) {
+        etablissementMasaRepository.saveAll(entities);
+        em.flush();
+        em.clear();
+    }
+
+    @Override
     public List<EtablissementJPOEntity> getJourneesPortesOuvertes(String uai) {
         return etablissementJPORepository.findAllByPkUaiOrderByPkDateDebut(uai);
     }
@@ -250,22 +246,17 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    public Optional<EtablissementSpecialiteEntity> findSpecialite(String uai, SpecialiteBac specialite) {
+        return specialiteRepository.findByPkUaiAndPkSpecialite(uai, specialite);
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveSpecialites(List<EtablissementSpecialiteEntity> entities) {
-        specialiteRepository.saveAll(entities); // TODO supprimer les spécialités ou trouver un moyen de virer les anciennes
+        specialiteRepository.saveAll(entities);
         em.flush();
         em.clear();
     }
-
-    /*@Override
-    public void saveSectionsInternationales(@NonNull List<SectionInternationaleEntity> entities) {
-        sectionInternationaleRepository.saveAll(entities);
-    }*/
-
-//    @Override
-//    public void saveSectionsSporties(List<SectionSportiveEntity> entities) {
-//        sectionSportiveRepository.saveAll(entities);
-//    }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -281,5 +272,10 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         optionEtablissementRepository.saveAll(entities);
         em.flush();
         em.clear();
+    }
+
+    @Override
+    public Optional<EtablissementMasaEntity> findMasa(String masaId) {
+        return etablissementMasaRepository.findById(masaId);
     }
 }

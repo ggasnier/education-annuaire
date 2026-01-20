@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
+import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.etablissements.ValidUai;
 import org.springframework.lang.NonNull;
@@ -101,4 +102,10 @@ public interface CoreEtablissementService {
     Optional<EtablissementJPOEntity> findJPO(String uai, LocalDate dateDebut, LocalDate dateFin);
 
     Optional<EtablissementLangueEntity> findLangue(String uai, Langue langue, Langue.Categorie categorie, String enseignement);
+
+    Optional<EtablissementSpecialiteEntity> findSpecialite(String uai, SpecialiteBac specialite);
+
+    void saveMasa(@NonNull List<EtablissementMasaEntity> entities);
+
+    Optional<EtablissementMasaEntity> findMasa(String masaId);
 }

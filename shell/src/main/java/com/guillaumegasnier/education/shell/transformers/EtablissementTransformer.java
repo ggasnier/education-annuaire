@@ -32,7 +32,11 @@ public interface EtablissementTransformer {
 
     EtablissementSportEntity toEtablissementSportEntity(@NonNull SportDTO dto, @NonNull String source);
 
-    EtablissementIdentifiantEntity toEtablissementIdentifiantEntity(@NonNull IdentifiantDTO dto, @NonNull String source);
+    default EtablissementIdentifiantEntity toEtablissementIdentifiantEntity(@NonNull IdentifiantDTO dto, @NonNull String source) {
+        return null;
+    }
 
     EtablissementMasaEntity toEtablissementMasaEntity(@NonNull MasaDTO dto);
+
+    JPODataset finUai(JPODataset jpoDataset);
 }

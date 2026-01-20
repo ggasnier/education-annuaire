@@ -53,19 +53,17 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
                 return entity;
             }
         } else {
-            log.warn("Pas d'établissement avec UAI {} pour IPS", uai);
+            log.warn("Etablissement {} non trouvé pour IPS {}", uai, annee);
             return null;
         }
     }
 
     @Override
-    public <T extends Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset) {
+    public <T extends Effectifs & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull T dataset) {
         var uai = dataset.getUai();
         var annee = dataset.getAnnee();
 
-        log.info("1");
         if (coreEtablissementService.isEtablissementExiste(uai)) {
-            log.info("2");
             Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
 
             if (metadataEntityOptional.isPresent()) {
@@ -77,7 +75,6 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
                 entity.setMetadatas(metadatas);
                 return entity;
             } else {
-                log.info("3");
                 var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), coreEtablissementService.getEtablissementReferenceByUai(uai));
                 var metadatas = entity.getMetadatas();
                 if (dataset.getEffectifs() != null) {
@@ -93,7 +90,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
     }
 
     @Override
-    public <T extends IndicateurValeurAjoutee & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(T dataset) {
+    public <T extends IndicateurValeurAjoutee & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull T dataset) {
         var uai = dataset.getUai();
         var annee = dataset.getAnnee();
 
@@ -114,7 +111,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
                 return entity;
             }
         } else {
-            log.warn("Pas d'établissement avec UAI {} pour IVA", uai);
+            log.warn("Etablissement {} non trouvé pour IVA {}", uai, annee);
             return null;
         }
     }
@@ -126,7 +123,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
                 .orElseGet(() -> toEtablissementEntityNew(dataset, source));
     }
 
-    private <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityOld(@NonNull EtablissementEntity entity, @NonNull T dataset, @NonNull String source) {
+    <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityOld(@NonNull EtablissementEntity entity, @NonNull T dataset, @NonNull String source) {
         // Ne mettre à jour les champs que s'ils sont renseignés
 
         if (dataset.getCodeNature() != null) {
@@ -149,17 +146,12 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
             entity.setActif(dataset.isActif());
         }
 
-        // à déplacer
-//        if (dto.getExternalId() != null) {
-//            entity.addIdentifiant(coreEtablissementService.findIdentifiant(entity, dto.getExternalId().getKey(), dto.getExternalId().getValue()));
-//        }
-
         entity.addSource(source);
 
         return entity;
     }
 
-    private <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityNew(@NonNull T dataset, @NonNull String source) {
+    <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityNew(@NonNull T dataset, @NonNull String source) {
 
         EtablissementEntity entity = etablissementMapper.toEntity(dataset);
 
@@ -191,10 +183,6 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
             coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
         }
 
-//        if (dto.getExternalId() != null) {
-//            entity.addIdentifiant(new EtablissementIdentifiantEntity(entity, dataset.getExternalId().getKey(), dataset.getExternalId().getValue()));
-//        }
-
         entity.addSource(source);
 
         return entity;
@@ -203,26 +191,21 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
     @Override
     public EtablissementJPOEntity toEtablissementJPOEntity(@NonNull JPODataset dto, @NonNull String source) {
         Optional<EtablissementJPOEntity> opt = coreEtablissementService.findJPO(dto.getUai(), dto.getDateDebut(), dto.getDateFin());
+        EtablissementJPOEntity entity;
 
         if (opt.isPresent()) {
-            var entity = opt.get();
-            entity.addSource(source);
-            return entity;
+            entity = opt.get();
         } else {
-            var entity = new EtablissementJPOEntity();
+            entity = new EtablissementJPOEntity();
             entity.setPk(new EtablissementJPOPK(dto.getUai(), dto.getDateDebut(), dto.getDateFin()));
             entity.setHeureFin(dto.getHeureDebut());
             entity.setHeureFin(dto.getHeureFin());
             entity.setCommentaire(dto.getCommentaire());
             entity.setEtablissement(coreEtablissementService.getEtablissementReferenceByUai(dto.getUai()));
-            entity.addSource(source);
-            return entity;
         }
-    }
 
-    @Override
-    public EtablissementContactEntity toEtablissementContactEntity(@NonNull ContactDTO dto, @NonNull String source) {
-        return null;
+        entity.addSource(source);
+        return entity;
     }
 
     @Override
@@ -236,7 +219,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
             if (coreEtablissementService.isEtablissementExiste(dto.uai())) {
                 entity = new EtablissementLangueEntity(new EtablissementLanguePK(dto.uai(), dto.langue(), dto.categorie(), dto.enseignement()), coreEtablissementService.getEtablissementReferenceByUai(dto.uai()));
             } else {
-                log.warn("Pas d'établissement avec UAI {} pour langues {}", dto.uai(), dto.langue());
+                log.warn("Etablissement {} non trouvé pour langues {} & {} & {}", dto.uai(), dto.langue(), dto.categorie(), dto.enseignement());
                 return null;
             }
         }
@@ -256,18 +239,13 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
             if (coreEtablissementService.isEtablissementExiste(dto.uai())) {
                 entity = new EtablissementOptionEntity(new EtablissementOptionPK(dto.uai(), dto.option()), coreEtablissementService.getEtablissementReferenceByUai(dto.uai()));
             } else {
-                log.warn("Pas d'établissement avec UAI {} pour dispositifs {}", dto.uai(), dto.uai());
+                log.warn("Etablissement {} non trouvé pour options {}", dto.uai(), dto.option());
                 return null;
             }
         }
 
         entity.addSource(source);
         return entity;
-    }
-
-    @Override
-    public EtablissementSpecialiteEntity toEtablissementSpecialiteEntity(@NonNull SpecialiteDTO dto, @NonNull String source) {
-        return null;
     }
 
     @Override
@@ -281,7 +259,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
             if (coreEtablissementService.isEtablissementExiste(dto.uai())) {
                 entity = new EtablissementSportEntity(dto.uai(), dto.sport(), dto.categorie(), coreEtablissementService.getEtablissementReferenceByUai(dto.uai()));
             } else {
-                log.warn("Etablissement {} non trouvé pour {} & {}", dto.uai(), dto.sport(), dto.categorie());
+                log.warn("Etablissement {} non trouvé pour sports {} & {}", dto.uai(), dto.sport(), dto.categorie());
                 return null;
             }
         }
@@ -291,14 +269,60 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
     }
 
     @Override
-    public EtablissementIdentifiantEntity toEtablissementIdentifiantEntity(@NonNull IdentifiantDTO dto, @NonNull String source) {
-        return null;
+    public EtablissementSpecialiteEntity toEtablissementSpecialiteEntity(@NonNull SpecialiteDTO dto, @NonNull String source) {
+        Optional<EtablissementSpecialiteEntity> opt = coreEtablissementService.findSpecialite(dto.uai(), dto.specialite());
+        EtablissementSpecialiteEntity entity;
+
+        if (opt.isPresent()) {
+            entity = opt.get();
+        } else {
+            if (coreEtablissementService.isEtablissementExiste(dto.uai())) {
+                var pk = new EtablissementSpecialitePK(dto.uai(), dto.specialite());
+                entity = new EtablissementSpecialiteEntity(pk, coreEtablissementService.getEtablissementReferenceByUai(dto.uai()));
+            } else {
+                log.warn("Etablissement {} non trouvé pour specialites {}", dto.uai(), dto.specialite());
+                return null;
+            }
+        }
+
+        return entity;
     }
 
     @Override
     public EtablissementMasaEntity toEtablissementMasaEntity(@NonNull MasaDTO dto) {
+        Optional<EtablissementMasaEntity> opt = coreEtablissementService.findMasa(dto.masaId());
+        EtablissementMasaEntity entity;
 
+        if (opt.isPresent()) {
+            entity = opt.get();
+        } else {
+            if (coreEtablissementService.isEtablissementExiste(dto.uai())) {
+                entity = new EtablissementMasaEntity(dto.masaId(), coreEtablissementService.getEtablissementReferenceByUai(dto.uai()));
+            } else {
+                log.warn("Etablissement {} non trouvé pour masa {}", dto.uai(), dto.masaId());
+                return null;
+            }
+        }
+
+        return entity;
+    }
+
+    @Override
+    public EtablissementContactEntity toEtablissementContactEntity(@NonNull ContactDTO dto, @NonNull String source) {
         return null;
     }
 
+    @Override
+    public JPODataset finUai(@NonNull JPODataset dataset) {
+        Optional<EtablissementMasaEntity> opt = coreEtablissementService.findMasa(dataset.getUai());
+
+        if (opt.isPresent()) {
+            dataset.setUai(opt.get().getEtablissement().getUai());
+            // TODO : les heures ?
+            return dataset;
+        } else {
+            log.warn("Pas d'établissement avec le code masaId {}", dataset.getUai());
+            return null;
+        }
+    }
 }

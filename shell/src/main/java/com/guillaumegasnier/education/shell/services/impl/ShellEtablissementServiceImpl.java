@@ -1,6 +1,5 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
-import com.guillaumegasnier.education.core.domains.etablissements.EtablissementMasaEntity;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
@@ -169,6 +168,27 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void createOrUpdateJpo(@NonNull List<MasaJpoDataset> datasets, @NonNull String source) {
+        for (int i = 0; i < datasets.size(); i += chunk) {
+            List<MasaJpoDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
+
+            coreEtablissementService.saveJPO(
+                    sub.stream()
+                            .map(etablissementMapper::toJPODTO)
+                            .map(etablissementTransformer::finUai)
+                            .filter(Objects::nonNull)
+                            .map(dto -> etablissementTransformer.toEtablissementJPOEntity(dto, source))
+                            .filter(Objects::nonNull)
+                            .map(validatorService::toValidEntity)
+                            .filter(Objects::nonNull)
+                            .toList());
+        }
+
+        log.info("Import terminé : {} Journées Portes Ouvertes traitées.", datasets.size());
+    }
+
+    @Override
     public void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveOptions(datasets.stream()
                 .map(dataset -> new OptionDTO(dataset.getUai(), OptionEtablissement.EUROSCOL))
@@ -236,17 +256,17 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             .filter(Objects::nonNull)
                             .toList());
 
-            // Les identifiants externes
-            // TODO masaId
-            List<EtablissementMasaEntity> k = sub.stream()
-                    .filter(dataset -> dataset.getUai() != null && dataset.getMasaId() != null)
-                    .map(etablissementMapper::toMasaDTO)
-                    .map(etablissementTransformer::toEtablissementMasaEntity)
-                    .filter(Objects::nonNull)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
-                    .toList();
-
+            // Les identifiants externes pour masa seulement
+            if (source.equals("masa")) {
+                coreEtablissementService.saveMasa(sub.stream()
+                        .filter(dataset -> dataset.getUai() != null && !dataset.getUai().isBlank())
+                        .map(etablissementMapper::toMasaDTO)
+                        .map(etablissementTransformer::toEtablissementMasaEntity)
+                        .filter(Objects::nonNull)
+                        .map(validatorService::toValidEntity)
+                        .filter(Objects::nonNull)
+                        .toList());
+            }
         }
 
         long endTime = System.nanoTime();
