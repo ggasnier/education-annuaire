@@ -40,8 +40,8 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     private final EtablissementMapper etablissementMapper;
     private final ValidatorService validatorService;
 
-    @Value("${spring.jpa.properties.hibernate.jdbc.batch_size}")
-    int chunk;
+    @Value("${spring.jpa.properties.hibernate.jdbc.batch_size:500}")
+    int chunk = 500;
 
     @Override
     public void createOrUpdateSports(@NonNull List<SportDataset> datasets, Sport.Categorie categorie, @NonNull String source) {
@@ -347,8 +347,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .filter(Objects::nonNull)
                 .toList());
 
-        // TODO Détails langues
-
         log.info("Import terminé : {} sections internationale(s).", datasets.size());
     }
 
@@ -363,8 +361,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .map(validatorService::toValidEntity)
                 .filter(Objects::nonNull)
                 .toList());
-
-        // TODO Détails langues
 
         log.info("Import terminé : {} sections binationale enregistrée(s).", datasets.size());
     }
