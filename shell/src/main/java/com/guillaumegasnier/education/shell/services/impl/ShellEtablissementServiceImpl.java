@@ -126,7 +126,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         record Clef(String uai, Integer annee) {
         }
 
-
         Map<Clef, Integer> grouped = datasets.stream().
                 collect(Collectors.groupingBy(
                         item -> new Clef(item.getUai(), item.getAnnee()), Collectors.summingInt(T::getEffectifs)
@@ -252,6 +251,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             .flatMap(List::stream)
                             .filter(Objects::nonNull)
                             .map(dto -> etablissementTransformer.toEtablissementJPOEntity(dto, source))
+                            .filter(Objects::nonNull)
                             .map(validatorService::toValidEntity)
                             .filter(Objects::nonNull)
                             .toList());

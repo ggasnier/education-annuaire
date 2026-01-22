@@ -126,13 +126,14 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
     <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityOld(@NonNull EtablissementEntity entity, @NonNull T dataset, @NonNull String source) {
         // Ne mettre à jour les champs que s'ils sont renseignés
 
-        if (dataset.getCodeNature() != null) {
-            coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
-        }
-
-        if (dataset.getCodeContrat() != null) {
-            coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
-        }
+        // Le code commune
+        setCodeComumne(entity, dataset.getCodeCommune(), dataset.getNomCommune());
+        // Le code nature
+        setCodeNature(entity, dataset.getCodeNature());
+        // Le code contrat pour le privé
+        setCodeContrat(entity, dataset.getCodeContrat());
+        //Les sources de données
+        entity.addSource(source);
 
         if (dataset.getDateOuverture() != null)
             entity.setDateOuverture(dataset.getDateOuverture());
@@ -152,40 +153,53 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
     }
 
     <T extends EtablissementDataset> EtablissementEntity toEtablissementEntityNew(@NonNull T dataset, @NonNull String source) {
-
         EtablissementEntity entity = etablissementMapper.toEntity(dataset);
-
-        if (dataset.getCodeCommune() != null && !dataset.getCodeCommune().isBlank()) {
-            var communeOptional = coreTerritoireService.findCommune(dataset.getCodeCommune());
-            if (communeOptional.isPresent()) {
-                entity.setCommune(communeOptional.get());
-            } else {
-                communeOptional = coreTerritoireService.findCommuneByNom(dataset.getNomCommune());
-                if (communeOptional.isPresent()) {
-                    entity.setCommune(communeOptional.get());
-                } else {
-                    log.warn("Commune inconnue pour {} / {}", dataset.getCodeCommune(), dataset.getNomCommune());
-                }
-            }
-        } else if (dataset.getNomCommune() != null && !dataset.getNomCommune().isBlank()) {
-            var communeOptional = coreTerritoireService.findCommuneByNom(dataset.getNomCommune());
-
-            if (communeOptional.isPresent()) {
-                entity.setCommune(communeOptional.get());
-            } else {
-                log.warn("Commune absente pour {} / {}", dataset.getUai(), dataset.getNomCommune());
-            }
-        }
-        if (dataset.getCodeNature() != null) {
-            coreEtablissementService.findNature(dataset.getCodeNature()).ifPresent(entity::setNature);
-        }
-        if (dataset.getCodeContrat() != null) {
-            coreEtablissementService.findContrat(dataset.getCodeContrat()).ifPresent(entity::setContrat);
-        }
-
+        // Le code commune
+        setCodeComumne(entity, dataset.getCodeCommune(), dataset.getNomCommune());
+        // Le code nature
+        setCodeNature(entity, dataset.getCodeNature());
+        // Le code contrat pour le privé
+        setCodeContrat(entity, dataset.getCodeContrat());
+        //Les sources de données
         entity.addSource(source);
 
         return entity;
+    }
+
+    void setCodeContrat(EtablissementEntity entity, String codeContrat) {
+        if (codeContrat != null && entity.getContrat() == null)
+            coreEtablissementService.findContrat(codeContrat).ifPresent(entity::setContrat);
+    }
+
+    void setCodeNature(EtablissementEntity entity, String codeNature) {
+        if (codeNature != null && entity.getNature().getCode().equals("$"))
+            coreEtablissementService.findNature(codeNature).ifPresent(entity::setNature);
+    }
+
+    void setCodeComumne(@NonNull EtablissementEntity entity, String codeCommune, String nomCommune) {
+        if (entity.getCommune() == null) {
+            if (codeCommune != null && !codeCommune.isBlank()) {
+                var communeOptional = coreTerritoireService.findCommune(codeCommune);
+                if (communeOptional.isPresent()) {
+                    entity.setCommune(communeOptional.get());
+                } else {
+                    communeOptional = coreTerritoireService.findCommuneByNom(nomCommune);
+                    if (communeOptional.isPresent()) {
+                        entity.setCommune(communeOptional.get());
+                    } else {
+                        log.warn("Commune inconnue pour {} / {}", codeCommune, nomCommune);
+                    }
+                }
+            } else if (nomCommune != null && !nomCommune.isBlank()) {
+                var communeOptional = coreTerritoireService.findCommuneByNom(nomCommune);
+
+                if (communeOptional.isPresent()) {
+                    entity.setCommune(communeOptional.get());
+                } else {
+                    log.warn("Commune absente pour {}", nomCommune);
+                }
+            }
+        }
     }
 
     @Override

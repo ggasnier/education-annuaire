@@ -20,7 +20,6 @@ spring:
         order_inserts: true
         order_updates: true
         generate_statistics: false
-        dialect: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     #enable: true
     baseline-on-migrate: true
