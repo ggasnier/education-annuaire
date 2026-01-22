@@ -85,16 +85,6 @@ public class ValidatorServiceImpl implements ValidatorService {
         return toValidEntity(entity, EtablissementJPOEntity.class);
     }
 
-//    @Override
-//    public IndicePositionSocialeEntity toValidEntity(@NonNull IndicePositionSocialeEntity entity) {
-//        return toValidEntity(entity, IndicePositionSocialeEntity.class);
-//    }
-
-    /*@Override
-    public SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity) {
-        return toValidEntity(entity, SectionInternationaleEntity.class);
-    }*/
-
     @Override
     public EtablissementSpecialiteEntity toValidEntity(@NonNull EtablissementSpecialiteEntity entity) {
         return toValidEntity(entity, EtablissementSpecialiteEntity.class);
@@ -104,16 +94,6 @@ public class ValidatorServiceImpl implements ValidatorService {
     public EtablissementLangueEntity toValidEntity(@NonNull EtablissementLangueEntity entity) {
         return toValidEntity(entity, EtablissementLangueEntity.class);
     }
-
-    /*@Override
-    public SportEtudeEntity toValidEntity(@NonNull SportEtudeEntity entity) {
-        return toValidEntity(entity, SportEtudeEntity.class);
-    }
-
-    @Override
-    public SectionSportiveEntity toValidEntity(@NonNull SectionSportiveEntity entity) {
-        return toValidEntity(entity, SectionSportiveEntity.class);
-    }*/
 
     @Override
     public EtablissementSportEntity toValidEntity(@NonNull EtablissementSportEntity entity) {
@@ -128,7 +108,6 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public FormationEntity toValidEntity(@NonNull FormationEntity entity) {
         return toValidEntity(entity, FormationEntity.class);
-
     }
 
     @Override
