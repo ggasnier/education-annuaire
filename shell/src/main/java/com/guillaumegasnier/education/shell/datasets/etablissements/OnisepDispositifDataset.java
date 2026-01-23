@@ -77,6 +77,7 @@ public class OnisepDispositifDataset implements Dataset {
     private String contactWeb;
 
     public OptionEtablissement getOption() {
+        if (nom == null) return null;
         var i = switch (nom) {
             case "classe sport-études en collège", "classe sport-études en lycée" -> OptionEtablissement.SPORT_ETUDES;
             case "section sportive de collège", "section sportive de lycée" -> OptionEtablissement.SECTION_SPORT;

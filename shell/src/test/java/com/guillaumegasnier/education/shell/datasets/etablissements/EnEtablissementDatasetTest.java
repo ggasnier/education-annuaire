@@ -30,6 +30,10 @@ class EnEtablissementDatasetTest {
     @Test
     void testGetContacts() {
         assertNotNull(dataset.getContacts());
+        dataset.setContactTelephone("0102030405");
+        dataset.setContactMail("ici@perdu.com");
+        dataset.setContactWeb("https://perdu.com");
+        assertEquals(3, dataset.getContacts().size());
     }
 
     @Test
@@ -92,6 +96,15 @@ class EnEtablissementDatasetTest {
         assertEquals(PU, dataset.getSecteur());
         dataset.setStatutPublicPrive("Autre");
         assertNull(dataset.getSecteur());
+    }
+
+    @Test
+    void getSiretTest() {
+        assertNull(dataset.getSiret());
+        dataset.setSiret("");
+        assertNull(dataset.getSiret());
+        dataset.setSiret("19010819100049");
+        assertEquals("19010819100049", dataset.getSiret());
     }
 
 }

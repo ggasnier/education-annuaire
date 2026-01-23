@@ -78,4 +78,15 @@ class OnisepEtablissementSupDatasetTest {
         assertNotNull(dataset.getJPO());
         assertEquals(1, dataset.getJPO().size());
     }
+
+    @Test
+    void testGetContacts() {
+        assertNotNull(dataset.getContacts());
+        dataset.setContactTelephone("");
+        assertEquals(0, dataset.getContacts().size());
+        dataset.setContactTelephone("0102030405");
+//        dataset.setContactMail("ici@perdu.com");
+//        dataset.setContactWeb("https://perdu.com");
+        assertEquals(1, dataset.getContacts().size());
+    }
 }

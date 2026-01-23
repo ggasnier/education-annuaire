@@ -78,11 +78,6 @@ class EtablissementMapperTest {
     }
 
     @Test
-    void toLangueDTOTest() {
-
-    }
-
-    @Test
     void toJPODTOTest() {
 
         MasaJpoDataset dataset = new MasaJpoDataset();
@@ -97,7 +92,5 @@ class EtablissementMapperTest {
         assertNotNull(dto.getUai());
         assertNotNull(dto.getDateDebut());
         assertNotNull(dto.getDateFin());
-
-
     }
 }

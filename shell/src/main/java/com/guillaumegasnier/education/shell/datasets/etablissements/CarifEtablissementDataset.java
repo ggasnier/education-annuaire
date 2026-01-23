@@ -327,11 +327,13 @@ public class CarifEtablissementDataset implements EtablissementDataset {
 
     @Override
     public LocalDate getDateFermeture() {
-        try {
-            return LocalDate.parse(dateFermeture);
-        } catch (DateTimeParseException e) {
-            return null;
-        }
+        if (dateFermeture != null)
+            try {
+                return LocalDate.parse(dateFermeture);
+            } catch (DateTimeParseException e) {
+                return null;
+            }
+        return null;
     }
 
     @Override
