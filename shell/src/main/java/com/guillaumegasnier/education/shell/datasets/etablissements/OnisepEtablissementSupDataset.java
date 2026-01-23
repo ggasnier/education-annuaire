@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static com.guillaumegasnier.education.core.enums.Contact.TEL;
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatAdresse;
 import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatJPODataset;
 
 /**
@@ -82,12 +83,7 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     }
 
     @Override
-    public String getNomCommune() {
-        return nomCommune;
-    }
-
-    @Override
-    public EtablissementDataset cloneWithUai(String uai) {
+    public OnisepEtablissementSupDataset cloneWithUai(String uai) {
         try {
             OnisepEtablissementSupDataset copy = (OnisepEtablissementSupDataset) this.clone();
             copy.setUai(uai);
@@ -99,14 +95,11 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
 
     @Override
     public String getAdresse() {
-        if (adresse == null) return null;
-        if (adresse.isBlank()) return null;
-        if (adresse.length() > 50) return adresse.substring(0, 50);
-        return adresse;
+        return formatAdresse(adresse);
     }
 
     @Override
-    public EtablissementDataset cloneWithSiret(String siret) {
+    public OnisepEtablissementSupDataset cloneWithSiret(String siret) {
         try {
             OnisepEtablissementSupDataset copy = (OnisepEtablissementSupDataset) this.clone();
             copy.setSiret(siret);

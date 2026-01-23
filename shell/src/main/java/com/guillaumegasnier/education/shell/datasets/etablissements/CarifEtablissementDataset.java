@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatAdresse;
+
 @Getter
 @Setter
 @ToString
@@ -320,8 +322,7 @@ public class CarifEtablissementDataset implements EtablissementDataset {
             sb.append(" ");
         }
 
-
-        return sb.toString();
+        return formatAdresse(sb.toString());
     }
 
     @Override

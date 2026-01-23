@@ -5,6 +5,8 @@ import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatAdresse;
+
 @Getter
 @Setter
 public class TravailOrganismeFormationDataset implements Dataset {
@@ -59,10 +61,7 @@ public class TravailOrganismeFormationDataset implements Dataset {
     private String codeSpecialite3;
 
     public String getAdresse() {
-        if (adresse == null) return null;
-        if (adresse.isBlank()) return null;
-        if (adresse.length() > 50) return adresse.substring(0, 50);
-        return adresse;
+        return formatAdresse(adresse);
     }
 
     //informationsDeclarees.specialitesDeFormation.libelleSpecialite1

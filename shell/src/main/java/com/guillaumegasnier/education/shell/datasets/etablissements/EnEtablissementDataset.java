@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatAdresse;
+
 /**
  * Type_etablissement
  * Statut_public_prive
@@ -150,10 +152,7 @@ public class EnEtablissementDataset implements EtablissementDataset {
 
     @Override
     public String getAdresse() {
-        if (adresse == null) return null;
-        if (adresse.isBlank()) return null;
-        if (adresse.length() > 50) return adresse.substring(0, 50);
-        return adresse.trim();
+        return formatAdresse(adresse);
     }
 
     @Override
@@ -187,10 +186,7 @@ public class EnEtablissementDataset implements EtablissementDataset {
 
     @Override
     public String getComplement() {
-        if (complement == null) return null;
-        if (complement.isBlank()) return null;
-        if (complement.length() > 50) return complement.substring(0, 50);
-        return complement.trim();
+        return formatAdresse(complement);
     }
 
     @Override

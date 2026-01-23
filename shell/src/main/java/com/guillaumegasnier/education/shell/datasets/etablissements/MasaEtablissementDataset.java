@@ -10,6 +10,8 @@ import lombok.ToString;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatAdresse;
+
 @Getter
 @Setter
 @ToString
@@ -141,16 +143,12 @@ public class MasaEtablissementDataset implements EtablissementDataset {
 
     @Override
     public String getAdresse() {
-        if (adresse4 != null && !adresse4.isBlank())
-            return adresse4;
-        return null;
+        return formatAdresse(adresse4);
     }
 
     @Override
     public String getComplement() {
-        if (adresse5 != null && !adresse5.isBlank())
-            return adresse5;
-        return null;
+        return formatAdresse(adresse5);
     }
 
     @Override
@@ -169,7 +167,7 @@ public class MasaEtablissementDataset implements EtablissementDataset {
 
         return options;
     }
-    
+
     //adressegeographique_ligne1
     //adressegeographique_ligne2
     //adressegeographique_ligne3

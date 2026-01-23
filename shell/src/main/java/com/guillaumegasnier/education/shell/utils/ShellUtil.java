@@ -132,4 +132,11 @@ public class ShellUtil {
             throw new IllegalStateException(e);
         }
     }
+
+    public static String formatAdresse(String adresse) {
+        if (adresse == null) return null;
+        if (adresse.isBlank()) return null;
+        if (adresse.length() > 50) return adresse.substring(0, 50);
+        return adresse.trim();
+    }
 }

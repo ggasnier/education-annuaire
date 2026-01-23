@@ -107,11 +107,6 @@ public class EnEtablissementFermeDataset implements EtablissementDataset {
     }
 
     @Override
-    public String getNomCommune() {
-        return nomCommune;
-    }
-
-    @Override
     public Boolean isActif() {
         return false;
     }

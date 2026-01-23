@@ -156,18 +156,6 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     private String secteurEtablissement;
 
     @Override
-    public String getCodeCommune() {
-        if (codeCommune == null) return null;
-        if (codeCommune.isBlank()) return null;
-        return codeCommune;
-    }
-
-    @Override
-    public String getNomCommune() {
-        return nomCommune;
-    }
-
-    @Override
     public Secteur getSecteur() {
         if (secteurEtablissement != null) {
             if (secteurEtablissement.equals("public")) {
@@ -259,7 +247,7 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     }
 
     @Override
-    public EtablissementDataset cloneWithUai(String uai) {
+    public EsrEtablissementDataset cloneWithUai(String uai) {
         try {
             EsrEtablissementDataset copy = (EsrEtablissementDataset) this.clone();
             copy.setUai(uai);
@@ -270,7 +258,7 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     }
 
     @Override
-    public EtablissementDataset cloneWithSiret(String siret) {
+    public EsrEtablissementDataset cloneWithSiret(String siret) {
         try {
             EsrEtablissementDataset copy = (EsrEtablissementDataset) this.clone();
             copy.setSiret(siret);
