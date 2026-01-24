@@ -256,6 +256,17 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                             .filter(Objects::nonNull)
                             .toList());
 
+            if (source.equals("esr")) {
+                coreEtablissementService.saveMetadata(sub.stream()
+                        .map(EtablissementDataset::getEffectifs)
+                        .flatMap(List::stream)
+                        .map(etablissementTransformer::toEtablissementMetadataEntity)
+                        .filter(Objects::nonNull)
+                        //.map(validatorService::toValidEntity)
+                        //.filter(Objects::nonNull)
+                        .toList());
+            }
+
             // Les identifiants externes pour masa seulement
             if (source.equals("masa")) {
                 coreEtablissementService.saveMasa(sub.stream()

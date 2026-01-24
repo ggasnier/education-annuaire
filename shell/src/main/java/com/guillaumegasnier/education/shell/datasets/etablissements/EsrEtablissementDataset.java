@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.Secteur;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.EffectifsSuperieurDataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.guillaumegasnier.education.core.enums.Contact.*;
 
@@ -155,18 +157,6 @@ public class EsrEtablissementDataset implements EtablissementDataset {
     @CsvBindByName(column = "secteur d'établissement")
     private String secteurEtablissement;
 
-    @Override
-    public Secteur getSecteur() {
-        if (secteurEtablissement != null) {
-            if (secteurEtablissement.equals("public")) {
-                return Secteur.PU;
-            } else if (secteurEtablissement.equals("privé")) {
-                return Secteur.PV;
-            }
-        }
-        return null;
-    }
-
     // compte_flickr
     // compte_pinterest
     // flux_rss
@@ -180,6 +170,45 @@ public class EsrEtablissementDataset implements EtablissementDataset {
 
     // * Page Wikipédia en français
     // * Page Wikipédia en anglais
+
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2010-11")
+    private String effectif2010;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2011-12")
+    private String effectif2011;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2012-13")
+    private String effectif2012;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2013-14")
+    private String effectif2013;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2014-15")
+    private String effectif2014;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2015-16")
+    private String effectif2015;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2016-17")
+    private String effectif2016;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2017-18")
+    private String effectif2017;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2018-19")
+    private String effectif2018;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2019-20")
+    private String effectif2019;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2020-21")
+    private String effectif2020;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2021-22")
+    private String effectif2021;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2022-23")
+    private String effectif2022;
+
+    @Override
+    public Secteur getSecteur() {
+        if (secteurEtablissement != null) {
+            if (secteurEtablissement.equals("public")) {
+                return Secteur.PU;
+            } else if (secteurEtablissement.equals("privé")) {
+                return Secteur.PV;
+            }
+        }
+        return null;
+    }
 
     @Override
     public String getUai() {
@@ -268,4 +297,24 @@ public class EsrEtablissementDataset implements EtablissementDataset {
         }
     }
 
+    @Override
+    public List<EffectifsSuperieurDataset> getEffectifs() {
+        return Stream.of(
+                        new EffectifsSuperieurDataset(2010, uai, effectif2010),
+                        new EffectifsSuperieurDataset(2011, uai, effectif2011),
+                        new EffectifsSuperieurDataset(2012, uai, effectif2012),
+                        new EffectifsSuperieurDataset(2013, uai, effectif2013),
+                        new EffectifsSuperieurDataset(2014, uai, effectif2014),
+                        new EffectifsSuperieurDataset(2015, uai, effectif2015),
+                        new EffectifsSuperieurDataset(2016, uai, effectif2016),
+                        new EffectifsSuperieurDataset(2017, uai, effectif2017),
+                        new EffectifsSuperieurDataset(2018, uai, effectif2018),
+                        new EffectifsSuperieurDataset(2019, uai, effectif2019),
+                        new EffectifsSuperieurDataset(2020, uai, effectif2020),
+                        new EffectifsSuperieurDataset(2021, uai, effectif2021),
+                        new EffectifsSuperieurDataset(2022, uai, effectif2022)
+                )
+                .filter(d -> d.getEffectifs() > 0)
+                .toList();
+    }
 }
