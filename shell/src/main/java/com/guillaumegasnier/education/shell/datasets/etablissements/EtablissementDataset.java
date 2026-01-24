@@ -2,6 +2,8 @@ package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Secteur;
+import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
+import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 
 import java.time.LocalDate;
@@ -90,5 +92,9 @@ public interface EtablissementDataset extends Cloneable, Dataset {
      */
     default String getMasaId() {
         return null;
+    }
+
+    default <T extends Effectifs & Metadata> List<T> getEffectifs() {
+        return List.of();
     }
 }

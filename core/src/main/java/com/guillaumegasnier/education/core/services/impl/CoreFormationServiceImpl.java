@@ -78,8 +78,11 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveRomes(List<RomeEntity> entities) {
         romeRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 
     /*@Override
@@ -109,8 +112,11 @@ public class CoreFormationServiceImpl implements CoreFormationService {
 
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveOrganismes(List<OrganismeEntity> entities) {
         organismeRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 
     @Override

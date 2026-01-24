@@ -129,6 +129,7 @@ public abstract class EtablissementMapper {
     }
 
     // Les entitées JPA
+    @Mapping(target = "masa", ignore = true)
     @Mapping(target = "identifiants", ignore = true)
     @Mapping(target = "organisme", ignore = true)
     @Mapping(target = "nature", ignore = true)

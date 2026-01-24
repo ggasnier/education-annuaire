@@ -38,6 +38,7 @@ public class ShellFormationServiceImpl implements ShellFormationService {
     int chunk;
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateOrganismes(@NonNull List<TravailOrganismeFormationDataset> datasets) {
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<? extends TravailOrganismeFormationDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
