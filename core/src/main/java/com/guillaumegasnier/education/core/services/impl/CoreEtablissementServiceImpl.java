@@ -2,10 +2,7 @@ package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
-import com.guillaumegasnier.education.core.enums.Langue;
-import com.guillaumegasnier.education.core.enums.OptionEtablissement;
-import com.guillaumegasnier.education.core.enums.SpecialiteBac;
-import com.guillaumegasnier.education.core.enums.Sport;
+import com.guillaumegasnier.education.core.enums.*;
 import com.guillaumegasnier.education.core.repositories.etablissements.*;
 import com.guillaumegasnier.education.core.repositories.formations.OrganismeRepository;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
@@ -277,5 +274,10 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Override
     public Optional<EtablissementMasaEntity> findMasa(String masaId) {
         return etablissementMasaRepository.findById(masaId);
+    }
+
+    @Override
+    public Optional<EtablissementContactEntity> findContact(String uai, Contact contact, String valeur) {
+        return contratRepository.findByPkUaiAndPkContactAndPKValeur(uai, contact, valeur);
     }
 }

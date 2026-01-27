@@ -4,14 +4,15 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
+import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EnEtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
-import com.guillaumegasnier.education.shell.dto.etablissements.LangueDTO;
-import com.guillaumegasnier.education.shell.dto.etablissements.OptionDTO;
-import com.guillaumegasnier.education.shell.dto.etablissements.SportDTO;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.EffectifsLyceeDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.IPSLycee2023Dataset;
+import com.guillaumegasnier.education.shell.dto.etablissements.*;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,7 +67,63 @@ class EtablissementTransformerTest {
     }
 
     @Test
-    void toEtablissementMetadataEntityTest() {
+    void toEtablissementMetadataEntityIndicePositionSocialeTest() {
+
+        IPSLycee2023Dataset dataset = new IPSLycee2023Dataset();
+        dataset.setRentreeScolaire("2024-2025");
+        dataset.setUai(uaiAbsent);
+        assertNull(transformer.toEtablissementMetadataEntity(dataset));
+
+        dataset = new IPSLycee2023Dataset();
+        dataset.setRentreeScolaire("2024-2025");
+        dataset.setUai(uaiExiste);
+        when(coreEtablissementService.findMetadata(uaiExiste, 2024)).thenReturn(Optional.of(new EtablissementMetadataEntity()));
+        assertNotNull(transformer.toEtablissementMetadataEntity(dataset));
+
+        dataset = new IPSLycee2023Dataset();
+        dataset.setRentreeScolaire("2024-2025");
+        dataset.setUai(uaiExiste);
+        when(coreEtablissementService.findMetadata(uaiExiste, 2024)).thenReturn(Optional.empty());
+        assertNotNull(transformer.toEtablissementMetadataEntity(dataset));
+
+    }
+
+    @Test
+    void toEtablissementMetadataEntityEffectifsTest() {
+        EffectifsLyceeDataset dataset = new EffectifsLyceeDataset();
+        dataset.setRentreeScolaire("2024-2025");
+        dataset.setUai(uaiAbsent);
+        assertNull(transformer.toEtablissementMetadataEntity(dataset));
+
+        dataset = new EffectifsLyceeDataset();
+        dataset.setRentreeScolaire("2024-2025");
+        dataset.setUai(uaiExiste);
+        dataset.setEffectifs(12345);
+        when(coreEtablissementService.findMetadata(uaiExiste, 2024)).thenReturn(Optional.of(new EtablissementMetadataEntity()));
+        assertNotNull(transformer.toEtablissementMetadataEntity(dataset));
+
+        dataset = new EffectifsLyceeDataset();
+        dataset.setRentreeScolaire("2024-2025");
+        dataset.setUai(uaiExiste);
+        dataset.setEffectifs(12345);
+        when(coreEtablissementService.findMetadata(uaiExiste, 2024)).thenReturn(Optional.empty());
+        assertNotNull(transformer.toEtablissementMetadataEntity(dataset));
+
+        dataset = new EffectifsLyceeDataset();
+        dataset.setRentreeScolaire("2024-2025");
+        dataset.setUai(uaiExiste);
+        when(coreEtablissementService.findMetadata(uaiExiste, 2024)).thenReturn(Optional.of(new EtablissementMetadataEntity()));
+        assertNotNull(transformer.toEtablissementMetadataEntity(dataset));
+
+        dataset = new EffectifsLyceeDataset();
+        dataset.setRentreeScolaire("2024-2025");
+        dataset.setUai(uaiExiste);
+        when(coreEtablissementService.findMetadata(uaiExiste, 2024)).thenReturn(Optional.empty());
+        assertNotNull(transformer.toEtablissementMetadataEntity(dataset));
+    }
+
+    @Test
+    void toEtablissementMetadataEntityIndicateurValeurAjouteeTest() {
 
     }
 
@@ -102,16 +159,22 @@ class EtablissementTransformerTest {
         when(coreEtablissementService.findJPO(uaiAbsent, LocalDate.parse("2026-01-01"), LocalDate.parse("2026-01-01"))).thenReturn(Optional.of(new EtablissementJPOEntity()));
         JPODataset dataset = new JPODataset();
         dataset.setUai(uaiAbsent);
-        assertNull(transformer.toEtablissementJPOEntity(dataset, "en"));
-
-        when(coreEtablissementService.findJPO(uaiExiste, LocalDate.parse("2026-01-01"), LocalDate.parse("2026-01-01"))).thenReturn(Optional.of(new EtablissementJPOEntity()));
-        dataset = new JPODataset();
-        dataset.setUai(uaiExiste);
+        dataset.setDateDebut(LocalDate.parse("2026-01-01"));
+        dataset.setDateFin(LocalDate.parse("2026-01-01"));
         assertNotNull(transformer.toEtablissementJPOEntity(dataset, "en"));
 
-        when(coreEtablissementService.findJPO(uaiAbsent, LocalDate.parse("2026-01-01"), LocalDate.parse("2026-01-01"))).thenReturn(Optional.of(new EtablissementJPOEntity()));
+        when(coreEtablissementService.findJPO(uaiExiste, LocalDate.parse("2026-01-01"), LocalDate.parse("2026-01-01"))).thenReturn(Optional.empty());
+        dataset = new JPODataset();
+        dataset.setUai(uaiExiste);
+        dataset.setDateDebut(LocalDate.parse("2026-01-01"));
+        dataset.setDateFin(LocalDate.parse("2026-01-01"));
+        assertNotNull(transformer.toEtablissementJPOEntity(dataset, "en"));
+
+        when(coreEtablissementService.findJPO(uaiAbsent, LocalDate.parse("2026-01-01"), LocalDate.parse("2026-01-01"))).thenReturn(Optional.empty());
         dataset = new JPODataset();
         dataset.setUai(uaiAbsent);
+        dataset.setDateDebut(LocalDate.parse("2026-01-01"));
+        dataset.setDateFin(LocalDate.parse("2026-01-01"));
         assertNull(transformer.toEtablissementJPOEntity(dataset, "en"));
     }
 
@@ -152,7 +215,17 @@ class EtablissementTransformerTest {
 
     @Test
     void toEtablissementSpecialiteEntityTest() {
+        when(coreEtablissementService.findSpecialite(uaiAbsent, SpecialiteBac.CINEMA)).thenReturn(Optional.of(new EtablissementSpecialiteEntity()));
+        SpecialiteDTO dto = new SpecialiteDTO(uaiAbsent, SpecialiteBac.CINEMA);
+        assertNotNull(transformer.toEtablissementSpecialiteEntity(dto, "en"));
 
+        when(coreEtablissementService.findSpecialite(uaiExiste, SpecialiteBac.CINEMA)).thenReturn(Optional.empty());
+        dto = new SpecialiteDTO(uaiExiste, SpecialiteBac.CINEMA);
+        assertNotNull(transformer.toEtablissementSpecialiteEntity(dto, "en"));
+
+        when(coreEtablissementService.findSpecialite(uaiAbsent, SpecialiteBac.CINEMA)).thenReturn(Optional.empty());
+        dto = new SpecialiteDTO(uaiAbsent, SpecialiteBac.CINEMA);
+        assertNull(transformer.toEtablissementSpecialiteEntity(dto, "en"));
     }
 
     @Test
@@ -168,5 +241,20 @@ class EtablissementTransformerTest {
         when(coreEtablissementService.findSport(uaiAbsent, Sport.ESCRIME, Sport.Categorie.SE)).thenReturn(Optional.empty());
         dto = new SportDTO(uaiAbsent, Sport.ESCRIME, Sport.Categorie.SE);
         assertNull(transformer.toEtablissementSportEntity(dto, "en"));
+    }
+
+    @Test
+    void toEtablissementMasaEntityTest() {
+        when(coreEtablissementService.findMasa("123456")).thenReturn(Optional.of(new EtablissementMasaEntity()));
+        MasaDTO dto = new MasaDTO(uaiAbsent, "123456");
+        assertNotNull(transformer.toEtablissementMasaEntity(dto));
+
+        when(coreEtablissementService.findMasa("123456")).thenReturn(Optional.empty());
+        dto = new MasaDTO(uaiExiste, "123456");
+        assertNotNull(transformer.toEtablissementMasaEntity(dto));
+
+        when(coreEtablissementService.findMasa("123456")).thenReturn(Optional.empty());
+        dto = new MasaDTO(uaiAbsent, "123456");
+        assertNull(transformer.toEtablissementMasaEntity(dto));
     }
 }

@@ -175,7 +175,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             coreEtablissementService.saveJPO(
                     sub.stream()
                             .map(etablissementMapper::toJPODTO)
-                            .map(etablissementTransformer::finUai)
+                            .map(etablissementTransformer::findUai)
                             .filter(Objects::nonNull)
                             .map(dto -> etablissementTransformer.toEtablissementJPOEntity(dto, source))
                             .filter(Objects::nonNull)
