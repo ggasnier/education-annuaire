@@ -75,11 +75,32 @@ class EtablissementMapperTest {
         var output = mapper.toOptionDTO(onisepDispositifDataset);
         assertNotNull(output);
         assertEquals(OptionEtablissement.RELAIS, output.option());
+
+        // Section bi nationale
+        SectionBinationaleDataset sectionBinationaleDataset = new SectionBinationaleDataset();
+        sectionBinationaleDataset.setUai("1234567A");
+        sectionBinationaleDataset.setTypeBac("Abibac");
+        var output2 = mapper.toOptionDTO(sectionBinationaleDataset);
+        assertNotNull(output2);
+        assertEquals(OptionEtablissement.ABIBAC, output2.option());
+
+        // Section Internationale
+        SectionInternationaleDataset sectionInternationaleDataset = new SectionInternationaleDataset();
+        sectionInternationaleDataset.setUai("1234567A");
+        sectionInternationaleDataset.setNiveau("2nd et BFI");
+        var output3 = mapper.toOptionDTO(sectionInternationaleDataset);
+        assertNotNull(output3);
+        assertEquals(2, output3.size());
+
+        // Les options dans un dataset d'établissement
+        EnEtablissementDataset enEtablissementDataset = new EnEtablissementDataset();
+        var output4 = mapper.toOptionDTO(enEtablissementDataset);
+        assertNotNull(output3);
+        assertEquals(0, output4.size());
     }
 
     @Test
     void toJPODTOTest() {
-
         MasaJpoDataset dataset = new MasaJpoDataset();
         dataset.setMasaId("00100233");
 
@@ -93,4 +114,22 @@ class EtablissementMapperTest {
         assertNotNull(dto.getDateDebut());
         assertNotNull(dto.getDateFin());
     }
+
+    @Test
+    void toLangueDTOTest() {
+        LangueDataset dataset = new LangueDataset();
+        dataset.setUai("1234567A");
+        dataset.setLangue("anglais");
+        dataset.setEnseignement("lv1");
+        assertNotNull(mapper.toLangueDTO(dataset));
+
+        OnisepDispositifDataset dataset2 = new OnisepDispositifDataset();
+        dataset2.setUai("1234567A");
+        dataset2.setNom("section européenne de lycée général et technologique");
+        dataset2.setEnseignement("anglais,allemand");
+        var result = mapper.toLangueDTO(dataset2);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+    }
+
 }
