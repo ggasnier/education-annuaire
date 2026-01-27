@@ -22,14 +22,12 @@ public interface FileService {
     /**
      * Sauvegarde la liste de résultats dans un fichier JSON
      */
-    default <T> void saveResultAsJson(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
-    }
+    <T> void saveResultAsJson(List<T> result, @NonNull SourcesDatasets sourcesDatasets);
 
     /**
      * Sauvegarde la liste de résultats dans un fichier CSV
      */
-    default <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
-    }
+    <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets);
 
     List<CarifEtablissementDataset> importCarifEtablissements(@NonNull SourcesDatasets source);
 

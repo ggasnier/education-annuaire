@@ -2,21 +2,10 @@ package com.guillaumegasnier.education.shell.shells;
 
 public interface ImportReferentielShell {
 
-    default void importContrats() {
-    }
+    void importContrats();
 
-    default void importNatures() {
-    }
+    void importNatures();
 
-    default void importRncp() {
-    }
+    void importRncp();
 
-    default void importRs() {
-    }
-
-    default void importRomes() {
-    }
-
-    default void importNsf() {
-    }
 }

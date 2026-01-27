@@ -87,6 +87,16 @@ public class LocalFileService implements FileService {
     }
 
     @Override
+    public <T> void saveResultAsJson(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
+        log.error("Méthode saveResultAsJson non implémentée car inutile");
+    }
+
+    @Override
+    public <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
+        log.error("Méthode saveResultAsCsv non implémentée car inutile");
+    }
+
+    @Override
     public List<CarifEtablissementDataset> importCarifEtablissements(@NonNull SourcesDatasets source) {
         return List.of();
     }
