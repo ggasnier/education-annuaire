@@ -166,6 +166,12 @@ public abstract class FormationMapper {
     @Mapping(target = "positionnement", source = "positionnement.value")
     public abstract FormationDTO toFormationDTO2(FormationType formationType);
 
+    /**
+     * @param formationType
+     * @return
+     * @deprecated voir toFormationDTO2
+     */
+    @Deprecated
     public FormationDTO toFormationDTO(@NonNull FormationType formationType) {
         FormationDTO dto = new FormationDTO();
 

@@ -54,7 +54,7 @@ public abstract class EtablissementMapper {
     }
 
     // Les langues
-    public Langue.Categorie toLangueCategorie(OptionEtablissement option) {
+    public Langue.Categorie toLangueCategorie(@NonNull OptionEtablissement option) {
         return switch (option) {
             case OptionEtablissement.SECTION_EUROPEENNE -> Langue.Categorie.EU;
             case OptionEtablissement.SECTION_INTERNATIONALE -> Langue.Categorie.SI;
@@ -158,7 +158,7 @@ public abstract class EtablissementMapper {
     public abstract OrganismeEntity toOrganismeEntity(TravailOrganismeFormationDataset dataset);
 
     // Les metadatas
-    public <T extends IndicePositionSociale & Metadata> IndicePositionSocialeDto toIndicePositionSocialeDto(T dataset) {
+    public <T extends IndicePositionSociale & Metadata> IndicePositionSocialeDto toIndicePositionSocialeDto(@NonNull T dataset) {
         IndicePositionSocialeDto ips = new IndicePositionSocialeDto();
         ips.setIndice(dataset.getIndice());
         ips.setEcartType(dataset.getEcartType());
@@ -174,7 +174,7 @@ public abstract class EtablissementMapper {
         return ips;
     }
 
-    public <T extends IndicateurValeurAjoutee & Metadata> IndicateurValeurAjouteeDto toIndicateurValeurAjouteeDto(T dataset) {
+    public <T extends IndicateurValeurAjoutee & Metadata> IndicateurValeurAjouteeDto toIndicateurValeurAjouteeDto(@NonNull T dataset) {
         IndicateurValeurAjouteeDto iva = new IndicateurValeurAjouteeDto();
         iva.setResultats(dataset.getResultats());
         return iva;
