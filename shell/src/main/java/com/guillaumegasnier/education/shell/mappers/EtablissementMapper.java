@@ -140,7 +140,7 @@ public abstract class EtablissementMapper {
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
     public abstract EtablissementEntity toEntity(EtablissementDataset dataset);
 
-    @Mapping(target = "nomCourt", ignore = true) // Ne pas mapper (TODO)
+    @Mapping(target = "nomCourt", ignore = true) // Ne pas mapper
     @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
     public abstract NatureEntity toNatureEntity(NatureDataset dataset);
