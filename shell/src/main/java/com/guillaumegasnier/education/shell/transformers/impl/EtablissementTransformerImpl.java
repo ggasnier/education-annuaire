@@ -351,7 +351,6 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
 
         if (opt.isPresent()) {
             dataset.setUai(opt.get().getEtablissement().getUai());
-            // TODO : les heures ?
             return dataset;
         } else {
             log.warn("Pas d'établissement avec le code masaId {}", dataset.getUai());

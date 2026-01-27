@@ -91,7 +91,7 @@ public class RechercheServiceImpl implements RechercheService {
 //        }
 //
 ////        if (criteres.getCodeNature() != null && !criteres.getCodeNature().isEmpty()) {
-////            builder.filter(QueryBuilders.term(t -> t.field("codeNature").value(criteres.getCodeNature()))); // todo
+////            builder.filter(QueryBuilders.term(t -> t.field("codeNature").value(criteres.getCodeNature())));
 ////        }
 //
 //        NativeQuery query = NativeQuery.builder()
