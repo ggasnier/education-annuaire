@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
-import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
@@ -41,9 +40,4 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
         log.info("Import terminé : {} natures traitées", datasets.size());
     }
 
-    @Override
-    public void createOrUpdateCertificationsRncp(@NonNull FICHES fiches) {
-
-        //fiches.getFICHE().stream().map()
-    }
 }

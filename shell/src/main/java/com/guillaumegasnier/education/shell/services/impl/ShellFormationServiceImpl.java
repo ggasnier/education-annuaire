@@ -35,7 +35,7 @@ public class ShellFormationServiceImpl implements ShellFormationService {
     private final FormationTransformer formationTransformer;
 
     @Value("${spring.jpa.properties.hibernate.jdbc.batch_size}")
-    int chunk;
+    int chunk = 500;
 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
@@ -95,7 +95,7 @@ public class ShellFormationServiceImpl implements ShellFormationService {
             // Les formations
             coreFormationService.saveFormations(sub.stream()
                     .map(formationMapper::toFormationDTO)
-                    .filter(dto -> dto.getId() != null)
+                    .filter(dto -> dto != null && dto.getId() != null)
                     .distinct() // On ne garde que les formations
                     .map(dto -> formationTransformer.toFormationEntity(dto, "carif"))
                     .filter(Objects::nonNull)
@@ -128,7 +128,7 @@ public class ShellFormationServiceImpl implements ShellFormationService {
 
         // Les formations
         coreFormationService.saveFormations(datasets.stream()
-                .filter(d -> d.getAnnee().equals("2026")) // Que les dernières données
+                .filter(d -> d.getAnnee() != null && d.getAnnee().equals("2026")) // Que les dernières données
                 .map(formationMapper::toFormationDTO)
                 .distinct() // On en garde que les formations
                 .map(formationTransformer::recalculId)

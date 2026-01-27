@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ShellReferenceServiceImpl implements ShellTerritoireService {
+public class ShellTerritoireServiceImpl implements ShellTerritoireService {
 
     private final CoreTerritoireService coreTerritoireService;
     private final ReferenceMapper referenceMapper;
@@ -25,7 +25,7 @@ public class ShellReferenceServiceImpl implements ShellTerritoireService {
     @Override
     public void createOrUpdatePays(@NonNull List<PaysDataset> datasets) {
         coreTerritoireService.savePays(datasets.stream().map(referenceMapper::toPaysEntity).toList());
-        String.format("Import terminé : %d pays enregistrée(s).", datasets.size());
+        log.info("Import terminé : {} pays enregistrés.", datasets.size());
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ShellReferenceServiceImpl implements ShellTerritoireService {
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
                 .map(referenceMapper::toAcademieEntity)
                 .toList());
-        String.format("Import terminé : %d académie(s) enregistrée(s).", datasets.size());
+        log.info("Import terminé : {} académies enregistrées.", datasets.size());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ShellReferenceServiceImpl implements ShellTerritoireService {
         coreTerritoireService.saveRegions(datasets.stream()
                 .map(referenceMapper::toRegionEntity)
                 .toList());
-        String.format("Import terminé : %d région(s) enregistrée(s).", datasets.size());
+        log.info("Import terminé : {} régions enregistrées.", datasets.size());
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ShellReferenceServiceImpl implements ShellTerritoireService {
 
         coreTerritoireService.saveDepartements(departements);
 
-        String.format("Import terminé : %d département(s) enregistré(s).", departements.size());
+        log.info("Import terminé : {} départements enregistrés.", departements.size());
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ShellReferenceServiceImpl implements ShellTerritoireService {
             return entity;
         }).toList());
 
-        String.format("Import terminé : %d communes(s) enregistré(s).", datasets.size());
+        log.info("Import terminé : {} communess enregistrés.", datasets.size());
     }
 
     @Override
