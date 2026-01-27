@@ -13,5 +13,7 @@ public interface ShellReferencielService {
 
     void createOrUpdateNatures(@NonNull List<NatureDataset> datasets);
 
-    void createOrUpdateCertificationsRncp(FICHES fiches);
+    default void createOrUpdateCertificationsRncp(@NonNull FICHES fiches) {
+
+    }
 }
