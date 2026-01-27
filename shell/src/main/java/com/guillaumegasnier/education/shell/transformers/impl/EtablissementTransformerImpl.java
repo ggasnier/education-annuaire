@@ -328,11 +328,25 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
 
     @Override
     public EtablissementContactEntity toEtablissementContactEntity(@NonNull ContactDTO dto, @NonNull String source) {
-        return null;
+        Optional<EtablissementContactEntity> opt = coreEtablissementService.findContact(dto.uai(), dto.contact(), dto.valeur());
+        EtablissementContactEntity entity;
+
+        if (opt.isPresent()) {
+            entity = opt.get();
+        } else {
+            if (coreEtablissementService.isEtablissementExiste(dto.uai())) {
+                entity = new EtablissementContactEntity(dto.uai(), dto.contact(), dto.valeur(), coreEtablissementService.getEtablissementReferenceByUai(dto.uai()));
+            } else {
+                log.warn("Etablissement {} non trouvé pour contact {}/{}", dto.uai(), dto.contact(), dto.valeur());
+                return null;
+            }
+        }
+
+        return entity;
     }
 
     @Override
-    public JPODataset finUai(@NonNull JPODataset dataset) {
+    public JPODataset findUai(@NonNull JPODataset dataset) {
         Optional<EtablissementMasaEntity> opt = coreEtablissementService.findMasa(dataset.getUai());
 
         if (opt.isPresent()) {

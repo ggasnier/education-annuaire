@@ -2,10 +2,7 @@ package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
-import com.guillaumegasnier.education.core.enums.Langue;
-import com.guillaumegasnier.education.core.enums.OptionEtablissement;
-import com.guillaumegasnier.education.core.enums.SpecialiteBac;
-import com.guillaumegasnier.education.core.enums.Sport;
+import com.guillaumegasnier.education.core.enums.*;
 import com.guillaumegasnier.education.core.validations.etablissements.ValidUai;
 import org.springframework.lang.NonNull;
 
@@ -108,4 +105,6 @@ public interface CoreEtablissementService {
     void saveMasa(@NonNull List<EtablissementMasaEntity> entities);
 
     Optional<EtablissementMasaEntity> findMasa(String masaId);
+
+    Optional<EtablissementContactEntity> findContact(String uai, Contact contact, String valeur);
 }

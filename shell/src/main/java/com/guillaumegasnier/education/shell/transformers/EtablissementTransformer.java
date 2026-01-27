@@ -38,5 +38,5 @@ public interface EtablissementTransformer {
 
     EtablissementMasaEntity toEtablissementMasaEntity(@NonNull MasaDTO dto);
 
-    JPODataset finUai(JPODataset jpoDataset);
+    JPODataset findUai(JPODataset jpoDataset);
 }
