@@ -399,6 +399,11 @@ public class ProductionFileService implements FileService {
         }
     }
 
+    @Override
+    public <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
+        log.error("Méthode saveResultAsCsv non implémentée car inutile");
+    }
+
     /*@Override
     public <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
 

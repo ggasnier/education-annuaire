@@ -49,6 +49,13 @@ class ImportEtablissementTest {
     }
 
     @Test
+    void importEtablissementsJpoTest() {
+        importEtablissement.importEtablissementsJpo();
+        verify(fileService).importCSV(any());
+        verify(shellEtablissementService).createOrUpdateJpo(any(), eq("masa"));
+    }
+
+    @Test
     void testImportEtablissementsOnisep() {
         importEtablissement.importEtablissementsOnisepSup();
         verify(fileService, times(2)).importCSV(any());
@@ -96,6 +103,33 @@ class ImportEtablissementTest {
         importEtablissement.importSpecialites();
         verify(fileService, times(1)).importCSV(any());
         verify(shellEtablissementService, times(1)).createOrUpdateSpecialites(any(), eq("onisep"));
+    }
+
+    @Test
+    void importDispositifsTest() {
+        importEtablissement.importDispositifs();
+        verify(fileService).importCSV(any());
+        verify(shellEtablissementService).createOrUpdateDispositifs(any(), any());
+    }
+
+    @Test
+    void importEuroscolTest() {
+        importEtablissement.importEuroscol();
+        verify(fileService).importCSV(any());
+        verify(shellEtablissementService).createOrUpdateEuroscol(any(), eq("en"));
+    }
+
+    @Test
+    void importIvaCollegesTest() {
+        importEtablissement.importIvaColleges();
+        verify(fileService).importCSV(any());
+        verify(shellEtablissementService).createOrUpdateIVA(any());
+    }
+
+    @Test
+    void importEtablissementsDetailsTest() {
+        importEtablissement.importEtablissementsDetails();
+        verify(fileService, times(7)).importCSV(any());
     }
 
 }
