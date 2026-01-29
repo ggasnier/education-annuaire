@@ -24,36 +24,39 @@ public class ImportEtablissement implements ImportEtablissementShell {
     private final FileService fileService;
 
     @Override
-    @ShellMethod(value = "Import établissements (ouverts)")
-    public void importEtablissementsEnOuverts() {
-        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS), "en");
-    }
-
-    @Override
-    @ShellMethod(value = "Import établissements (fermés)")
-    public void importEtablissementsEnFermes() {
-        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_FERMES), "en");
-    }
-
-    /**
-     * <p>Import des établissements depuis les différentes sources :</p>
-     * <ul>
-     *     <li>Ouverts (EN)</li>
-     *     <li>Fermés (EN)</li>
-     *     <li>ESR</li>
-     *     <li>ONISEP</li>
-     *     <li>Réseau des CARIF-OREF</li>
-     * </ul>
-     */
-    @Override
-    @ShellMethod(value = "Import de tous les établissements")
+    @ShellMethod(value = "Import global des établissements")
     public void importEtablissements() {
         importEtablissementsEnOuverts();
         importEtablissementsEsr();
         importEtablissementsCarif();
-        importEtablissementsOnisepSup();
+        importEtablissementsOnisep();
         importEtablissementsMasa();
         importEtablissementsEnFermes();
+    }
+
+    @Override
+    @ShellMethod(value = "Import global des détails des établissements")
+    public void importEtablissementsDetails() {
+        importDispositifs();
+        importLangues();
+        importSports();
+        importSpecialites();
+        importJpo();
+        importEuroscol();
+    }
+
+    @Override
+    @ShellMethod(value = "Import global des metadatas")
+    public void importEtablissementsMetadatas() {
+        importEffectifs();
+        importIpsColleges();
+        importIvaColleges();
+    }
+
+    @Override
+    @ShellMethod(value = "Import établissements (ouverts)")
+    public void importEtablissementsEnOuverts() {
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS), "en");
     }
 
     @Override
@@ -70,7 +73,7 @@ public class ImportEtablissement implements ImportEtablissementShell {
 
     @Override
     @ShellMethod(value = "Import établissements (ONISEP SUP)")
-    public void importEtablissementsOnisepSup() {
+    public void importEtablissementsOnisep() {
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SUP), ONISEP);
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ONISEP_ETABS_SEC), ONISEP);
     }
@@ -82,30 +85,19 @@ public class ImportEtablissement implements ImportEtablissementShell {
     }
 
     @Override
-    @ShellMethod(value = "Import des Journées Portes Ouvertes")
-    public void importEtablissementsJpo() {
-        shellEtablissementService.createOrUpdateJpo(fileService.importCSV(MASA_JPO), "masa");
+    @ShellMethod(value = "Import établissements (fermés)")
+    public void importEtablissementsEnFermes() {
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_FERMES), "en");
     }
 
-    /**
-     * Import des sections sportives et des sections sport-études
-     */
+    // Partie détails
+
     @Override
-    @ShellMethod(value = "Import sections sport études et sections sportives")
-    public void importSports() {
-        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), Sport.Categorie.SS, "en");
-        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), Sport.Categorie.SE, "en");
+    @ShellMethod(value = "Import des dispositifs des établissements")
+    public void importDispositifs() {
+        shellEtablissementService.createOrUpdateDispositifs(fileService.importCSV(DISPOSITIFS), ONISEP);
     }
 
-    /**
-     * <p>Import des infos sur les langues :</p>
-     * <ul>
-     *     <li>Les langues : lv1, lv2, lca</li>
-     *     <li>Les sections internationales</li>
-     *     <li>Les sections binationales</li>
-     *     <li>Les sections européennes sont importées via les dispositifs</li>
-     * </ul>
-     */
     @Override
     @ShellMethod(value = "Import langues dans les collèges et lycées")
     public void importLangues() {
@@ -115,15 +107,22 @@ public class ImportEtablissement implements ImportEtablissementShell {
     }
 
     @Override
+    @ShellMethod(value = "Import sections sport études et sections sportives")
+    public void importSports() {
+        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), Sport.Categorie.SS, "en");
+        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), Sport.Categorie.SE, "en");
+    }
+
+    @Override
     @ShellMethod(value = "Import spécialités de première générale")
     public void importSpecialites() {
         shellEtablissementService.createOrUpdateSpecialites(fileService.importCSV(SPECIALITES), ONISEP);
     }
 
     @Override
-    @ShellMethod(value = "Import des dispositifs des établissements")
-    public void importDispositifs() {
-        shellEtablissementService.createOrUpdateDispositifs(fileService.importCSV(DISPOSITIFS), ONISEP);
+    @ShellMethod(value = "Import des Journées Portes Ouvertes")
+    public void importJpo() {
+        shellEtablissementService.createOrUpdateJpo(fileService.importCSV(MASA_JPO), "masa");
     }
 
     @Override
@@ -131,6 +130,8 @@ public class ImportEtablissement implements ImportEtablissementShell {
     public void importEuroscol() {
         shellEtablissementService.createOrUpdateEuroscol(fileService.importCSV(EUROSCOL), "en");
     }
+
+    // Partie metadatas
 
     @Override
     @ShellMethod(value = "Import des effectifs des établissements")
@@ -155,12 +156,4 @@ public class ImportEtablissement implements ImportEtablissementShell {
         shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_COLLEGES));
     }
 
-    @Override
-    @ShellMethod(value = "Import tous les détails des établissements")
-    public void importEtablissementsDetails() {
-        importDispositifs();
-        importLangues();
-        importSports();
-        importSpecialites();
-    }
 }

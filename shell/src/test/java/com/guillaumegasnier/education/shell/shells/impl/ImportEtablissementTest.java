@@ -50,14 +50,14 @@ class ImportEtablissementTest {
 
     @Test
     void importEtablissementsJpoTest() {
-        importEtablissement.importEtablissementsJpo();
+        importEtablissement.importJpo();
         verify(fileService).importCSV(any());
         verify(shellEtablissementService).createOrUpdateJpo(any(), eq("masa"));
     }
 
     @Test
     void testImportEtablissementsOnisep() {
-        importEtablissement.importEtablissementsOnisepSup();
+        importEtablissement.importEtablissementsOnisep();
         verify(fileService, times(2)).importCSV(any());
         verify(shellEtablissementService, times(2)).createOrUpdateEtablissements(any(), eq("onisep"));
     }

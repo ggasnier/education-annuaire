@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.enums;
 
 import com.guillaumegasnier.education.core.enums.Sources;
+import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.*;
@@ -77,7 +78,7 @@ public enum SourcesDatasets {
     // Euroscol https://www.data.gouv.fr/datasets/etablissements-labellises-euroscol/
     EUROSCOL("Établissements labellisés Euroscol", EN, "https://www.data.gouv.fr/api/1/datasets/r/d7da7c59-54cc-45ec-96e9-e956231f0469", "euroscol.csv", StandardCharsets.UTF_8, ';', "GET", EuroscolDataset.class),
     //Certifications
-    CERTIFICATIONS_RNCP("Répertoire national des certifications professionnelles et répertoire spécifique", FC, "", "export-fiches-rncp-v4-1-2025-10-23.zip", StandardCharsets.UTF_8, ',', "GET", null),
+    CERTIFICATIONS_RNCP("Répertoire national des certifications professionnelles et répertoire spécifique", FC, "https://static.data.gouv.fr/resources/repertoire-national-des-certifications-professionnelles-et-repertoire-specifique/20260128-020133/export-fiches-rncp-v4-1-2026-01-28.zip", "rncp.xml", StandardCharsets.UTF_8, ',', "GET", FICHES.class),
 
     // Formations
     FORMATIONS_CPF("Moncompteformation - L'offre de formation", CDC, "https://www.data.gouv.fr/api/1/datasets/r/205a72c5-725a-40c0-9c39-073454bdd553", "formations.csv", StandardCharsets.UTF_8, ';', "GET", CPFFormationDataset.class),

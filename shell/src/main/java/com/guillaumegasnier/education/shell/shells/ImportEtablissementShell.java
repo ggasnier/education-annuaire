@@ -16,11 +16,11 @@ public interface ImportEtablissementShell {
 
     void importEtablissementsCarif();
 
-    void importEtablissementsOnisepSup();
+    void importEtablissementsOnisep();
 
     void importEtablissementsMasa();
 
-    void importEtablissementsJpo();
+    void importJpo();
 
     void importSports();
 
@@ -39,6 +39,8 @@ public interface ImportEtablissementShell {
     void importIvaColleges();
 
     void importEtablissementsDetails();
+
+    void importEtablissementsMetadatas();
 
     void importEtablissementsRecherche();
 }

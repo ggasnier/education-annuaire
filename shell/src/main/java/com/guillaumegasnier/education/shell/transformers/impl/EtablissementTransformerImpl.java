@@ -353,7 +353,6 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
             dataset.setUai(opt.get().getEtablissement().getUai());
             return dataset;
         } else {
-            log.warn("Pas d'établissement avec le code masaId {}", dataset.getUai());
             return null;
         }
     }

@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
+import com.guillaumegasnier.education.shell.mappers.ReferentielMapper;
 import com.guillaumegasnier.education.shell.services.ShellReferencielService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,8 @@ class ShellReferencielServiceImplTest {
     void setUp() {
         coreEtablissementService = mock(CoreEtablissementService.class);
         EtablissementMapper etablissementMapper = Mappers.getMapper(EtablissementMapper.class);
-        service = new ShellReferencielServiceImpl(coreEtablissementService, etablissementMapper);
+        ReferentielMapper referentielMapper = Mappers.getMapper(ReferentielMapper.class);
+        service = new ShellReferencielServiceImpl(coreEtablissementService, etablissementMapper, referentielMapper);
     }
 
     @Test

@@ -20,18 +20,18 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 @Slf4j
 @Service
@@ -107,32 +107,25 @@ public class LocalFileService implements FileService {
     }
 
     @Override
-    public FICHES importXmlFromZip(@NonNull SourcesDatasets source) {
-        log.info("Début import zip {}", source.getLocalPath());
+    public FICHES importXmlFromZip(@NonNull SourcesDatasets sourcesDatasets) {
+        log.info("Début import zip {}", sourcesDatasets.getLocalPath());
 
-        JAXBContext jaxbContext = null;
-        try {
-            jaxbContext = JAXBContext.newInstance(FICHES.class);
-        } catch (JAXBException e) {
-            log.error(e.getMessage());
-        }
+        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
 
-        if (!Files.exists(Path.of(source.getLocalPath()))) {
-            log.error("Le fichier zip {} n'existe pas", source.getLocalPath());
+        if (!Files.exists(outPath)) {
+            log.error("Le fichier xml {} n'existe pas", outPath.getFileName());
             return null;
         }
 
-        try (ZipFile zipFile = new ZipFile(source.getLocalPath())) {
-            Enumeration<? extends ZipEntry> zipEnumeration = zipFile.entries();
+        try (InputStream inputStream = Files.newInputStream(outPath)) {
+            JAXBContext context = JAXBContext.newInstance(FICHES.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            JAXBElement<FICHES> jaxbElement = unmarshaller.unmarshal(new StreamSource(inputStream), FICHES.class);
 
-            while (zipEnumeration.hasMoreElements()) {
-                ZipEntry zipEntry = zipEnumeration.nextElement();
-                try (InputStream inputStream = new BufferedInputStream(zipFile.getInputStream(zipEntry))) {
-                    return (FICHES) jaxbContext.createUnmarshaller().unmarshal(inputStream);
-                }
-            }
-        } catch (Exception e) {
-            log.error("Erreur lors de l'ouverture du fichier zip {} : {}", source.getLocalPath(), e.getMessage(), e);
+            return jaxbElement.getValue();
+
+        } catch (JAXBException | IOException e) {
+            log.error(e.getMessage());
         }
 
         return null;
