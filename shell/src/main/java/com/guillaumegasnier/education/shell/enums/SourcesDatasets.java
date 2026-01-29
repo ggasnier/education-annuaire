@@ -48,6 +48,8 @@ public enum SourcesDatasets {
 
     // Indicateurs valeur ajoutée
     IVA_COLLEGES("Indicateurs de valeur ajoutée des collèges", EN, "https://www.data.gouv.fr/api/1/datasets/r/a230247a-8aea-4112-be41-bc008c0d6966", "iva_colleges.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeCollegeDataset.class),
+    IVA_LYCEES_GT("Indicateurs de valeur ajoutée des lycées d'enseignement général et technologique", EN, "https://www.data.gouv.fr/api/1/datasets/r/4204242b-1812-4609-a2f0-f8d720f5b060", "iva_lycees_gt.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeLyceeDataset.class),
+    IVA_LYCEES_PRO("Indicateurs de valeur ajoutée des lycées d'enseignement professionnel", EN, "https://www.data.gouv.fr/api/1/datasets/r/77e54b21-459c-4876-93fa-8dd6b776e4da", "iva_lycees_pro.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeLyceeProDataset.class),
 
     // Ecoles
     IPS_ECOLES_1("Indices de position sociale des écoles (2016-2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/fda33536-a0e0-4cad-b1bf-b88d2a7586e6", "ips_ecoles_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSEcole2016Dataset.class),
@@ -75,12 +77,13 @@ public enum SourcesDatasets {
     SPECIALITES("Idéo-Enseignements de spécialité de première générale", ONISEP, "https://api.opendata.onisep.fr/downloads/60113f395cce6/60113f395cce6.csv", "specialites.csv", StandardCharsets.UTF_8, ';', "GET", SpecialitePremiereDataset.class),
 
     DISPOSITIFS("Idéo-Actions de dispositif", ONISEP, "https://api.opendata.onisep.fr/downloads/60867458bb600/60867458bb600.csv", "dispositifs.csv", StandardCharsets.UTF_8, ';', "GET", OnisepDispositifDataset.class),
-    // Euroscol https://www.data.gouv.fr/datasets/etablissements-labellises-euroscol/
     EUROSCOL("Établissements labellisés Euroscol", EN, "https://www.data.gouv.fr/api/1/datasets/r/d7da7c59-54cc-45ec-96e9-e956231f0469", "euroscol.csv", StandardCharsets.UTF_8, ';', "GET", EuroscolDataset.class),
     //Certifications
     CERTIFICATIONS_RNCP("Répertoire national des certifications professionnelles et répertoire spécifique", FC, "https://static.data.gouv.fr/resources/repertoire-national-des-certifications-professionnelles-et-repertoire-specifique/20260128-020133/export-fiches-rncp-v4-1-2026-01-28.zip", "rncp.xml", StandardCharsets.UTF_8, ',', "GET", FICHES.class),
+    // RS
 
     // Formations
+    // Tableau PARCOURSUP <-> ONISEP
     FORMATIONS_CPF("Moncompteformation - L'offre de formation", CDC, "https://www.data.gouv.fr/api/1/datasets/r/205a72c5-725a-40c0-9c39-073454bdd553", "formations.csv", StandardCharsets.UTF_8, ';', "GET", CPFFormationDataset.class),
     FORMATIONS_PARCOURSUP("Cartographie des formations Parcoursup", ESR, "https://www.data.gouv.fr/api/1/datasets/r/19e77c6b-9e90-4673-aaed-276b77ac9c69", "formations_parcoursup.csv", StandardCharsets.UTF_8, ';', "GET", ParcoursupFormationDataset.class),
     FORMATIONS_CARIF("Liste des formations", CARIF, "https://catalogue-apprentissage.intercariforef.org/api/v1/es/search/formation/", "formations.json", StandardCharsets.UTF_8, ',', "POST", CarifFormationResponse.class),

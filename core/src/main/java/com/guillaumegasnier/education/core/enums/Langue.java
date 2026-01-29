@@ -83,13 +83,14 @@ public enum Langue {
     @Getter
     @AllArgsConstructor
     public enum Categorie {
-        EU("Sections européennes"),
-        LO("Sections de langues orientales"),
-        SI("Sections internationales"),
-        BI("Sections bilingues"),
-        LV("Langues vivantes"),
-        LC("Langues anciennes");
+        EU("Sections européennes", "bg-cyan-100 text-cyan-800"),
+        LO("Sections de langues orientales", "bg-amber-100 text-amber-800"),
+        SI("Sections internationales", "bg-indigo-100 text-indigo-800"),
+        BI("Sections bilingues", "bg-pink-100 text-pink-800"),
+        LV("Langues vivantes", "bg-orange-100 text-orange-800"),
+        LC("Langues anciennes", "bg-green-100 text-green-800");
 
         private final String nom;
+        private final String couleur;
     }
 }

@@ -129,7 +129,7 @@ class ImportEtablissementTest {
     @Test
     void importEtablissementsDetailsTest() {
         importEtablissement.importEtablissementsDetails();
-        verify(fileService, times(7)).importCSV(any());
+        verify(fileService, times(9)).importCSV(any());
     }
 
 }

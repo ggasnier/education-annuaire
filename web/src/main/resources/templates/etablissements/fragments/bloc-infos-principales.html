@@ -9,10 +9,10 @@
                 <dt class="text-sm font-medium text-gray-500">UAI</dt>
                 <dd class="text-sm text-gray-900" th:text="${etablissement.uai}"></dd>
             </div>
-            <div>
-                <dt class="text-sm font-medium text-gray-500">SIRET</dt>
-                <dd class="text-sm text-gray-900" th:text="${etablissement.siret}"></dd>
-            </div>
+            <!--            <div>-->
+            <!--                <dt class="text-sm font-medium text-gray-500">SIRET</dt>-->
+            <!--                <dd class="text-sm text-gray-900" th:text="${etablissement.siret}"></dd>-->
+            <!--            </div>-->
             <div>
                 <dt class="text-sm font-medium text-gray-500">Type</dt>
                 <dd class="text-sm text-gray-900" th:text="${etablissement.nomNature}"></dd>
@@ -21,9 +21,14 @@
                 <dt class="text-sm font-medium text-gray-500">Secteur</dt>
                 <dd class="text-sm text-gray-900" th:text="${etablissement.nomSecteur}"></dd>
             </div>
-            <div>
+            <div th:if="${etablissement.codeContrat != '99'}">
                 <dt class="text-sm font-medium text-gray-500">Contrat</dt>
                 <dd class="text-sm text-gray-900" th:text="${etablissement.nomContrat}"></dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Adresse</dt>
+                <dd class="text-sm text-gray-900" th:text="${etablissement.adresse}"></dd>
+                <dd class="text-sm text-gray-900" th:text="${etablissement.complement}"></dd>
             </div>
             <div>
                 <dt class="text-sm font-medium text-gray-500">Ville</dt>

@@ -94,6 +94,8 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
         var uai = dataset.getUai();
         var annee = dataset.getAnnee();
 
+        log.info("uai: {}/{}", uai, annee);
+
         if (coreEtablissementService.isEtablissementExiste(uai)) {
             Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
 

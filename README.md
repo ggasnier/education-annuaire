@@ -98,6 +98,7 @@ import-etablissements-details
 import-etablissements-metadatas
     ├──import-effectifs
     ├──import-ips-colleges
+    ├──import-ips-lycees
     └──import-iva-colleges
     
 ```
