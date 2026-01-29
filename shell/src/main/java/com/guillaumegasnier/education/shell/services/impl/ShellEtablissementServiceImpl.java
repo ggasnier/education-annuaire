@@ -44,6 +44,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     int chunk = 500;
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateSports(@NonNull List<SportDataset> datasets, Sport.Categorie categorie, @NonNull String source) {
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<SportDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
@@ -51,6 +52,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .map(dataset -> etablissementMapper.toSportDTO(dataset, categorie))
                     .flatMap(List::stream)
                     .map(dto -> etablissementTransformer.toEtablissementSportEntity(dto, source))
+                    .filter(Objects::nonNull)
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
                     .toList());
@@ -59,12 +61,12 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets, @NonNull String source) {
-        for (int i = 0; i < datasets.size(); i += chunk) {
-            List<OnisepDispositifDataset> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
-
-            log.info("Import des dispositifs comme option");
+        int size = datasets.size();
+        for (int i = 0; i < size; i += chunk) {
+            List<OnisepDispositifDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
+            log.info("Options: {}/{}", i, size);
             coreEtablissementService.saveOptions(sub.stream()
                     .filter(d -> d.getOption() != null)
                     .filter(d -> d.getUai() != null && !d.getUai().isBlank())
@@ -74,7 +76,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .filter(Objects::nonNull)
                     .toList());
 
-            log.info("Import des dispositifs sports");
+            log.info("Sports: {}/{}", i, size);
             coreEtablissementService.saveEtablissementSportEntity(sub.stream()
                     .filter(d -> d.getOption() != null &&
                             (d.getOption().equals(OptionEtablissement.SPORT_ETUDES) ||
@@ -88,7 +90,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .filter(Objects::nonNull)
                     .toList());
 
-            log.info("Import des dispositifs langues");
+            log.info("Langues: {}/{}", i, size);
             coreEtablissementService.saveLangues(sub.stream()
                     .filter(d -> d.getOption() != null &&
                             (d.getOption().equals(OptionEtablissement.SECTION_EUROPEENNE) ||
@@ -110,6 +112,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public <T extends IndicePositionSociale & Metadata> void createOrUpdateIPS(@NonNull List<T> datasets) {
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<T> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
@@ -121,6 +124,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public <T extends Effectifs & Metadata> void createOrUpdateEffectifs(@NonNull List<T> datasets) {
 
         record Clef(String uai, Integer annee) {
@@ -156,6 +160,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public <T extends IndicateurValeurAjoutee & Metadata> void createOrUpdateIVA(@NonNull List<T> datasets) {
         for (int i = 0; i < datasets.size(); i += chunk) {
             List<T> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
@@ -188,6 +193,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveOptions(datasets.stream()
                 .map(dataset -> new OptionDTO(dataset.getUai(), OptionEtablissement.EUROSCOL))
@@ -208,7 +214,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         for (int i = 0; i < size; i += chunk) {
             List<? extends EtablissementDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
             // Les établissements
-            log.info("Import établissements {}/{}", i, size);
             coreEtablissementService.saveEtablissements(sub.stream()
                     .flatMap(this::dedoublement)
                     .map(dataset -> etablissementTransformer.toEtablissementEntity(dataset, source))
@@ -218,7 +223,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .toList());
 
             // Les options
-            log.info("Import options {}/{}", i, size);
             coreEtablissementService.saveOptions(sub.stream()
                     .flatMap(this::dedoublement)
                     .map(etablissementMapper::toOptionDTO)
@@ -229,7 +233,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .toList());
 
             // Les contacts
-            log.info("Import contacts {}/{}", i, size);
             coreEtablissementService.saveContacts(
                     sub.stream()
                             .flatMap(this::dedoublement)
@@ -243,7 +246,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             );
 
             // Les journees portes ouvertes
-            log.info("Import JPO {}/{}", i, size);
             coreEtablissementService.saveJPO(
                     sub.stream()
                             .flatMap(this::dedoublement)
@@ -319,6 +321,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateLangues(@NonNull List<LangueDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveLangues(datasets
                 .stream()
@@ -332,6 +335,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateSpecialites(@NonNull List<SpecialitePremiereDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveSpecialites(datasets
                 .stream()

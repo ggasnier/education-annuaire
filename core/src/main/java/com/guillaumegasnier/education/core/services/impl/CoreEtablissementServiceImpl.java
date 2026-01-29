@@ -278,6 +278,6 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 
     @Override
     public Optional<EtablissementContactEntity> findContact(String uai, Contact contact, String valeur) {
-        return contratRepository.findByPkUaiAndPkContactAndPKValeur(uai, contact, valeur);
+        return etablissementContactRepository.findByPkUaiAndPkContactAndPkValeur(uai, contact, valeur);
     }
 }
