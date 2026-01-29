@@ -23,7 +23,8 @@ public class IndicateurValeurAjouteeLyceeProDataset implements IndicateurValeurA
     //Presents - Toutes series
     //Taux de reussite - Toutes series
     //Valeur ajoutee du taux de reussite - Toutes series
-    //Taux d'acces 2nde-bac
+    @CsvBindByName(column = "Taux d'acces 2nde-bac")
+    private Double tauxAcces;
     //Valeur ajoutee du taux d'acces 2nde-bac
     //Taux de mentions - Toutes series
     //Valeur ajoutee du taux de mentions - Toutes series

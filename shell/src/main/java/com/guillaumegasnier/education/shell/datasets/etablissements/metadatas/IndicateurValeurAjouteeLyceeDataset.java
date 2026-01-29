@@ -26,7 +26,8 @@ public class IndicateurValeurAjouteeLyceeDataset implements IndicateurValeurAjou
 
     //Valeur ajoutée du taux de réussite - Toutes séries
 
-    //Taux d'accès 2nde-bac
+    @CsvBindByName(column = "Taux d'accès 2nde-bac")
+    private Double tauxAcces;
 
     //Valeur ajoutée du taux d'acces 2nde-bac
 

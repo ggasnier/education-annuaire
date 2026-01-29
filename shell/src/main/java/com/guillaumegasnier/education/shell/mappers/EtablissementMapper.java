@@ -176,6 +176,7 @@ public abstract class EtablissementMapper {
 
     public <T extends IndicateurValeurAjoutee & Metadata> IndicateurValeurAjouteeDto toIndicateurValeurAjouteeDto(@NonNull T dataset) {
         IndicateurValeurAjouteeDto iva = new IndicateurValeurAjouteeDto();
+        iva.setTauxAcces(dataset.getTauxAcces());
         iva.setResultats(dataset.getResultats());
         return iva;
     }

@@ -50,6 +50,7 @@ public class ImportEtablissement implements ImportEtablissementShell {
     public void importEtablissementsMetadatas() {
         importEffectifs();
         importIpsColleges();
+        importIpsLycees();
         importIvaColleges();
     }
 
@@ -151,9 +152,19 @@ public class ImportEtablissement implements ImportEtablissementShell {
     }
 
     @Override
+    @ShellMethod(value = "Import IPS Lycees")
+    public void importIpsLycees() {
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_LYCEES_1));
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_LYCEES_2));
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_LYCEES_3));
+    }
+
+    @Override
     @ShellMethod(value = "Import IVA Collèges")
     public void importIvaColleges() {
         shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_COLLEGES));
+        shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_LYCEES_GT));
+        shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_LYCEES_PRO));
     }
 
 }

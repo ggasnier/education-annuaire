@@ -6,6 +6,7 @@ import java.util.Set;
 
 public interface IndicateurValeurAjoutee {
 
+    Double getTauxAcces();
 
     Set<ResultatFiliereDto> getResultats();
 }
