@@ -9,6 +9,7 @@ CREATE TABLE etablissements_jpo
     heure_debut time WITHOUT TIME ZONE,
     heure_fin   time WITHOUT TIME ZONE,
     commentaire TEXT,
+    sources     VARCHAR(50)                 NULL,
     created_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_etablissements_jpo PRIMARY KEY (uai, date_debut, date_fin)

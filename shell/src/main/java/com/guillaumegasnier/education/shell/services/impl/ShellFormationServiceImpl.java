@@ -95,7 +95,7 @@ public class ShellFormationServiceImpl implements ShellFormationService {
             // Les formations
             coreFormationService.saveFormations(sub.stream()
                     .map(formationMapper::toFormationDTO)
-                    .filter(dto -> dto != null && dto.getId() != null)
+                    .filter(dto -> dto != null && dto.getFormationId() != null)
                     .distinct() // On ne garde que les formations
                     .map(dto -> formationTransformer.toFormationEntity(dto, "carif"))
                     .filter(Objects::nonNull)

@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Offre de formation
@@ -23,8 +22,8 @@ import java.util.UUID;
 public class FormationEntity extends AbstractSourcesEntity {
 
     @Id
-    @Column(columnDefinition = "UUID", nullable = false, updatable = false)
-    private UUID id;
+    @Column(columnDefinition = "BIGINT", nullable = false, updatable = false)
+    private Long id;
 
     /**
      * Cet élément décrit l’intitulé de la formation. Si la formation a comme résultat l’obtention d’un diplôme, le

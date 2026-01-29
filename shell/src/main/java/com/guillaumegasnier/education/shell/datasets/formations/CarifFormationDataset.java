@@ -9,9 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static com.guillaumegasnier.education.shell.utils.ShellUtil.extractOnisepId;
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.toNormalizedId;
 
 /**
  * Même si le réseau CARIF-OREF appéle ça une formation, d'un point de vue LHEO on est sur une action de formation
@@ -458,15 +458,16 @@ public class CarifFormationDataset implements Dataset {
         return rncpCode != null && !rncpCode.isBlank();
     }
 
-    public Integer getFormationOnisepId() {
-        return extractOnisepId(onisepUrl);
+    public String getFormationOnisepId() {
+        return extractOnisepId(onisepUrl).toString();
     }
 
-    public UUID getFormationId() {
+    public Long getFormationId() {
         if (getFormationOnisepId() != null)
-            return UUID.nameUUIDFromBytes(("AF" + getFormationOnisepId()).getBytes());
+            return toNormalizedId("AF", getFormationOnisepId());
         else {
-            log.warn("Pas d'onisepId de formation pour {}", cleMinistereEducatif);
+            if (cfd != null)
+                return toNormalizedId("cfd", cfd);
             return null;
         }
     }

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.UUID;
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.toNormalizedId;
 
 /**
  * date_chargement
@@ -130,8 +130,8 @@ public class CPFFormationDataset implements Dataset {
     @CsvBindByName(column = "resultats_attendus_formation")
     private String resultats;
 
-    public UUID getId() {
-        return UUID.nameUUIDFromBytes(numeroFormation.getBytes());
+    public Long getFormationId() {
+        return toNormalizedId("CPF", numeroFormation);
     }
 
     //nb_action

@@ -10,11 +10,10 @@ import org.springframework.lang.NonNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 public interface CoreFormationService {
 
-    Optional<FormationEntity> findFormation(@NonNull UUID id);
+    Optional<FormationEntity> findFormation(@NonNull Long id);
 
     void saveFormation(FormationEntity entity);
 
@@ -38,7 +37,7 @@ public interface CoreFormationService {
 
     void saveOrganismes(List<OrganismeEntity> entities);
 
-    Optional<ActionFormationEntity> findActionFormation(UUID id);
+    Optional<ActionFormationEntity> findActionFormation(Long id);
 
     List<ActionFormationEntity> findFormations(String uai);
 

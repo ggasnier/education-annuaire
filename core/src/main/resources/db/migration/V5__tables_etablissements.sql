@@ -29,6 +29,7 @@ CREATE TABLE etablissements
     siret          BPCHAR(14),
     nda            BPCHAR(11),
     nom            VARCHAR(255)                NOT NULL,
+    secteur        BPCHAR(2)                   NULL,
     actif          BOOLEAN,
     date_ouverture date,
     date_fermeture date,
@@ -75,6 +76,7 @@ CREATE TABLE etablissements_sports
     uai        CHAR(8)                     NOT NULL,
     sport      VARCHAR(50)                 NOT NULL,
     categorie  CHAR(2)                     NOT NULL,
+    sources    varchar(50)                 NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_etablissements_sports PRIMARY KEY (uai, sport, categorie)
@@ -89,6 +91,7 @@ CREATE TABLE etablissements_contacts
     uai        CHAR(8)                     NOT NULL,
     contact    VARCHAR(10)                 NOT NULL,
     valeur     VARCHAR(255)                NOT NULL,
+    sources    varchar(50)                 NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_etablissements_contacts PRIMARY KEY (uai, contact, valeur)
@@ -102,6 +105,7 @@ CREATE TABLE etablissements_options
 (
     uai        BPCHAR(8)                   NOT NULL,
     option     VARCHAR(255)                NOT NULL,
+    sources    varchar(50)                 NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_etablissements_options PRIMARY KEY (uai, option)
@@ -117,6 +121,7 @@ CREATE TABLE etablissements_langues
     langue       CHAR(2)                     NOT NULL,
     categorie    CHAR(2)                     NOT NULL,
     enseignement CHAR(3)                     NOT NULL,
+    sources      varchar(50)                 NULL,
     created_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_etablissements_langues PRIMARY KEY (uai, langue, categorie, enseignement)
