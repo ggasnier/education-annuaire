@@ -56,6 +56,7 @@ public class ShellUtil {
 
     @Nullable
     public static Double formatDouble(String value) {
+        if (value == null) return null;
         try {
             return Double.parseDouble(value);
         } catch (NumberFormatException e) {

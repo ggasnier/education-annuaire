@@ -122,8 +122,8 @@ class ImportEtablissementTest {
     @Test
     void importIvaCollegesTest() {
         importEtablissement.importIvaColleges();
-        verify(fileService).importCSV(any());
-        verify(shellEtablissementService).createOrUpdateIVA(any());
+        verify(fileService, times(3)).importCSV(any());
+        verify(shellEtablissementService, times(3)).createOrUpdateIVA(any());
     }
 
     @Test
