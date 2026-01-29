@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.UUID;
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.toNormalizedId;
 
 @Getter
 @Setter
@@ -100,7 +100,7 @@ public class ParcoursupFormationDataset implements Dataset {
     @CsvBindByName(column = "code_formation")
     private Integer codeFormation;
 
-    public UUID getFormationId() {
-        return UUID.nameUUIDFromBytes(("PS" + codeFormation).getBytes());
+    public Long getFormationId() {
+        return toNormalizedId("PS", codeFormation.toString());
     }
 }

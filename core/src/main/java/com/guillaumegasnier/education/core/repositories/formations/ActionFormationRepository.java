@@ -6,10 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface ActionFormationRepository extends JpaRepository<ActionFormationEntity, UUID> {
+public interface ActionFormationRepository extends JpaRepository<ActionFormationEntity, Long> {
 
     Optional<ActionFormationEntity> findByParcoursupId(Integer parcoursupId);
 

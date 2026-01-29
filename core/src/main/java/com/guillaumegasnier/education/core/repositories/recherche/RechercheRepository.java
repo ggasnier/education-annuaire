@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 
 @Repository
@@ -70,7 +69,7 @@ public class RechercheRepository {
 
         return namedParameterJdbcTemplate.query(sql, params, (rs, rowNum) -> {
             ResultatEntity entity = new ResultatEntity();
-            entity.setId((UUID) rs.getObject("id"));
+            entity.setId(rs.getLong("id"));
             entity.setNom(rs.getString("nom"));
             entity.setCategorie(rs.getString("categorie"));
             entity.setKey(rs.getString("key"));

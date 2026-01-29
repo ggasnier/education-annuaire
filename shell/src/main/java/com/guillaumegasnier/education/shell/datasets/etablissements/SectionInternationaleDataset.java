@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -52,6 +53,8 @@ public class SectionInternationaleDataset implements Dataset {
     private String nomCommune;
 
     public List<String> getNiveaux() {
-        return Stream.of(niveau.split("et")).map(String::trim).map(String::toUpperCase).toList();
+        if (niveau != null)
+            return Stream.of(niveau.split("et")).map(String::trim).map(String::toUpperCase).toList();
+        return Collections.emptyList();
     }
 }

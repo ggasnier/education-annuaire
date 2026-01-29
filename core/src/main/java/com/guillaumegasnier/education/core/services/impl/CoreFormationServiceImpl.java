@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 public class CoreFormationServiceImpl implements CoreFormationService {
@@ -63,7 +62,7 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     }
 
     @Override
-    public Optional<FormationEntity> findFormation(@NonNull UUID id) {
+    public Optional<FormationEntity> findFormation(@NonNull Long id) {
         return formationRepository.findById(id);
     }
 
@@ -120,7 +119,7 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     }
 
     @Override
-    public Optional<ActionFormationEntity> findActionFormation(UUID id) {
+    public Optional<ActionFormationEntity> findActionFormation(Long id) {
         return actionFormationRepository.findById(id);
     }
 

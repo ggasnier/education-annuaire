@@ -10,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class FormationMapperTest {
 
     private final FormationMapper mapper = Mappers.getMapper(FormationMapper.class);
-    
+
     @Test
-    void toFormationDTO2Test() {
+    void toFormationDTOTest() {
         FormationType formationType = new FormationType();
-        FormationDTO dto = mapper.toFormationDTO2(formationType);
+        FormationDTO dto = mapper.toFormationDTO(formationType);
         assertNotNull(dto);
     }
 }

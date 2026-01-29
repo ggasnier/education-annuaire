@@ -20,9 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.guillaumegasnier.education.shell.mappers.DateMapper.toLocalDate;
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.toNormalizedId;
 
 @Slf4j
 @Service
@@ -46,7 +46,7 @@ public class FormationTransformerImpl implements FormationTransformer {
             Optional<LienOnisepEntity> opt = coreFormationService.findLienOnisep("PS", dto.getParcoursupId().toString());
             if (opt.isPresent()) {
                 dto.setOnisepId(opt.get().getPk().getOnisepId());
-                dto.setId(UUID.nameUUIDFromBytes(("FOR" + dto.getOnisepId()).getBytes()));
+                dto.setFormationId(toNormalizedId("FOR", dto.getOnisepId().toString()));
             }
             return dto;
         }
@@ -80,14 +80,14 @@ public class FormationTransformerImpl implements FormationTransformer {
 
     @Override
     public FormationEntity toFormationEntity(@NonNull FormationDTO dto, @NonNull String source) {
-        return coreFormationService.findFormation(dto.getId())
+        return coreFormationService.findFormation(dto.getFormationId())
                 .map(entity -> toFormationEntityOld(entity, dto, source))
                 .orElseGet(() -> toFormationEntityNew(dto, source));
     }
 
     @Override
     public ActionFormationEntity toActionFormationEntity(@NonNull ActionFormationDTO dto, @NonNull String source) {
-        return coreFormationService.findActionFormation(dto.getId())
+        return coreFormationService.findActionFormation(dto.getActionFormationId())
                 .map(entity -> toActionFormationEntityOld(entity, dto, source))
                 .orElseGet(() -> toActionFormationEntityNew(dto, source));
     }

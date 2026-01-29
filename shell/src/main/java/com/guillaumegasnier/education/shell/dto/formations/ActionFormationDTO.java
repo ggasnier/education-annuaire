@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,8 +14,8 @@ import java.util.UUID;
 public class ActionFormationDTO {
 
     @EqualsAndHashCode.Include
-    private UUID id;
-    private UUID formationId;
+    private Long actionFormationId;
+    private Long formationId;
     private String rythmeFormation;
     private String codePublicVise;
     private String infoPublicVise;

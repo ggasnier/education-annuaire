@@ -10,7 +10,6 @@ import java.util.List;
 @Schema(name = "ResultatRecherche")
 public class ResultatRechercheDto {
 
-//    private UUID id;
 //    private String nom;
 //    private String categorie;
 //    private String key;

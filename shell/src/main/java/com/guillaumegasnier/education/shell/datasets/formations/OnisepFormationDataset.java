@@ -6,10 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.UUID;
+import java.util.Objects;
 
-import static com.guillaumegasnier.education.shell.utils.ShellUtil.extractOnisepId;
-import static com.guillaumegasnier.education.shell.utils.ShellUtil.extractRncpCode;
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.*;
 
 @Getter
 @Setter
@@ -101,23 +100,23 @@ public class OnisepFormationDataset implements Dataset {
         return extractRncpCode(formationReferentielUrl);
     }
 
-    public Integer getActionFormationOnisepId() {
-        return extractOnisepId(actionFormationUrl);
+    public String getActionFormationOnisepId() {
+        return Objects.requireNonNull(extractOnisepId(actionFormationUrl)).toString();
     }
 
     public Integer getEtablissmentOnisepId() {
         return extractOnisepId(etablissementUrl);
     }
 
-    public Integer getFormationOnisepId() {
-        return extractOnisepId(formationUrl);
+    public String getFormationOnisepId() {
+        return Objects.requireNonNull(extractOnisepId(formationUrl)).toString();
     }
 
-    public UUID getFormationId() {
-        return UUID.nameUUIDFromBytes(("FOR" + getFormationOnisepId()).getBytes());
+    public Long getFormationId() {
+        return toNormalizedId("FOR", getFormationOnisepId());
     }
 
-    public UUID getActionFormationId() {
-        return UUID.nameUUIDFromBytes(("AF" + getActionFormationOnisepId()).getBytes());
+    public Long getActionFormationId() {
+        return toNormalizedId("AF", getActionFormationOnisepId());
     }
 }

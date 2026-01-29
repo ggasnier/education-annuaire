@@ -37,7 +37,7 @@ ALTER TABLE certifications_romes
 
 CREATE TABLE formations
 (
-    id                    UUID                        NOT NULL,
+    id                    BIGINT                      NOT NULL,
     created_at            TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at            TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     nom                   VARCHAR(255)                NOT NULL,
@@ -54,6 +54,7 @@ CREATE TABLE formations
     positionnement        INTEGER,
     onisep_id             INTEGER,
     parcoursup_id         INTEGER,
+    sources               varchar(50)                 NULL,
     CONSTRAINT pk_formations PRIMARY KEY (id)
 );
 
@@ -66,7 +67,7 @@ ALTER TABLE formations
 
 CREATE TABLE formations_certifications
 (
-    formation_entity_id UUID         NOT NULL,
+    formation_entity_id BIGINT       NOT NULL,
     certifications_code VARCHAR(255) NOT NULL
 );
 
@@ -82,10 +83,10 @@ ALTER TABLE formations_certifications
 -- actions de formations
 CREATE TABLE formations_actions
 (
-    id                                UUID                        NOT NULL,
+    id                                BIGINT                      NOT NULL,
     created_at                        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at                        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    formation_id                      UUID                        NOT NULL,
+    formation_id                      BIGINT                      NOT NULL,
     rythme_formation                  TEXT,
     code_public_vise                  CHAR(5),
     info_public_vise                  VARCHAR(250),
@@ -126,6 +127,7 @@ CREATE TABLE formations_actions
     organisme_financeur               VARCHAR(255),
     onisep_id                         INTEGER,
     parcoursup_id                     INTEGER,
+    sources                           varchar(50)                 NULL,
     CONSTRAINT pk_formations_actions PRIMARY KEY (id)
 );
 

@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @ToString
@@ -14,7 +12,8 @@ import java.util.UUID;
 public class FormationDTO {
 
     @EqualsAndHashCode.Include
-    private UUID id;
+    private Long formationId;
+
     private String nom;
     private String objectif;
     private String resultats;
@@ -29,5 +28,5 @@ public class FormationDTO {
     private Integer positionnement;
     private Integer onisepId;
     private Integer parcoursupId;
-//    private String carifId;
+    private String carifId;
 }

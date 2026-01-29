@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * <action>
@@ -62,11 +61,11 @@ import java.util.UUID;
 public class ActionFormationEntity extends AbstractEntity {
 
     @Id
-    @Column(columnDefinition = "UUID", nullable = false, updatable = false)
-    private UUID id;
+    @Column(columnDefinition = "BIGINT", nullable = false, updatable = false)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "formation_id", foreignKey = @ForeignKey(name = "fk_actions_formations"), columnDefinition = "UUID", nullable = false)
+    @JoinColumn(name = "formation_id", foreignKey = @ForeignKey(name = "fk_actions_formations"), columnDefinition = "BIGINT", nullable = false)
     private FormationEntity formation;
 
     /**

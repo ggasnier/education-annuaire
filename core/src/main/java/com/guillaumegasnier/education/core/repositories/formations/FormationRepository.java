@@ -5,10 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface FormationRepository extends JpaRepository<FormationEntity, UUID> {
+public interface FormationRepository extends JpaRepository<FormationEntity, Long> {
     Optional<FormationEntity> findByOnisepId(Integer onisepId);
 
     Optional<FormationEntity> findByParcoursupId(Integer parcoursupId);
