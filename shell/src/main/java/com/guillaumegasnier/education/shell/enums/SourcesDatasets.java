@@ -81,6 +81,7 @@ public enum SourcesDatasets {
     //Certifications
     CERTIFICATIONS_RNCP("Répertoire national des certifications professionnelles et répertoire spécifique", FC, "https://static.data.gouv.fr/resources/repertoire-national-des-certifications-professionnelles-et-repertoire-specifique/20260128-020133/export-fiches-rncp-v4-1-2026-01-28.zip", "rncp.xml", StandardCharsets.UTF_8, ',', "GET", FICHES.class),
     // RS
+    CERTIFICATIONS_RNCP("Répertoire national des certifications professionnelles et répertoire spécifique", FC, "https://static.data.gouv.fr/resources/repertoire-national-des-certifications-professionnelles-et-repertoire-specifique/20260128-020133/export-fiches-rncp-v4-1-2026-01-28.zip", "rncp.xml", StandardCharsets.UTF_8, ',', "GET", FICHES.class),
 
     // Formations
     // Tableau PARCOURSUP <-> ONISEP

@@ -13,6 +13,9 @@ public class IndicateurValeurAjouteeDto {
     private Set<ResultatFiliereDto> resultats;
 
     @JsonIgnore
+    private Double tauxAcces;
+
+    @JsonIgnore
     public ResultatFiliereDto getResultat() {
         return resultats.stream().filter(r -> r.getCode().equals("BREVETG")).findFirst().orElse(null);
     }

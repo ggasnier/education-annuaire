@@ -358,6 +358,59 @@ public class ProductionFileService implements FileService {
             log.error("Erreur lors de l'import du fichier LHEO : {}", e.getMessage(), e);
             return null;
         }
+    public FICHES importXmlFromZip(@NonNull SourcesDatasets sourcesDatasets) {
+        log.info("Début import {}", sourcesDatasets.getNom());
+
+        try {
+            // Télécharger le fichier zip depuis sourcesDatasets.getUrl()
+            //log.info("Téléchargement du fichier ZIP depuis : {}", sourcesDatasets.getUrl());
+            URL url = new URL(sourcesDatasets.getUrl());
+
+            try (InputStream inputStream = url.openStream();
+                 java.util.zip.ZipInputStream zipInputStream = new java.util.zip.ZipInputStream(inputStream)) {
+
+                // Extraire du fichier zip le fichier xml (il y en a un seul)
+                java.util.zip.ZipEntry entry;
+                while ((entry = zipInputStream.getNextEntry()) != null) {
+                    if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
+                        log.info("Fichier XML trouvé : {}", entry.getName());
+
+                        //if (!entry.getName().equals(sourcesDatasets.getLocalPath()))
+                        //    log.warn("Erreur de paramétrage sur le fichier local : {} vs {}", entry.getName(), sourcesDatasets.getLocalPath());
+
+                        // Enregistrer le fichier en local
+                        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(),
+                                sourcesDatasets.getLocalPath());
+                        Files.createDirectories(outPath.getParent());
+
+                        // Copier le contenu du zip vers le fichier local
+                        try (OutputStream outputStream = Files.newOutputStream(outPath)) {
+                            byte[] buffer = new byte[8192];
+                            int bytesRead;
+                            while ((bytesRead = zipInputStream.read(buffer)) != -1) {
+                                outputStream.write(buffer, 0, bytesRead);
+                            }
+                        }
+                        log.info("Fichier XML enregistré dans : {}", outPath.toAbsolutePath());
+
+                        // Renvoyer le contenu du fichier xml dans la classe FICHES avec JAXB
+                        JAXBContext context = JAXBContext.newInstance(FICHES.class);
+                        Unmarshaller unmarshaller = context.createUnmarshaller();
+                        JAXBElement<FICHES> jaxbElement = unmarshaller
+                                .unmarshal(new StreamSource(outPath.toFile()), FICHES.class);
+                        //log.info("Fichier XML parsé avec succès");
+
+                        return jaxbElement.getValue();
+                    }
+                }
+
+                log.error("Aucun fichier XML trouvé dans le ZIP");
+                return null;
+            }
+        } catch (Exception e) {
+            log.error("Erreur lors de l'import du fichier LHEO : {}", e.getMessage(), e);
+            return null;
+        }
     }
 
     @Override

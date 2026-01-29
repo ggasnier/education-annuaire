@@ -98,6 +98,12 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         for (int i = 0; i < size; i += chunk) {
             List<OnisepDispositifDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
             log.info("Options: {}/{}", i, size);
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets, @NonNull String source) {
+        int size = datasets.size();
+        for (int i = 0; i < size; i += chunk) {
+            List<OnisepDispositifDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
+            log.info("Options: {}/{}", i, size);
             coreEtablissementService.saveOptions(sub.stream()
                     .filter(d -> d.getOption() != null)
                     .filter(d -> d.getUai() != null && !d.getUai().isBlank())
@@ -314,6 +320,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             );
 
             // Les journees portes ouvertes
+            log.info("Import JPO {}/{}", i, size);
             coreEtablissementService.saveJPO(
                     sub.stream()
                             .flatMap(this::dedoublement)
