@@ -3,7 +3,6 @@ package com.guillaumegasnier.education.shell.services.impl;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
-import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
@@ -40,7 +39,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     private final EtablissementTransformer etablissementTransformer;
     private final EtablissementMapper etablissementMapper;
     private final ValidatorService validatorService;
-    private final CoreRechercheService coreRechercheService;
 
     @Value("${spring.jpa.properties.hibernate.jdbc.batch_size:500}")
     int chunk = 500;
@@ -235,15 +233,16 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .toList());
 
             // Les contacts
-            coreEtablissementService.saveContacts(sub.stream()
-                    .flatMap(this::dedoublement)
-                    .map(etablissementMapper::toContactDTO)
-                    .flatMap(List::stream)
-                    .map(dto -> etablissementTransformer.toEtablissementContactEntity(dto, source))
-                    .filter(Objects::nonNull)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
-                    .toList()
+            coreEtablissementService.saveContacts(
+                    sub.stream()
+                            .flatMap(this::dedoublement)
+                            .map(etablissementMapper::toContactDTO)
+                            .flatMap(List::stream)
+                            .map(dto -> etablissementTransformer.toEtablissementContactEntity(dto, source))
+                            .filter(Objects::nonNull)
+                            .map(validatorService::toValidEntity)
+                            .filter(Objects::nonNull)
+                            .toList()
             );
 
             // Les journees portes ouvertes
@@ -261,11 +260,12 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
             if (source.equals("esr")) {
                 coreEtablissementService.saveMetadata(sub.stream()
-                        .flatMap(this::dedoublement)
                         .map(EtablissementDataset::getEffectifs)
                         .flatMap(List::stream)
                         .map(etablissementTransformer::toEtablissementMetadataEntity)
                         .filter(Objects::nonNull)
+                        //.map(validatorService::toValidEntity)
+                        //.filter(Objects::nonNull)
                         .toList());
             }
 
@@ -356,7 +356,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveOptions(datasets.stream()
                 .map(etablissementMapper::toOptionDTO)
                 .flatMap(List::stream)
-                .filter(dto -> dto.uai() != null && !dto.uai().isBlank())
                 .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
@@ -381,13 +380,4 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         log.info("Import terminé : {} sections binationale enregistrée(s).", datasets.size());
     }
 
-    @Override
-    public void importEtablissementsRecherche() {
-        coreRechercheService.saveEtablissements(
-                coreEtablissementService
-                        .findEtablissementsActif()
-                        .stream()
-                        .map(etablissementMapper::toRechercheEtablissementEntity)
-                        .toList());
-    }
 }

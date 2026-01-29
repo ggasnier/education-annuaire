@@ -36,13 +36,9 @@ public interface ImportEtablissementShell {
 
     void importIpsColleges();
 
-    void importIpsLycees();
-
     void importIvaColleges();
 
     void importEtablissementsDetails();
 
     void importEtablissementsMetadatas();
-
-    void importEtablissementsRecherche();
 }

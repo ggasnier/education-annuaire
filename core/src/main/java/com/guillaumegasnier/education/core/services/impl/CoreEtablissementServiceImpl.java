@@ -191,7 +191,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 
     @Override
     public List<EtablissementContactEntity> getContactListByUai(String uai) {
-        return etablissementContactRepository.findAllByPkUaiOrderByPkContact(uai);
+        return etablissementContactRepository.findAllByPkUai(uai);
     }
 
     @Override
@@ -279,10 +279,5 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     @Override
     public Optional<EtablissementContactEntity> findContact(String uai, Contact contact, String valeur) {
         return etablissementContactRepository.findByPkUaiAndPkContactAndPkValeur(uai, contact, valeur);
-    }
-
-    @Override
-    public List<EtablissementEntity> findEtablissementsActif() {
-        return etablissementRepository.findAllByActif(true);
     }
 }

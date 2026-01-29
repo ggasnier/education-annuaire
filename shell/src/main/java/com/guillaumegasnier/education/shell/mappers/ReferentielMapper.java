@@ -35,13 +35,6 @@ public abstract class ReferentielMapper {
         return (c >= '1' && c <= '8') ? (c - '0') : -1;
     }
 
-    @Mapping(target = "typologieDiplome", ignore = true)
-    @Mapping(target = "typeEmploiAccessibles", ignore = true)
-    @Mapping(target = "secteursActivite", ignore = true)
-    @Mapping(target = "romeList", ignore = true)
-    @Mapping(target = "prerequisEntreeFormation", ignore = true)
-    @Mapping(target = "capacitesAttestees", ignore = true)
-    @Mapping(target = "activitesVisees", ignore = true)
     @Mapping(target = "niveau", source = "NOMENCLATUREEUROPE", qualifiedByName = "toNiveau")
     @Mapping(target = "nsfList", source = "CODESNSF", qualifiedByName = "toNSFList")
     @Mapping(target = "nouveauCode", ignore = true)
