@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public interface FileService {
 
-    Optional<BufferedReader> openFile(@NonNull String url, @NonNull Charset charset, String httpMethod);
+    Optional<BufferedReader> openFile(@NonNull String url, @NonNull Charset charset, @NonNull String httpMethod);
 
     <T extends Dataset> List<T> importCSV(@NonNull SourcesDatasets source);
 
@@ -23,11 +23,6 @@ public interface FileService {
      * Sauvegarde la liste de résultats dans un fichier JSON
      */
     <T> void saveResultAsJson(List<T> result, @NonNull SourcesDatasets sourcesDatasets);
-
-    /**
-     * Sauvegarde la liste de résultats dans un fichier CSV
-     */
-    <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets);
 
     List<CarifEtablissementDataset> importCarifEtablissements(@NonNull SourcesDatasets source);
 

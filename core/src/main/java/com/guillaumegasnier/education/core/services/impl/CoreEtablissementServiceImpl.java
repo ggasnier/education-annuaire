@@ -191,7 +191,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 
     @Override
     public List<EtablissementContactEntity> getContactListByUai(String uai) {
-        return etablissementContactRepository.findAllByPkUai(uai);
+        return etablissementContactRepository.findAllByPkUaiOrderByPkContact(uai);
     }
 
     @Override
