@@ -356,6 +356,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveOptions(datasets.stream()
                 .map(etablissementMapper::toOptionDTO)
                 .flatMap(List::stream)
+                .filter(dto -> dto.uai() != null && !dto.uai().isBlank())
                 .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
