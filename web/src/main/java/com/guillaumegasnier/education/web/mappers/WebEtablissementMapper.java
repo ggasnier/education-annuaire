@@ -154,6 +154,7 @@ public abstract class WebEtablissementMapper {
                 .toList();
     }
 
+    @Mapping(target = "code", source = "pk.contact")
     @Mapping(target = "valeur", source = "pk.valeur")
     @Mapping(target = "nom", source = "pk.contact.nom")
     public abstract ContactDto toContactDto(EtablissementContactEntity entity);

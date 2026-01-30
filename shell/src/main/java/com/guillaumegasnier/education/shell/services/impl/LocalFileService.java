@@ -39,7 +39,7 @@ import java.util.Optional;
 public class LocalFileService implements FileService {
 
     @Override
-    public Optional<BufferedReader> openFile(@NonNull String filePath, @NonNull Charset charset, String httpMethod) {
+    public Optional<BufferedReader> openFile(@NonNull String filePath, @NonNull Charset charset, @NonNull String httpMethod) {
         try {
             InputStream rawInputStream = Files.newInputStream(Paths.get(filePath));
             InputStream filteredInputStream = charset.equals(StandardCharsets.UTF_8)
@@ -67,7 +67,7 @@ public class LocalFileService implements FileService {
         @SuppressWarnings("unchecked")
         Class<T> clazz = (Class<T>) sourcesDatasets.getDatasetClass();
 
-        openFile(String.valueOf(outPath), StandardCharsets.UTF_8, null).ifPresentOrElse(reader -> {
+        openFile(String.valueOf(outPath), StandardCharsets.UTF_8, "GET").ifPresentOrElse(reader -> {
             try (reader) {
                 List<T> beans = new CsvToBeanBuilder<T>(reader)
                         .withType(clazz)
@@ -89,11 +89,6 @@ public class LocalFileService implements FileService {
     @Override
     public <T> void saveResultAsJson(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
         log.error("Méthode saveResultAsJson non implémentée car inutile");
-    }
-
-    @Override
-    public <T> void saveResultAsCsv(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
-        log.error("Méthode saveResultAsCsv non implémentée car inutile");
     }
 
     @Override
