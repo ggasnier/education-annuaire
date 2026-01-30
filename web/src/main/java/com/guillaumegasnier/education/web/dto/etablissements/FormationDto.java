@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @ToString
@@ -15,6 +13,6 @@ import java.util.UUID;
 public class FormationDto {
 
     @EqualsAndHashCode.Include
-    private UUID id;
+    private Long id;
     private String nom;
 }
