@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.enums.Contact;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.NonNull;
 
 @Getter
 @Setter
@@ -14,10 +15,10 @@ public class ContactEtablissementDataset {
 
     private String valeur;
 
-    public ContactEtablissementDataset(Contact contact, String valeur) {
+    public ContactEtablissementDataset(@NonNull Contact contact, @NonNull String valeur) {
         switch (contact) {
             case TEL:
-            case FAX:
+//            case FAX:
             case WEB:
             case EMAIL:
             case TWITTER:

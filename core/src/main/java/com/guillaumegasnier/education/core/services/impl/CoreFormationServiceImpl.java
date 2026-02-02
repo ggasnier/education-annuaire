@@ -13,7 +13,8 @@ import com.guillaumegasnier.education.core.repositories.referentiels.RomeReposit
 import com.guillaumegasnier.education.core.services.CoreFormationService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,27 +24,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class CoreFormationServiceImpl implements CoreFormationService {
 
     private final FormationRepository formationRepository;
     private final ActionFormationRepository actionFormationRepository;
     private final RomeRepository romeRepository;
-    //private final CertificationRepository certificationRepository;
     private final OrganismeRepository organismeRepository;
     private final LienOnisepRepository lienOnisepRepository;
 
     @PersistenceContext
     private EntityManager em;
-
-    @Autowired
-    public CoreFormationServiceImpl(FormationRepository formationRepository, ActionFormationRepository actionFormationRepository, RomeRepository romeRepository, OrganismeRepository organismeRepository, LienOnisepRepository lienOnisepRepository) {
-        this.formationRepository = formationRepository;
-        this.actionFormationRepository = actionFormationRepository;
-        this.romeRepository = romeRepository;
-        this.organismeRepository = organismeRepository;
-        this.lienOnisepRepository = lienOnisepRepository;
-    }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -84,16 +78,6 @@ public class CoreFormationServiceImpl implements CoreFormationService {
         em.clear();
     }
 
-    /*@Override
-    public Optional<CertificationEntity> findCertificationByRNCP(String codeRNCP) {
-        return certificationRepository.findByCodeRNCP(codeRNCP);
-    }
-
-    @Override
-    public void saveCertification(CertificationEntity entity) {
-        certificationRepository.save(entity);
-    }*/
-
     @Override
     public Set<RomeEntity> getRomes(List<String> codes) {
         return romeRepository.findAllByCodeIn(codes);
@@ -108,7 +92,6 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     public Optional<ActionFormationEntity> findActionFormationByParcoursupId(Integer parcoursupId) {
         return actionFormationRepository.findByParcoursupId(parcoursupId);
     }
-
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)

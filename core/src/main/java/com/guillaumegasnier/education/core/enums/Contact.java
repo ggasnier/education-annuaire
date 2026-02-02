@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Contact {
     TEL("Téléphone"),
+    @Deprecated
     FAX("Fax"),
     WEB("Site web"),
     EMAIL("E-mail"),

@@ -2,9 +2,8 @@ package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Secteur;
-import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
-import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.EffectifsSuperieurDataset;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -94,7 +93,7 @@ public interface EtablissementDataset extends Cloneable, Dataset {
         return null;
     }
 
-    default <T extends Effectifs & Metadata> List<T> getEffectifs() {
+    default List<EffectifsSuperieurDataset> getEffectifs() {
         return List.of();
     }
 }
