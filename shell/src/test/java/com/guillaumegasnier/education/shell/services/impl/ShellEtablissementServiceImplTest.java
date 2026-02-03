@@ -4,6 +4,9 @@ import com.guillaumegasnier.education.core.domains.etablissements.EtablissementE
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.EffectifsCollegeDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.IPSLycee2023Dataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.IndicateurValeurAjouteeCollegeDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
 import com.guillaumegasnier.education.shell.transformers.EtablissementTransformer;
@@ -24,6 +27,8 @@ import static org.mockito.Mockito.when;
 
 class ShellEtablissementServiceImplTest {
 
+    private final String uaiExiste = "0750683K";
+    private final String uaiAbsent = "0750652B";
     @Mock
     private EtablissementMapper etablissementMapper;
     @Mock
@@ -34,19 +39,15 @@ class ShellEtablissementServiceImplTest {
     private EtablissementTransformer etablissementTransformer;
     @InjectMocks
     private ShellEtablissementServiceImpl service;
-    private String uaiExiste = "0750683K";
-    private String uaiAbsent = "0750652B";
-    private EtablissementEntity etablissementEntityExiste;
-    private EtablissementEntity etablissementEntityAbsent;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        etablissementEntityExiste = new EtablissementEntity();
+        EtablissementEntity etablissementEntityExiste = new EtablissementEntity();
         etablissementEntityExiste.setUai(uaiExiste);
 
-        etablissementEntityAbsent = new EtablissementEntity();
+        EtablissementEntity etablissementEntityAbsent = new EtablissementEntity();
         etablissementEntityAbsent.setUai(uaiAbsent);
 
         when(coreEtablissementService.findEtablissement(uaiExiste)).thenReturn(Optional.of(etablissementEntityExiste));
@@ -109,7 +110,6 @@ class ShellEtablissementServiceImplTest {
         verify(coreEtablissementService).saveEtablissementSportEntity(any());
     }
 
-
     @Test
     void createOrUpdateDispositifsTest() {
         List<OnisepDispositifDataset> datasets = new ArrayList<>();
@@ -126,12 +126,79 @@ class ShellEtablissementServiceImplTest {
 
         dataset.setNom("");
         datasets.add(dataset);
-        
+
         dataset.setNom("classe sport-études en collège");
         datasets.add(dataset);
 
         service.createOrUpdateDispositifs(datasets, "test");
         verify(coreEtablissementService).saveOptions(any());
+    }
+
+    @Test
+    void createOrUpdateEtablissementsTest() {
+        List<EnEtablissementDataset> datasets = new ArrayList<>();
+        EnEtablissementDataset dataset = new EnEtablissementDataset();
+        dataset.setUai(uaiExiste);
+        dataset.setSiret("12345,3564654654");
+        datasets.add(dataset);
+
+        dataset.setUai("");
+        datasets.add(dataset);
+
+        service.createOrUpdateEtablissements(datasets, "en");
+        verify(coreEtablissementService).saveEtablissements(any());
+
+        service.createOrUpdateEtablissements(datasets, "esr");
+        verify(coreEtablissementService).saveMetadata(any());
+
+        service.createOrUpdateEtablissements(datasets, "masa");
+        verify(coreEtablissementService).saveMasa(any());
+
+    }
+
+    @Test
+    void createOrUpdateIPSTest() {
+        List<IPSLycee2023Dataset> datasets = new ArrayList<>();
+        IPSLycee2023Dataset dataset = new IPSLycee2023Dataset();
+        dataset.setUai(uaiExiste);
+        datasets.add(dataset);
+        service.createOrUpdateIPS(datasets);
+        verify(coreEtablissementService).saveMetadata(any());
+    }
+
+    @Test
+    void createOrUpdateEffectifsTest() {
+        List<EffectifsCollegeDataset> datasets = new ArrayList<>();
+        EffectifsCollegeDataset dataset = new EffectifsCollegeDataset();
+        dataset.setUai(uaiExiste);
+        dataset.setRentreeScolaire("2024-2025");
+        dataset.setEffectifs(666);
+        datasets.add(dataset);
+
+        service.createOrUpdateEffectifs(datasets);
+        verify(coreEtablissementService).saveMetadata(any());
+    }
+
+    @Test
+    void createOrUpdateIVATest() {
+        List<IndicateurValeurAjouteeCollegeDataset> datasets = new ArrayList<>();
+        IndicateurValeurAjouteeCollegeDataset dataset = new IndicateurValeurAjouteeCollegeDataset();
+        dataset.setUai(uaiExiste);
+        dataset.setAnnee(2025);
+        datasets.add(dataset);
+
+        service.createOrUpdateIVA(datasets);
+        verify(coreEtablissementService).saveMetadata(any());
+    }
+
+    @Test
+    void createOrUpdateJpoTest() {
+        List<MasaJpoDataset> datasets = new ArrayList<>();
+        MasaJpoDataset dataset = new MasaJpoDataset();
+        dataset.setMasaId("123456");
+        datasets.add(dataset);
+        service.createOrUpdateJpo(datasets, "masa");
+        verify(coreEtablissementService).saveJPO(any());
     }
 
 }
