@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.core.domains.formations;
 
-import com.guillaumegasnier.education.core.domains.AbstractEntity;
+import com.guillaumegasnier.education.core.domains.AbstractSourcesEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -58,7 +58,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "formations_actions")
-public class ActionFormationEntity extends AbstractEntity {
+public class ActionFormationEntity extends AbstractSourcesEntity {
 
     @Id
     @Column(columnDefinition = "BIGINT", nullable = false, updatable = false)
