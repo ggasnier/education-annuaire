@@ -2,16 +2,14 @@ package com.guillaumegasnier.education.shell.transformers.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
-import com.guillaumegasnier.education.core.enums.Langue;
-import com.guillaumegasnier.education.core.enums.OptionEtablissement;
-import com.guillaumegasnier.education.core.enums.SpecialiteBac;
-import com.guillaumegasnier.education.core.enums.Sport;
+import com.guillaumegasnier.education.core.enums.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EnEtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.EffectifsLyceeDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.IPSLycee2023Dataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.IndicateurValeurAjouteeCollegeDataset;
 import com.guillaumegasnier.education.shell.dto.etablissements.*;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -124,7 +122,16 @@ class EtablissementTransformerTest {
 
     @Test
     void toEtablissementMetadataEntityIndicateurValeurAjouteeTest() {
+        IndicateurValeurAjouteeCollegeDataset dataset = new IndicateurValeurAjouteeCollegeDataset();
+        dataset.setAnnee(2024);
+        dataset.setUai(uaiAbsent);
+        assertNull(transformer.toEtablissementMetadataEntity(dataset));
 
+        dataset.setUai(uaiExiste);
+        assertNotNull(transformer.toEtablissementMetadataEntity(dataset));
+
+        when(coreEtablissementService.findMetadata(uaiExiste, 2024)).thenReturn(Optional.of(new EtablissementMetadataEntity()));
+        assertNotNull(transformer.toEtablissementMetadataEntity(dataset));
     }
 
     @Test
@@ -181,6 +188,14 @@ class EtablissementTransformerTest {
     @Test
     void toEtablissementContactEntityTest() {
 
+        ContactDTO dto = new ContactDTO(uaiExiste, Contact.TEL, "010203040506");
+        assertNotNull(transformer.toEtablissementContactEntity(dto, "test"));
+
+        when(coreEtablissementService.findContact(dto.uai(), dto.contact(), dto.valeur())).thenReturn(Optional.of(new EtablissementContactEntity()));
+        assertNotNull(transformer.toEtablissementContactEntity(dto, "test"));
+
+        dto = new ContactDTO(uaiAbsent, Contact.TEL, "010203040506");
+        assertNull(transformer.toEtablissementContactEntity(dto, "test"));
     }
 
     @Test
@@ -256,5 +271,21 @@ class EtablissementTransformerTest {
         when(coreEtablissementService.findMasa("123456")).thenReturn(Optional.empty());
         dto = new MasaDTO(uaiAbsent, "123456");
         assertNull(transformer.toEtablissementMasaEntity(dto));
+    }
+
+    @Test
+    void findUaiTest() {
+        EtablissementMasaEntity entity = new EtablissementMasaEntity();
+        entity.setEtablissement(new EtablissementEntity());
+        when(coreEtablissementService.findMasa(uaiExiste)).thenReturn(Optional.of(entity));
+        when(coreEtablissementService.findMasa(uaiAbsent)).thenReturn(Optional.empty());
+
+        JPODataset dataset = new JPODataset();
+        dataset.setUai(uaiExiste);
+        assertNotNull(transformer.findUai(dataset));
+
+        dataset.setUai(uaiAbsent);
+        assertNull(transformer.findUai(dataset));
+
     }
 }

@@ -66,7 +66,7 @@ public class FormationTransformerImpl implements FormationTransformer {
         return o;
     }
 
-    private OrganismeEntity toOrganismeEntityOld(OrganismeEntity organismeEntity, TravailOrganismeFormationDataset dataset) {
+    private OrganismeEntity toOrganismeEntityOld(@NonNull OrganismeEntity organismeEntity, @NonNull TravailOrganismeFormationDataset dataset) {
         organismeEntity.setActionsDeFormation(dataset.getActionsDeFormation());
         organismeEntity.setBilansDeCompetences(dataset.getBilansDeCompetences());
         organismeEntity.setValidationAcquisExperience(dataset.getValidationAcquisExperience());
@@ -97,7 +97,7 @@ public class FormationTransformerImpl implements FormationTransformer {
         ActionFormationEntity entity = formationMapper.toActionFormationEntity(dto);
 
         // Formation
-        entity.setFormation(coreFormationService.findFormation(dto.getFormationId()).get()); // TODO
+        coreFormationService.findFormation(dto.getFormationId()).ifPresent(entity::setFormation);
 
         // Etablissement
         if (dto.getUai() != null && !dto.getUai().isBlank()) {
@@ -129,6 +129,7 @@ public class FormationTransformerImpl implements FormationTransformer {
         return entity;
     }
 
+    @NonNull
     private FormationEntity toFormationEntityNew(@NonNull FormationDTO dto, @NonNull String source) {
 
         FormationEntity entity = formationMapper.toFormationEntity(dto);
@@ -143,7 +144,6 @@ public class FormationTransformerImpl implements FormationTransformer {
 
     private FormationEntity toFormationEntityOld(@NonNull FormationEntity entity, @NonNull FormationDTO dto, @NonNull String source) {
 
-        // TODO pour le moment on ne met rien à jour
         // Les ids
         if (entity.getOnisepId() == null && dto.getOnisepId() != null)
             entity.setOnisepId(dto.getOnisepId());
