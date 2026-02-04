@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
 import com.guillaumegasnier.education.core.repositories.formations.ActionFormationRepository;
@@ -19,8 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.lang.reflect.Field;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -135,5 +135,31 @@ class CoreFormationServiceImplTest {
         assertSame(entities, service.getRomes(List.of("123", "456")));
     }
 
+    @Test
+    void findActionFormationTest() {
+        ActionFormationEntity entity = mock(ActionFormationEntity.class);
+        when(actionFormationRepository.findById(123L)).thenReturn(Optional.of(entity));
+        Optional<ActionFormationEntity> result = service.findActionFormation(123L);
+        assertTrue(result.isPresent());
+        assertSame(entity, result.get());
+    }
 
+    @Test
+    void findFormationsTest() {
+        List<ActionFormationEntity> entities = new ArrayList<>();
+        entities.add(mock(ActionFormationEntity.class));
+        when(actionFormationRepository.findAllByEtablissementUaiOrderByFormationNom("1234567A")).thenReturn(entities);
+        var result = service.findFormations("1234567A");
+        assertNotNull(result);
+    }
+
+    @Test
+    void findLienOnisepTest() {
+        LienOnisepEntity entity = mock(LienOnisepEntity.class);
+        when(lienOnisepRepository.findByPkClefAndPkValeur("PS", "123")).thenReturn(Optional.of(entity));
+        Optional<LienOnisepEntity> result = service.findLienOnisep("PS", "123");
+        assertTrue(result.isPresent());
+        assertSame(entity, result.get());
+    }
+    
 }
