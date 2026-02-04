@@ -108,10 +108,11 @@ public class FormationTransformerImpl implements FormationTransformer {
             }
         }
 
+        entity.addSource(source);
+
         return entity;
     }
 
-    // TODO à compléter
     private ActionFormationEntity toActionFormationEntityOld(ActionFormationEntity entity, @NonNull ActionFormationDTO dto, @NonNull String source) {
 
         if (entity.getModalitesEntreesSorties() == null && dto.getModalitesEntreesSorties() != null)
@@ -125,6 +126,8 @@ public class FormationTransformerImpl implements FormationTransformer {
 
         if (entity.getAccesHandicapes() == null && dto.getAccesHandicapes() != null)
             entity.setAccesHandicapes(dto.getAccesHandicapes());
+
+        entity.addSource(source);
 
         return entity;
     }
@@ -150,11 +153,10 @@ public class FormationTransformerImpl implements FormationTransformer {
         if (entity.getParcoursupId() == null && dto.getParcoursupId() != null)
             entity.setParcoursupId(dto.getParcoursupId());
 
-        if (entity.getOnisepId() != null && dto.getOnisepId() != null) {
-            if (!entity.getOnisepId().equals(dto.getOnisepId())) {
-                log.warn("Erreur avec l'onisep_id : {} vs {}", entity.getOnisepId(), dto.getOnisepId());
-            }
+        if (entity.getOnisepId() != null && dto.getOnisepId() != null && !entity.getOnisepId().equals(dto.getOnisepId())) {
+            log.warn("Erreur avec l'onisep_id : {} vs {}", entity.getOnisepId(), dto.getOnisepId());
         }
+
         /*if (entity.getParcoursupId() != null && dto.getParcoursupId() != null) {
             if (!entity.getParcoursupId().equals(dto.getParcoursupId())) {
                 log.warn("Erreur avec le parcoursup_id : {} vs {}", entity.getParcoursupId(), dto.getParcoursupId());

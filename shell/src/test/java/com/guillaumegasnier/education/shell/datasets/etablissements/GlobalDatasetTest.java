@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static com.guillaumegasnier.education.core.enums.OptionEtablissement.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GlobalDatasetTest {
+class GlobalDatasetTest {
 
     @Test
     void testSportDataset() {
