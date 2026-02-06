@@ -13,6 +13,7 @@ import com.guillaumegasnier.education.shell.dto.formations.FormationDTO;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.mappers.FormationMapper;
 import com.guillaumegasnier.education.shell.transformers.FormationTransformer;
+import com.guillaumegasnier.education.shell.utils.BeanMergeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -113,22 +114,9 @@ public class FormationTransformerImpl implements FormationTransformer {
         return entity;
     }
 
-    private ActionFormationEntity toActionFormationEntityOld(ActionFormationEntity entity, @NonNull ActionFormationDTO dto, @NonNull String source) {
-
-        if (entity.getModalitesEntreesSorties() == null && dto.getModalitesEntreesSorties() != null)
-            entity.setModalitesEntreesSorties(dto.getModalitesEntreesSorties());
-
-        if (entity.getUrlAction() == null && dto.getUrlAction() != null)
-            entity.setUrlAction(dto.getUrlAction());
-
-        if (entity.getDureeIndicative() == null && dto.getDureeIndicative() != null)
-            entity.setDureeIndicative(dto.getDureeIndicative());
-
-        if (entity.getAccesHandicapes() == null && dto.getAccesHandicapes() != null)
-            entity.setAccesHandicapes(dto.getAccesHandicapes());
-
+    private ActionFormationEntity toActionFormationEntityOld(@NonNull ActionFormationEntity entity, @NonNull ActionFormationDTO dto, @NonNull String source) {
+        BeanMergeUtil.mergeWhenTargetNull(dto, entity, "formation", "etablissement", "source");
         entity.addSource(source);
-
         return entity;
     }
 

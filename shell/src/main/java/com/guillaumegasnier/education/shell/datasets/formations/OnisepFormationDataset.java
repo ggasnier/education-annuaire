@@ -55,8 +55,10 @@ public class OnisepFormationDataset implements Dataset {
     //ENS longitude
     //ENS n° téléphone
     //ENS site web
-    //ENS hébergement
-    //ENS accessibilité
+    @CsvBindByName(column = "ENS hébergement")
+    private String etablissementHebergement;
+    @CsvBindByName(column = "ENS accessibilité")
+    private String etablissementAccessibilite;
     @CsvBindByName(column = "AF durée cycle standard")
     private String actionFormationDureeCycleStandard;
     @CsvBindByName(column = "AF modalités scolarité")
@@ -71,6 +73,44 @@ public class OnisepFormationDataset implements Dataset {
     private String actionFormationPageWeb;
     @CsvBindByName(column = "AF date de modification")
     private String actionFormationDateModification;
+
+    public String getAccesHandicapes() {
+        if (etablissementAccessibilite == null || etablissementAccessibilite.isBlank()) return null;
+        if (etablissementAccessibilite.length() > 255) return etablissementAccessibilite.substring(0, 255);
+        return etablissementAccessibilite;
+    }
+
+    public String getPrixTotalTTC() {
+        if (actionFormationCoutScolarite == null || actionFormationCoutScolarite.isBlank()) return null;
+        if (actionFormationCoutScolarite.length() > 255) return actionFormationCoutScolarite.substring(0, 255);
+        return actionFormationCoutScolarite;
+    }
+
+    public String getHebergement() {
+        if (etablissementHebergement == null || etablissementHebergement.isBlank()) return null;
+        if (etablissementHebergement.length() > 255) return etablissementHebergement.substring(0, 255);
+        return etablissementHebergement;
+    }
+
+    public Integer getModalitesEnseignement() {
+        if (actionFormationModalitesScolarite == null) return null;
+        return switch (actionFormationModalitesScolarite) {
+            case "temps plein, cours en présentiel" -> 0;
+            case "temps plein, cours en distanciel" -> 1;
+            default -> null;
+        };
+    }
+
+    public String getUrlAction() {
+        if (actionFormationPageWeb == null || actionFormationPageWeb.isBlank()) return null;
+        if (actionFormationPageWeb.length() > 255) return null;
+        return actionFormationPageWeb;
+    }
+
+    public Integer getDureeCycle() {
+        if (actionFormationDureeCycleStandard == null) return null;
+        return Integer.parseInt(actionFormationDureeCycleStandard.substring(0, 1));
+    }
 
     /**
      *

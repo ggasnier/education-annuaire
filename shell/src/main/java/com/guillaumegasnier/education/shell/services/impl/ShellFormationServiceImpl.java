@@ -72,13 +72,13 @@ public class ShellFormationServiceImpl implements ShellFormationService {
             );
 
             // Les actions de formations
-            /* coreFormationService.saveActionFormation(sub.stream()
+            coreFormationService.saveActionFormation(sub.stream()
                     .map(formationMapper::toActionFormationDTO)
                     .map(dto -> formationTransformer.toActionFormationEntity(dto, "onisep"))
                     .filter(Objects::nonNull)
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
-                    .toList());*/
+                    .toList());
         }
 
         log.info("Import terminé : {} formations ONISEP ESR traitées.", size);

@@ -235,16 +235,15 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .toList());
 
             // Les contacts
-            coreEtablissementService.saveContacts(
-                    sub.stream()
-                            .flatMap(this::dedoublement)
-                            .map(etablissementMapper::toContactDTO)
-                            .flatMap(List::stream)
-                            .map(dto -> etablissementTransformer.toEtablissementContactEntity(dto, source))
-                            .filter(Objects::nonNull)
-                            .map(validatorService::toValidEntity)
-                            .filter(Objects::nonNull)
-                            .toList()
+            coreEtablissementService.saveContacts(sub.stream()
+                    .flatMap(this::dedoublement)
+                    .map(etablissementMapper::toContactDTO)
+                    .flatMap(List::stream)
+                    .map(dto -> etablissementTransformer.toEtablissementContactEntity(dto, source))
+                    .filter(Objects::nonNull)
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList()
             );
 
             // Les journees portes ouvertes
@@ -262,12 +261,11 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
             if (source.equals("esr")) {
                 coreEtablissementService.saveMetadata(sub.stream()
+                        .flatMap(this::dedoublement)
                         .map(EtablissementDataset::getEffectifs)
                         .flatMap(List::stream)
                         .map(etablissementTransformer::toEtablissementMetadataEntity)
                         .filter(Objects::nonNull)
-                        //.map(validatorService::toValidEntity)
-                        //.filter(Objects::nonNull)
                         .toList());
             }
 

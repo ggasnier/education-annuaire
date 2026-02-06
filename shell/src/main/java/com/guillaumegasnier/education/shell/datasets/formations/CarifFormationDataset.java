@@ -467,7 +467,7 @@ public class CarifFormationDataset implements Dataset {
             return toNormalizedId("AF", getFormationOnisepId());
         else {
             if (cfd != null)
-                return toNormalizedId("cfd", cfd);
+                return toNormalizedId("CFD", cfd);
             return null;
         }
     }

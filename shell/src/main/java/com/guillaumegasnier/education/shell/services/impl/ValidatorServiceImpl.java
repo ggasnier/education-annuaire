@@ -59,7 +59,7 @@ public class ValidatorServiceImpl implements ValidatorService {
                 entity.setSiret(null);
                 return entity;
             } else {
-                log.error("Validation failed on {}.{}: {} ({})",
+                log.warn("Validation failed on {}.{}: {} ({})",
                         entity.getClass().getSimpleName(),
                         v.getPropertyPath(),
                         v.getMessage(),

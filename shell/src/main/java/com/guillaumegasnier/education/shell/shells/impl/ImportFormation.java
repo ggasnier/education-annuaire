@@ -58,8 +58,6 @@ public class ImportFormation implements ImportFormationShell {
         // DOM-TOM
         shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_MAYOTTE));
         shellFormationService.createOrUpdateFormationsOnisepLheo(fileService.importLheoSubtypeFromZip(FORMATIONS_LHEO_GUYANE));
-
-
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.core.domains.formations;
 
 import com.guillaumegasnier.education.core.domains.AbstractSourcesEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.CertificationNationaleEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -91,6 +92,10 @@ public class FormationEntity extends AbstractSourcesEntity {
      */
     //@OneToMany
     //private Set<CertificationEntity> certifications = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "code_certification", foreignKey = @ForeignKey(name = "fk_formations_certifications"))
+    private CertificationNationaleEntity certification;
 
     /**
      * Cet élément décrit le niveau de sortie de la formation.
