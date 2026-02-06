@@ -2,8 +2,10 @@ package com.guillaumegasnier.education.shell.mappers;
 
 import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.EtablissementOptionEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
+import com.guillaumegasnier.education.core.domains.recherche.RechercheEtablissementEntity;
 import com.guillaumegasnier.education.core.dto.IndicateurValeurAjouteeDto;
 import com.guillaumegasnier.education.core.dto.IndicePositionSocialeDto;
 import com.guillaumegasnier.education.core.enums.Langue;
@@ -17,6 +19,7 @@ import com.guillaumegasnier.education.shell.dto.etablissements.*;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.lang.NonNull;
 
@@ -180,4 +183,32 @@ public abstract class EtablissementMapper {
         iva.setResultats(dataset.getResultats());
         return iva;
     }
+
+    @Named("toOptions")
+    public List<RechercheEtablissementEntity.RechercheOption> toOptions(@NonNull List<EtablissementOptionEntity> entities) {
+        return entities.stream().map(this::toOption).toList();
+    }
+
+    @Mapping(target = "couleur", source = "pk.option.categorie.couleur")
+    @Mapping(target = "nom", source = "pk.option.nom")
+    @Mapping(target = "code", source = "pk.option")
+    public abstract RechercheEtablissementEntity.RechercheOption toOption(EtablissementOptionEntity entity);
+
+    @Mapping(target = "options", source = "options", qualifiedByName = "toOptions")
+    @Mapping(target = "codeSecteur", source = "secteur")
+    @Mapping(target = "nomSecteur", source = "secteur.nom")
+    @Mapping(target = "codeNature", source = "nature.code")
+    @Mapping(target = "nomNature", source = "nature.nom")
+    @Mapping(target = "codeCommune", source = "commune.code")
+    @Mapping(target = "nomCommune", source = "commune.nom")
+    @Mapping(target = "codeDepartement", source = "commune.departement.code")
+    @Mapping(target = "nomDepartement", source = "commune.departement.nom")
+    @Mapping(target = "codeAcademie", source = "commune.departement.academie.code")
+    @Mapping(target = "nomAcademie", source = "commune.departement.academie.nom")
+    @Mapping(target = "codeRegion", source = "commune.departement.region.code")
+    @Mapping(target = "nomRegion", source = "commune.departement.region.nom")
+    @Mapping(target = "codePays", source = "commune.pays.code")
+    @Mapping(target = "nomPays", source = "commune.pays.nom")
+    public abstract RechercheEtablissementEntity toRechercheEtablissementEntity(EtablissementEntity entity);
+
 }

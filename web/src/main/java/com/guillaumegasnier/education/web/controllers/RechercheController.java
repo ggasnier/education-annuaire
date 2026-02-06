@@ -25,9 +25,9 @@ public class RechercheController {
 
     @GetMapping("")
     public String getResultatRecherche(@RequestParam MultiValueMap<String, String> facettes, Model model) {
-        model.addAttribute("q", facettes.getFirst("q") != null ? facettes.getFirst("q") : "");
-        model.addAttribute("resultats", coreRechercheService.searchEtablissements(new RechercheCriteria(facettes)));
-        model.addAttribute("facettes", coreRechercheService.searchEtablissementsFacettes(new RechercheCriteria(facettes)));
+        //model.addAttribute("q", facettes.getFirst("q") != null ? facettes.getFirst("q") : "");
+        //model.addAttribute("resultats", coreRechercheService.searchEtablissements(new RechercheCriteria(facettes)));
+        model.addAttribute("recherche", coreRechercheService.recherche(new RechercheCriteria(facettes)));
         return "recherche/resultats";
     }
 }

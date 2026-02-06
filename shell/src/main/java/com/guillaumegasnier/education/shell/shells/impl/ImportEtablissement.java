@@ -167,4 +167,9 @@ public class ImportEtablissement implements ImportEtablissementShell {
         shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_LYCEES_PRO));
     }
 
+    @Override
+    @ShellMethod(value = "Import établissements pour la recherche")
+    public void importEtablissementsRecherche() {
+        shellEtablissementService.importEtablissementsRecherche();
+    }
 }

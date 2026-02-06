@@ -107,4 +107,6 @@ public interface CoreEtablissementService {
     Optional<EtablissementMasaEntity> findMasa(String masaId);
 
     Optional<EtablissementContactEntity> findContact(String uai, Contact contact, String valeur);
+
+    List<EtablissementEntity> findEtablissementsActif();
 }

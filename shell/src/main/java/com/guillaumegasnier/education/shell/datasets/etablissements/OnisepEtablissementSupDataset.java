@@ -122,6 +122,11 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     }
 
     @Override
+    public Boolean isActif() {
+        return true;
+    }
+
+    @Override
     public List<ContactEtablissementDataset> getContacts() {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 

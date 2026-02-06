@@ -1,0 +1,45 @@
+<th:block th:fragment="header">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between py-3">
+                <div class="flex-shrink-0">
+                    <a class="flex items-center" th:href="@{/}">
+                        <h1 class="text-xl font-light text-gray-700">
+                            <span class="text-blue-500">Forma</span><span class="text-red-500">koi</span><span
+                                class="text-green-500">?</span>
+                        </h1>
+                    </a>
+                </div>
+
+                <div class="flex-1 max-w-xl">
+                    <div class="flex items-stretch">
+                        <input autocomplete="off"
+                               class="flex-1 h-10 px-3 text-sm border border-gray-300 rounded-l-md focus:outline-none"
+                               name="q" placeholder="Rechercher un établissement, formation..."
+                               th:value="${recherche != null} ? ${recherche.q} : ''" type="text">
+
+                        <select class="h-10 px-3 text-sm border border-gray-300 -ml-px" name="type">
+                            <option th:selected="${recherche != null and recherche.type == 'etablissements'}"
+                                    th:value="etablissements">Établissements
+                            </option>
+                            <option th:selected="${recherche != null and recherche.type == 'formations'}"
+                                    th:value="formations">Formations
+                            </option>
+                            <option th:selected="${recherche != null and recherche.type == 'cerfifications'}"
+                                    th:value="formations">Certifications
+                            </option>
+                            <option th:selected="${recherche != null and recherche.type == 'metiers'}"
+                                    th:value="metiers">Métiers
+                            </option>
+                        </select>
+
+                        <button class="h-10 px-3 bg-blue-600 text-white -ml-px rounded-r-md" type="submit">
+                            Rechercher
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+</th:block>

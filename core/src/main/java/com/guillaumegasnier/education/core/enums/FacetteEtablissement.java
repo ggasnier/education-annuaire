@@ -7,12 +7,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum FacetteEtablissement {
 
-    CONTRAT("codeContrat", "nomContrat", "Contrat"),
+    SECTEUR("codeSecteur", "nomSecteur", "Secteur"),
     NATURE("codeNature", "nomNature", "Nature"),
     COMMUNE("codeCommune", "nomCommune", "Commune"),
     DEPARTEMENT("codeDepartement", "nomDepartement", "Département"),
     ACADEMIE("codeAcademie", "nomAcademie", "Académie"),
-    REGION("codeRegion", "nomRegion", "Région"),
+    //REGION("codeRegion", "nomRegion", "Région"),
     PAYS("codePays", "nomPays", "Pays");
 
     private final String code;

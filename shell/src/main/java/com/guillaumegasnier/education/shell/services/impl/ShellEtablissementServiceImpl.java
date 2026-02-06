@@ -3,6 +3,7 @@ package com.guillaumegasnier.education.shell.services.impl;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
@@ -39,6 +40,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     private final EtablissementTransformer etablissementTransformer;
     private final EtablissementMapper etablissementMapper;
     private final ValidatorService validatorService;
+    private final CoreRechercheService coreRechercheService;
 
     @Value("${spring.jpa.properties.hibernate.jdbc.batch_size:500}")
     int chunk = 500;
