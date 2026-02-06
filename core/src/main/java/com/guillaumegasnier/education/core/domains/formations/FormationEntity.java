@@ -90,9 +90,6 @@ public class FormationEntity extends AbstractSourcesEntity {
      * Cet élément permet de préciser le code d’une certification dans le service Certifinfo, dans les RNCP et RS de
      * France Compétences, ou son code CPF fourni par la Caisse des dépôts.
      */
-    //@OneToMany
-    //private Set<CertificationEntity> certifications = new HashSet<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code_certification", foreignKey = @ForeignKey(name = "fk_formations_certifications"))
     private CertificationNationaleEntity certification;
