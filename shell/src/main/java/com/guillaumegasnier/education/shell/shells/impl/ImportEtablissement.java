@@ -206,4 +206,9 @@ public class ImportEtablissement implements ImportEtablissementShell {
     public void importEtablissementsRecherche() {
         shellEtablissementService.importEtablissementsRecherche();
     }
+    @Override
+    @ShellMethod(value = "Import établissements pour la recherche")
+    public void importEtablissementsRecherche() {
+        shellEtablissementService.importEtablissementsRecherche();
+    }
 }

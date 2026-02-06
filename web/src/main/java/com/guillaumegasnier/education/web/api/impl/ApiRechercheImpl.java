@@ -1,8 +1,7 @@
 package com.guillaumegasnier.education.web.api.impl;
 
 import com.guillaumegasnier.education.core.dto.RechercheCriteria;
-import com.guillaumegasnier.education.core.dto.RechercheFacetteDTO;
-import com.guillaumegasnier.education.core.dto.RechercheResultatsDTO;
+import com.guillaumegasnier.education.core.dto.RechercheDTO;
 import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.core.dto.RechercheCriteria;
 import com.guillaumegasnier.education.core.dto.RechercheDTO;

@@ -16,6 +16,80 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex gap-6">
         <div class="w-3/4 mx-auto flex-row">
+<form action="/recherche" method="get">
+    <div th:replace="~{fragments/header :: header}"></div>
+
+            <div class="bg-white p-4 rounded-lg shadow mb-6 hover:shadow-md transition"
+                 th:if="${recherche.total > 0}">
+                <span th:text="${recherche.total}"></span> résultats pour : <span
+                    class="font-semibold text-gray-900" th:text="${recherche.q}"></span>
+            </div>
+
+            <th:block th:each="resultat : ${recherche.resultats}">
+                <div class="bg-white p-4 rounded-lg shadow mb-6 hover:shadow-md transition relative">
+                    <div class="absolute top-4 right-4">
+                            <span th:class="'inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase ' + (${resultat.nomSecteur} == 'Public' ? 'bg-green-600 text-white' : 'bg-indigo-600 text-white')"
+                                  th:if="${resultat.nomSecteur}"
+                                  th:text="${resultat.nomSecteur}">Secteur</span>
+                    </div>
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h2 class="text-xl font-semibold hover:underline">
+                                <a th:href="@{/etablissements/{uai}(uai=${resultat.uai})}"
+                                   th:text="${resultat.nom}"></a>
+                            </h2>
+
+                            <p>
+                                <th:block th:if="${resultat.nomNature}">
+                                    <span class="text-sm font-medium">Nature :</span> <span
+                                        class="text-sm font-medium text-gray-500"
+                                        th:text="${resultat.nomNature}">Nature</span>
+                                </th:block>
+                                <th:block th:if="${resultat.nomSecteur}">
+                                    <span class="text-sm font-medium">Secteur :</span> <span
+                                        class="text-sm font-medium text-gray-500"
+                                        th:text="${resultat.nomSecteur}"></span>
+                                </th:block>
+                            </p>
+
+                            <!-- Adresse complète si disponible -->
+                            <p>
+                                <th:block th:if="${resultat.adresse}">
+                                    <span class="text-sm font-medium">Adresse :</span> <span
+                                        class="text-sm font-medium text-gray-500"
+                                        th:text="${resultat.adresse}"></span>
+                                </th:block>
+
+                                <th:block th:if="${resultat.codePostal}">
+                                        <span class="text-sm font-medium text-gray-500"
+                                              th:text="${resultat.codePostal}"></span>
+                                </th:block>
+
+                                <th:block th:if="${resultat.nomCommune}">
+                                        <span class="text-sm font-medium text-gray-500"
+                                              th:text="${resultat.nomCommune}"></span>
+                                </th:block>
+                            </p>
+
+                            <p>
+                                <th:block th:if="${resultat.nomDepartement}">
+                                    <span class="text-sm font-medium">Département :</span> <span
+                                        class="text-sm font-medium text-gray-500"
+                                        th:text="${resultat.nomDepartement}"></span>
+                                </th:block>
+                                <th:block th:if="${resultat.nomAcademie}">
+                                    <span class="text-sm font-medium">Académie :</span> <span
+                                        class="text-sm font-medium text-gray-500"
+                                        th:text="${resultat.nomAcademie}"></span>
+                                </th:block>
+                                <th:block th:if="${resultat.nomRegion}">
+                                    <span class="text-sm font-medium">Région :</span> <span
+                                        class="text-sm font-medium text-gray-500"
+                                        th:text="${resultat.nomRegion}"></span>
+                                </th:block>
+                            </p>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex gap-6">
+        <div class="w-3/4 mx-auto flex-row">
 
             <div class="bg-white p-4 rounded-lg shadow mb-6 hover:shadow-md transition"
                  th:if="${recherche.total > 0}">
@@ -116,6 +190,25 @@
                             </p>
 
                         </div>
+                            <!-- Sinon afficher commune / département / académie -->
+                            <!--                            <p class="" th:if="${resultat.nomCommune != null}">-->
+                            <!--                                <span th:text="${resultat.nomCommune}">Commune</span>-->
+                            <!--                                <span th:if="${resultat.nomDepartement != null}"-->
+                            <!--                                      th:text="' - ' + ${resultat.nomDepartement}"></span>-->
+                            <!--                                <span th:if="${resultat.nomAcademie != null}"-->
+                            <!--                                      th:text="' - ' + ${resultat.nomAcademie}"></span>-->
+                            <!--                            </p>-->
+
+                            <p th:if="${resultat.options.size() > 0}">
+                                <span class="text-sm font-medium">Options :</span>
+                                <th:block th:each="option : ${resultat.options}">
+                                        <span
+                                                th:class="${'inline-flex items-center px-3 py-1 rounded-full text-sm ' + option.couleur}"
+                                                th:text="${option.nom}"></span>
+                                </th:block>
+                            </p>
+
+                        </div>
                     </div>
                 </div><!--resultat-->
             </th:block>
@@ -124,12 +217,32 @@
         <div class="w-1/4 p-4 bg-white rounded-lg shadow">
             <h3 class="text-lg font-semibold mb-4">Filtres</h3>
 
+            <div class="mb-6" th:each="facette : ${recherche.facettes}"
+                 th:if="${facette.valeurs != null and facette.valeurs.size() > 0}">
+                <h4 class="font-medium mb-2" th:text="${facette.nom}"></h4>
             <div th:each="facette : ${facettes.facettes}" class="mb-6"
              th:if="${facette.valeurs != null and facette.valeurs.size() > 0}">
             <h4 class="font-medium mb-2" th:text="${facette.nom}"></h4>
             <div class="mb-6" th:each="facette : ${recherche.facettes}"
                  th:if="${facette.valeurs != null and facette.valeurs.size() > 0}">
                 <h4 class="font-medium mb-2" th:text="${facette.nom}"></h4>
+
+                <div class="space-y-1">
+                    <label class="flex items-center justify-between w-full" th:each="valeur : ${facette.valeurs}">
+                        <div class="flex items-center">
+                            <input class="mr-2 text-blue-600" th:checked="${valeur.checked}"
+                                   th:name="${facette.code}" th:onchange="this.form.submit()" th:value="${valeur.code}"
+                                   type="checkbox">
+                            <span class="text-sm text-gray-700" th:text="${valeur.nom}"></span>
+                        </div>
+                        <span class="text-sm text-gray-400" th:text="'(' + ${valeur.total} + ')'"></span>
+                    </label>
+                </div>
+            </div><!--facettes-->
+        </div>
+    </main>
+
+    <th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
             <div class="space-y-1">
                 <label class="flex items-center justify-between w-full" th:each="valeur : ${facette.valeurs}">

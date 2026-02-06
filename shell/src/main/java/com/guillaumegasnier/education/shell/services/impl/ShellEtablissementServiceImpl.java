@@ -8,6 +8,7 @@ import com.guillaumegasnier.education.core.validations.Effectifs;
 import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
@@ -46,6 +47,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     private final CoreRechercheService coreRechercheService;
     private final ShellEntityService shellEntityService;
     private final ValidatorService validatorService;
+    private final CoreRechercheService coreRechercheService;
 
     @Value("${spring.jpa.properties.hibernate.jdbc.batch_size:500}")
     int chunk = 500;
