@@ -14,6 +14,7 @@ class FormationMapperTest {
     @Test
     void toFormationDTOTest() {
         FormationType formationType = new FormationType();
+        formationType.setNumero("FOR.123_AF.456");
         FormationDTO dto = mapper.toFormationDTO(formationType);
         assertNotNull(dto);
     }
