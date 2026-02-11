@@ -36,10 +36,11 @@
         <core.version>1.0.0</core.version>
         <sonar.exclusions>
             *Entity.java,
+            *FileService.java,
             *PK.java,
             /**/enums/*,
             /**/repositories/*,
-            /**/validations/*
+            /**/validations/**/*
         </sonar.exclusions>
         <sonar.organization>ggasnier</sonar.organization>
     </properties>
