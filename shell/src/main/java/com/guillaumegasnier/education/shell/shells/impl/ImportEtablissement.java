@@ -24,6 +24,7 @@ public class ImportEtablissement implements ImportEtablissementShell {
     private final FileService fileService;
 
     @Override
+
     @ShellMethod(value = "Import établissements (ouverts)")
     public void importEtablissementsEnOuverts() {
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS), "en");
@@ -74,13 +75,8 @@ public class ImportEtablissement implements ImportEtablissementShell {
     public void importEtablissementsMetadatas() {
         importEffectifs();
         importIpsColleges();
+        importIpsLycees();
         importIvaColleges();
-    }
-
-    @Override
-    @ShellMethod(value = "Import établissements (ouverts)")
-    public void importEtablissementsEnOuverts() {
-        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS), "en");
     }
 
     @Override
@@ -107,17 +103,12 @@ public class ImportEtablissement implements ImportEtablissementShell {
     @ShellMethod(value = "Import établissements (MASA)")
     public void importEtablissementsMasa() {
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(MASA_ETABS), "masa");
-    @ShellMethod(value = "Import sections sport études et sections sportives")
-    public void importSports() {
-        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), Sport.Categorie.SS);
-        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES),
-                Sport.Categorie.SE);
     }
 
-    @Override
-    @ShellMethod(value = "Import établissements (fermés)")
-    public void importEtablissementsEnFermes() {
-        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_FERMES), "en");
+    @ShellMethod(value = "Import sections sport études et sections sportives")
+    public void importSports() {
+        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), Sport.Categorie.SS, "en");
+        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), Sport.Categorie.SE, "en");
     }
 
     // Partie détails
@@ -126,10 +117,6 @@ public class ImportEtablissement implements ImportEtablissementShell {
     @ShellMethod(value = "Import des dispositifs des établissements")
     public void importDispositifs() {
         shellEtablissementService.createOrUpdateDispositifs(fileService.importCSV(DISPOSITIFS), ONISEP);
-    @ShellMethod(value = "Import sections internationales")
-    public void importSectionsInternationales() {
-        shellEtablissementService
-                .createOrUpdateSectionsInternationales(fileService.importCSV(SECTIONS_INTERNATIONALES));
     }
 
     @Override
@@ -138,13 +125,6 @@ public class ImportEtablissement implements ImportEtablissementShell {
         shellEtablissementService.createOrUpdateLangues(fileService.importCSV(LANGUES), "en");
         shellEtablissementService.createOrUpdateSectionsInternationales(fileService.importCSV(SECTIONS_INTERNATIONALES), "en");
         shellEtablissementService.createOrUpdateSectionsBinationales(fileService.importCSV(BINATIONALES), "gg");
-    }
-
-    @Override
-    @ShellMethod(value = "Import sections sport études et sections sportives")
-    public void importSports() {
-        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), Sport.Categorie.SS, "en");
-        shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORT_ETUDES), Sport.Categorie.SE, "en");
     }
 
     @Override
@@ -185,20 +165,19 @@ public class ImportEtablissement implements ImportEtablissementShell {
     }
 
     @Override
-    @ShellMethod(value = "Import IVA Collèges")
-    public void importIvaColleges() {
-        shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_COLLEGES));
+    @ShellMethod(value = "Import IPS Lycees")
+    public void importIpsLycees() {
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_LYCEES_1));
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_LYCEES_2));
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_LYCEES_3));
     }
 
     @Override
-    @ShellMethod(value = "Import tous les détails des établissements")
-    public void importEtablissementsDetails() {
-        importDispositifs();
-        importLangues();
-        importSectionsBinationales();
-        importSectionsInternationales();
-        importSports();
-        importSpecialites();
+    @ShellMethod(value = "Import IVA Collèges")
+    public void importIvaColleges() {
+        shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_COLLEGES));
+        shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_LYCEES_GT));
+        shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_LYCEES_PRO));
     }
 
     @Override
@@ -206,9 +185,5 @@ public class ImportEtablissement implements ImportEtablissementShell {
     public void importEtablissementsRecherche() {
         shellEtablissementService.importEtablissementsRecherche();
     }
-    @Override
-    @ShellMethod(value = "Import établissements pour la recherche")
-    public void importEtablissementsRecherche() {
-        shellEtablissementService.importEtablissementsRecherche();
-    }
+ 
 }

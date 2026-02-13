@@ -10,11 +10,13 @@
             <thead>
             <tr class="border-b border-gray-200">
                 <th class="text-left py-3 px-4 font-medium text-gray-900">Nom de la formation</th>
+                <th class="text-left py-3 px-4 font-medium text-gray-900">Certifiante</th>
             </tr>
             </thead>
             <tbody>
             <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="f : ${formations}">
                 <td class="py-3 px-4" th:text="${f.nom}"></td>
+                <td class="py-3 px-4" th:text="${f.certifiante}"></td>
             </tr>
             </tbody>
         </table>

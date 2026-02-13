@@ -4,8 +4,6 @@ import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementOptionEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
-import com.guillaumegasnier.education.core.domains.recherche.RechercheEtablissementEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.recherche.RechercheEtablissementEntity;
 import com.guillaumegasnier.education.core.dto.IndicateurValeurAjouteeDto;
@@ -23,7 +21,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.lang.NonNull;
 import org.springframework.lang.NonNull;
 
 import java.util.ArrayList;
@@ -163,7 +160,6 @@ public abstract class EtablissementMapper {
     @Mapping(target = "certificationQualiopi", ignore = true)
     public abstract OrganismeEntity toOrganismeEntity(TravailOrganismeFormationDataset dataset);
 
-    @Mapping(target = "description", source = "entity", qualifiedByName = "toDescription")
     @Mapping(target = "nomSecteur", ignore = true)
     @Mapping(target = "codeSecteur", ignore = true)
     @Mapping(target = "nomRegion", source = "commune.departement.region.nom")
@@ -178,7 +174,6 @@ public abstract class EtablissementMapper {
     @Mapping(target = "codeDepartement", source = "commune.departement.code")
     @Mapping(target = "codeCommune", source = "commune.code")
     @Mapping(target = "codeAcademie", source = "commune.departement.academie.code")
-    @Mapping(target = "id", source = "uai")
     public abstract RechercheEtablissementEntity toRechercheEtablissementEntity(EtablissementEntity entity);
 
     @Named("toDescription")
@@ -205,7 +200,6 @@ public abstract class EtablissementMapper {
         return sb.toString();
     }
 
-    public <T extends IndicePositionSociale & Metadata> IndicePositionSocialeDto toIndicePositionSocialeDto(T dataset) {
     // Les metadatas
     public <T extends IndicePositionSociale & Metadata> IndicePositionSocialeDto toIndicePositionSocialeDto(@NonNull T dataset) {
         IndicePositionSocialeDto ips = new IndicePositionSocialeDto();
@@ -239,22 +233,5 @@ public abstract class EtablissementMapper {
     @Mapping(target = "nom", source = "pk.option.nom")
     @Mapping(target = "code", source = "pk.option")
     public abstract RechercheEtablissementEntity.RechercheOption toOption(EtablissementOptionEntity entity);
-
-    @Mapping(target = "options", source = "options", qualifiedByName = "toOptions")
-    @Mapping(target = "codeSecteur", source = "secteur")
-    @Mapping(target = "nomSecteur", source = "secteur.nom")
-    @Mapping(target = "codeNature", source = "nature.code")
-    @Mapping(target = "nomNature", source = "nature.nom")
-    @Mapping(target = "codeCommune", source = "commune.code")
-    @Mapping(target = "nomCommune", source = "commune.nom")
-    @Mapping(target = "codeDepartement", source = "commune.departement.code")
-    @Mapping(target = "nomDepartement", source = "commune.departement.nom")
-    @Mapping(target = "codeAcademie", source = "commune.departement.academie.code")
-    @Mapping(target = "nomAcademie", source = "commune.departement.academie.nom")
-    @Mapping(target = "codeRegion", source = "commune.departement.region.code")
-    @Mapping(target = "nomRegion", source = "commune.departement.region.nom")
-    @Mapping(target = "codePays", source = "commune.pays.code")
-    @Mapping(target = "nomPays", source = "commune.pays.nom")
-    public abstract RechercheEtablissementEntity toRechercheEtablissementEntity(EtablissementEntity entity);
 
 }

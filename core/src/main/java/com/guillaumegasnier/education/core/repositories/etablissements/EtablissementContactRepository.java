@@ -14,4 +14,6 @@ public interface EtablissementContactRepository extends JpaRepository<Etablissem
     List<EtablissementContactEntity> findAllByPkUai(String uai);
 
     Optional<EtablissementContactEntity> findByPkUaiAndPkContactAndPkValeur(String uai, Contact contact, String valeur);
+
+    List<EtablissementContactEntity> findAllByPkUaiOrderByPkContact(String uai);
 }

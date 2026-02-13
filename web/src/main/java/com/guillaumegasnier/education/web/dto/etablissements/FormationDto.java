@@ -14,5 +14,8 @@ public class FormationDto {
 
     @EqualsAndHashCode.Include
     private Long id;
+
     private String nom;
+
+    private String certifiante;
 }

@@ -13,6 +13,7 @@ import com.guillaumegasnier.education.web.dto.LangueDto;
 import com.guillaumegasnier.education.web.dto.etablissements.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.*;
@@ -186,6 +187,13 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "dateDebut", source = "pk.dateDebut")
     public abstract JPODto toJPODto(EtablissementJPOEntity etablissementJPOEntity);
 
+    @Named("toCertifiante")
+    public String toCertifiante(Boolean isCertifiante) {
+        if (isCertifiante != null && isCertifiante) return "Certifiante";
+        return "";
+    }
+
     @Mapping(target = "nom", source = "formation.nom")
+    @Mapping(target = "certifiante", source = "formation.certifiante", qualifiedByName = "toCertifiante")
     public abstract FormationDto toFormationDto(ActionFormationEntity entity);
 }
