@@ -28,7 +28,7 @@ public class SportDataset implements Dataset {
         if (sections != null)
             return List.of(sections.split(","));
         if (nomSport != null)
-            return List.of(nomSport);
+            return List.of(nomSport.split(","));
         return List.of();
     }
 
