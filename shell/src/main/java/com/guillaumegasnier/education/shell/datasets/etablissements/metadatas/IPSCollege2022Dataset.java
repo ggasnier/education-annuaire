@@ -1,8 +1,7 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
-import com.guillaumegasnier.education.core.validations.Effectifs;
-import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
-import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
+import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,27 +16,16 @@ import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatDouble;
  */
 @Getter
 @Setter
-public class IPSCollege2022Dataset implements IndicePositionSociale, Effectifs, Metadata {
+public class IPSCollege2022Dataset implements IndicePositionSociale, Metadata {
 
     @CsvBindByName(column = "Rentrée scolaire")
     private String rentreeScolaire;
     @CsvBindByName(column = "UAI")
     private String uai;
-    @CsvBindByName(column = "Effectifs")
-    private String effectifs;
     @CsvBindByName(column = "IPS")
     private String indice;
     @CsvBindByName(column = "Ecart-type de l'IPS")
     private String ecartType;
-
-    @Override
-    public Integer getEffectifs() {
-        try {
-            return (int) Double.parseDouble(effectifs);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
 
     @Override
     public Double getIndice() {

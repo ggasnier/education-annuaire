@@ -1,6 +1,9 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
@@ -56,7 +59,7 @@ public class ValidatorServiceImpl implements ValidatorService {
                 entity.setSiret(null);
                 return entity;
             } else {
-                log.error("Validation failed on {}.{}: {} ({})",
+                log.warn("Validation failed on {}.{}: {} ({})",
                         entity.getClass().getSimpleName(),
                         v.getPropertyPath(),
                         v.getMessage(),
@@ -77,15 +80,10 @@ public class ValidatorServiceImpl implements ValidatorService {
         return toValidEntity(entity, EtablissementContactEntity.class);
     }
 
-//    @Override
-//    public IndicePositionSocialeEntity toValidEntity(@NonNull IndicePositionSocialeEntity entity) {
-//        return toValidEntity(entity, IndicePositionSocialeEntity.class);
-//    }
-
-    /*@Override
-    public SectionInternationaleEntity toValidEntity(@NonNull SectionInternationaleEntity entity) {
-        return toValidEntity(entity, SectionInternationaleEntity.class);
-    }*/
+    @Override
+    public EtablissementJPOEntity toValidEntity(@NonNull EtablissementJPOEntity entity) {
+        return toValidEntity(entity, EtablissementJPOEntity.class);
+    }
 
     @Override
     public EtablissementSpecialiteEntity toValidEntity(@NonNull EtablissementSpecialiteEntity entity) {
@@ -97,16 +95,6 @@ public class ValidatorServiceImpl implements ValidatorService {
         return toValidEntity(entity, EtablissementLangueEntity.class);
     }
 
-    /*@Override
-    public SportEtudeEntity toValidEntity(@NonNull SportEtudeEntity entity) {
-        return toValidEntity(entity, SportEtudeEntity.class);
-    }
-
-    @Override
-    public SectionSportiveEntity toValidEntity(@NonNull SectionSportiveEntity entity) {
-        return toValidEntity(entity, SectionSportiveEntity.class);
-    }*/
-
     @Override
     public EtablissementSportEntity toValidEntity(@NonNull EtablissementSportEntity entity) {
         return toValidEntity(entity, EtablissementSportEntity.class);
@@ -115,5 +103,20 @@ public class ValidatorServiceImpl implements ValidatorService {
     @Override
     public OrganismeEntity toValidEntity(@NonNull OrganismeEntity entity) {
         return toValidEntity(entity, OrganismeEntity.class);
+    }
+
+    @Override
+    public FormationEntity toValidEntity(@NonNull FormationEntity entity) {
+        return toValidEntity(entity, FormationEntity.class);
+    }
+
+    @Override
+    public ActionFormationEntity toValidEntity(@NonNull ActionFormationEntity entity) {
+        return toValidEntity(entity, ActionFormationEntity.class);
+    }
+
+    @Override
+    public EtablissementMasaEntity toValidEntity(@NonNull EtablissementMasaEntity entity) {
+        return toValidEntity(entity, EtablissementMasaEntity.class);
     }
 }

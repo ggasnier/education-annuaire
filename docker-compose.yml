@@ -1,13 +1,38 @@
 services:
   postgres:
-    image: postgres:17
-    restart: always
+    image: postgres:18.1
+    command: >
+      postgres
+      -c fsync=off
+      -c synchronous_commit=off
+      -c full_page_writes=off
+      -c wal_buffers=64MB
+      -c commit_delay=1000
+      -c commit_siblings=10
+      -c wal_writer_delay=200ms
+      -c checkpoint_timeout=1h
+      -c checkpoint_completion_target=0.95
+      -c max_wal_size=16GB
+      -c min_wal_size=4GB
+      -c shared_buffers=4GB
+      -c work_mem=128MB
+      -c maintenance_work_mem=2GB
+      -c effective_cache_size=6GB
+      -c autovacuum=on
+      -c max_connections=20
+      -c random_page_cost=1.0
+      -c temp_buffers=256MB
+      -c log_min_duration_statement=0
+      -c log_checkpoints=on
+
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/18/docker
+    ports:
+      - "5432:5432"
     networks:
       - myapp-net
 
@@ -90,7 +115,7 @@ services:
       - myapp-net
 
 volumes:
-  db_data:
+  pgdata:
   es_data:
 
 

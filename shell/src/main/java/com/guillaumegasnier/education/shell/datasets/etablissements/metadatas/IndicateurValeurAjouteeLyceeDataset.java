@@ -1,8 +1,8 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
 import com.guillaumegasnier.education.core.dto.ResultatFiliereDto;
-import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
-import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +26,8 @@ public class IndicateurValeurAjouteeLyceeDataset implements IndicateurValeurAjou
 
     //Valeur ajoutée du taux de réussite - Toutes séries
 
-    //Taux d'accès 2nde-bac
+    @CsvBindByName(column = "Taux d'accès 2nde-bac")
+    private Double tauxAcces;
 
     //Valeur ajoutée du taux d'acces 2nde-bac
 

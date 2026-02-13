@@ -1,13 +1,11 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
-import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 /**
  * numero_uai
@@ -81,8 +79,6 @@ public class EnEtablissementFermeDataset implements EtablissementDataset {
 
     private String codeContrat;
 
-    private EtatEtablissement etat = EtatEtablissement.F;
-
     @CsvBindByName(column = "date_ouverture")
     private String dateOuverture;
 
@@ -111,11 +107,6 @@ public class EnEtablissementFermeDataset implements EtablissementDataset {
     }
 
     @Override
-    public String getNomCommune() {
-        return nomCommune;
-    }
-
-    @Override
     public Boolean isActif() {
         return false;
     }
@@ -129,11 +120,6 @@ public class EnEtablissementFermeDataset implements EtablissementDataset {
         } catch (CloneNotSupportedException e) {
             return null;
         }
-    }
-
-    @Override
-    public UUID getId() {
-        return UUID.nameUUIDFromBytes(uai.getBytes());
     }
 
 }

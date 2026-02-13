@@ -2,17 +2,18 @@ package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
+import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 public interface CoreFormationService {
 
-    Optional<FormationEntity> findFormation(@NonNull UUID id);
+    Optional<FormationEntity> findFormation(@NonNull Long id);
 
     void saveFormation(FormationEntity entity);
 
@@ -33,4 +34,12 @@ public interface CoreFormationService {
     Optional<ActionFormationEntity> findActionFormationByParcoursupId(Integer codeInterneFormation);
 
     void saveActionFormation(List<ActionFormationEntity> entities);
+
+    void saveOrganismes(List<OrganismeEntity> entities);
+
+    Optional<ActionFormationEntity> findActionFormation(Long id);
+
+    List<ActionFormationEntity> findFormations(String uai);
+
+    Optional<LienOnisepEntity> findLienOnisep(String clef, String valeur);
 }

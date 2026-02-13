@@ -1,14 +1,15 @@
 package com.guillaumegasnier.education.core.domains.formations;
 
-import com.guillaumegasnier.education.core.domains.AbstractEntity;
+import com.guillaumegasnier.education.core.domains.AbstractSourcesEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.OrganismeEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.CertificationNationaleEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Offre de formation
@@ -19,11 +20,11 @@ import java.util.*;
 @Setter
 @Entity
 @Table(name = "formations")
-public class FormationEntity extends AbstractEntity {
+public class FormationEntity extends AbstractSourcesEntity {
 
     @Id
-    @Column(columnDefinition = "UUID", nullable = false, updatable = false)
-    private UUID id;
+    @Column(columnDefinition = "BIGINT", nullable = false, updatable = false)
+    private Long id;
 
     /**
      * Cet élément décrit l’intitulé de la formation. Si la formation a comme résultat l’obtention d’un diplôme, le
@@ -89,8 +90,9 @@ public class FormationEntity extends AbstractEntity {
      * Cet élément permet de préciser le code d’une certification dans le service Certifinfo, dans les RNCP et RS de
      * France Compétences, ou son code CPF fourni par la Caisse des dépôts.
      */
-    //@OneToMany
-    //private Set<CertificationEntity> certifications = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "code_certification", foreignKey = @ForeignKey(name = "fk_formations_certifications"))
+    private CertificationNationaleEntity certification;
 
     /**
      * Cet élément décrit le niveau de sortie de la formation.
@@ -102,7 +104,7 @@ public class FormationEntity extends AbstractEntity {
     /**
      * Les actions de formation (établissements, dates, etc.)
      */
-    @OneToMany(mappedBy = "formation")
+    @OneToMany(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ActionFormationEntity> actions = new ArrayList<>();
 
     /**
@@ -147,5 +149,4 @@ public class FormationEntity extends AbstractEntity {
     // url
     // modules
     // Modules prérequis
-
 }

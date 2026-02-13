@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.web.api;
 
 
-import com.guillaumegasnier.education.core.validations.ValidUai;
+import com.guillaumegasnier.education.core.validations.etablissements.ValidUai;
 import com.guillaumegasnier.education.web.dto.ApiError;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;

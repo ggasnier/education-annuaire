@@ -1,6 +1,8 @@
 package com.guillaumegasnier.education.shell.enums;
 
 import com.guillaumegasnier.education.core.enums.Sources;
+import com.guillaumegasnier.education.shell.datasets.FICHES;
+import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.*;
 import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationDataset;
@@ -38,10 +40,16 @@ public enum SourcesDatasets {
     ESR_ETABS_OUVERTS("Etablissements de l'enseignement supérieur", ESR, "https://www.data.gouv.fr/api/1/datasets/r/bcc3229a-beb2-4077-a8d8-50a065dfbbfa", "etablissements_ouverts.csv", StandardCharsets.UTF_8, ';', "GET", EsrEtablissementDataset.class),
     CARIF_ETABS_OUVERTS("Liste des organismes", CARIF, "https://catalogue-apprentissage.intercariforef.org/api/v1/es/search/etablissements/", "etablissements_ouverts.json", StandardCharsets.UTF_8, ',', "POST", CarifEtablissementResponse.class),
     ONISEP_ETABS_SUP("Idéo-Structures d'enseignement supérieur", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa586da5c4b6/5fa586da5c4b6.csv", "etablissements_ouverts_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepEtablissementSupDataset.class),
+    ONISEP_ETABS_SEC("Idéo-Structures d'enseignement secondaire", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa5816ac6a6e/5fa5816ac6a6e.csv", "etablissements_ouverts_sec.csv", StandardCharsets.UTF_8, ';', "GET", OnisepEtablissementSupDataset.class),
     TRAVAIL_ETABS("Liste Publique des Organismes de Formation", MTEDS, "https://www.data.gouv.fr/api/1/datasets/r/ac59a0f5-fa83-4b82-bf12-3c5806d4f19f", "organismes_formations.csv", StandardCharsets.UTF_8, ';', "GET", TravailOrganismeFormationDataset.class),
+    MASA_ETABS("RefEA : Liste des établissements proposant des formations agricoles 2025-2026", MASA, "https://www.data.gouv.fr/api/1/datasets/r/3f56237d-db7a-4957-9d5d-f4b529d6bc36", "etablissements.csv", StandardCharsets.UTF_8, ';', "GET", MasaEtablissementDataset.class),
+    MASA_JPO("RefEA : Les journées Portes ouvertes", MASA, "https://www.data.gouv.fr/api/1/datasets/r/d1d559fb-c952-4448-837c-7ca375b67e62", "jpo.csv", StandardCharsets.UTF_8, ';', "GET", MasaJpoDataset.class),
+
 
     // Indicateurs valeur ajoutée
     IVA_COLLEGES("Indicateurs de valeur ajoutée des collèges", EN, "https://www.data.gouv.fr/api/1/datasets/r/a230247a-8aea-4112-be41-bc008c0d6966", "iva_colleges.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeCollegeDataset.class),
+    IVA_LYCEES_GT("Indicateurs de valeur ajoutée des lycées d'enseignement général et technologique", EN, "https://www.data.gouv.fr/api/1/datasets/r/4204242b-1812-4609-a2f0-f8d720f5b060", "iva_lycees_gt.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeLyceeDataset.class),
+    IVA_LYCEES_PRO("Indicateurs de valeur ajoutée des lycées d'enseignement professionnel", EN, "https://www.data.gouv.fr/api/1/datasets/r/77e54b21-459c-4876-93fa-8dd6b776e4da", "iva_lycees_pro.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeLyceeProDataset.class),
 
     // Ecoles
     IPS_ECOLES_1("Indices de position sociale des écoles (2016-2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/fda33536-a0e0-4cad-b1bf-b88d2a7586e6", "ips_ecoles_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSEcole2016Dataset.class),
@@ -57,6 +65,8 @@ public enum SourcesDatasets {
     // Erea
 
     EFFECTIFS_COLLEGE("Effectifs d’élèves en collège", EN, "https://www.data.gouv.fr/api/1/datasets/r/6bf59bae-3c3b-40f5-ad8e-f05b0b2ac271", "effectifs_college.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsCollegeDataset.class),
+    EFFECTIFS_LYCEES_GT("Effectifs d’élèves en lycée d'enseignement général et technologique", EN, "https://www.data.gouv.fr/api/1/datasets/r/74335ea1-17da-4794-8ba2-4ae19c21f981", "effectifs_lycees_gt.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsLyceeDataset.class),
+    EFFECTIFS_LYCEES_PRO("Effectifs d’élèves en lycée professionnel", EN, "https://www.data.gouv.fr/api/1/datasets/r/204c9fbf-5e88-4a69-a922-1ad1b369115c", "effectifs_lycees_pro.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsLyceeDataset.class),
 
     // Compléments
     SECTIONS_SPORTIVES("Sections Sportives Scolaires", EN, "https://www.data.gouv.fr/api/1/datasets/r/c479b9b8-8224-46ef-b2f4-f6a3468726fc", "sections_sportives.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),
@@ -67,18 +77,39 @@ public enum SourcesDatasets {
     SPECIALITES("Idéo-Enseignements de spécialité de première générale", ONISEP, "https://api.opendata.onisep.fr/downloads/60113f395cce6/60113f395cce6.csv", "specialites.csv", StandardCharsets.UTF_8, ';', "GET", SpecialitePremiereDataset.class),
 
     DISPOSITIFS("Idéo-Actions de dispositif", ONISEP, "https://api.opendata.onisep.fr/downloads/60867458bb600/60867458bb600.csv", "dispositifs.csv", StandardCharsets.UTF_8, ';', "GET", OnisepDispositifDataset.class),
-    // Euroscol https://www.data.gouv.fr/datasets/etablissements-labellises-euroscol/
     EUROSCOL("Établissements labellisés Euroscol", EN, "https://www.data.gouv.fr/api/1/datasets/r/d7da7c59-54cc-45ec-96e9-e956231f0469", "euroscol.csv", StandardCharsets.UTF_8, ';', "GET", EuroscolDataset.class),
     //Certifications
-    CERTIFICATIONS_RNCP("Répertoire national des certifications professionnelles et répertoire spécifique", FC, "", "export-fiches-rncp-v4-1-2025-10-23.zip", StandardCharsets.UTF_8, ',', "GET", null),
+    CERTIFICATIONS_RNCP("Répertoire national des certifications professionnelles et répertoire spécifique", FC, "https://static.data.gouv.fr/resources/repertoire-national-des-certifications-professionnelles-et-repertoire-specifique/20260128-020133/export-fiches-rncp-v4-1-2026-01-28.zip", "rncp.xml", StandardCharsets.UTF_8, ',', "GET", FICHES.class),
+    // RS
 
     // Formations
+    // Tableau PARCOURSUP <-> ONISEP
     FORMATIONS_CPF("Moncompteformation - L'offre de formation", CDC, "https://www.data.gouv.fr/api/1/datasets/r/205a72c5-725a-40c0-9c39-073454bdd553", "formations.csv", StandardCharsets.UTF_8, ';', "GET", CPFFormationDataset.class),
     FORMATIONS_PARCOURSUP("Cartographie des formations Parcoursup", ESR, "https://www.data.gouv.fr/api/1/datasets/r/19e77c6b-9e90-4673-aaed-276b77ac9c69", "formations_parcoursup.csv", StandardCharsets.UTF_8, ';', "GET", ParcoursupFormationDataset.class),
     FORMATIONS_CARIF("Liste des formations", CARIF, "https://catalogue-apprentissage.intercariforef.org/api/v1/es/search/formation/", "formations.json", StandardCharsets.UTF_8, ',', "POST", CarifFormationResponse.class),
-    FORMATIONS_ONISEP_ESR("Idéo-Actions de formation initiale-Univers enseignement supérieur", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/45f9fab2-adcd-49b1-8c9c-ef5d6ea90e9e", "formations_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepFormationDataset.class),
+    FORMATIONS_ONISEP_ESR("Idéo-Actions de formation initiale-Univers enseignement supérieur", ONISEP, "https://api.opendata.onisep.fr/downloads/605344579a7d7/605344579a7d7.csv", "formations_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepFormationDataset.class),
 
     // LHEO
+    // DOM-TOM
+    FORMATIONS_LHEO_MAYOTTE("Idéo-Actions de formation-Mayotte", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa51a6dd5680/5fa51a6dd5680.zip", "lheo_action_Mayotte.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_GUYANE("Idéo-Actions de formation-Guyane", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa516ecd124e/5fa516ecd124e.zip", "lheo_action_Guyane.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    // Martinique
+    // Guadeloupe
+    // La Réunion
+
+    // Métropole
+    FORMATIONS_LHEO_BFC("Idéo-Actions de formation-Bourgogne-Franche-Comté", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa43d3021ee4/5fa43d3021ee4.zip", "lheo_action_BFC.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_CVL("Idéo-Actions de formation-Centre-Val de Loire", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa43eda089f9/5fa43eda089f9.zip", "lheo_action_CVL.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_NORMANDIE("Idéo-Actions de formation-Normandie", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa43baf8d2cc/5fa43baf8d2cc.zip", "lheo_action_Normandie.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_BRETAGNE("Idéo-Actions de formation-Bretagne", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa51a6dd5680/5fa51a6dd5680.zip", "lheo_action_Bretagne.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_LOIRE("Idéo-Actions de formation-Pays de la Loire", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa439b13180d/5fa439b13180d.zip", "lheo_action_PDL.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    // Grand Est
+    // Provence-Alpes-Côte d’Azur
+    // Hauts-de-France
+    // Nouvelle-Aquitaine
+    FORMATIONS_LHEO_OCCITANIE("Idéo-Actions de formation-Occitanie", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa432469f421/5fa432469f421.zip", "lheo_action_Occitanie.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_ARA("Idéo-Actions de formation-Auvergne-Rhône-Alpes", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/63d11a26-d25d-4886-aeb5-402558e19827", "lheo_action_AURA.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+    FORMATIONS_LHEO_IDF("Idéo-Actions de formation-Ile-de-France", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa41861a282c/5fa41861a282c.zip", "lheo_action_IDF.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
 
     // Default
     NULL(null, AUTRE, null, null, null, ',', null, null);

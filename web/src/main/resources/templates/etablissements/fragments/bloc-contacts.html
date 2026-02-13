@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+    <div th:fragment="bloc" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+        th:if="${contacts != null && contacts.size() > 0}">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Contacts</h2>
+
+        <div th:if="${contacts != null}" class="mb-4">
+            <div class="flex flex-wrap gap-3">
+                <th:block th:each="contact : ${contacts}">
+                    <a th:if="${contact.code == 'TWITTER' or contact.code == 'FACEBOOK' or contact.code == 'LINKEDIN' or contact.code == 'YOUTUBE' or contact.code == 'WIKIPEDIA'}"
+                        th:href="${#strings.startsWith(contact.valeur,'http') ? contact.valeur : (
+                                contact.code == 'TWITTER' ? 'https://twitter.com/' + contact.valeur : (
+                                contact.code == 'FACEBOOK' ? 'https://facebook.com/' + contact.valeur : (
+                                contact.code == 'LINKEDIN' ? 'https://www.linkedin.com/in/' + contact.valeur : (
+                                contact.code == 'YOUTUBE' ? contact.valeur : (
+                                'https://fr.wikipedia.org/wiki/' + contact.valeur
+                                )))))}" target="_blank" rel="noopener"
+                        class="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-gray-50 hover:bg-gray-100 border border-gray-100 text-sm text-gray-800">
+                        <span th:switch="${contact.code}">
+                            <svg th:case="'TWITTER'" class="w-5 h-5 text-blue-400" viewBox="0 0 24 24"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M22 5.92c-.63.28-1.3.47-2 .56.72-.43 1.27-1.12 1.53-1.94-.67.4-1.42.69-2.22.85A3.45 3.45 0 0015.5 4c-1.9 0-3.44 1.56-3.44 3.48 0 .27.03.53.09.78-2.86-.14-5.4-1.53-7.1-3.64-.3.53-.47 1.13-.47 1.78 0 1.24.62 2.34 1.56 2.98-.58-.02-1.12-.18-1.6-.44v.04c0 1.71 1.22 3.14 2.84 3.47-.3.08-.62.12-.95.12-.23 0-.46-.02-.68-.06.46 1.41 1.8 2.44 3.38 2.47A6.92 6.92 0 012 19.54c.65.37 1.42.58 2.24.58 5.02 0 7.77-4.57 7.77-8.54v-.39c.54-.38 1.01-.85 1.38-1.38-.5.22-1.04.38-1.6.45.58-.38 1.02-.98 1.23-1.7z" />
+                            </svg>
+                            <svg th:case="'FACEBOOK'" class="w-5 h-5 text-blue-700" viewBox="0 0 24 24"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M22 12a10 10 0 10-11.5 9.9v-7h-2.2v-3h2.2V9.3c0-2.2 1.3-3.4 3.3-3.4.96 0 1.97.17 1.97.17v2.2h-1.12c-1.1 0-1.45.69-1.45 1.4V12h2.48l-.4 3h-2.08v7A10 10 0 0022 12z" />
+                            </svg>
+                            <svg th:case="'LINKEDIN'" class="w-5 h-5 text-blue-600" viewBox="0 0 24 24"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M6.94 6.94a1.75 1.75 0 11.01-3.5 1.75 1.75 0 01-.01 3.5zM5 8.99h4v10H5v-10zM10 8.99h3.84v1.35h.05c.54-1.02 1.87-2.09 3.85-2.09 4.12 0 4.88 2.71 4.88 6.23v6.51h-4v-5.77c0-1.38-.02-3.16-1.92-3.16-1.92 0-2.22 1.5-2.22 3.05v5.88H10v-10z" />
+                            </svg>
+                            <svg th:case="'YOUTUBE'" class="w-5 h-5 text-red-600" viewBox="0 0 24 24"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M23.5 6.2s-.2-1.6-.8-2.3c-.8-.9-1.7-.9-2.1-1C16.6 2.5 12 2.5 12 2.5h-.1s-4.6 0-8.6.4c-.4 0-1.3.1-2.1 1-.6.7-.8 2.3-.8 2.3S0 8 0 9.8v1.4C0 13.9.5 15.4.5 15.4s.2 1.6.8 2.3c.8.9 1.8.9 2.3 1 1.7.2 7.4.4 7.4.4s4.6 0 8.6-.4c.4 0 1.3-.1 2.1-1 .6-.7.8-2.3.8-2.3s.5-1.6.5-3.4V9.8c0-1.8-.5-3.6-.5-3.6zM9.8 14.1V7.9l5.4 3.1-5.4 3.1z" />
+                            </svg>
+                            <svg th:case="'WIKIPEDIA'" class="w-5 h-5 text-gray-700" viewBox="0 0 24 24"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L9 8l-6 .5L8 11l-3 6 8-4 8 4-3-6 5-2.5L15 8l-3-6z" />
+                            </svg>
+                        </span>
+                        <span class="sr-only" th:text="${contact.nom}">Réseau</span>
+                    </a>
+                </th:block>
+            </div>
+        </div>
+
+        <!-- Autres contacts -->
+        <div class="space-y-3">
+            <th:block th:each="contact : ${contacts}">
+                <div th:if="${!(contact.code == 'TWITTER' or contact.code == 'FACEBOOK' or contact.code == 'LINKEDIN' or contact.code == 'YOUTUBE' or contact.code == 'WIKIPEDIA')}"
+                    class="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-100">
+                    <div class="flex-none">
+                        <svg class="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="8" r="3" stroke-width="1.5" />
+                            <path d="M6 20c1.5-3 4.5-4 6-4s4.5 1 6 4" stroke-width="1.5" />
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-700" th:text="${contact.nom}">Label</div>
+                        <div class="mt-1 text-sm text-gray-900">
+                            <a th:if="${contact.code == 'EMAIL'}" th:href="${'mailto:' + contact.valeur}"
+                                th:text="${contact.valeur}" class="text-blue-600 hover:underline"></a>
+                            <a th:if="${contact.code == 'TEL'}" th:href="${'tel:' + contact.valeur}"
+                                th:text="${contact.valeur}" class="text-blue-600 hover:underline"></a>
+                            <a th:if="${contact.code == 'WEB'}"
+                                th:href="${#strings.startsWith(contact.valeur,'http') ? contact.valeur : 'http://' + contact.valeur}"
+                                th:text="${contact.valeur}" target="_blank" rel="noopener"
+                                class="text-blue-600 hover:underline"></a>
+                            <span th:if="${contact.code != 'EMAIL' and contact.code != 'TEL' and contact.code != 'WEB'}"
+                                th:text="${contact.valeur}"></span>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+
+</body>
+
+</html>

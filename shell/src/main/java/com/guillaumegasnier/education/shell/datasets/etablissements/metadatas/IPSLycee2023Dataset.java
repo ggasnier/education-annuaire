@@ -1,11 +1,12 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
-import com.guillaumegasnier.education.core.validations.Effectifs;
-import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
-import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
+import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
+
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatDouble;
 
 /**
  * Indices de position sociale des lycées (à partir de 2023)
@@ -14,7 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class IPSLycee2023Dataset implements IndicePositionSociale, Effectifs, Metadata {
+public class IPSLycee2023Dataset implements IndicePositionSociale, Metadata {
 
     @CsvBindByName(column = "Rentrée scolaire")
     private String rentreeScolaire;
@@ -29,31 +30,44 @@ public class IPSLycee2023Dataset implements IndicePositionSociale, Effectifs, Me
      */
     @CsvBindByName(column = "Type de lycée")
     private String typeLycee;
+    @CsvBindByName(column = "IPS de l'établissement")
+    private String indice;
+    @CsvBindByName(column = "Ecart-type établissement")
+    private String ecartType;
+    @CsvBindByName(column = "IPS national LEGT")
+    private Double indiceNational;
+    @CsvBindByName(column = "IPS national LEGT privé")
+    private Double indiceNationalPrive;
+    @CsvBindByName(column = "IPS national LEGT public")
+    private Double indiceNationalPublic;
+    @CsvBindByName(column = "IPS académique LEGT")
+    private String indiceAcademie;
+    @CsvBindByName(column = "IPS académique LEGT privé")
+    private String indiceAcademiePrive;
+    @CsvBindByName(column = "IPS académique LEGT public")
+    private String indiceAcademiePublic;
+    @CsvBindByName(column = "IPS départemental LEGT")
+    private String indiceDepartement;
+    @CsvBindByName(column = "IPS départemental LEGT privé")
+    private String indiceDepartementPrive;
+    @CsvBindByName(column = "IPS départemental LEGT public")
+    private String indiceDepartementPublic;
+
+    @Override
+    public Double getEcartType() {
+        return formatDouble(ecartType);
+    }
+
+    @Override
+    public Double getIndice() {
+        return formatDouble(indice);
+    }
 
     //IPS voie GT
     //IPS voie PRO
     //IPS post BAC
-
-    @CsvBindByName(column = "IPS de l'établissement")
-    private Double indice;
-
-
     //Ecart type voie GT
     //Ecart type voie PRO
-
-    @CsvBindByName(column = "Ecart-type établissement")
-    private Double ecartType;
-
-    //IPS national LEGT
-    //IPS national LEGT privé
-    //IPS national LEGT public
-    //IPS académique LEGT
-    //IPS académique LEGT privé
-    //IPS académique LEGT public
-    //IPS départemental LEGT
-    //IPS départemental LEGT privé
-    //IPS départemental LEGT public
-
     //IPS national LPO
     //IPS national LPO privé
     //IPS national LPO public
@@ -73,6 +87,36 @@ public class IPSLycee2023Dataset implements IndicePositionSociale, Effectifs, Me
     //IPS départemental LP
     //IPS départemental LP privé
     //IPS départemental LP public
+
+    @Override
+    public Double getIndiceAcademie() {
+        return formatDouble(indiceAcademie);
+    }
+
+    @Override
+    public Double getIndiceAcademiePrive() {
+        return formatDouble(indiceAcademiePrive);
+    }
+
+    @Override
+    public Double getIndiceAcademiePublic() {
+        return formatDouble(indiceAcademiePublic);
+    }
+
+    @Override
+    public Double getIndiceDepartement() {
+        return formatDouble(indiceDepartement);
+    }
+
+    @Override
+    public Double getIndiceDepartementPrive() {
+        return formatDouble(indiceDepartementPrive);
+    }
+
+    @Override
+    public Double getIndiceDepartementPublic() {
+        return formatDouble(indiceDepartementPublic);
+    }
 
     @Override
     public Integer getAnnee() {

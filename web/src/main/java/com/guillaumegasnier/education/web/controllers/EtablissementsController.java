@@ -35,8 +35,9 @@ public class EtablissementsController {
         model.addAttribute("langues", details.langues());
         model.addAttribute("sports", details.sports());
         model.addAttribute("contacts", details.contacts());
-        model.addAttribute("metadatats", details.metadatas());
-
+        model.addAttribute("journees", details.journees());
+        model.addAttribute("metadatas", details.metadatas());
+        model.addAttribute("formations", details.formations());
         return "etablissements/details";
     }
 }

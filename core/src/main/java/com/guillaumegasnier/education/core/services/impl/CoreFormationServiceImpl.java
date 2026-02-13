@@ -2,37 +2,61 @@ package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
+import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
-import com.guillaumegasnier.education.core.repositories.ActionFormationRepository;
-import com.guillaumegasnier.education.core.repositories.FormationRepository;
-import com.guillaumegasnier.education.core.repositories.RomeRepository;
+import com.guillaumegasnier.education.core.repositories.formations.ActionFormationRepository;
+import com.guillaumegasnier.education.core.repositories.formations.FormationRepository;
+import com.guillaumegasnier.education.core.repositories.formations.LienOnisepRepository;
+import com.guillaumegasnier.education.core.repositories.formations.OrganismeRepository;
+import com.guillaumegasnier.education.core.repositories.referentiels.RomeRepository;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
+@Slf4j
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class CoreFormationServiceImpl implements CoreFormationService {
 
     private final FormationRepository formationRepository;
     private final ActionFormationRepository actionFormationRepository;
     private final RomeRepository romeRepository;
-    //private final CertificationRepository certificationRepository;
+    private final OrganismeRepository organismeRepository;
+    private final LienOnisepRepository lienOnisepRepository;
 
-    @Autowired
-    public CoreFormationServiceImpl(FormationRepository formationRepository, ActionFormationRepository actionFormationRepository, RomeRepository romeRepository) {
-        this.formationRepository = formationRepository;
-        this.actionFormationRepository = actionFormationRepository;
-        this.romeRepository = romeRepository;
+    @PersistenceContext
+    private EntityManager em;
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveFormations(@NonNull List<FormationEntity> entities) {
+        formationRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
 
     @Override
-    public Optional<FormationEntity> findFormation(@NonNull UUID id) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveActionFormation(@NonNull List<ActionFormationEntity> entities) {
+        actionFormationRepository.saveAll(entities);
+        em.flush();
+        em.clear();
+    }
+
+    @Override
+    public Optional<FormationEntity> findFormation(@NonNull Long id) {
         return formationRepository.findById(id);
     }
 
@@ -42,29 +66,17 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     }
 
     @Override
-    public void saveFormations(@NonNull List<FormationEntity> entities) {
-        formationRepository.saveAll(entities);
-    }
-
-    @Override
     public Optional<FormationEntity> findFormationByOnisepId(Integer onisepId) {
         return formationRepository.findByOnisepId(onisepId);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveRomes(List<RomeEntity> entities) {
         romeRepository.saveAll(entities);
+        em.flush();
+        em.clear();
     }
-
-    /*@Override
-    public Optional<CertificationEntity> findCertificationByRNCP(String codeRNCP) {
-        return certificationRepository.findByCodeRNCP(codeRNCP);
-    }
-
-    @Override
-    public void saveCertification(CertificationEntity entity) {
-        certificationRepository.save(entity);
-    }*/
 
     @Override
     public Set<RomeEntity> getRomes(List<String> codes) {
@@ -82,7 +94,25 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     }
 
     @Override
-    public void saveActionFormation(List<ActionFormationEntity> entities) {
-        actionFormationRepository.saveAll(entities);
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveOrganismes(List<OrganismeEntity> entities) {
+        organismeRepository.saveAll(entities);
+        em.flush();
+        em.clear();
+    }
+
+    @Override
+    public Optional<ActionFormationEntity> findActionFormation(Long id) {
+        return actionFormationRepository.findById(id);
+    }
+
+    @Override
+    public List<ActionFormationEntity> findFormations(String uai) {
+        return actionFormationRepository.findAllByEtablissementUaiOrderByFormationNom(uai);
+    }
+
+    @Override
+    public Optional<LienOnisepEntity> findLienOnisep(String clef, String valeur) {
+        return lienOnisepRepository.findByPkClefAndPkValeur(clef, valeur);
     }
 }

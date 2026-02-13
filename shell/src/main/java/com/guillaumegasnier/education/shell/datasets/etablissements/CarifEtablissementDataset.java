@@ -8,7 +8,12 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatAdresse;
 
 @Getter
 @Setter
@@ -283,18 +288,6 @@ public class CarifEtablissementDataset implements EtablissementDataset {
         }
     }
 
-    // todo
-    @Override
-    public UUID getId() {
-        if (getUai() != null)
-            return UUID.nameUUIDFromBytes(getUai().getBytes());
-        else if (numeroDeclarationActivite != null)
-            return UUID.nameUUIDFromBytes(numeroDeclarationActivite.getBytes());
-        else {
-            return null;
-        }
-    }
-
     @Override
     public String getUai() {
         if (uai == null) return "";
@@ -329,17 +322,18 @@ public class CarifEtablissementDataset implements EtablissementDataset {
             sb.append(" ");
         }
 
-
-        return sb.toString();
+        return formatAdresse(sb.toString());
     }
 
     @Override
     public LocalDate getDateFermeture() {
-        try {
-            return LocalDate.parse(dateFermeture);
-        } catch (DateTimeParseException e) {
-            return null;
-        }
+        if (dateFermeture != null)
+            try {
+                return LocalDate.parse(dateFermeture);
+            } catch (DateTimeParseException e) {
+                return null;
+            }
+        return null;
     }
 
     @Override

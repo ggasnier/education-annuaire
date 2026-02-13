@@ -1,8 +1,8 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
 import com.guillaumegasnier.education.core.dto.ResultatFiliereDto;
-import com.guillaumegasnier.education.core.validations.IndicateurValeurAjoutee;
-import com.guillaumegasnier.education.core.validations.Metadata;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,7 +45,8 @@ public class IndicateurValeurAjouteeCollegeDataset implements IndicateurValeurAj
     @CsvBindByName(column = "Note à l'écrit P")
     private Double noteEcritPro;
 
-//    @CsvBindByName(column = "Taux d'accès 6eme 3eme")
+    @CsvBindByName(column = "Taux d'accès 6eme 3eme")
+    private Double tauxAcces;
 
 //    @CsvBindByName(column = "Part présents 3eme ordinaire total")
 //    @CsvBindByName(column = "Part présents 3eme ordinaire G")

@@ -1,47 +1,53 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
+import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
-import com.guillaumegasnier.education.shell.datasets.etablissements.EnEtablissementDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.*;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.EffectifsCollegeDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.IPSLycee2023Dataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.IndicateurValeurAjouteeCollegeDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
-import com.guillaumegasnier.education.shell.services.ShellEntityService;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
+import com.guillaumegasnier.education.shell.transformers.EtablissementTransformer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ShellEtablissementServiceImplTest {
 
+    private final String uaiExiste = "0750683K";
+    private final String uaiAbsent = "0750652B";
     @Mock
     private EtablissementMapper etablissementMapper;
     @Mock
     private CoreEtablissementService coreEtablissementService;
     @Mock
-    private ShellEntityService shellEntityService;
-    @Mock
     private ValidatorService validatorService;
+    @Mock
+    private EtablissementTransformer etablissementTransformer;
     @InjectMocks
     private ShellEtablissementServiceImpl service;
-    private String uaiExiste = "0750683K";
-    private String uaiAbsent = "0750652B";
-    private EtablissementEntity etablissementEntityExiste;
-    private EtablissementEntity etablissementEntityAbsent;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        etablissementEntityExiste = new EtablissementEntity();
+        EtablissementEntity etablissementEntityExiste = new EtablissementEntity();
         etablissementEntityExiste.setUai(uaiExiste);
 
-        etablissementEntityAbsent = new EtablissementEntity();
+        EtablissementEntity etablissementEntityAbsent = new EtablissementEntity();
         etablissementEntityAbsent.setUai(uaiAbsent);
 
         when(coreEtablissementService.findEtablissement(uaiExiste)).thenReturn(Optional.of(etablissementEntityExiste));
@@ -57,103 +63,142 @@ class ShellEtablissementServiceImplTest {
         assertEquals(4, service.dedoublement(dataset).count());
     }
 
-    /*@Test
-    void createOrUpdateSectionsInternationalesTest() {
-        SectionInternationaleDataset dataset = new SectionInternationaleDataset();
-        dataset.setUai(uaiExiste);
-        dataset.setSection("ALLEMANDE");
-        dataset.setNiveau("2nde et BFI");
-        List<SectionInternationaleDataset> datasets = List.of(dataset);
 
-        assertEquals("Import terminé : 1 sections internationale(s).", service.createOrUpdateSectionsInternationales(datasets));
-    }*/
-
-    /*@Test
-    void createOrUpdateNaturesTest() {
-        NatureDataset dataset = new NatureDataset();
-        dataset.setCode("123");
-        dataset.setNom("Nature Test");
-
-        NatureDataset dataset2 = new NatureDataset();
-        dataset2.setCode("123");
-        dataset2.setNom("Nature Test");
-        dataset2.setDateFin("2025-01-01");
-
-        List<NatureDataset> datasets = List.of(dataset, dataset2);
-
-        assertEquals("Import terminé : 2 natures(s) enregistrée(s).", service.createOrUpdateNatures(datasets));
-    }*/
-
-    /*@Test
-    void createOrUpdateContratsTest() {
-        ContratDataset dataset = new ContratDataset();
-        dataset.setCode("12");
-        dataset.setNom("Nature Test");
-
-        ContratDataset dataset2 = new ContratDataset();
-        dataset2.setCode("13");
-        dataset2.setNom("Nature Test");
-        dataset2.setDateFin("2025-01-01");
-
-        List<ContratDataset> datasets = List.of(dataset, dataset2);
-
-        assertEquals("Import terminé : 2 contrat(s) enregistré(s).", service.createOrUpdateContrats(datasets));
-    }*/
-
-//    @Test
-//    void createOrUpdateSectionsSportivesTest() {
-//        SectionSportiveDataset dataset = new SectionSportiveDataset();
-//        dataset.setUai(uaiExiste);
-//        dataset.setSections("VTT");
-//
-//        List<SectionSportiveDataset> datasets = List.of(dataset);
-//
-//        assertEquals("Import terminé : 1 sections sportives enregistrée(s).", service.createOrUpdateSectionsSportives(datasets));
-//    }
-
-//    @Test
-//    void createOrUpdateSectionsSportEtudesTest() {
-//        SectionSportEtudeDataset dataset = new SectionSportEtudeDataset();
-//        dataset.setUai(uaiExiste);
-//        dataset.setNomSport("VTT");
-//
-//        List<SectionSportEtudeDataset> datasets = List.of(dataset);
-//
-//        assertEquals("Import terminé : 1 sections sport etudes enregistrée(s).", service.createOrUpdateSectionsSportEtudes(datasets));
-//    }
-
-    /*@Test
+    @Test
     void createOrUpdateLanguesTest() {
-        LangueDataset dataset = new LangueDataset();
-        dataset.setUai(uaiExiste);
-        dataset.setLangue("anglais");
+        List<LangueDataset> datasets = new ArrayList<>();
+        service.createOrUpdateLangues(datasets, "test");
+        verify(coreEtablissementService).saveLangues(any());
+    }
 
-        List<LangueDataset> datasets = List.of(dataset);
-
-        assertEquals("Import terminé : 1 langues enregistrée(s).", service.createOrUpdateLangues(datasets));
-    }*/
-
-    /*@Test
+    @Test
     void createOrUpdateSpecialitesTest() {
-        SpecialitePremiereDataset dataset = new SpecialitePremiereDataset();
-        dataset.setUai(uaiExiste);
-        dataset.setEnseignements("Mathématiques");
+        List<SpecialitePremiereDataset> datasets = new ArrayList<>();
+        service.createOrUpdateSpecialites(datasets, "test");
+        verify(coreEtablissementService).saveSpecialites(any());
+    }
 
-        List<SpecialitePremiereDataset> datasets = List.of(dataset);
+    @Test
+    void createOrUpdateEuroscolTest() {
+        List<EuroscolDataset> datasets = new ArrayList<>();
+        service.createOrUpdateEuroscol(datasets, "test");
+        verify(coreEtablissementService).saveOptions(any());
+    }
 
-        assertEquals("Import terminé : 1 specialités enregistrée(s).", service.createOrUpdateSpecialites(datasets));
-    }*/
+    @Test
+    void createOrUpdateSectionsInternationalesTest() {
+        List<SectionInternationaleDataset> datasets = new ArrayList<>();
+        service.createOrUpdateSectionsInternationales(datasets, "test");
+        verify(coreEtablissementService).saveOptions(any());
+    }
 
-    /*@Test
+    @Test
     void createOrUpdateSectionsBinationalesTest() {
-        SectionBinationaleDataset dataset = new SectionBinationaleDataset();
+        List<SectionBinationaleDataset> datasets = new ArrayList<>();
+        service.createOrUpdateSectionsBinationales(datasets, "test");
+        verify(coreEtablissementService).saveOptions(any());
+    }
+
+    @Test
+    void createOrUpdateSportsTest() {
+        List<SportDataset> datasets = new ArrayList<>();
+        var dataset = new SportDataset();
         dataset.setUai(uaiExiste);
-        dataset.setTypeBac("Abibac");
+        dataset.setNomSport("ESCRIME");
+        datasets.add(dataset);
+        service.createOrUpdateSports(datasets, Sport.Categorie.SE, "test");
+        verify(coreEtablissementService).saveEtablissementSportEntity(any());
+    }
 
-        List<SectionBinationaleDataset> datasets = List.of(dataset);
+    @Test
+    void createOrUpdateDispositifsTest() {
+        List<OnisepDispositifDataset> datasets = new ArrayList<>();
 
-        assertEquals("Import terminé : 1 sections binationale enregistrée(s).", service.createOrUpdateSectionsBinationales(datasets));
+        OnisepDispositifDataset dataset = new OnisepDispositifDataset();
+        // UAI à null
+        datasets.add(dataset);
+        // UAI vide
+        dataset.setUai("");
+        datasets.add(dataset);
+        // UAI renseigné
+        dataset.setUai(uaiExiste);
+        datasets.add(dataset);
 
-    }*/
+        dataset.setNom("");
+        datasets.add(dataset);
+
+        dataset.setNom("classe sport-études en collège");
+        datasets.add(dataset);
+
+        service.createOrUpdateDispositifs(datasets, "test");
+        verify(coreEtablissementService).saveOptions(any());
+    }
+
+    @Test
+    void createOrUpdateEtablissementsTest() {
+        List<EnEtablissementDataset> datasets = new ArrayList<>();
+        EnEtablissementDataset dataset = new EnEtablissementDataset();
+        dataset.setUai(uaiExiste);
+        dataset.setSiret("12345,3564654654");
+        datasets.add(dataset);
+
+        dataset.setUai("");
+        datasets.add(dataset);
+
+        service.createOrUpdateEtablissements(datasets, "en");
+        verify(coreEtablissementService).saveEtablissements(any());
+
+        service.createOrUpdateEtablissements(datasets, "esr");
+        verify(coreEtablissementService).saveMetadata(any());
+
+        service.createOrUpdateEtablissements(datasets, "masa");
+        verify(coreEtablissementService).saveMasa(any());
+
+    }
+
+    @Test
+    void createOrUpdateIPSTest() {
+        List<IPSLycee2023Dataset> datasets = new ArrayList<>();
+        IPSLycee2023Dataset dataset = new IPSLycee2023Dataset();
+        dataset.setUai(uaiExiste);
+        datasets.add(dataset);
+        service.createOrUpdateIPS(datasets);
+        verify(coreEtablissementService).saveMetadata(any());
+    }
+
+    @Test
+    void createOrUpdateEffectifsTest() {
+        List<EffectifsCollegeDataset> datasets = new ArrayList<>();
+        EffectifsCollegeDataset dataset = new EffectifsCollegeDataset();
+        dataset.setUai(uaiExiste);
+        dataset.setRentreeScolaire("2024-2025");
+        dataset.setEffectifs(666);
+        datasets.add(dataset);
+
+        service.createOrUpdateEffectifs(datasets);
+        verify(coreEtablissementService).saveMetadata(any());
+    }
+
+    @Test
+    void createOrUpdateIVATest() {
+        List<IndicateurValeurAjouteeCollegeDataset> datasets = new ArrayList<>();
+        IndicateurValeurAjouteeCollegeDataset dataset = new IndicateurValeurAjouteeCollegeDataset();
+        dataset.setUai(uaiExiste);
+        dataset.setAnnee(2025);
+        datasets.add(dataset);
+
+        service.createOrUpdateIVA(datasets);
+        verify(coreEtablissementService).saveMetadata(any());
+    }
+
+    @Test
+    void createOrUpdateJpoTest() {
+        List<MasaJpoDataset> datasets = new ArrayList<>();
+        MasaJpoDataset dataset = new MasaJpoDataset();
+        dataset.setMasaId("123456");
+        datasets.add(dataset);
+        service.createOrUpdateJpo(datasets, "masa");
+        verify(coreEtablissementService).saveJPO(any());
+    }
 
 }

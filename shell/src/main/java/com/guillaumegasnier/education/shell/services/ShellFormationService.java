@@ -22,5 +22,5 @@ public interface ShellFormationService {
 
     void createOrUpdateFormationsOnisepEsr(@NonNull List<OnisepFormationDataset> datasets);
 
-    void createOrUpdateFormationsOnisepLheo(@NonNull LheoSubtype lheoSubtype);
+    void createOrUpdateFormationsOnisepLheo(LheoSubtype lheoSubtype);
 }

@@ -1,15 +1,19 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
+import com.guillaumegasnier.education.core.enums.Secteur;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Stream;
 
 import static com.guillaumegasnier.education.core.enums.Contact.TEL;
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatAdresse;
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatJPODataset;
 
 /**
  * code UAI
@@ -48,11 +52,12 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "code UAI")
     private String uai;
-
     @CsvBindByName(column = "n° SIRET")
     private String siret;
     @CsvBindByName(column = "nom")
     private String nom;
+    @CsvBindByName(column = "statut")
+    private String statut;
     @CsvBindByName(column = "adresse")
     private String adresse;
     @CsvBindByName(column = "CP")
@@ -67,6 +72,8 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     private String cedex;
     @CsvBindByName(column = "téléphone")
     private String contactTelephone;
+    @CsvBindByName(column = "journées portes ouvertes")
+    private String jpo;
 
     @Override
     public String getSiret() {
@@ -76,12 +83,7 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     }
 
     @Override
-    public String getNomCommune() {
-        return nomCommune;
-    }
-
-    @Override
-    public EtablissementDataset cloneWithUai(String uai) {
+    public OnisepEtablissementSupDataset cloneWithUai(String uai) {
         try {
             OnisepEtablissementSupDataset copy = (OnisepEtablissementSupDataset) this.clone();
             copy.setUai(uai);
@@ -93,14 +95,11 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
 
     @Override
     public String getAdresse() {
-        if (adresse == null) return null;
-        if (adresse.isBlank()) return null;
-        if (adresse.length() > 50) return adresse.substring(0, 50);
-        return adresse;
+        return formatAdresse(adresse);
     }
 
     @Override
-    public EtablissementDataset cloneWithSiret(String siret) {
+    public OnisepEtablissementSupDataset cloneWithSiret(String siret) {
         try {
             OnisepEtablissementSupDataset copy = (OnisepEtablissementSupDataset) this.clone();
             copy.setSiret(siret);
@@ -111,8 +110,20 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     }
 
     @Override
-    public UUID getId() {
-        return UUID.nameUUIDFromBytes(uai.getBytes());
+    public Secteur getSecteur() {
+        if (statut != null) {
+            if (statut.equals("public")) {
+                return Secteur.PU;
+            } else if (statut.equals("privé")) {
+                return Secteur.PV;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Boolean isActif() {
+        return true;
     }
 
     @Override
@@ -123,5 +134,14 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
             contacts.add(new ContactEtablissementDataset(TEL, contactTelephone));
 
         return contacts;
+    }
+
+    @Override
+    public List<JPODataset> getJPO() {
+        if (jpo != null && !jpo.isBlank())
+            return Stream.of(jpo.split("\\|"))
+                    .map(input -> formatJPODataset(this.getUai(), input.trim()))
+                    .toList();
+        return Collections.emptyList();
     }
 }

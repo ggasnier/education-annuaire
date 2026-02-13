@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 /**
@@ -18,7 +17,6 @@ import org.hibernate.annotations.Type;
 @Setter
 @Entity
 @Table(name = "etablissements_metadatas")
-@ToString
 @NoArgsConstructor
 public class EtablissementMetadataEntity extends AbstractEntity {
 

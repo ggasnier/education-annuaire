@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.guillaumegasnier.education.core.validations.IndicePositionSociale;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
 import lombok.Getter;
 import lombok.Setter;
 

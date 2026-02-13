@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.core.domains.formations;
 
-import com.guillaumegasnier.education.core.domains.AbstractEntity;
+import com.guillaumegasnier.education.core.domains.AbstractSourcesEntity;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.Objects;
 
 /**
  * <action>
@@ -58,14 +58,14 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "formations_actions")
-public class ActionFormationEntity extends AbstractEntity {
+public class ActionFormationEntity extends AbstractSourcesEntity {
 
     @Id
-    @Column(columnDefinition = "UUID", nullable = false, updatable = false)
-    private UUID id;
+    @Column(columnDefinition = "BIGINT", nullable = false, updatable = false)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "formation_id", foreignKey = @ForeignKey(name = "fk_actions_formations"), columnDefinition = "UUID", nullable = false)
+    @JoinColumn(name = "formation_id", foreignKey = @ForeignKey(name = "fk_actions_formations"), columnDefinition = "BIGINT", nullable = false)
     private FormationEntity formation;
 
     /**
@@ -287,4 +287,15 @@ public class ActionFormationEntity extends AbstractEntity {
      */
     private Integer parcoursupId;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ActionFormationEntity entity = (ActionFormationEntity) o;
+        return Objects.equals(id, entity.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

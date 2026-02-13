@@ -9,7 +9,7 @@ public record EtablissementDetailsDto(
 
         EtablissementDto etablissement,
 
-        List<OptionDto> options,
+        List<OptionWithCategorieDto> options,
 
         List<SpecialiteBac> specialites,
 
@@ -19,5 +19,10 @@ public record EtablissementDetailsDto(
 
         List<ContactDto> contacts,
 
-        List<MetadataDto> metadatas) {
+        List<JPODto> journees,
+
+        List<MetadataDto> metadatas,
+
+        List<FormationDto> formations
+) {
 }

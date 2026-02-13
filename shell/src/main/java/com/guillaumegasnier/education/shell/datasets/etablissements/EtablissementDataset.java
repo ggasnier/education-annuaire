@@ -1,13 +1,14 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
+import com.guillaumegasnier.education.core.enums.Secteur;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.EffectifsSuperieurDataset;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 
 public interface EtablissementDataset extends Cloneable, Dataset {
@@ -15,8 +16,6 @@ public interface EtablissementDataset extends Cloneable, Dataset {
     EtablissementDataset cloneWithUai(String uai);
 
     EtablissementDataset cloneWithSiret(String siret);
-
-    UUID getId();
 
     default String getUai() {
         return null;
@@ -43,10 +42,6 @@ public interface EtablissementDataset extends Cloneable, Dataset {
     String getCodeCommune();
 
     default String getNomCommune() {
-        return null;
-    }
-
-    default String getCodePays() {
         return null;
     }
 
@@ -82,4 +77,23 @@ public interface EtablissementDataset extends Cloneable, Dataset {
         return Collections.emptySet();
     }
 
+    default Secteur getSecteur() {
+        return null;
+    }
+
+    default List<JPODataset> getJPO() {
+        return Collections.emptyList();
+    }
+
+    /**
+     *
+     * @return le Code DGER si renseigné
+     */
+    default String getMasaId() {
+        return null;
+    }
+
+    default List<EffectifsSuperieurDataset> getEffectifs() {
+        return List.of();
+    }
 }

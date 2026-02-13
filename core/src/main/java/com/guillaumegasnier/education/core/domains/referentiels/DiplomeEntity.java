@@ -15,6 +15,7 @@ import java.util.UUID;
 @Setter
 public class DiplomeEntity extends AbstractEntity {
 
+    @Deprecated
     @Id
     @Column(columnDefinition = "UUID", nullable = false, updatable = false)
     private UUID id;

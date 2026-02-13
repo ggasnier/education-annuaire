@@ -1,9 +1,8 @@
 package com.guillaumegasnier.education.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.guillaumegasnier.education.core.enums.EtatEtablissement;
 import com.guillaumegasnier.education.core.validations.ValidSiret;
-import com.guillaumegasnier.education.core.validations.ValidUai;
+import com.guillaumegasnier.education.core.validations.etablissements.ValidUai;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -38,9 +37,6 @@ public class EtablissementRequestDto {
     @Size(max = 3)
     @JsonProperty(value = "code_nature")
     protected String codeNature;
-
-    @JsonProperty(value = "code_etat", required = true)
-    protected EtatEtablissement codeEtat;
 
     @Size(max = 5)
     @JsonProperty(value = "code_commune")
