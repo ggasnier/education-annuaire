@@ -69,6 +69,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    public Optional<EtablissementEntity> findEtablissementByUai(@ValidUai String uai) {
+        return etablissementRepository.findEtablissementByUai(uai);
+    }
+
+    @Override
     public boolean isEtablissementExiste(String uai) {
         return etablissementRepository.existsById(uai);
     }

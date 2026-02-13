@@ -34,6 +34,8 @@ public interface CoreEtablissementService {
      */
     Optional<EtablissementEntity> findEtablissement(@ValidUai String uai);
 
+    Optional<EtablissementEntity> findEtablissementByUai(@ValidUai String uai);
+
     boolean isEtablissementExiste(@ValidUai String uai);
 
     EtablissementEntity getEtablissementReferenceByUai(@ValidUai String uai);

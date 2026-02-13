@@ -66,7 +66,7 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
     @Transactional(readOnly = true)
     public EtablissementDetailsDto findEtablissementDetailsDtoByUai(@NonNull String uai) {
 
-        Optional<EtablissementEntity> entity = coreEtablissementService.findEtablissement(uai);
+        Optional<EtablissementEntity> entity = coreEtablissementService.findEtablissementByUai(uai);
 
         if (entity.isEmpty()) {
             return null;
