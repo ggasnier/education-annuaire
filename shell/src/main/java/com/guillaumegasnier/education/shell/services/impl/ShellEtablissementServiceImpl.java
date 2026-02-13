@@ -249,7 +249,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     @Override
     public void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets) {
-        
+
     }
 
     @Override
@@ -327,7 +327,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             );
 
             // Les journees portes ouvertes
-            log.info("Import JPO {}/{}", i, size);
             coreEtablissementService.saveJPO(
                     sub.stream()
                             .flatMap(this::dedoublement)
@@ -346,8 +345,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                         .flatMap(List::stream)
                         .map(etablissementTransformer::toEtablissementMetadataEntity)
                         .filter(Objects::nonNull)
-                        //.map(validatorService::toValidEntity)
-                        //.filter(Objects::nonNull)
                         .toList());
             }
 

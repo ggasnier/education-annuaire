@@ -34,4 +34,9 @@ public class ImportReferentiel implements ImportReferentielShell {
         shellReferencielService.createOrUpdateCertificationsRncp(fileService.importXmlFromZip(CERTIFICATIONS_RNCP));
     }
 
+    @Override
+    @ShellMethod("Import du Répertoire Opérationnel des Métiers et des Emplois (ROME)")
+    public void importRome() {
+        shellReferencielService.createOrUpdateRome(fileService.importCSVFromZip(ROME));
+    }
 }

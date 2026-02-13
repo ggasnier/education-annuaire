@@ -10,6 +10,7 @@ import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationRe
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.references.*;
+import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -110,6 +111,9 @@ public enum SourcesDatasets {
     FORMATIONS_LHEO_OCCITANIE("Idéo-Actions de formation-Occitanie", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa432469f421/5fa432469f421.zip", "lheo_action_Occitanie.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
     FORMATIONS_LHEO_ARA("Idéo-Actions de formation-Auvergne-Rhône-Alpes", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/63d11a26-d25d-4886-aeb5-402558e19827", "lheo_action_AURA.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
     FORMATIONS_LHEO_IDF("Idéo-Actions de formation-Ile-de-France", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa41861a282c/5fa41861a282c.zip", "lheo_action_IDF.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+
+    // ROME
+    ROME("Répertoire Opérationnel des Métiers et des Emplois (ROME)", FT, "https://www.data.gouv.fr/api/1/datasets/r/8cf674b6-ef21-446a-8190-178e2defd6fc", "unix_referentiel_code_rome_v460_utf8.csv", StandardCharsets.UTF_8, ',', "GET", RomeDataset.class),
 
     // Default
     NULL(null, AUTRE, null, null, null, ',', null, null);

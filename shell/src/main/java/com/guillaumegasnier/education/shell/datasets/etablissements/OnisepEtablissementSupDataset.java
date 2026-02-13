@@ -76,6 +76,14 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     private String jpo;
 
     @Override
+    public String getUai() {
+        if (uai == null || uai.isBlank()) return null;
+        if ("0755531K".equals(uai))
+            return "0755531E"; // Institut d'Enseignement Superieur d'Informatique et de Gestion
+        return uai;
+    }
+
+    @Override
     public String getSiret() {
         if (siret == null) return null;
         if (siret.isBlank()) return null;

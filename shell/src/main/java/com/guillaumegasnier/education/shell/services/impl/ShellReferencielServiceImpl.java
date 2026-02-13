@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
+import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
 import com.guillaumegasnier.education.shell.dto.referentiels.CertificationDTO;
 import com.guillaumegasnier.education.shell.dto.referentiels.NSFDTO;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
@@ -61,5 +62,10 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
                 .toList();
 
         log.info("NSF : {}", nsfs.size());
+    }
+
+    @Override
+    public void createOrUpdateRome(@NonNull List<RomeDataset> datasets) {
+        log.info("Romes : {}", datasets.size());
     }
 }
