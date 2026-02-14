@@ -41,8 +41,8 @@ import java.util.Optional;
 public class LocalFileService implements FileService {
 
     @Value("${app.datasets")
-    private String datasetsPath;
-    
+    private String datasetsPath = "";
+
     @Override
     public Optional<BufferedReader> openFile(@NonNull String filePath, @NonNull Charset charset, @NonNull String httpMethod) {
         try {

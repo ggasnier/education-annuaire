@@ -341,6 +341,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
             if (source.equals("esr")) {
                 coreEtablissementService.saveMetadata(sub.stream()
+                        .flatMap(this::dedoublement)
                         .map(EtablissementDataset::getEffectifs)
                         .flatMap(List::stream)
                         .map(etablissementTransformer::toEtablissementMetadataEntity)

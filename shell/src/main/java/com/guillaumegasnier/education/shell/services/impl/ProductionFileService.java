@@ -50,7 +50,7 @@ public class ProductionFileService implements FileService {
     private final RestClient restClient;
 
     @Value("${app.datasets}")
-    private String datasetsPath;
+    private String datasetsPath = "";
 
     public ProductionFileService(RestClient restClient) {
         this.restClient = restClient;

@@ -77,9 +77,9 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
 
     @Override
     public String getUai() {
-        if (uai == null || uai.isBlank()) return null;
+        if (uai == null || uai.isBlank()) return "";
         if ("0755531K".equals(uai))
-            return "0755531E"; // Institut d'Enseignement Superieur d'Informatique et de Gestion
+            return "0755531E"; // Institut d'Enseignement Supérieur d'Informatique et de Gestion
         return uai;
     }
 
