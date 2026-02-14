@@ -37,7 +37,7 @@ services:
       - myapp-net
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    image: elasticsearch:9.3.0
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
@@ -50,74 +50,9 @@ services:
     networks:
       - myapp-net
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:8.15.3
-    container_name: kibana
-    environment:
-      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-    ports:
-      - "5601:5601"
-    depends_on:
-      - elasticsearch
-    networks:
-      - myapp-net
-
-  web:
-    image: ghcr.io/ggasnier/education-annuaire/web:latest
-    restart: always
-    environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-    depends_on:
-      - postgres
-      - elasticsearch
-    networks:
-      - myapp-net
-
-  shell:
-    image: ghcr.io/ggasnier/education-annuaire/shell:latest
-    restart: "no"
-    environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-    depends_on:
-      - postgres
-      - elasticsearch
-    networks:
-      - myapp-net
-
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./certs:/etc/nginx/certs:ro
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - web
-    networks:
-      - myapp-net
-
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - ./certs:/etc/letsencrypt
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    entrypoint: /bin/sh
-    command: -c "trap exit TERM; while :; do certbot renew --webroot -w /var/www/html --quiet; sleep 12h; done"
-    networks:
-      - myapp-net
-
 volumes:
   pgdata:
   es_data:
-
 
 networks:
   myapp-net:

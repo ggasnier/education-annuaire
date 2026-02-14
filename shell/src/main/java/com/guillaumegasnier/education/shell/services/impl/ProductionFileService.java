@@ -19,6 +19,7 @@ import jakarta.xml.bind.Unmarshaller;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -47,6 +48,9 @@ import java.util.Optional;
 public class ProductionFileService implements FileService {
 
     private final RestClient restClient;
+
+    @Value("${app.datasets}")
+    private String datasetsPath;
 
     public ProductionFileService(RestClient restClient) {
         this.restClient = restClient;
@@ -118,7 +122,7 @@ public class ProductionFileService implements FileService {
 
         // Sauvegarde du CSV
         openFile(source.getUrl(), source.getCharset(), source.getHttpMethod()).ifPresentOrElse(reader -> {
-            Path outPath = Paths.get("datasets", source.getSource().name().toLowerCase(), source.getLocalPath());
+            Path outPath = Paths.get(datasetsPath, source.getSource().name().toLowerCase(), source.getLocalPath());
             try {
                 Files.createDirectories(outPath.getParent());
                 try (BufferedWriter writer = Files.newBufferedWriter(outPath, source.getCharset())) {
@@ -372,7 +376,7 @@ public class ProductionFileService implements FileService {
                         //    log.warn("Erreur de paramétrage sur le fichier local : {} vs {}", entry.getName(), sourcesDatasets.getLocalPath());
 
                         // Enregistrer le fichier en local
-                        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(),
+                        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
                                 sourcesDatasets.getLocalPath());
                         Files.createDirectories(outPath.getParent());
 
@@ -423,7 +427,7 @@ public class ProductionFileService implements FileService {
                         if (!entry.getName().equals(sourcesDatasets.getLocalPath()))
                             log.warn("Erreur de paramétrage sur le fichier local : {} vs {}", entry.getName(), sourcesDatasets.getLocalPath());
 
-                        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(),
+                        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
                                 sourcesDatasets.getLocalPath());
                         Files.createDirectories(outPath.getParent());
 
@@ -456,7 +460,7 @@ public class ProductionFileService implements FileService {
 
     @Override
     public <T> void saveResultAsJson(List<T> result, @NonNull SourcesDatasets sourcesDatasets) {
-        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(),
+        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
                 sourcesDatasets.getLocalPath());
 
         if (result == null || result.isEmpty()) {
@@ -500,7 +504,7 @@ public class ProductionFileService implements FileService {
                 while ((entry = zipInputStream.getNextEntry()) != null) {
                     if (!entry.isDirectory() && entry.getName().equals(sourcesDatasets.getLocalPath())) {
 
-                        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(),
+                        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
                                 sourcesDatasets.getLocalPath());
                         Files.createDirectories(outPath.getParent());
 

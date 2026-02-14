@@ -16,6 +16,7 @@ import jakarta.xml.bind.Unmarshaller;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,9 @@ import java.util.Optional;
 @Profile("local")
 public class LocalFileService implements FileService {
 
+    @Value("${app.datasets")
+    private String datasetsPath;
+    
     @Override
     public Optional<BufferedReader> openFile(@NonNull String filePath, @NonNull Charset charset, @NonNull String httpMethod) {
         try {
