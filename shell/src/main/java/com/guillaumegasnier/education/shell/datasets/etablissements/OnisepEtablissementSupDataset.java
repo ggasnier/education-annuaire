@@ -56,6 +56,8 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     private String siret;
     @CsvBindByName(column = "nom")
     private String nom;
+    @CsvBindByName(column = "type d'établissement")
+    private String typeEtablissement;
     @CsvBindByName(column = "statut")
     private String statut;
     @CsvBindByName(column = "adresse")
@@ -80,6 +82,8 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
         if (uai == null || uai.isBlank()) return "";
         if ("0755531K".equals(uai))
             return "0755531E"; // Institut d'Enseignement Supérieur d'Informatique et de Gestion
+        if ("0134349T".equals(uai))
+            return "0134359T"; // Institut de Formation d'Osteopathes Animaliers
         return uai;
     }
 
@@ -132,6 +136,18 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
     @Override
     public Boolean isActif() {
         return true;
+    }
+
+    @Override
+    public String getCodeNature() {
+        if (typeEtablissement == null || typeEtablissement.isBlank()) return null;
+
+        switch (typeEtablissement) {
+            case "école de santé":
+                return "430"; // Ecole de formation sanitaire et sociale"
+            default:
+                return null;
+        }
     }
 
     @Override

@@ -131,7 +131,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
         // Le code commune
         setCodeComumne(entity, dataset.getCodeCommune(), dataset.getNomCommune());
         // Le code nature
-        setCodeNature(entity, dataset.getCodeNature());
+        setCodeNature(entity, dataset.getCodeNature(), entity.getUai());
         // Le code contrat pour le privé
         setCodeContrat(entity, dataset.getCodeContrat());
         //Les sources de données
@@ -159,7 +159,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
         // Le code commune
         setCodeComumne(entity, dataset.getCodeCommune(), dataset.getNomCommune());
         // Le code nature
-        setCodeNature(entity, dataset.getCodeNature());
+        setCodeNature(entity, dataset.getCodeNature(), entity.getUai());
         // Le code contrat pour le privé
         setCodeContrat(entity, dataset.getCodeContrat());
         //Les sources de données
@@ -173,9 +173,16 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
             coreEtablissementService.findContrat(codeContrat).ifPresent(entity::setContrat);
     }
 
-    void setCodeNature(EtablissementEntity entity, String codeNature) {
-        if (codeNature != null && entity.getNature().getCode().equals("$"))
+    void setCodeNature(EtablissementEntity entity, String codeNature, String uai) {
+        if (codeNature != null && entity.getNature().getCode().equals("$")) {
             coreEtablissementService.findNature(codeNature).ifPresent(entity::setNature);
+        } else {
+            if (codeNature != null && !entity.getNature().getCode().equals("$")) {
+                if (!codeNature.equals(entity.getNature().getCode())) {
+                    log.error("Ecart de codeNature entre {} et {} pour {}", codeNature, entity.getNature().getCode(), uai);
+                }
+            }
+        }
     }
 
     void setCodeComumne(@NonNull EtablissementEntity entity, String codeCommune, String nomCommune) {
@@ -358,5 +365,5 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
             return null;
         }
     }
-    
+
 }
