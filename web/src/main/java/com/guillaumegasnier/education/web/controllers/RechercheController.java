@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.web.controllers;
 
 import com.guillaumegasnier.education.core.dto.RechercheCriteria;
+import com.guillaumegasnier.education.core.dto.RechercheDTO;
 import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,10 @@ public class RechercheController {
 
     @GetMapping("")
     public String getResultatRecherche(@RequestParam MultiValueMap<String, String> facettes, Model model) {
-        //model.addAttribute("q", facettes.getFirst("q") != null ? facettes.getFirst("q") : "");
-        //model.addAttribute("resultats", coreRechercheService.searchEtablissements(new RechercheCriteria(facettes)));
-        model.addAttribute("recherche", coreRechercheService.recherche(new RechercheCriteria(facettes)));
-        return "recherche/resultats";
+        var rechercheCriteria = new RechercheCriteria(facettes);
+        model.addAttribute("title", "Résultats de la recherche " + rechercheCriteria.getQ());
+        RechercheDTO recherche = coreRechercheService.recherche(rechercheCriteria);
+        model.addAttribute("recherche", recherche);
+        return "recherche/index";
     }
 }

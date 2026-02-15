@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!--<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>-->
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+
+<form action="/recherche" method="get">
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex gap-6">
+        <div class="w-3/4 mx-auto flex-row">
+            <div th:replace="~{recherche/resultats :: resultats}"></div>
+        </div>
+
+        <div class="w-1/4 p-4 bg-white rounded-lg shadow">
+            <div th:replace="~{recherche/facettes :: facettes}"></div>
+        </div>
+    </main>
+
+    <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+</form>
+</body>
+
+</html>

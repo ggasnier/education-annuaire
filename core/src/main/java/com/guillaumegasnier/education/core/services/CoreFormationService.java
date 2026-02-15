@@ -42,4 +42,6 @@ public interface CoreFormationService {
     List<ActionFormationEntity> findFormations(String uai);
 
     Optional<LienOnisepEntity> findLienOnisep(String clef, String valeur);
+
+    long getNbrFormations();
 }

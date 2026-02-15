@@ -115,4 +115,9 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     public Optional<LienOnisepEntity> findLienOnisep(String clef, String valeur) {
         return lienOnisepRepository.findByPkClefAndPkValeur(clef, valeur);
     }
+
+    @Override
+    public long getNbrFormations() {
+        return formationRepository.count();
+    }
 }

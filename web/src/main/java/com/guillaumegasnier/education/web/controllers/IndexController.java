@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.domains.etablissements.EtablissementE
 import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
 import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.web.dto.etablissements.CommuneWithEtablissementsDto;
 import com.guillaumegasnier.education.web.dto.etablissements.NatureWithEtablissementsDto;
@@ -27,6 +28,7 @@ public class IndexController {
 
     private final CoreTerritoireService coreTerritoireService;
     private final CoreEtablissementService coreEtablissementService;
+    private final CoreFormationService coreFormationService;
     private final WebReferenceMapper webReferenceMapper;
     private final WebEtablissementMapper webEtablissementMapper;
 
@@ -36,6 +38,7 @@ public class IndexController {
         model.addAttribute("title", "Formakoi");
 
         model.addAttribute("nbrEtabliseements", coreEtablissementService.getNbrEtablissements());
+        model.addAttribute("nbrFormations", coreFormationService.getNbrFormations());
 
         return "home.html";
     }
