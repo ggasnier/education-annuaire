@@ -56,6 +56,9 @@ public class EnEtablissementFermeDataset implements EtablissementDataset {
     @CsvBindByName(column = "appellation_officielle")
     private String nom;
 
+    @CsvBindByName(column = "denomination_principale")
+    private String nom2;
+
     private String siret;
 
     @CsvBindByName(column = "adresse_uai")
@@ -104,6 +107,11 @@ public class EnEtablissementFermeDataset implements EtablissementDataset {
         } catch (CloneNotSupportedException e) {
             return null;
         }
+    }
+
+    public String getNom() {
+        if (nom != null && !nom.isBlank()) return nom;
+        return nom2;
     }
 
     @Override

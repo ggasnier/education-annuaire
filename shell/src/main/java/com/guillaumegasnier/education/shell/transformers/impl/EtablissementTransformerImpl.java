@@ -179,7 +179,8 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
         } else {
             if (codeNature != null && !entity.getNature().getCode().equals("$")) {
                 if (!codeNature.equals(entity.getNature().getCode())) {
-                    log.error("Ecart de codeNature entre {} et {} pour {}", codeNature, entity.getNature().getCode(), uai);
+                    log.warn("Ecart de codeNature entre {} (ancien) et {} (nouveau) pour {}", entity.getNature().getCode(), codeNature, uai);
+                    coreEtablissementService.findNature(codeNature).ifPresent(entity::setNature);
                 }
             }
         }

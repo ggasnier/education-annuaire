@@ -138,17 +138,17 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
         return true;
     }
 
-    @Override
-    public String getCodeNature() {
-        if (typeEtablissement == null || typeEtablissement.isBlank()) return null;
-
-        switch (typeEtablissement) {
-            case "école de santé":
-                return "430"; // Ecole de formation sanitaire et sociale"
-            default:
-                return null;
-        }
-    }
+//    @Override
+//    public String getCodeNature() {
+//        if (typeEtablissement == null || typeEtablissement.isBlank()) return null;
+//
+//        switch (typeEtablissement) {
+//            case "école de santé":
+//                return "430"; // Ecole de formation sanitaire et sociale"
+//            default:
+//                return null;
+//        }
+//    }
 
     @Override
     public List<ContactEtablissementDataset> getContacts() {

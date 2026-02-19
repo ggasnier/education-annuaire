@@ -227,7 +227,6 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-
     public void saveMasa(@NonNull List<EtablissementMasaEntity> entities) {
         etablissementMasaRepository.saveAll(entities);
         em.flush();
@@ -321,5 +320,5 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     public Optional<EtablissementContactEntity> findContact(String uai, Contact contact, String valeur) {
         return etablissementContactRepository.findByPkUaiAndPkContactAndPkValeur(uai, contact, valeur);
     }
-    
+
 }
