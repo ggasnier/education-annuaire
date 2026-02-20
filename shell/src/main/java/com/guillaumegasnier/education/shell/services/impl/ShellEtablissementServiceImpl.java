@@ -104,7 +104,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         for (int i = 0; i < size; i += chunk) {
             List<OnisepDispositifDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
 
-            log.info("Options: {}/{}", i, size);
+            log.info("Import des dispositifs: {}/{}", i, size);
             coreEtablissementService.saveOptions(sub.stream()
                     .filter(d -> d.getOption() != null)
                     .filter(d -> d.getUai() != null && !d.getUai().isBlank())
@@ -114,7 +114,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .filter(Objects::nonNull)
                     .toList());
 
-            log.info("Sports: {}/{}", i, size);
             coreEtablissementService.saveEtablissementSportEntity(sub.stream()
                     .filter(d -> d.getOption() != null &&
                             (d.getOption().equals(OptionEtablissement.SPORT_ETUDES) ||
@@ -128,7 +127,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .filter(Objects::nonNull)
                     .toList());
 
-            log.info("Import des dispositifs sections langues orientales");
             coreEtablissementService.saveLangues(sub.stream()
                     .filter(d -> d.getOption() != null
                             && d.getOption().equals(OptionEtablissement.SECTION_ORIENTALE))
@@ -141,7 +139,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .filter(Objects::nonNull)
                     .toList());
 
-            log.info("Langues: {}/{}", i, size);
             coreEtablissementService.saveLangues(sub.stream()
                     .filter(d -> d.getOption() != null &&
                             (d.getOption().equals(OptionEtablissement.SECTION_EUROPEENNE) ||
@@ -159,7 +156,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .toList());
 
 
-            log.info("Import des dispositifs sections internationales");
             coreEtablissementService.saveLangues(sub.stream()
                     .filter(d -> d.getOption() != null
                             && d.getOption().equals(OptionEtablissement.SECTION_INTERNATIONALE))
@@ -171,7 +167,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .filter(Objects::nonNull)
                     .toList());
 
-            log.info("Import des dispositifs sections bilingues");
             coreEtablissementService.saveLangues(sub.stream()
                     .filter(d -> d.getOption() != null
                             && d.getOption().equals(OptionEtablissement.SECTION_BILINGUE))
@@ -452,6 +447,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .stream()
                 .map(etablissementMapper::toSpecialiteDTO)
                 .flatMap(List::stream)
+                .filter(dto -> !dto.uai().isBlank())
                 .map(dto -> etablissementTransformer.toEtablissementSpecialiteEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)

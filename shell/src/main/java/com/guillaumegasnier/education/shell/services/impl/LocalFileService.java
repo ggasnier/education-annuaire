@@ -40,7 +40,7 @@ import java.util.Optional;
 @Profile("local")
 public class LocalFileService implements FileService {
 
-    @Value("${app.datasets")
+    @Value("${app.datasets}")
     private String datasetsPath = "";
 
     @Override
@@ -66,7 +66,7 @@ public class LocalFileService implements FileService {
     public <T extends Dataset> List<T> importCSV(@NonNull SourcesDatasets sourcesDatasets) {
         log.info("Début import csv {}", sourcesDatasets.getLocalPath());
 
-        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
 
         List<T> result = new ArrayList<>();
         @SuppressWarnings("unchecked")
@@ -110,7 +110,7 @@ public class LocalFileService implements FileService {
     public FICHES importXmlFromZip(@NonNull SourcesDatasets sourcesDatasets) {
         log.info("Début import zip {}", sourcesDatasets.getLocalPath());
 
-        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
 
         if (!Files.exists(outPath)) {
             log.error("Le fichier xml {} n'existe pas", outPath.getFileName());
@@ -135,7 +135,7 @@ public class LocalFileService implements FileService {
     public LheoSubtype importLheoSubtypeFromZip(@NonNull SourcesDatasets sourcesDatasets) {
         log.info("Début import zip {}", sourcesDatasets.getLocalPath());
 
-        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
 
         if (!Files.exists(outPath)) {
             log.error("Le fichier xml {} n'existe pas", outPath.getFileName());
