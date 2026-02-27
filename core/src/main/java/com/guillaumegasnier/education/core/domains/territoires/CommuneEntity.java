@@ -12,8 +12,12 @@ import lombok.Setter;
 @Table(name = "communes")
 public class CommuneEntity extends AbstractEntity {
 
+    /**
+     * FR : code_insee
+     * Les autres pays : geoname_id
+     */
     @Id
-    @Column(columnDefinition = "BPCHAR(5)", length = 5, unique = true)
+    @Column(columnDefinition = "VARCHAR(10)", length = 10, unique = true)
     private String code;
 
     @NotBlank
