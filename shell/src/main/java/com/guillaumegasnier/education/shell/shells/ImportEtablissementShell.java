@@ -6,6 +6,8 @@ import com.guillaumegasnier.education.shell.datasets.Dataset;
 
 public interface ImportEtablissementShell {
 
+    void importEtablissementsGlobal();
+
     void importEtablissements();
 
     void importEtablissementsEsr();

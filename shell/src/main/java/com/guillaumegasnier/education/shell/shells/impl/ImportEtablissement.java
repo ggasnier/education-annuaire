@@ -24,7 +24,14 @@ public class ImportEtablissement implements ImportEtablissementShell {
     private final FileService fileService;
 
     @Override
+    @ShellMethod(value = "Import global des établissements")
+    public void importEtablissementsGlobal() {
+        importEtablissements();
+        importEtablissementsDetails();
+        importEtablissementsMetadatas();
+    }
 
+    @Override
     @ShellMethod(value = "Import établissements (ouverts)")
     public void importEtablissementsEnOuverts() {
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS), "en");
@@ -185,5 +192,5 @@ public class ImportEtablissement implements ImportEtablissementShell {
     public void importEtablissementsRecherche() {
         shellEtablissementService.importEtablissementsRecherche();
     }
- 
+
 }
