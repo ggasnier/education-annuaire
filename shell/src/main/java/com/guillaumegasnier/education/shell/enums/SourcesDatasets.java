@@ -70,7 +70,7 @@ public enum SourcesDatasets {
     EFFECTIFS_LYCEES_PRO("Effectifs d’élèves en lycée professionnel", EN, "https://www.data.gouv.fr/api/1/datasets/r/204c9fbf-5e88-4a69-a922-1ad1b369115c", "effectifs_lycees_pro.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsLyceeDataset.class),
 
     // Compléments
-    SECTIONS_SPORTIVES("Sections Sportives Scolaires", EN, "https://www.data.gouv.fr/api/1/datasets/r/c479b9b8-8224-46ef-b2f4-f6a3468726fc", "sections_sportives.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),
+    SECTIONS_SPORTIVES("Sections Sportives Scolaires", EN, "https://www.data.gouv.fr/api/1/datasets/r/3706c479-3c41-4ee3-8f18-81bfca86e8d7", "sections_sportives.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),
     SECTIONS_SPORT_ETUDES("Implantation des sections Sport-Etudes", EN, "https://www.data.gouv.fr/api/1/datasets/r/654ba2b1-fc50-4f36-a053-dbf9056ca53a", "sections_sports-etudes.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),
     SECTIONS_INTERNATIONALES("Sections internationales", EN, "https://www.data.gouv.fr/api/1/datasets/r/877befc2-2b3c-4e27-902b-abcf7f1e800f", "sections-internationales.csv", StandardCharsets.UTF_8, ';', "GET", SectionInternationaleDataset.class),
     LANGUES("Offre de langues dans les collèges et lycées", EN, "https://www.data.gouv.fr/api/1/datasets/r/60ca51e3-05b7-4b90-9433-ebbd68803f8c", "langues.csv", StandardCharsets.UTF_8, ';', "GET", LangueDataset.class),
