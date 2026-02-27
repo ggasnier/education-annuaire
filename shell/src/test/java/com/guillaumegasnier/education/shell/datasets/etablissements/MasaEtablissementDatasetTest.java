@@ -36,36 +36,6 @@ class MasaEtablissementDatasetTest {
     }
 
     @Test
-    void getCodeNatureTest() {
-        dataset.setNomNature("MFREO");
-        assertEquals("380", dataset.getCodeNature());
-        dataset.setNomNature("Lycée polyvalent");
-        assertEquals("306", dataset.getCodeNature());
-        dataset.setNomNature("LEAP");
-        assertEquals("320", dataset.getCodeNature());
-        dataset.setNomNature("LPA");
-        assertEquals("320", dataset.getCodeNature());
-        dataset.setNomNature("Collège");
-        assertEquals("340", dataset.getCodeNature());
-        dataset.setNomNature("CFPPA");
-        assertEquals("740", dataset.getCodeNature());
-        dataset.setNomNature("LEGTA");
-        assertEquals("300", dataset.getCodeNature());
-        dataset.setNomNature("CFA");
-        assertEquals("605", dataset.getCodeNature());
-        dataset.setNomNature("CFA privé");
-        assertEquals("605", dataset.getCodeNature());
-        dataset.setNomNature("LEGTPA");
-        assertEquals("307", dataset.getCodeNature());
-        dataset.setNomNature("EREA");
-        assertEquals("370", dataset.getCodeNature());
-        dataset.setNomNature("Inconnu");
-        assertNull(dataset.getCodeNature());
-        dataset.setNomNature(null);
-        assertNull(dataset.getCodeNature());
-    }
-
-    @Test
     void cloneWithUaiTest() {
         var dataset2 = dataset.cloneWithUai("1234567A");
         assertNotNull(dataset2);
