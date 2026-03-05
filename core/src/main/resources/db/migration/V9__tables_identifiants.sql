@@ -12,4 +12,4 @@ CREATE TABLE etablissements_identifiants
 );
 
 ALTER TABLE etablissements_identifiants
-    ADD CONSTRAINT FK_IDENTIFIANTS_ETABLISSEMENTS FOREIGN KEY (uai) REFERENCES etablissements (uai);
+    ADD CONSTRAINT fk_identifiants_etablissements FOREIGN KEY (uai) REFERENCES etablissements (uai);

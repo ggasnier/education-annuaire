@@ -16,4 +16,4 @@ CREATE TABLE etablissements_jpo
 );
 
 ALTER TABLE etablissements_jpo
-    ADD CONSTRAINT FK_JPO_ETABLISSEMENTS FOREIGN KEY (uai) REFERENCES etablissements (uai);
+    ADD CONSTRAINT fk_jpo_etablissements FOREIGN KEY (uai) REFERENCES etablissements (uai);

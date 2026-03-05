@@ -13,4 +13,4 @@ ALTER TABLE etablissements_masa
     ADD CONSTRAINT uc_etablissements_masa_uai UNIQUE (uai);
 
 ALTER TABLE etablissements_masa
-    ADD CONSTRAINT FK_MASA_ETABLISSEMENTS FOREIGN KEY (uai) REFERENCES etablissements (uai);
+    ADD CONSTRAINT fk_masa_etablissements FOREIGN KEY (uai) REFERENCES etablissements (uai);

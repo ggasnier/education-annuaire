@@ -6,6 +6,7 @@ import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
+import com.guillaumegasnier.education.web.configuration.AppProperties;
 import com.guillaumegasnier.education.web.dto.etablissements.CommuneWithEtablissementsDto;
 import com.guillaumegasnier.education.web.dto.etablissements.NatureWithEtablissementsDto;
 import com.guillaumegasnier.education.web.dto.references.AcademieWithDepartementsDto;
@@ -31,16 +32,19 @@ public class IndexController {
     private final CoreFormationService coreFormationService;
     private final WebReferenceMapper webReferenceMapper;
     private final WebEtablissementMapper webEtablissementMapper;
+    private final AppProperties appProperties;
 
     @GetMapping("")
     public String getHome(Model model) {
 
-        model.addAttribute("title", "Formakoi");
+        model.addAttribute("title", appProperties.getTitle());
 
         model.addAttribute("nbrEtabliseements", coreEtablissementService.getNbrEtablissements());
         model.addAttribute("nbrFormations", coreFormationService.getNbrFormations());
+        model.addAttribute("nbrCertifications", 0);
+        model.addAttribute("nbrMetiers", 0);
 
-        return "home.html";
+        return "home/index.html";
     }
 
     @GetMapping("/academies")
