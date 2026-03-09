@@ -33,7 +33,7 @@ CREATE TABLE organismes
     siret                                  CHAR(14),
     adresse                                VARCHAR(50),
     code_postal                            VARCHAR(5),
-    code_commune                           CHAR(5),
+    code_commune                           VARCHAR(10),
     actions_de_formation                   BOOLEAN,
     bilans_de_competences                  BOOLEAN,
     validation_acquis_experience           BOOLEAN,

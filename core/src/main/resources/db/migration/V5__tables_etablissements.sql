@@ -38,7 +38,7 @@ CREATE TABLE etablissements
     adresse        VARCHAR(50),
     complement     VARCHAR(50),
     code_postal    BPCHAR(5),
-    code_commune   BPCHAR(5),
+    code_commune   VARCHAR(10),
     sources        VARCHAR(100),
     created_at     TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at     TIMESTAMP WITHOUT TIME ZONE NOT NULL,
