@@ -112,6 +112,12 @@ public class ImportEtablissement implements ImportEtablissementShell {
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(MASA_ETABS), "masa");
     }
 
+    @Override
+    @ShellMethod(value = "Import établissements (Github)")
+    public void importEtablissementsGithub() {
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ETABS_AD), "github");
+    }
+
     @ShellMethod(value = "Import sections sport études et sections sportives")
     public void importSports() {
         shellEtablissementService.createOrUpdateSports(fileService.importCSV(SECTIONS_SPORTIVES), Sport.Categorie.SS, "en");

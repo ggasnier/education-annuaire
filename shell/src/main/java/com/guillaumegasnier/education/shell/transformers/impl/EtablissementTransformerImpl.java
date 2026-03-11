@@ -137,6 +137,10 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
         //Les sources de données
         entity.addSource(source);
 
+        if (entity.getSecteur() == null && dataset.getSecteur() != null) {
+            entity.setSecteur(dataset.getSecteur());
+        }
+
         if (dataset.getDateOuverture() != null)
             entity.setDateOuverture(dataset.getDateOuverture());
 

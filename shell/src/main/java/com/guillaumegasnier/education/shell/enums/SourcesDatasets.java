@@ -46,6 +46,7 @@ public enum SourcesDatasets {
     MASA_ETABS("RefEA : Liste des établissements proposant des formations agricoles 2025-2026", MASA, "https://www.data.gouv.fr/api/1/datasets/r/3f56237d-db7a-4957-9d5d-f4b529d6bc36", "etablissements.csv", StandardCharsets.UTF_8, ';', "GET", MasaEtablissementDataset.class),
     MASA_JPO("RefEA : Les journées Portes ouvertes", MASA, "https://www.data.gouv.fr/api/1/datasets/r/d1d559fb-c952-4448-837c-7ca375b67e62", "jpo.csv", StandardCharsets.UTF_8, ';', "GET", MasaJpoDataset.class),
 
+    ETABS_AD("Etablissements Andorre", AUTRE, "https://ggasnier.github.io/education-annuaire-datasets/etablissements/etablissements_ad.csv", "etablissements_ad.csv", StandardCharsets.UTF_8, ',', "GET", GithubEtablissementDataset.class),
 
     // Indicateurs valeur ajoutée
     IVA_COLLEGES("Indicateurs de valeur ajoutée des collèges", EN, "https://www.data.gouv.fr/api/1/datasets/r/a230247a-8aea-4112-be41-bc008c0d6966", "iva_colleges.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeCollegeDataset.class),

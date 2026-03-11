@@ -22,6 +22,8 @@ public interface ImportEtablissementShell {
 
     void importEtablissementsMasa();
 
+    void importEtablissementsGithub();
+
     void importJpo();
 
     void importSports();
