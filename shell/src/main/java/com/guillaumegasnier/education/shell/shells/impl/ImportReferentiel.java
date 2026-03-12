@@ -1,14 +1,21 @@
 package com.guillaumegasnier.education.shell.shells.impl;
 
+import com.guillaumegasnier.education.shell.datasets.referentiels.RomeAppellationDataset;
+import com.guillaumegasnier.education.shell.datasets.referentiels.RomeBlocDataset;
+import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.guillaumegasnier.education.shell.services.ShellReferencielService;
 import com.guillaumegasnier.education.shell.shells.ImportReferentielShell;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
+import java.util.List;
+
 import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
 
+@Slf4j
 @ShellComponent
 @AllArgsConstructor
 public class ImportReferentiel implements ImportReferentielShell {
@@ -37,6 +44,14 @@ public class ImportReferentiel implements ImportReferentielShell {
     @Override
     @ShellMethod("Import du Répertoire Opérationnel des Métiers et des Emplois (ROME)")
     public void importRome() {
-        shellReferencielService.createOrUpdateRome(fileService.importCSVFromZip(ROME));
+        //fileService.importRomeFromZip(ROME);
+        List<RomeDataset> romeDatasetList = fileService.importRomeData(ROME, "unix_referentiel_code_rome_v460_utf8.csv", RomeDataset.class);
+        List<RomeAppellationDataset> romeAppellationDatasetList = fileService.importRomeData(ROME, "unix_referentiel_appellation_v460_utf8.csv", RomeAppellationDataset.class);
+        List<RomeBlocDataset> romeBlocDatasetList = fileService.importRomeData(ROME, "unix_texte_v460_utf8.csv", RomeBlocDataset.class);
+        log.info("RomeDataset: {}", romeDatasetList.size());
+        log.info("RomeAppellationDataset: {}", romeAppellationDatasetList.size());
+        log.info("RomeBlocDataset: {}", romeBlocDatasetList.size());
+
+        shellReferencielService.createOrUpdateRome(romeDatasetList, romeAppellationDatasetList, romeBlocDatasetList);
     }
 }

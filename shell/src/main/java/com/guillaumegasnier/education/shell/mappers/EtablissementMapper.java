@@ -160,8 +160,8 @@ public abstract class EtablissementMapper {
     @Mapping(target = "certificationQualiopi", ignore = true)
     public abstract OrganismeEntity toOrganismeEntity(TravailOrganismeFormationDataset dataset);
 
-    @Mapping(target = "nomSecteur", ignore = true)
-    @Mapping(target = "codeSecteur", ignore = true)
+    @Mapping(target = "nomSecteur", source = "secteur.nom")
+    @Mapping(target = "codeSecteur", source = "secteur")
     @Mapping(target = "nomRegion", source = "commune.departement.region.nom")
     @Mapping(target = "nomPays", source = "commune.pays.nom")
     @Mapping(target = "nomNature", source = "nature.nom")

@@ -4,7 +4,7 @@ import com.guillaumegasnier.education.core.domains.formations.ActionFormationEnt
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
-import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -21,13 +21,13 @@ public interface CoreFormationService {
 
     Optional<FormationEntity> findFormationByOnisepId(Integer onisepId);
 
-    void saveRomes(List<RomeEntity> entities);
+    void saveRomes(List<MetierEntity> entities);
 
     //Optional<CertificationEntity> findCertificationByRNCP(String certificationCode);
 
     //void saveCertification(CertificationEntity entity);
 
-    Set<RomeEntity> getRomes(List<String> codes);
+    Set<MetierEntity> getRomes(List<String> codes);
 
     Optional<FormationEntity> findFormationByParcoursupId(Integer parcoursupId);
 

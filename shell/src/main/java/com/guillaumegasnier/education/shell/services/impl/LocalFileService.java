@@ -5,7 +5,6 @@ import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
-import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -156,8 +155,4 @@ public class LocalFileService implements FileService {
         return null;
     }
 
-    @Override
-    public List<RomeDataset> importCSVFromZip(SourcesDatasets sourcesDatasets) {
-        return List.of();
-    }
 }

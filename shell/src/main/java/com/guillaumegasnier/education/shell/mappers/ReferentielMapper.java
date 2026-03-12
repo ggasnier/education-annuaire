@@ -1,9 +1,11 @@
 package com.guillaumegasnier.education.shell.mappers;
 
+import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
 import com.guillaumegasnier.education.shell.datasets.CODESNSF;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.NOMENCLATUREEUROPE;
 import com.guillaumegasnier.education.shell.datasets.OuiNonType;
+import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
 import com.guillaumegasnier.education.shell.dto.referentiels.CertificationDTO;
 import com.guillaumegasnier.education.shell.dto.referentiels.NSFDTO;
 import org.mapstruct.Mapper;
@@ -53,4 +55,11 @@ public abstract class ReferentielMapper {
     public List<NSFDTO> toNSFDTO(@NonNull List<CODESNSF.NSF> nsf) {
         return nsf.stream().map(nsf1 -> new NSFDTO(nsf1.getCODE(), nsf1.getLIBELLE())).toList();
     }
+
+    @Mapping(target = "metdatas", ignore = true)
+    @Mapping(target = "code", source = "codeRome")
+    @Mapping(target = "metierParent", ignore = true) // Ne pas mapper
+    @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
+    @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
+    public abstract MetierEntity toMetierEntity(RomeDataset dataset);
 }

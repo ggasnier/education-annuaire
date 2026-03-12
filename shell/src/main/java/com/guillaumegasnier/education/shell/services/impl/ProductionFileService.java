@@ -9,7 +9,6 @@ import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablis
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementResponse;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationResponse;
-import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -492,7 +491,57 @@ public class ProductionFileService implements FileService {
     }
 
     @Override
-    public List<RomeDataset> importCSVFromZip(@NonNull SourcesDatasets sourcesDatasets) {
+    public <T extends Dataset> List<T> importRomeData(@NonNull SourcesDatasets sourcesDatasets, String fileName, Class<T> datasetClass) {
+        log.info("Début import {}", sourcesDatasets.getNom());
+
+        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), fileName);
+//        List<RomeDataset> result = new ArrayList<>();
+
+        List<T> result = new ArrayList<>();
+        @SuppressWarnings("unchecked")
+        Class<T> clazz = (Class<T>) datasetClass;
+
+        try (BufferedReader reader = Files.newBufferedReader(outPath, sourcesDatasets.getCharset())) {
+            List<T> beans = new CsvToBeanBuilder<T>(reader)
+                    .withType(clazz)
+                    .withSeparator(sourcesDatasets.getSeparator())
+                    .build()
+                    .parse();
+
+            result.addAll(beans);
+        } catch (Exception e) {
+            log.error("Erreur pendant le parsing CSV : {}", e.getMessage(), e);
+        }
+
+        return result;
+    }
+
+//    @Override
+//    public List<RomeDataset> importRome(@NonNull SourcesDatasets sourcesDatasets) {
+//        log.info("Début import {}", sourcesDatasets.getNom());
+//
+//        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), "unix_referentiel_code_rome_v460_utf8.csv");
+//        List<RomeDataset> result = new ArrayList<>();
+//
+//        try (BufferedReader reader = Files.newBufferedReader(outPath, sourcesDatasets.getCharset())) {
+//            List<RomeDataset> beans = new CsvToBeanBuilder<RomeDataset>(reader)
+//                    .withType(RomeDataset.class)
+//                    .withSeparator(sourcesDatasets.getSeparator())
+//                    .build()
+//                    .parse();
+//
+//            result.addAll(beans);
+//        } catch (Exception e) {
+//            log.error("Erreur pendant le parsing CSV : {}", e.getMessage(), e);
+//        }
+//
+//        return result;
+//
+//
+//    }
+
+    @Override
+    public void importRomeFromZip(@NonNull SourcesDatasets sourcesDatasets) {
         log.info("Début import {}", sourcesDatasets.getNom());
 
         try {
@@ -502,10 +551,13 @@ public class ProductionFileService implements FileService {
 
                 java.util.zip.ZipEntry entry;
                 while ((entry = zipInputStream.getNextEntry()) != null) {
-                    if (!entry.isDirectory() && entry.getName().equals(sourcesDatasets.getLocalPath())) {
+                    if (!entry.isDirectory()) {
+                        //&& entry.getName().equals(sourcesDatasets.getLocalPath())) {
 
+//                        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
+//                                sourcesDatasets.getLocalPath());
                         Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
-                                sourcesDatasets.getLocalPath());
+                                entry.getName());
                         Files.createDirectories(outPath.getParent());
 
                         // Copier le contenu du zip vers le fichier local
@@ -517,30 +569,31 @@ public class ProductionFileService implements FileService {
                             }
                         }
                         log.info("Fichier csv enregistré dans : {}", outPath.toAbsolutePath());
-
-                        List<RomeDataset> result = new ArrayList<>();
-
-                        try (BufferedReader reader = Files.newBufferedReader(outPath, sourcesDatasets.getCharset())) {
-                            List<RomeDataset> beans = new CsvToBeanBuilder<RomeDataset>(reader)
-                                    .withType(RomeDataset.class)
-                                    .withSeparator(sourcesDatasets.getSeparator())
-                                    .build()
-                                    .parse();
-
-                            result.addAll(beans);
-                        } catch (Exception e) {
-                            log.error("Erreur pendant le parsing CSV : {}", e.getMessage(), e);
-                        }
-
-                        return result;
                     }
                 }
+
+//                Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+//                List<RomeDataset> result = new ArrayList<>();
+
+//                try (BufferedReader reader = Files.newBufferedReader(outPath, sourcesDatasets.getCharset())) {
+//                    List<RomeDataset> beans = new CsvToBeanBuilder<RomeDataset>(reader)
+//                            .withType(RomeDataset.class)
+//                            .withSeparator(sourcesDatasets.getSeparator())
+//                            .build()
+//                            .parse();
+//
+//                    result.addAll(beans);
+//                } catch (Exception e) {
+//                    log.error("Erreur pendant le parsing CSV : {}", e.getMessage(), e);
+//                }
+
+//                return result;
             }
         } catch (Exception e) {
             log.error("Erreur lors de l'import du fichier ZIP : {}", e.getMessage(), e);
-            return null;
+//            return null;
         }
 
-        return List.of();
+        //return List.of();
     }
 }

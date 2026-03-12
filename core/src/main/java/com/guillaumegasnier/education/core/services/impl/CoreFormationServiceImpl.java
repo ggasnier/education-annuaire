@@ -4,12 +4,12 @@ import com.guillaumegasnier.education.core.domains.formations.ActionFormationEnt
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
-import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
 import com.guillaumegasnier.education.core.repositories.formations.ActionFormationRepository;
 import com.guillaumegasnier.education.core.repositories.formations.FormationRepository;
 import com.guillaumegasnier.education.core.repositories.formations.LienOnisepRepository;
 import com.guillaumegasnier.education.core.repositories.formations.OrganismeRepository;
-import com.guillaumegasnier.education.core.repositories.referentiels.RomeRepository;
+import com.guillaumegasnier.education.core.repositories.referentiels.MetierRepository;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -32,7 +32,7 @@ public class CoreFormationServiceImpl implements CoreFormationService {
 
     private final FormationRepository formationRepository;
     private final ActionFormationRepository actionFormationRepository;
-    private final RomeRepository romeRepository;
+    private final MetierRepository metierRepository;
     private final OrganismeRepository organismeRepository;
     private final LienOnisepRepository lienOnisepRepository;
 
@@ -72,15 +72,15 @@ public class CoreFormationServiceImpl implements CoreFormationService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void saveRomes(List<RomeEntity> entities) {
-        romeRepository.saveAll(entities);
+    public void saveRomes(List<MetierEntity> entities) {
+        metierRepository.saveAll(entities);
         em.flush();
         em.clear();
     }
 
     @Override
-    public Set<RomeEntity> getRomes(List<String> codes) {
-        return romeRepository.findAllByCodeIn(codes);
+    public Set<MetierEntity> getRomes(List<String> codes) {
+        return metierRepository.findAllByCodeIn(codes);
     }
 
     @Override

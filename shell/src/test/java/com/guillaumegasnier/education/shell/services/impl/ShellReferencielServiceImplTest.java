@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
@@ -21,14 +22,17 @@ class ShellReferencielServiceImplTest {
 
     private CoreEtablissementService coreEtablissementService;
 
+    private CoreReferentielService coreReferentielService;
+
     private ShellReferencielService service;
 
     @BeforeEach
     void setUp() {
         coreEtablissementService = mock(CoreEtablissementService.class);
+        coreReferentielService = mock(CoreReferentielService.class);
         EtablissementMapper etablissementMapper = Mappers.getMapper(EtablissementMapper.class);
         ReferentielMapper referentielMapper = Mappers.getMapper(ReferentielMapper.class);
-        service = new ShellReferencielServiceImpl(coreEtablissementService, etablissementMapper, referentielMapper);
+        service = new ShellReferencielServiceImpl(coreEtablissementService, etablissementMapper, referentielMapper, coreReferentielService);
     }
 
     @Test

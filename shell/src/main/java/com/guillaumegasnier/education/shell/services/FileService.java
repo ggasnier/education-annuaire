@@ -33,5 +33,15 @@ public interface FileService {
 
     LheoSubtype importLheoSubtypeFromZip(@NonNull SourcesDatasets sourcesDatasets);
 
-    List<RomeDataset> importCSVFromZip(SourcesDatasets sourcesDatasets);
+    default List<RomeDataset> importRome(@NonNull SourcesDatasets sourcesDatasets) {
+        return List.of();
+    }
+
+    default void importRomeFromZip(@NonNull SourcesDatasets sourcesDatasets) {
+
+    }
+
+    default <T extends Dataset> List<T> importRomeData(@NonNull SourcesDatasets sourcesDatasets, String fileName, Class<T> datasetClass) {
+        return List.of();
+    }
 }

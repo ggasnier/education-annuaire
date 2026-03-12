@@ -14,24 +14,22 @@ CREATE TABLE certifications
     CONSTRAINT pk_certifications PRIMARY KEY (code)
 );
 
-CREATE TABLE romes
+CREATE TABLE metiers
 (
-    code       CHAR(5)                     NOT NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    nom        VARCHAR(255),
-    CONSTRAINT pk_romes PRIMARY KEY (code)
+    code               CHAR(5)                     NOT NULL,
+    code_ogr           INTEGER                     NOT NULL,
+    nom                VARCHAR(255),
+    transition_eco     BPCHAR(1),
+    transition_num     BPCHAR(1),
+    transition_demo    BPCHAR(1),
+    emploi_reglemente  BPCHAR(1),
+    emploi_cadre       BPCHAR(1),
+    metier_parent_code BPCHAR(5),
+    metadatas          JSONB,
+    created_at         TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at         TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    CONSTRAINT pk_metiers PRIMARY KEY (code)
 );
 
-CREATE TABLE certifications_romes
-(
-    certification_code VARCHAR(255) NOT NULL,
-    rome_code          CHAR(5)      NOT NULL,
-    CONSTRAINT pk_certifications_romes PRIMARY KEY (certification_code, rome_code)
-);
-
-ALTER TABLE certifications_romes
-    ADD CONSTRAINT fk_certifications_romes_certification FOREIGN KEY (certification_code) REFERENCES certifications (code);
-
-ALTER TABLE certifications_romes
-    ADD CONSTRAINT fk_certifications_romes_romes FOREIGN KEY (rome_code) REFERENCES romes (code);
+ALTER TABLE metiers
+    ADD CONSTRAINT fk_metiers_parent FOREIGN KEY (metier_parent_code) REFERENCES metiers (code);
