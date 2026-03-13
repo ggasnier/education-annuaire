@@ -2,16 +2,16 @@ package com.guillaumegasnier.education.core.dto;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class MetierMetadataDto {
 
     // Blocs
-    private List<MetierBlocDto> blocs = new ArrayList<>();
+    private Set<MetierBlocDto> blocs = new HashSet<>();
 
     // Appellations
-    private List<MetierAppellationDto> appellations = new ArrayList<>();
+    private Set<MetierAppellationDto> appellations = new HashSet<>();
 
 }

@@ -7,6 +7,7 @@ import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDatase
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.mappers.ReferentielMapper;
 import com.guillaumegasnier.education.shell.services.ShellReferencielService;
+import com.guillaumegasnier.education.shell.transformers.ReferentielTransformer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -24,15 +25,18 @@ class ShellReferencielServiceImplTest {
 
     private CoreReferentielService coreReferentielService;
 
+    private ReferentielTransformer referentielTransformer;
+
     private ShellReferencielService service;
 
     @BeforeEach
     void setUp() {
         coreEtablissementService = mock(CoreEtablissementService.class);
         coreReferentielService = mock(CoreReferentielService.class);
+        referentielTransformer = mock(ReferentielTransformer.class);
         EtablissementMapper etablissementMapper = Mappers.getMapper(EtablissementMapper.class);
         ReferentielMapper referentielMapper = Mappers.getMapper(ReferentielMapper.class);
-        service = new ShellReferencielServiceImpl(coreEtablissementService, etablissementMapper, referentielMapper, coreReferentielService);
+        service = new ShellReferencielServiceImpl(coreEtablissementService, etablissementMapper, referentielMapper, coreReferentielService, referentielTransformer);
     }
 
     @Test
