@@ -10,4 +10,6 @@ public interface CoreReferentielService {
     void saveMetiers(List<MetierEntity> entities);
 
     Optional<MetierEntity> findMetier(String code);
+
+    List<MetierEntity> findAll();
 }

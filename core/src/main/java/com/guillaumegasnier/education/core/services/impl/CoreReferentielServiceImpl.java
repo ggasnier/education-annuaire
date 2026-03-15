@@ -28,4 +28,9 @@ public class CoreReferentielServiceImpl implements CoreReferentielService {
     public Optional<MetierEntity> findMetier(String code) {
         return metierRepository.findById(code);
     }
+
+    @Override
+    public List<MetierEntity> findAll() {
+        return metierRepository.findAll();
+    }
 }

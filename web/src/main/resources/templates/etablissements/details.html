@@ -1,21 +1,14 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title th:text="${title}"></title>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title th:text="${etablissement.nom}"></title>
 </head>
 
-<body class="bg-gray-50">
-
-<form action="/recherche" method="get">
-    <th:block th:replace="~{fragments/header :: header}"></th:block>
-</form>
-
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+<body>
+<th:block layout:fragment="content">
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
         <div class="flex flex-col md:flex-row md:items-start md:justify-between">
             <div class="flex-1">
@@ -49,10 +42,6 @@
         <div th:replace="~{etablissements/fragments/bloc-ips :: bloc}"></div>
         <div th:replace="~{etablissements/fragments/bloc-formations :: bloc}"></div>
     </div>
-</main>
-
-<th:block th:replace="~{fragments/footer :: footer}"></th:block>
-
+</th:block>
 </body>
-
 </html>

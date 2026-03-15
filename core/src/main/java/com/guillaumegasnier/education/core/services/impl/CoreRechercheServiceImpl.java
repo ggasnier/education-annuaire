@@ -5,12 +5,15 @@ import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import com.guillaumegasnier.education.core.domains.recherche.RechercheEtablissementEntity;
+import com.guillaumegasnier.education.core.domains.recherche.RechercheMetierEntity;
 import com.guillaumegasnier.education.core.dto.RechercheCriteria;
 import com.guillaumegasnier.education.core.dto.RechercheDTO;
 import com.guillaumegasnier.education.core.dto.RechercheFacetteDTO;
 import com.guillaumegasnier.education.core.dto.RechercheFacetteValeurDTO;
+import com.guillaumegasnier.education.core.dto.recherche.RechercheMetierDTO;
 import com.guillaumegasnier.education.core.enums.FacetteEtablissement;
 import com.guillaumegasnier.education.core.repositories.RechercheEtablissementRepository;
+import com.guillaumegasnier.education.core.repositories.RechercheMetierRepository;
 import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +53,15 @@ public class CoreRechercheServiceImpl implements CoreRechercheService {
     );
 
     private final RechercheEtablissementRepository rechercheEtablissementRepository;
+    private final RechercheMetierRepository rechercheMetierRepository;
     private final ElasticsearchOperations elasticsearchOperations;
 
     @Autowired
     public CoreRechercheServiceImpl(
-            RechercheEtablissementRepository rechercheEtablissementRepository,
+            RechercheEtablissementRepository rechercheEtablissementRepository, RechercheMetierRepository rechercheMetierRepository,
             ElasticsearchOperations elasticsearchOperations) {
         this.rechercheEtablissementRepository = rechercheEtablissementRepository;
+        this.rechercheMetierRepository = rechercheMetierRepository;
         this.elasticsearchOperations = elasticsearchOperations;
     }
 
@@ -68,7 +73,7 @@ public class CoreRechercheServiceImpl implements CoreRechercheService {
      * @param criteria Critères de recherche, de la forme code*
      * @return Query ES
      */
-    private static Query buildBaseQuery(@NonNull RechercheCriteria criteria, Boolean useFiltres) {
+    private static Query buildBaseQuery(@NonNull RechercheCriteria criteria, List<String> textFields, Boolean useFiltres) {
         BoolQuery.Builder bool = QueryBuilders.bool();
         String q = criteria.getQ();
         MultiValueMap<String, String> filtres = criteria.getFiltres();
@@ -77,20 +82,6 @@ public class CoreRechercheServiceImpl implements CoreRechercheService {
         if (q == null || q.isBlank()) {
             bool.must(QueryBuilders.matchAll().build()._toQuery());
         } else {
-            // Champs textuels à interroger
-            List<String> textFields = List.of(
-                    "nom^5",
-                    "adresse",
-                    "codePostal",
-                    "nomSecteur",
-                    "nomNature",
-                    "nomCommune",
-                    "nomDepartement",
-                    "nomAcademie",
-                    "nomRegion",
-                    "nomPays"
-            );
-
             // multi_match phrase (prioritaire)
             Query phrase = QueryBuilders.multiMatch(m -> m
                     .query(q)
@@ -353,9 +344,22 @@ public class CoreRechercheServiceImpl implements CoreRechercheService {
         dto.setPage(Math.max(0, criteria.getPage()));
         dto.setQ(criteria.getQ());
 
+        List<String> textFields = List.of(
+                "nom^5",
+                "adresse",
+                "codePostal",
+                "nomSecteur",
+                "nomNature",
+                "nomCommune",
+                "nomDepartement",
+                "nomAcademie",
+                "nomRegion",
+                "nomPays"
+        );
+
         // La recherche textuelle
         NativeQueryBuilder builder = NativeQuery.builder()
-                .withQuery(buildBaseQuery(criteria, true))
+                .withQuery(buildBaseQuery(criteria, textFields, true))
                 .withPageable(PageRequest.of(dto.getPage(), DEFAULT_PAGE_SIZE));
         // On lance la recherche
         SearchHits<RechercheEtablissementEntity> hits = elasticsearchOperations.search(builder.build(), RechercheEtablissementEntity.class);
@@ -366,7 +370,7 @@ public class CoreRechercheServiceImpl implements CoreRechercheService {
 
         // Les facettes
         builder = NativeQuery.builder()
-                .withQuery(buildBaseQuery(criteria, false))
+                .withQuery(buildBaseQuery(criteria, textFields, false))
                 .withMaxResults(0);
 
         for (FacetteEtablissement facetteEtablissement : FacetteEtablissement.values()) {
@@ -426,5 +430,37 @@ public class CoreRechercheServiceImpl implements CoreRechercheService {
         }
 
         return dto;
+    }
+
+    @Override
+    public RechercheMetierDTO rechercheMetier(@NonNull RechercheCriteria rechercheCriteria) {
+        var dto = new RechercheMetierDTO();
+
+        dto.setPage(Math.max(0, rechercheCriteria.getPage()));
+        dto.setQ(rechercheCriteria.getQ());
+
+        List<String> textFields = List.of(
+                "nom^5",
+                "appellations",
+                "description"
+        );
+
+        // La recherche textuelle
+        NativeQueryBuilder builder = NativeQuery.builder()
+                .withQuery(buildBaseQuery(rechercheCriteria, textFields, true))
+                .withPageable(PageRequest.of(dto.getPage(), DEFAULT_PAGE_SIZE));
+        // On lance la recherche
+        SearchHits<RechercheMetierEntity> hits = elasticsearchOperations.search(builder.build(), RechercheMetierEntity.class);
+        // Nombre de résultats
+        dto.setTotal(hits.getTotalHits());
+        // Les résultats
+        dto.setResultats(hits.getSearchHits().stream().map(SearchHit::getContent).toList());
+
+        return dto;
+    }
+
+    @Override
+    public void saveMetiers(List<RechercheMetierEntity> entities) {
+        rechercheMetierRepository.saveAll(entities);
     }
 }

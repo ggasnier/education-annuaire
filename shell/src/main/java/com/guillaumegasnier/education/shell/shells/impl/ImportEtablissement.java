@@ -193,10 +193,10 @@ public class ImportEtablissement implements ImportEtablissementShell {
         shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_LYCEES_PRO));
     }
 
-    @Override
+    /*@Override
     @ShellMethod(value = "Import des établissements dans Elasticsearch pour la recherche")
     public void importEtablissementsRecherche() {
         shellEtablissementService.importEtablissementsRecherche();
-    }
+    }*/
 
 }

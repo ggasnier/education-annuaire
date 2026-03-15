@@ -26,11 +26,11 @@ public class MetierController {
         Optional<MetierDetailsDto> details = webReferentielService.findMetier(code);
 
         if (details.isEmpty())
-            return "etablissements/404";
+            return "referentiels/metiers/404";
 
         model.addAttribute("metier", details.get());
 
-        return "referentiels/metier";
+        return "referentiels/metiers/details";
     }
 
 }

@@ -1,6 +1,8 @@
 package com.guillaumegasnier.education.shell.mappers;
 
+import com.guillaumegasnier.education.core.domains.recherche.RechercheMetierEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
+import com.guillaumegasnier.education.core.dto.MetierAppellationDto;
 import com.guillaumegasnier.education.shell.datasets.CODESNSF;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.NOMENCLATUREEUROPE;
@@ -15,6 +17,7 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public abstract class ReferentielMapper {
@@ -62,4 +65,12 @@ public abstract class ReferentielMapper {
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
     @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
     public abstract MetierEntity toMetierEntity(RomeDataset dataset);
+
+    public List<String> toAppelations(Set<MetierAppellationDto> appellations) {
+        return appellations.stream().map(MetierAppellationDto::getNom).toList();
+    }
+
+    @Mapping(target = "description", ignore = true)
+    @Mapping(target = "appellations", source = "metdatas.appellations")
+    public abstract RechercheMetierEntity toRechercheMetierEntity(MetierEntity entity);
 }

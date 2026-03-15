@@ -1,31 +1,30 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"
+      layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title th:text="${title}"></title>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <!--<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>-->
+    <title>Recherche</title>
 </head>
 
-<body class="bg-gray-50 text-gray-900">
-
-<form action="/recherche" method="get">
-    <div th:replace="~{fragments/header :: header}"></div>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex gap-6">
-        <div class="w-3/4 mx-auto flex-row">
-            <div th:replace="~{recherche/resultats :: resultats}"></div>
-        </div>
-
-        <div class="w-1/4 p-4 bg-white rounded-lg shadow">
-            <div th:replace="~{recherche/facettes :: facettes}"></div>
-        </div>
-    </main>
-
-    <th:block th:replace="~{fragments/footer :: footer}"></th:block>
-</form>
+<body>
+<th:block layout:fragment="content">
+    <!-- Bouton filtres mobile -->
+    <div class="lg:hidden mb-4">
+        <button @click="mobileFilters = !mobileFilters"
+                class="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M3 4h18M7 8h10M10 12h4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span x-text="mobileFilters ? 'Masquer les filtres' : 'Filtrer les résultats'"></span>
+        </button>
+    </div>
+    <div class="w-3/4 mx-auto flex-row">
+        <div th:replace="~{recherche/resultats :: resultats}"></div>
+    </div>
+    <div class="w-1/4 p-4 bg-white rounded-lg shadow">
+        <div th:replace="~{recherche/facettes :: facettes}"></div>
+    </div>
+</th:block>
 </body>
-
 </html>
