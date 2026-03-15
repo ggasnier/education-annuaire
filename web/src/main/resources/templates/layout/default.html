@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title layout:title-pattern="$CONTENT_TITLE"></title>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+<form action="/recherche" method="get">
+    <div th:replace="~{fragments/header :: header(critere=${critere})}"></div>
+    <main class="max-w-7xl mx-auto p-4 pt-6" x-data="{ mobileFilters: false }">
+        <th:block layout:fragment="content">
+        </th:block>
+    </main>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</form>
+</body>
+
+</html>
