@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Contient tous les résultats de recherche, les facettes, etc...
+ * Contient tous les résultats de recherche, les facettes, etc...+
+ *
+ * @deprecated Utliser {@link com.guillaumegasnier.education.core.dto.recherche.RechercheEtablissementDTO}
  */
+@Deprecated
 @Data
 public class RechercheDTO {
 

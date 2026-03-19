@@ -308,7 +308,7 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
 
     @Override
     public List<EtablissementEntity> findEtablissementsActif() {
-        return etablissementRepository.findAllByActif(true);
+        return etablissementRepository.findAllActifWithOptions();
     }
 
     @Override

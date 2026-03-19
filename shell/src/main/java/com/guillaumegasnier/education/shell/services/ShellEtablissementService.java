@@ -39,7 +39,7 @@ public interface ShellEtablissementService {
 
     void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets);
 
-    void importEtablissementsRecherche();
+//    void importEtablissementsRecherche();
 
     void createOrUpdateJpo(@NonNull List<MasaJpoDataset> datasets, @NonNull String masa);
 

@@ -14,10 +14,12 @@ CREATE TABLE certifications
     CONSTRAINT pk_certifications PRIMARY KEY (code)
 );
 
-CREATE TABLE metiers
+--------------------
+-- Métiers
+--------------------
+CREATE TABLE rome_metiers
 (
-    code               CHAR(5)                     NOT NULL,
-    code_ogr           INTEGER                     NOT NULL,
+    code               BPCHAR(5)                   NOT NULL,
     nom                VARCHAR(255),
     transition_eco     BPCHAR(1),
     transition_num     BPCHAR(1),
@@ -31,5 +33,113 @@ CREATE TABLE metiers
     CONSTRAINT pk_metiers PRIMARY KEY (code)
 );
 
-ALTER TABLE metiers
-    ADD CONSTRAINT fk_metiers_parent FOREIGN KEY (metier_parent_code) REFERENCES metiers (code);
+ALTER TABLE rome_metiers
+    ADD CONSTRAINT fk_metiers_parent FOREIGN KEY (metier_parent_code) REFERENCES rome_metiers (code);
+
+CREATE TABLE certifications_metiers
+(
+    certification_code VARCHAR(255) NOT NULL,
+    metier_code        BPCHAR(5)    NOT NULL
+);
+
+ALTER TABLE certifications_metiers
+    ADD CONSTRAINT fk_certifications_metiers_c FOREIGN KEY (certification_code) REFERENCES certifications (code);
+
+ALTER TABLE certifications_metiers
+    ADD CONSTRAINT fk_certifications_metiers_m FOREIGN KEY (metier_code) REFERENCES rome_metiers (code);
+
+--------------------
+-- Domaine
+--------------------
+CREATE TABLE rome_domaines
+(
+    code       INTEGER                     NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    nom        VARCHAR(255),
+    CONSTRAINT pk_rome_domaines PRIMARY KEY (code)
+);
+
+--------------------
+-- Enjeux
+--------------------
+CREATE TABLE rome_enjeux
+(
+    code         BPCHAR(2)                   NOT NULL,
+    nom          VARCHAR(255),
+    domaine_code INTEGER,
+    created_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    CONSTRAINT pk_rome_enjeux PRIMARY KEY (code)
+);
+
+ALTER TABLE rome_enjeux
+    ADD CONSTRAINT FK_ENJEUX_DOMAINES FOREIGN KEY (domaine_code) REFERENCES rome_domaines (code);
+
+--------------------
+-- Objectifs
+--------------------
+CREATE TABLE rome_objectifs
+(
+    code       BPCHAR(3)                   NOT NULL,
+    nom        VARCHAR(255),
+    enjeu_code BPCHAR(2),
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    CONSTRAINT pk_rome_objectifs PRIMARY KEY (code)
+);
+
+ALTER TABLE rome_objectifs
+    ADD CONSTRAINT FK_OBJECTIFS_ENJEUX FOREIGN KEY (enjeu_code) REFERENCES rome_enjeux (code);
+
+--------------------
+-- Macros compétences
+--------------------
+CREATE TABLE rome_macros_competences
+(
+    code          BPCHAR(5)                   NOT NULL,
+    nom           VARCHAR(255),
+    objectif_code BPCHAR(3),
+    created_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    CONSTRAINT pk_rome_macros_competences PRIMARY KEY (code)
+);
+
+ALTER TABLE rome_macros_competences
+    ADD CONSTRAINT FK_MACROS_COMPETENCES_ENJEUX FOREIGN KEY (objectif_code) REFERENCES rome_objectifs (code);
+
+--------------------
+-- Compétences
+--------------------
+CREATE TABLE rome_competences
+(
+    code                  INTEGER                     NOT NULL,
+    nom                   VARCHAR(255),
+    macro_competence_code BPCHAR(5),
+    created_at            TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at            TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    CONSTRAINT pk_rome_competences PRIMARY KEY (code)
+);
+
+ALTER TABLE rome_competences
+    ADD CONSTRAINT FK_COMPETENCES_MACROS FOREIGN KEY (macro_competence_code) REFERENCES rome_macros_competences (code);
+
+
+CREATE TABLE rome_metiers_competences
+(
+    created_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    coeur_metier    BPCHAR(1),
+    metier_code     BPCHAR(5)                   NOT NULL,
+    competence_code INTEGER                     NOT NULL,
+    CONSTRAINT pk_rome_metiers_competences PRIMARY KEY (metier_code, competence_code)
+);
+
+--------------------
+-- Liaison Métiers - Compétences
+--------------------
+ALTER TABLE rome_metiers_competences
+    ADD CONSTRAINT FK_METIERS_COMPETENCES_C FOREIGN KEY (competence_code) REFERENCES rome_competences (code);
+
+ALTER TABLE rome_metiers_competences
+    ADD CONSTRAINT FK_METIERS_COMPETENCES_M FOREIGN KEY (metier_code) REFERENCES rome_metiers (code);

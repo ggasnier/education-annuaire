@@ -21,23 +21,15 @@
     </div>
 
     <div class="lg:flex lg:gap-8 lg:items-start">
-        <!-- Panneau facettes — en premier dans le DOM (s'affiche au-dessus sur mobile), côté droit sur desktop via lg:order-last -->
-        <aside :class="mobileFilters ? 'block' : 'hidden lg:block'"
-               class="w-full lg:w-64 lg:flex-shrink-0 lg:order-last mb-6 lg:mb-0" x-transition>
-            <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm lg:sticky lg:top-20">
-                Lorem ipsum
-            </div>
-        </aside>
+        <div th:replace="~{recherche/facettes :: facettes}"></div>
 
         <!-- Colonne résultats -->
         <section class="flex-1 min-w-0">
 
             <p class="text-xs text-gray-400 mb-4">Environ <span th:text="${recherche.total}"></span>
                 résultats pour <span th:text="${recherche.q}"></span></p>
-            
-            <!-- Liste de résultats -->
-            <ol class="space-y-3">
 
+            <ol class="space-y-3">
                 <li class="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4 hover:border-indigo-300 transition"
                     th:each="resultat : ${recherche.resultats}">
 
@@ -46,7 +38,6 @@
                        th:text="${resultat.nom}"></a>
                 </li>
             </ol>
-
         </section>
     </div>
 </th:block>

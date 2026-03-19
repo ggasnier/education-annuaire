@@ -71,7 +71,7 @@ public class LocalFileService implements FileService {
         @SuppressWarnings("unchecked")
         Class<T> clazz = (Class<T>) sourcesDatasets.getDatasetClass();
 
-        openFile(String.valueOf(outPath), StandardCharsets.UTF_8, "GET").ifPresentOrElse(reader -> {
+        openFile(String.valueOf(outPath), sourcesDatasets.getCharset(), "GET").ifPresentOrElse(reader -> {
             try (reader) {
                 List<T> beans = new CsvToBeanBuilder<T>(reader)
                         .withType(clazz)
@@ -153,6 +153,29 @@ public class LocalFileService implements FileService {
         }
 
         return null;
+    }
+
+    @Override
+    public <T extends Dataset> List<T> importRomeData(@NonNull SourcesDatasets sourcesDatasets, String fileName, Class<T> datasetClass) {
+        log.info("Début import {}", fileName);
+
+        List<T> result = new ArrayList<>();
+        @SuppressWarnings("unchecked")
+        Class<T> clazz = (Class<T>) datasetClass;
+
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), fileName), sourcesDatasets.getCharset())) {
+            List<T> beans = new CsvToBeanBuilder<T>(reader)
+                    .withType(clazz)
+                    .withSeparator(sourcesDatasets.getSeparator())
+                    .build()
+                    .parse();
+
+            result.addAll(beans);
+        } catch (Exception e) {
+            log.error("Erreur pendant le parsing CSV : {}", e.getMessage(), e);
+        }
+
+        return result;
     }
 
 }

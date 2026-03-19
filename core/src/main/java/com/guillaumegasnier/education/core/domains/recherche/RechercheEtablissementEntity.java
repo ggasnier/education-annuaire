@@ -62,7 +62,7 @@ public class RechercheEtablissementEntity {
 
     private List<RechercheOption> options = new ArrayList<>();
 
-    public record RechercheOption(String code, String nom, String couleur) {
+    public record RechercheOption(String codeOption, String nomOption) {
 
     }
 

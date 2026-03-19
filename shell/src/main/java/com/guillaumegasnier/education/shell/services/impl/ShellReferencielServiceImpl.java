@@ -8,6 +8,7 @@ import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
+import com.guillaumegasnier.education.shell.datasets.referentiels.ArborescenceCompetenceDataset;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeAppellationDataset;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeBlocDataset;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
@@ -131,5 +132,31 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
         dto.setTransitionDemo(dataset.getTransitionDemo());
         dto.setEmploiReglemente(dataset.getEmploiReglemente());
         return dto;
+    }
+
+    @Override
+    public void createOrUpdateRome(@NonNull List<ArborescenceCompetenceDataset> datasets) {
+
+        // 1. Domaine de compétence
+        var a = datasets.stream().map(referentielMapper::toDomaineCompetenceDTO).distinct().toList();
+        log.info("Compétences : {}", a.size());
+        // 2. Enjeu
+        var b = datasets.stream().map(referentielMapper::toEnjeuDTO).distinct().toList();
+        log.info("Enjeux : {}", b.size());
+        // 3. Objectif
+        var c = datasets.stream().map(referentielMapper::toObjectifDTO).distinct().toList();
+        log.info("Objectifs : {}", c.size());
+        // 4. MacroCompetence
+        var d = datasets.stream().map(referentielMapper::toMacroCompetenceDTO).distinct().toList();
+        log.info("MacroCompetences : {}", d.size());
+        // 5. Competence
+        coreReferentielService.saveCompetences(
+                datasets.stream()
+                        .map(referentielMapper::toCompetenceDTO)
+                        .distinct()
+                        .filter(dto -> dto.getCode() > 0)
+                        .map(referentielTransformer::toCompetenceEntity)
+                        .toList());
+
     }
 }

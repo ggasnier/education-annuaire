@@ -5,6 +5,7 @@ import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
 import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
+import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.web.configuration.AppProperties;
 import com.guillaumegasnier.education.web.dto.etablissements.CommuneWithEtablissementsDto;
@@ -30,6 +31,7 @@ public class IndexController {
     private final CoreTerritoireService coreTerritoireService;
     private final CoreEtablissementService coreEtablissementService;
     private final CoreFormationService coreFormationService;
+    private final CoreReferentielService coreReferentielService;
     private final WebReferenceMapper webReferenceMapper;
     private final WebEtablissementMapper webEtablissementMapper;
     private final AppProperties appProperties;
@@ -41,8 +43,9 @@ public class IndexController {
 
         model.addAttribute("nbrEtabliseements", coreEtablissementService.getNbrEtablissements());
         model.addAttribute("nbrFormations", coreFormationService.getNbrFormations());
-        model.addAttribute("nbrCertifications", 0);
-        model.addAttribute("nbrMetiers", 0);
+        model.addAttribute("nbrCertifications", coreReferentielService.getNbrCertifications());
+        model.addAttribute("nbrCompetences", coreReferentielService.getNbrCompetences());
+        model.addAttribute("nbrMetiers", coreReferentielService.getNbrMetiers());
 
         return "home/index.html";
     }

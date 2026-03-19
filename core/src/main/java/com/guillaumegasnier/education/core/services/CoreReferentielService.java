@@ -1,5 +1,7 @@
 package com.guillaumegasnier.education.core.services;
 
+import com.guillaumegasnier.education.core.domains.referentiels.CompetenceEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.MacroCompetenceEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
 
 import java.util.List;
@@ -12,4 +14,16 @@ public interface CoreReferentielService {
     Optional<MetierEntity> findMetier(String code);
 
     List<MetierEntity> findAll();
+
+    Optional<CompetenceEntity> findCompetence(int code);
+
+    Optional<MacroCompetenceEntity> findMacroCompetence(String code);
+
+    void saveCompetences(List<CompetenceEntity> entities);
+
+    long getNbrMetiers();
+
+    long getNbrCompetences();
+
+    long getNbrCertifications();
 }

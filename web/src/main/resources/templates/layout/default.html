@@ -9,7 +9,7 @@
     <title layout:title-pattern="$CONTENT_TITLE"></title>
 </head>
 
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
 <form action="/recherche" method="get">
     <div th:replace="~{fragments/header :: header(critere=${critere})}"></div>
     <main class="max-w-7xl mx-auto p-4 pt-6" x-data="{ mobileFilters: false }">

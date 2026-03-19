@@ -487,13 +487,13 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         log.info("Import terminé : {} sections binationale enregistrée(s).", datasets.size());
     }
 
-    @Override
-    public void importEtablissementsRecherche() {
-        coreRechercheService.saveEtablissements(
-                coreEtablissementService
-                        .findEtablissementsActif()
-                        .stream()
-                        .map(etablissementMapper::toRechercheEtablissementEntity)
-                        .toList());
-    }
+//    @Override
+//    public void importEtablissementsRecherche() {
+//        coreRechercheService.saveEtablissements(
+//                coreEtablissementService
+//                        .findEtablissementsActif()
+//                        .stream()
+//                        .map(etablissementMapper::toRechercheEtablissementEntity)
+//                        .toList());
+//    }
 }

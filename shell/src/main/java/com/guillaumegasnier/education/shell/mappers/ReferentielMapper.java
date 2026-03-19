@@ -7,9 +7,9 @@ import com.guillaumegasnier.education.shell.datasets.CODESNSF;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.NOMENCLATUREEUROPE;
 import com.guillaumegasnier.education.shell.datasets.OuiNonType;
+import com.guillaumegasnier.education.shell.datasets.referentiels.ArborescenceCompetenceDataset;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
-import com.guillaumegasnier.education.shell.dto.referentiels.CertificationDTO;
-import com.guillaumegasnier.education.shell.dto.referentiels.NSFDTO;
+import com.guillaumegasnier.education.shell.dto.referentiels.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -59,6 +59,8 @@ public abstract class ReferentielMapper {
         return nsf.stream().map(nsf1 -> new NSFDTO(nsf1.getCODE(), nsf1.getLIBELLE())).toList();
     }
 
+    @Mapping(target = "competences", ignore = true)
+    @Mapping(target = "certifications", ignore = true)
     @Mapping(target = "metdatas", ignore = true)
     @Mapping(target = "code", source = "codeRome")
     @Mapping(target = "metierParent", ignore = true) // Ne pas mapper
@@ -73,4 +75,24 @@ public abstract class ReferentielMapper {
     @Mapping(target = "description", ignore = true)
     @Mapping(target = "appellations", source = "metdatas.appellations")
     public abstract RechercheMetierEntity toRechercheMetierEntity(MetierEntity entity);
+
+    @Mapping(target = "code", source = "codeDomaineCompetence")
+    @Mapping(target = "nom", source = "domaineCompetence")
+    public abstract DomaineCompetenceDTO toDomaineCompetenceDTO(ArborescenceCompetenceDataset dataset);
+
+    @Mapping(target = "code", source = "codeEnjeu")
+    @Mapping(target = "nom", source = "enjeu")
+    public abstract EnjeuDTO toEnjeuDTO(ArborescenceCompetenceDataset dataset);
+
+    @Mapping(target = "code", source = "codeObjectif")
+    @Mapping(target = "nom", source = "objectif")
+    public abstract ObjectifDTO toObjectifDTO(ArborescenceCompetenceDataset dataset);
+
+    @Mapping(target = "code", source = "codeMacroCompetence")
+    @Mapping(target = "nom", source = "libelleMacroCompetence")
+    public abstract MacroCompetenceDTO toMacroCompetenceDTO(ArborescenceCompetenceDataset dataset);
+
+    @Mapping(target = "code", source = "codeOgrCompetence")
+    @Mapping(target = "nom", source = "libelleCompetence")
+    public abstract CompetenceDTO toCompetenceDTO(ArborescenceCompetenceDataset dataset);
 }

@@ -7,8 +7,10 @@ import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.mappers.ReferentielMapper;
 import com.guillaumegasnier.education.shell.services.ShellRechercheService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ShellRechercheServiceImpl implements ShellRechercheService {
@@ -21,12 +23,14 @@ public class ShellRechercheServiceImpl implements ShellRechercheService {
 
     @Override
     public void importEtablissementsRecherche() {
+        log.info("Début import établissements dans ES");
         coreRechercheService.saveEtablissements(
                 coreEtablissementService
                         .findEtablissementsActif()
                         .stream()
                         .map(etablissementMapper::toRechercheEtablissementEntity)
                         .toList());
+        log.info("Fin import établissements dans ES");
     }
 
     @Override

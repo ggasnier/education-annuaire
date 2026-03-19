@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.shells.impl;
 
+import com.guillaumegasnier.education.shell.datasets.referentiels.ArborescenceCompetenceDataset;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeAppellationDataset;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeBlocDataset;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
@@ -45,13 +46,13 @@ public class ImportReferentiel implements ImportReferentielShell {
     @ShellMethod("Import du Répertoire Opérationnel des Métiers et des Emplois (ROME)")
     public void importRome() {
         fileService.importRomeFromZip(ROME);
+
         List<RomeDataset> romeDatasetList = fileService.importRomeData(ROME, "unix_referentiel_code_rome_v460_utf8.csv", RomeDataset.class);
         List<RomeAppellationDataset> romeAppellationDatasetList = fileService.importRomeData(ROME, "unix_referentiel_appellation_v460_utf8.csv", RomeAppellationDataset.class);
         List<RomeBlocDataset> romeBlocDatasetList = fileService.importRomeData(ROME, "unix_texte_v460_utf8.csv", RomeBlocDataset.class);
-        log.info("RomeDataset: {}", romeDatasetList.size());
-        log.info("RomeAppellationDataset: {}", romeAppellationDatasetList.size());
-        log.info("RomeBlocDataset: {}", romeBlocDatasetList.size());
+        List<ArborescenceCompetenceDataset> arborescenceCompetenceDatasetList = fileService.importRomeData(ROME, "unix_arborescence_competences_v460_utf8.csv", ArborescenceCompetenceDataset.class);
 
+        shellReferencielService.createOrUpdateRome(arborescenceCompetenceDatasetList);
         shellReferencielService.createOrUpdateRome(romeDatasetList, romeAppellationDatasetList, romeBlocDatasetList);
     }
 }

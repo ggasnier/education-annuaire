@@ -174,6 +174,7 @@ public abstract class EtablissementMapper {
     @Mapping(target = "codeDepartement", source = "commune.departement.code")
     @Mapping(target = "codeCommune", source = "commune.code")
     @Mapping(target = "codeAcademie", source = "commune.departement.academie.code")
+    @Mapping(target = "options", source = "options", qualifiedByName = "toOptions")
     public abstract RechercheEtablissementEntity toRechercheEtablissementEntity(EtablissementEntity entity);
 
     @Named("toDescription")
@@ -225,13 +226,14 @@ public abstract class EtablissementMapper {
     }
 
     @Named("toOptions")
-    public List<RechercheEtablissementEntity.RechercheOption> toOptions(@NonNull List<EtablissementOptionEntity> entities) {
+    public List<RechercheEtablissementEntity.RechercheOption> toOptions(List<EtablissementOptionEntity> entities) {
+        if (entities == null)
+            return null;
         return entities.stream().map(this::toOption).toList();
     }
 
-    @Mapping(target = "couleur", source = "pk.option.categorie.couleur")
-    @Mapping(target = "nom", source = "pk.option.nom")
-    @Mapping(target = "code", source = "pk.option")
+    @Mapping(target = "nomOption", source = "pk.option.nom")
+    @Mapping(target = "codeOption", source = "pk.option")
     public abstract RechercheEtablissementEntity.RechercheOption toOption(EtablissementOptionEntity entity);
 
 }

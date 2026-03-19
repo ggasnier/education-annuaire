@@ -32,12 +32,21 @@ public class RechercheController {
 
         switch (critere.getType()) {
             case "metier":
-                model.addAttribute("recherche", coreRechercheService.rechercheMetier(critere));
+                model.addAttribute("recherche", coreRechercheService.rechercheMetiers(critere));
                 return "recherche/metiers";
+            case "competence":
+                model.addAttribute("recherche", coreRechercheService.rechercheCompetences(critere));
+                return "recherche/competences";
+            case "certification":
+                model.addAttribute("recherche", coreRechercheService.rechercheCertifications(critere));
+                return "recherche/certifications";
+            case "formation":
+                model.addAttribute("recherche", coreRechercheService.rechercheFormations(critere));
+                return "recherche/formations";
             case "etablissement":
             default:
                 model.addAttribute("recherche", coreRechercheService.recherche(critere));
-                return "recherche/index";
+                return "recherche/etablissements";
         }
 
     }

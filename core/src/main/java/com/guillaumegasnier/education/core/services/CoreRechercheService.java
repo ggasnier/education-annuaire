@@ -6,7 +6,7 @@ import com.guillaumegasnier.education.core.dto.RechercheCriteria;
 import com.guillaumegasnier.education.core.dto.RechercheDTO;
 import com.guillaumegasnier.education.core.dto.RechercheFacetteDTO;
 import com.guillaumegasnier.education.core.dto.RechercheResultatsDTO;
-import com.guillaumegasnier.education.core.dto.recherche.RechercheMetierDTO;
+import com.guillaumegasnier.education.core.dto.recherche.*;
 import org.springframework.lang.NonNull;
 
 import java.util.ArrayList;
@@ -32,5 +32,13 @@ public interface CoreRechercheService {
 
     void saveMetiers(List<RechercheMetierEntity> entities);
 
-    RechercheMetierDTO rechercheMetier(@NonNull RechercheCriteria rechercheCriteria);
+    RechercheMetierDTO rechercheMetiers(@NonNull RechercheCriteria rechercheCriteria);
+
+    RechercheEtablissementDTO rechercheEtablissements(@NonNull RechercheCriteria rechercheCriteria);
+
+    RechercheCompetenceDTO rechercheCompetences(@NonNull RechercheCriteria rechercheCriteria);
+
+    RechercheCertificationDTO rechercheCertifications(@NonNull RechercheCriteria rechercheCriteria);
+
+    RechercheFormationDTO rechercheFormations(@NonNull RechercheCriteria rechercheCriteria);
 }

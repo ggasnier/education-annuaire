@@ -82,9 +82,7 @@ public class RechercheCriteria {
     }
 
     public Boolean selected(String type) {
-        log.info("selected:{}/{}", type, this.type);
         if (type == null) return false;
-        if (this.type.equals(type)) return true;
-        return false;
+        return this.type.equals(type);
     }
 }
