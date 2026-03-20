@@ -3,6 +3,7 @@ package com.guillaumegasnier.education.shell.mappers;
 import com.guillaumegasnier.education.core.domains.recherche.RechercheMetierEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
 import com.guillaumegasnier.education.core.dto.MetierAppellationDto;
+import com.guillaumegasnier.education.core.enums.GrandDomaine;
 import com.guillaumegasnier.education.shell.datasets.CODESNSF;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.NOMENCLATUREEUROPE;
@@ -72,6 +73,13 @@ public abstract class ReferentielMapper {
         return appellations.stream().map(MetierAppellationDto::getNom).toList();
     }
 
+    @Named("grandDomaineToCode")
+    public String grandDomaineToCode(GrandDomaine grandDomaine) {
+        return grandDomaine == null ? null : grandDomaine.name();
+    }
+
+    @Mapping(target = "nomDomaine", source = "grandDomaine.nom")
+    @Mapping(target = "codeDomaine", source = "grandDomaine", qualifiedByName = "grandDomaineToCode")
     @Mapping(target = "description", ignore = true)
     @Mapping(target = "appellations", source = "metdatas.appellations")
     public abstract RechercheMetierEntity toRechercheMetierEntity(MetierEntity entity);

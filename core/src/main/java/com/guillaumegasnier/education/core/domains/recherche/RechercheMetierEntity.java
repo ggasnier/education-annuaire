@@ -27,4 +27,10 @@ public class RechercheMetierEntity {
 
     @Field(type = FieldType.Text, analyzer = "french", searchAnalyzer = "french")
     private List<String> appellations;
+
+    @Field(type = FieldType.Keyword)
+    private String codeDomaine;
+    @Field(type = FieldType.Text, analyzer = "french", searchAnalyzer = "french")
+    private String nomDomaine;
+
 }

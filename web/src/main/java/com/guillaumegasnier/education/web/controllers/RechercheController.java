@@ -30,24 +30,28 @@ public class RechercheController {
         model.addAttribute("critere", critere);
         model.addAttribute("title", "Résultats de la recherche " + critere.getQ());
 
-        switch (critere.getType()) {
-            case "metier":
+        return switch (critere.getType()) {
+            case "metier" -> {
                 model.addAttribute("recherche", coreRechercheService.rechercheMetiers(critere));
-                return "recherche/metiers";
-            case "competence":
+                yield "recherche/metiers";
+            }
+            case "competence" -> {
                 model.addAttribute("recherche", coreRechercheService.rechercheCompetences(critere));
-                return "recherche/competences";
-            case "certification":
+                yield "recherche/competences";
+            }
+            case "certification" -> {
                 model.addAttribute("recherche", coreRechercheService.rechercheCertifications(critere));
-                return "recherche/certifications";
-            case "formation":
+                yield "recherche/certifications";
+            }
+            case "formation" -> {
                 model.addAttribute("recherche", coreRechercheService.rechercheFormations(critere));
-                return "recherche/formations";
-            case "etablissement":
-            default:
-                model.addAttribute("recherche", coreRechercheService.recherche(critere));
-                return "recherche/etablissements";
-        }
+                yield "recherche/formations";
+            }
+            default -> {
+                model.addAttribute("recherche", coreRechercheService.rechercheEtablissements(critere));
+                yield "recherche/etablissements";
+            }
+        };
 
     }
 }

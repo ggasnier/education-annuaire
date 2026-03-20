@@ -9,7 +9,6 @@
 
 <body>
 <th:block layout:fragment="content">
-    <!-- Bouton filtres mobile -->
     <div class="lg:hidden mb-4">
         <button @click="mobileFilters = !mobileFilters"
                 class="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition">
@@ -20,7 +19,7 @@
         </button>
     </div>
 
-    <div class="lg:flex lg:gap-8 lg:items-start">
+    <div class="lg:flex lg:gap-4 lg:items-start">
         <div th:replace="~{recherche/facettes :: facettes}"></div>
 
         <section class="flex-1 min-w-0">
@@ -28,7 +27,6 @@
                 résultats pour <span th:text="${recherche.q}"></span></p>
 
             <ol class="space-y-3">
-
                 <li class="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4 hover:border-indigo-300 transition"
                     th:each="resultat : ${recherche.resultats}">
 

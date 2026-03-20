@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
 import com.guillaumegasnier.education.core.dto.MetierAppellationDto;
 import com.guillaumegasnier.education.core.dto.MetierBlocDto;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
@@ -36,6 +37,7 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
     private final EtablissementMapper etablissementMapper;
     private final ReferentielMapper referentielMapper;
     private final CoreReferentielService coreReferentielService;
+    private final CoreRechercheService coreRechercheService;
     private final ReferentielTransformer referentielTransformer;
 
     @Override
@@ -113,6 +115,10 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
                 .toList();
 
         coreReferentielService.saveMetiers(metiers);
+
+        // Synchronisation ES : mise à jour de l'index en même temps que PostgreSQL
+        coreRechercheService.saveMetiers(
+                metiers.stream().map(referentielMapper::toRechercheMetierEntity).toList());
     }
 
     private MetierBlocDto toMetierBlocDto(RomeBlocDataset dataset) {
