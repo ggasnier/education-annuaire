@@ -8,7 +8,7 @@ SET client_encoding = 'UTF8';
 CREATE TABLE certifications
 (
     code       VARCHAR(10)                 NOT NULL,
-    nom        VARCHAR(255)                NOT NULL,
+    nom        TEXT                        NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_certifications PRIMARY KEY (code)

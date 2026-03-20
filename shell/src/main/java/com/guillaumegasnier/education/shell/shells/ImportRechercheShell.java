@@ -5,4 +5,6 @@ public interface ImportRechercheShell {
     void importRechercheEtablissements();
 
     void importRechercheMetiers();
+
+    void importRechercheFormations();
 }

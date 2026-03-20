@@ -120,4 +120,9 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     public long getNbrFormations() {
         return formationRepository.count();
     }
+
+    @Override
+    public List<FormationEntity> findAll() {
+        return formationRepository.findAll();
+    }
 }

@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.mappers;
 
 import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
+import com.guillaumegasnier.education.core.domains.recherche.RechercheFormationEntity;
 import com.guillaumegasnier.education.shell.datasets.ActionType;
 import com.guillaumegasnier.education.shell.datasets.FormationType;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
@@ -307,4 +308,11 @@ public abstract class FormationMapper {
     @Mapping(target = "actionFormationId", ignore = true)
     @Mapping(target = "accesHandicapes", ignore = true)
     public abstract ActionFormationDTO toActionFormationDTO(ParcoursupFormationDataset dataset);
+
+    @Mapping(target = "nomCertification", ignore = true)
+    @Mapping(target = "nomCertifiante", ignore = true)
+    @Mapping(target = "codeCertification", ignore = true)
+    @Mapping(target = "codeCertifiante", ignore = true)
+    public abstract RechercheFormationEntity toRechercheFormationEntity(FormationEntity entity);
+
 }

@@ -197,20 +197,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
                 if (communeOptional.isPresent()) {
                     entity.setCommune(communeOptional.get());
                 } else {
-                    communeOptional = coreTerritoireService.findCommuneByNom(nomCommune);
-                    if (communeOptional.isPresent()) {
-                        entity.setCommune(communeOptional.get());
-                    } else {
-                        log.warn("Commune inconnue pour {} / {}", codeCommune, nomCommune);
-                    }
-                }
-            } else if (nomCommune != null && !nomCommune.isBlank()) {
-                var communeOptional = coreTerritoireService.findCommuneByNom(nomCommune);
-
-                if (communeOptional.isPresent()) {
-                    entity.setCommune(communeOptional.get());
-                } else {
-                    log.warn("Commune absente pour {}", nomCommune);
+                    log.warn("Commune inconnue pour {} / {}", codeCommune, nomCommune);
                 }
             }
         }

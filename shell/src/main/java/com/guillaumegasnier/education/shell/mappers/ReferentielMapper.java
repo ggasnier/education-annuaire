@@ -29,7 +29,8 @@ public abstract class ReferentielMapper {
     }
 
     @Named("toNSFList")
-    public List<String> toNSFList(@NonNull CODESNSF nsf) {
+    public List<String> toNSFList(CODESNSF nsf) {
+        if (nsf == null) return null;
         return nsf.getNSF().stream().map(CODESNSF.NSF::getCODE).toList();
     }
 

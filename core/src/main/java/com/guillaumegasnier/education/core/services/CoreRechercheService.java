@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.recherche.RechercheEtablissementEntity;
+import com.guillaumegasnier.education.core.domains.recherche.RechercheFormationEntity;
 import com.guillaumegasnier.education.core.domains.recherche.RechercheMetierEntity;
 import com.guillaumegasnier.education.core.dto.RechercheCriteria;
 import com.guillaumegasnier.education.core.dto.recherche.*;
@@ -23,4 +24,6 @@ public interface CoreRechercheService {
     RechercheCertificationDTO rechercheCertifications(@NonNull RechercheCriteria rechercheCriteria);
 
     RechercheFormationDTO rechercheFormations(@NonNull RechercheCriteria rechercheCriteria);
+
+    void saveFormations(List<RechercheFormationEntity> entities);
 }

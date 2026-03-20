@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.core.services;
 
+import com.guillaumegasnier.education.core.domains.referentiels.CertificationNationaleEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.CompetenceEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MacroCompetenceEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
@@ -26,4 +27,8 @@ public interface CoreReferentielService {
     long getNbrCompetences();
 
     long getNbrCertifications();
+
+    Optional<CertificationNationaleEntity> findCertification(String code);
+
+    void saveCertifications(List<CertificationNationaleEntity> entities);
 }

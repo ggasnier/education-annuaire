@@ -1,10 +1,12 @@
 package com.guillaumegasnier.education.shell.transformers.impl;
 
+import com.guillaumegasnier.education.core.domains.referentiels.CertificationNationaleEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.CompetenceEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MacroCompetenceEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
 import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
+import com.guillaumegasnier.education.shell.dto.referentiels.CertificationDTO;
 import com.guillaumegasnier.education.shell.dto.referentiels.CompetenceDTO;
 import com.guillaumegasnier.education.shell.mappers.ReferentielMapper;
 import com.guillaumegasnier.education.shell.transformers.ReferentielTransformer;
@@ -65,6 +67,23 @@ public class ReferentielTransformerImpl implements ReferentielTransformer {
             entity = new CompetenceEntity(dto.getCode(), dto.getNom(), opt2.orElse(null));
         }
 
+        return entity;
+    }
+
+    @Override
+    public CertificationNationaleEntity toCertificationNationaleEntity(CertificationDTO dto) {
+        Optional<CertificationNationaleEntity> opt = coreReferentielService.findCertification(dto.getCode());
+
+        CertificationNationaleEntity entity;
+
+        if (opt.isPresent()) {
+            entity = opt.get();
+            entity.setUpdatedAt(LocalDateTime.now());
+        } else {
+            entity = new CertificationNationaleEntity();
+            entity.setCode(dto.getCode());
+            entity.setNom(dto.getNom());
+        }
         return entity;
     }
 }

@@ -44,4 +44,6 @@ public interface CoreFormationService {
     Optional<LienOnisepEntity> findLienOnisep(String clef, String valeur);
 
     long getNbrFormations();
+
+    List<FormationEntity> findAll();
 }

@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.core.services.impl;
 
 import com.guillaumegasnier.education.core.domains.recherche.RechercheEtablissementEntity;
+import com.guillaumegasnier.education.core.domains.recherche.RechercheFormationEntity;
 import com.guillaumegasnier.education.core.domains.recherche.RechercheMetierEntity;
 import com.guillaumegasnier.education.core.dto.RechercheCriteria;
 import com.guillaumegasnier.education.core.dto.recherche.*;
@@ -82,5 +83,10 @@ public class CoreRechercheServiceImpl implements CoreRechercheService {
     @Override
     public void saveMetiers(@NonNull List<RechercheMetierEntity> entities) {
         metierService.saveMetiers(entities);
+    }
+
+    @Override
+    public void saveFormations(List<RechercheFormationEntity> entities) {
+        formationService.saveFormations(entities);
     }
 }

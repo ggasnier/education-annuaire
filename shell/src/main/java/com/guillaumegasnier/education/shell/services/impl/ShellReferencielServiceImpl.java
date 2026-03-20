@@ -13,17 +13,17 @@ import com.guillaumegasnier.education.shell.datasets.referentiels.ArborescenceCo
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeAppellationDataset;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeBlocDataset;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
-import com.guillaumegasnier.education.shell.dto.referentiels.CertificationDTO;
-import com.guillaumegasnier.education.shell.dto.referentiels.NSFDTO;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.mappers.ReferentielMapper;
 import com.guillaumegasnier.education.shell.services.ShellReferencielService;
 import com.guillaumegasnier.education.shell.transformers.ReferentielTransformer;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -39,6 +39,9 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
     private final CoreReferentielService coreReferentielService;
     private final CoreRechercheService coreRechercheService;
     private final ReferentielTransformer referentielTransformer;
+
+    @Value("${spring.jpa.properties.hibernate.jdbc.batch_size:500}")
+    int chunk = 500;
 
     @Override
     public void createOrUpdateContrats(@NonNull List<ContratDataset> datasets) {
@@ -59,21 +62,30 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateCertificationsRncp(@NonNull FICHES fiches) {
         log.info("Fiches : {}", fiches.getFICHE().size());
 
-        List<NSFDTO> nsfs = fiches.getFICHE().stream()
-                .filter(fiche -> fiche.getCODESNSF() != null)
-                .map(fiche -> referentielMapper.toNSFDTO(fiche.getCODESNSF().getNSF()))
-                .flatMap(List::stream)
-                .distinct()
-                .toList();
+        int size = fiches.getFICHE().size();
 
-        List<CertificationDTO> list = fiches.getFICHE().stream()
-                .map(referentielMapper::toCertificationDTO)
-                .toList();
+        for (int i = 0; i < fiches.getFICHE().size(); i += chunk) {
+            log.info("Import  {}/{}", i, size);
+            List<FICHES.FICHE> sub = fiches.getFICHE().subList(i, Math.min(i + chunk, size));
+            coreReferentielService.saveCertifications(sub
+                    .stream()
+                    .map(referentielMapper::toCertificationDTO)
+                    .map(referentielTransformer::toCertificationNationaleEntity)
+                    .toList());
+        }
 
-        log.info("NSF : {}", nsfs.size());
+        //        List<NSFDTO> nsfs = fiches.getFICHE().stream()
+//                .filter(fiche -> fiche.getCODESNSF() != null)
+//                .map(fiche -> referentielMapper.toNSFDTO(fiche.getCODESNSF().getNSF()))
+//                .flatMap(List::stream)
+//                .distinct()
+//                .toList();
+
+//        log.info("NSF : {}", list.size());
     }
 
 //    @Override

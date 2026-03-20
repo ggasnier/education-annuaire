@@ -21,6 +21,12 @@ public class ImportRecherche implements ImportRechercheShell {
     }
 
     @Override
+    @ShellMethod(value = "Import des formations dans Elasticsearch pour la recherche")
+    public void importRechercheFormations() {
+        shellRechercheService.importFormationsRecherche();
+    }
+
+    @Override
     @ShellMethod(value = "Import des métiers dans Elasticsearch pour la recherche")
     public void importRechercheMetiers() {
         shellRechercheService.importMetiersRecherche();

@@ -22,6 +22,7 @@ public class CertificationNationaleEntity extends AbstractEntity {
     @Id
     private String code;
 
+    @Column(columnDefinition = "TEXT")
     private String nom;
 
     @ManyToMany(fetch = FetchType.LAZY)
