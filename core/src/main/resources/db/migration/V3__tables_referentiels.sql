@@ -7,12 +7,33 @@ SET client_encoding = 'UTF8';
 --------------------
 CREATE TABLE certifications
 (
-    code       VARCHAR(10)                 NOT NULL,
-    nom        TEXT                        NOT NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    code                           BPCHAR(10)                  NOT NULL,
+    nom                            TEXT,
+    actif                          BOOLEAN,
+    nouvelle_certification_code    BPCHAR(10),
+    etat                           CHAR(1),
+    typologie_diplome              VARCHAR(255),
+    niveau                         INTEGER                     NOT NULL,
+    activites_visees               TEXT,
+    capacites_attestees            TEXT,
+    secteurs_activite              TEXT,
+    type_emploi_accessibles        TEXT,
+    prerequis_entree_formation     TEXT,
+    reglementations_activites      TEXT,
+    publication_decret             TEXT,
+    objectifs_contexte             TEXT,
+    accessible_nouvelle_caledonie  BOOLEAN,
+    accessible_polynesie_francaise BOOLEAN,
+    url                            TEXT,
+    created_at                     TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at                     TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_certifications PRIMARY KEY (code)
 );
+
+
+ALTER TABLE certifications
+    ADD CONSTRAINT FK_CERTIFICATIONS_ON_NOUVELLECERTIFICATION_CODE FOREIGN KEY (nouvelle_certification_code) REFERENCES certifications (code);
+
 
 --------------------
 -- Métiers
@@ -38,8 +59,8 @@ ALTER TABLE rome_metiers
 
 CREATE TABLE certifications_metiers
 (
-    certification_code VARCHAR(255) NOT NULL,
-    metier_code        BPCHAR(5)    NOT NULL
+    certification_code BPCHAR(10) NOT NULL,
+    metier_code        BPCHAR(5)  NOT NULL
 );
 
 ALTER TABLE certifications_metiers

@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.domains.etablissements.EtablissementE
 import com.guillaumegasnier.education.core.domains.formations.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
+import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.TravailOrganismeFormationDataset;
 import com.guillaumegasnier.education.shell.dto.formations.ActionFormationDTO;
@@ -31,6 +32,8 @@ class FormationTransformerImplTest {
     @Mock
     private CoreFormationService coreFormationService;
     @Mock
+    private CoreReferentielService coreReferentielService;
+    @Mock
     private CoreEtablissementService coreEtablissementService;
     private FormationTransformerImpl transformer;
 
@@ -39,7 +42,7 @@ class FormationTransformerImplTest {
         MockitoAnnotations.openMocks(this);
         EtablissementMapper etablissementMapper = Mappers.getMapper(EtablissementMapper.class);
         FormationMapper formationMapper = Mappers.getMapper(FormationMapper.class);
-        transformer = new FormationTransformerImpl(coreTerritoireService, coreFormationService, coreEtablissementService, formationMapper, etablissementMapper);
+        transformer = new FormationTransformerImpl(coreTerritoireService, coreFormationService, coreEtablissementService, formationMapper, etablissementMapper, coreReferentielService);
     }
 
     @Test

@@ -4,8 +4,11 @@ import com.guillaumegasnier.education.core.domains.formations.ActionFormationEnt
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.CertificationNationaleEntity;
+import com.guillaumegasnier.education.core.enums.TypologieDiplome;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
+import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.TravailOrganismeFormationDataset;
 import com.guillaumegasnier.education.shell.dto.formations.ActionFormationDTO;
@@ -36,6 +39,7 @@ public class FormationTransformerImpl implements FormationTransformer {
     private final CoreEtablissementService coreEtablissementService;
     private final FormationMapper formationMapper;
     private final EtablissementMapper etablissementMapper;
+    private final CoreReferentielService coreReferentielService;
 
     @Override
     public FormationDTO recalculId(@NonNull FormationDTO dto) {
@@ -44,7 +48,7 @@ public class FormationTransformerImpl implements FormationTransformer {
             return dto;
 
         if (dto.getParcoursupId() != null && dto.getParcoursupId() > 0) {
-            Optional<LienOnisepEntity> opt = coreFormationService.findLienOnisep("PS", dto.getParcoursupId().toString());
+            Optional<LienOnisepEntity> opt = coreFormationService.findLienOnisep("PSF", dto.getParcoursupId().toString());
             if (opt.isPresent()) {
                 dto.setOnisepId(opt.get().getPk().getOnisepId());
                 dto.setFormationId(toNormalizedId("FOR", dto.getOnisepId().toString()));
@@ -127,6 +131,11 @@ public class FormationTransformerImpl implements FormationTransformer {
         // Etablissement responsable de la formation
         // Organisme responsable de la formation
 
+        if (dto.getCodeCertification() != null && !dto.getCodeCertification().isBlank()) {
+            Optional<CertificationNationaleEntity> opt = coreReferentielService.findCertification(dto.getCodeCertification());
+            opt.ifPresent(entity::setCertification);
+        }
+
         // Source des données
         entity.addSource(source);
 
@@ -150,6 +159,35 @@ public class FormationTransformerImpl implements FormationTransformer {
                 log.warn("Erreur avec le parcoursup_id : {} vs {}", entity.getParcoursupId(), dto.getParcoursupId());
             }
         }*/
+
+        // Contrôles de cohérences
+        if (dto.getCodeCertification() != null && !dto.getCodeCertification().isBlank()) {
+            if (entity.getCertification() != null) {
+                if (!entity.getCertification().getCode().equals(dto.getCodeCertification())) {
+                    log.warn("Erreur entre le code certification du dto {} et celui déjà enregistrée {} pour la formation {}",
+                            dto.getCodeCertification(), entity.getCertification().getCode(), entity.getId());
+                }
+            }
+        }
+
+        if (entity.getCertification() == null) {
+            if (dto.getCodeCertification() != null && !dto.getCodeCertification().isBlank()) {
+                Optional<CertificationNationaleEntity> opt = coreReferentielService.findCertification(dto.getCodeCertification());
+                opt.ifPresent(entity::setCertification);
+                entity.setCertifiante(true);
+            } else {
+                if (dto.getNom().startsWith("BTS ")) {
+                    var nom = dto.getNom().substring(4).toLowerCase();
+                    var typologieDiplome = TypologieDiplome.BTS;
+                    var actif = true;
+                    Optional<CertificationNationaleEntity> opt2 = coreReferentielService.findCertification(typologieDiplome, nom, actif);
+                    if (opt2.isPresent()) {
+                        opt2.ifPresent(entity::setCertification);
+                        entity.setCertifiante(true);
+                    }
+                }
+            }
+        }
 
         entity.addSource(source);
 

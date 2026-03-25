@@ -34,10 +34,10 @@ import java.util.List;
 public class ShellReferencielServiceImpl implements ShellReferencielService {
 
     private final CoreEtablissementService coreEtablissementService;
-    private final EtablissementMapper etablissementMapper;
-    private final ReferentielMapper referentielMapper;
     private final CoreReferentielService coreReferentielService;
     private final CoreRechercheService coreRechercheService;
+    private final EtablissementMapper etablissementMapper;
+    private final ReferentielMapper referentielMapper;
     private final ReferentielTransformer referentielTransformer;
 
     @Value("${spring.jpa.properties.hibernate.jdbc.batch_size:500}")
@@ -69,7 +69,6 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
         int size = fiches.getFICHE().size();
 
         for (int i = 0; i < fiches.getFICHE().size(); i += chunk) {
-            log.info("Import  {}/{}", i, size);
             List<FICHES.FICHE> sub = fiches.getFICHE().subList(i, Math.min(i + chunk, size));
             coreReferentielService.saveCertifications(sub
                     .stream()
@@ -77,27 +76,7 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
                     .map(referentielTransformer::toCertificationNationaleEntity)
                     .toList());
         }
-
-        //        List<NSFDTO> nsfs = fiches.getFICHE().stream()
-//                .filter(fiche -> fiche.getCODESNSF() != null)
-//                .map(fiche -> referentielMapper.toNSFDTO(fiche.getCODESNSF().getNSF()))
-//                .flatMap(List::stream)
-//                .distinct()
-//                .toList();
-
-//        log.info("NSF : {}", list.size());
     }
-
-//    @Override
-//    public void createOrUpdateRome(@NonNull List<RomeDataset> datasets) {
-//        log.info("Romes : {}", datasets.size());
-//
-//        // Les metiers
-//        coreReferentielService.saveMetiers(datasets.stream().map(referentielTransformer::toMetierEntity).toList());
-//        // Les blocs
-//        // Les appellations
-//    }
-
 
     @Override
     public void createOrUpdateRome(@NonNull List<RomeDataset> romes, @NonNull List<RomeAppellationDataset> appellations, @NonNull List<RomeBlocDataset> blocs) {

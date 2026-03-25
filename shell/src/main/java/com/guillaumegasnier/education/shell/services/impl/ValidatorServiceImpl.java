@@ -55,7 +55,7 @@ public class ValidatorServiceImpl implements ValidatorService {
 
         for (ConstraintViolation<EtablissementEntity> v : violations) {
             if (v.getPropertyPath().toString().contains("siret") && violations.size() == 1) {
-                log.warn("UAI {} avec siret invalide {}", entity.getUai(), entity.getSiret());
+                log.debug("UAI {} avec siret invalide {}", entity.getUai(), entity.getSiret());
                 entity.setSiret(null);
                 return entity;
             } else {

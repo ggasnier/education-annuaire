@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.domains.referentiels.CertificationNat
 import com.guillaumegasnier.education.core.domains.referentiels.CompetenceEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MacroCompetenceEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
+import com.guillaumegasnier.education.core.enums.TypologieDiplome;
 import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
 import com.guillaumegasnier.education.shell.dto.referentiels.CertificationDTO;
@@ -73,16 +74,37 @@ public class ReferentielTransformerImpl implements ReferentielTransformer {
     @Override
     public CertificationNationaleEntity toCertificationNationaleEntity(CertificationDTO dto) {
         Optional<CertificationNationaleEntity> opt = coreReferentielService.findCertification(dto.getCode());
+        Optional<CertificationNationaleEntity> opt2 = coreReferentielService.findCertification(dto.getNouveauCode());
 
         CertificationNationaleEntity entity;
 
+//        if (dto.getUrl() != null && dto.getUrl().length() > 255) {
+//            log.info("{}:{}:{}", dto.getCode(), dto.getUrl().length(), dto.getUrl());
+//        }
+
         if (opt.isPresent()) {
             entity = opt.get();
+            entity.setNom(dto.getNom());
+            entity.setActif(dto.getActif());
+            entity.setNouvelleCertification(opt2.orElse(null));
+            entity.setEtat(dto.getEtat());
+            entity.setTypologieDiplome(TypologieDiplome.valueOf(dto.getTypologieDiplome()));
+            entity.setNiveau(dto.getNiveau());
+            entity.setActivitesVisees(dto.getActivitesVisees());
+            entity.setCapacitesAttestees(dto.getCapacitesAttestees());
+            entity.setSecteursActivite(dto.getSecteursActivite());
+            entity.setTypeEmploiAccessibles(dto.getTypeEmploiAccessibles());
+            entity.setPrerequisEntreeFormation(dto.getPrerequisEntreeFormation());
+            entity.setReglementationsActivites(dto.getReglementationsActivites());
+            entity.setAccessiblePolynesieFrancaise(dto.getAccessiblePolynesieFrancaise());
+            entity.setAccessibleNouvelleCaledonie(dto.getAccessibleNouvelleCaledonie());
+            entity.setPublicationDecret(dto.getPublicationDecret());
+            entity.setUrl(dto.getUrl());
+            entity.setObjectifsContexte(dto.getObjectifsContexte());
+
             entity.setUpdatedAt(LocalDateTime.now());
         } else {
-            entity = new CertificationNationaleEntity();
-            entity.setCode(dto.getCode());
-            entity.setNom(dto.getNom());
+            entity = referentielMapper.toCertificationNationaleEntity(dto);
         }
         return entity;
     }

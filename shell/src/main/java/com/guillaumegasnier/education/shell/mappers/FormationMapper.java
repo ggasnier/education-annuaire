@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.domains.formations.ActionFormationEnt
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.recherche.RechercheFormationEntity;
 import com.guillaumegasnier.education.shell.datasets.ActionType;
+import com.guillaumegasnier.education.shell.datasets.CertificationType;
 import com.guillaumegasnier.education.shell.datasets.FormationType;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
@@ -44,6 +45,7 @@ public abstract class FormationMapper {
     public abstract ActionFormationEntity toActionFormationEntity(ActionFormationDTO dto);
 
     // Partie Carif-Oref
+    @Mapping(target = "codeCertification", ignore = true)
     @Mapping(target = "carifId", ignore = true)
     @Mapping(target = "onisepId", source = "formationOnisepId")
     @Mapping(target = "nom", source = "intituleLong")
@@ -179,21 +181,21 @@ public abstract class FormationMapper {
     }
 
     // Partie LHEO
-
+    @Mapping(target = "codeCertification", source = "certification", qualifiedByName = "toCodeCertification")
+    @Mapping(target = "resultats", source = "resultatsAttendus.value")
+    @Mapping(target = "onisepId", source = "formationType", qualifiedByName = "toFormationOnisepId")
+    @Mapping(target = "objectif", source = "objectifFormation.value")
+    @Mapping(target = "nom", source = "intituleFormation.value")
+    @Mapping(target = "formationId", source = "formationType", qualifiedByName = "toFormationId")
+    @Mapping(target = "contenu", source = "contenuFormation.value")
+    @Mapping(target = "certifiante", source = "certifiante.value", qualifiedByName = "toCertifiante")
+    @Mapping(target = "parcoursDeFormation", source = "parcoursDeFormation.value")
+    @Mapping(target = "codeNiveauEntree", source = "codeNiveauEntree.value")
+    @Mapping(target = "codeNiveauSortie", source = "codeNiveauSortie.value")
+    @Mapping(target = "identifiantModule", source = "identifiantModule.value")
+    @Mapping(target = "positionnement", source = "positionnement.value")
     @Mapping(target = "uai", ignore = true)
-    @Mapping(target = "resultats", ignore = true)
-    @Mapping(target = "onisepId", ignore = true)
-    @Mapping(target = "objectif", ignore = true)
-    @Mapping(target = "nom", ignore = true)
     @Mapping(target = "nda", ignore = true)
-    @Mapping(target = "formationId", ignore = true)
-    @Mapping(target = "contenu", ignore = true)
-    @Mapping(target = "certifiante", ignore = true)
-    @Mapping(target = "parcoursDeFormation", ignore = true)
-    @Mapping(target = "codeNiveauEntree", ignore = true)
-    @Mapping(target = "codeNiveauSortie", ignore = true)
-    @Mapping(target = "identifiantModule", ignore = true)
-    @Mapping(target = "positionnement", ignore = true)
     @Mapping(target = "parcoursupId", ignore = true) // Ne pas mapper
     @Mapping(target = "carifId", ignore = true) // Ne pas mapper
     public abstract FormationDTO toFormationDTO(FormationType formationType);
@@ -242,6 +244,23 @@ public abstract class FormationMapper {
     @Mapping(target = "parcoursupId", ignore = true) // Ne pas mapper
     public abstract ActionFormationDTO toActionFormationDTO(ActionType actionType);
 
+    @Named("toCodeCertification")
+    public String toCodeCertification(List<CertificationType> certificationTypes) {
+        if (certificationTypes == null) return null;
+        for (CertificationType certificationType : certificationTypes) {
+            if (certificationType.getCodeRNCP() != null) {
+                return "RNCP" + certificationType.getCodeRNCP().getValue();
+            }
+        }
+        return null;
+    }
+
+    @Named("toCertifiante")
+    public Boolean toCertifiante(String value) {
+        if (value == null) return null;
+        return "1".equals(value);
+    }
+
     public List<ActionFormationDTO> toActionFormationDTO(@NonNull FormationType formationType) {
         return formationType.getAction().stream()
                 .map(this::toActionFormationDTO)
@@ -249,8 +268,8 @@ public abstract class FormationMapper {
     }
 
     // Partie Parcoursup
-    @Mapping(target = "carifId", ignore = true)
     @Mapping(target = "nom", source = "nomFormation")
+    @Mapping(target = "codeCertification", ignore = true)
     @Mapping(target = "objectif", ignore = true)
     @Mapping(target = "resultats", ignore = true)
     @Mapping(target = "contenu", ignore = true)
@@ -263,7 +282,8 @@ public abstract class FormationMapper {
     @Mapping(target = "identifiantModule", ignore = true)
     @Mapping(target = "positionnement", ignore = true)
     @Mapping(target = "parcoursupId", source = "codeFormation")
-    @Mapping(target = "onisepId", ignore = true)
+    @Mapping(target = "onisepId", ignore = true) // Ne pas mapper (se fait plus tard)
+    @Mapping(target = "carifId", ignore = true) // Ne pas mapper
     public abstract FormationDTO toFormationDTO(ParcoursupFormationDataset dataset);
 
     @Mapping(target = "urlAction", ignore = true)

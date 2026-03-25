@@ -87,6 +87,20 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
         return uai;
     }
 
+    public String getCodeCommune() {
+        if (codeCommune == null || codeCommune.isBlank()) return null;
+        return switch (codeCommune) {
+            case "75100" -> // Paris
+                    "75056";
+            case "69380" -> // Lyon
+                    "69123";
+            case "13200" -> // Marseille
+                    "13055";
+            default -> codeCommune;
+        };
+
+    }
+
     @Override
     public String getSiret() {
         if (siret == null) return null;

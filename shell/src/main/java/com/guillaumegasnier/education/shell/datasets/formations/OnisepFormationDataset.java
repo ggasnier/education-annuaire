@@ -119,17 +119,22 @@ public class OnisepFormationDataset implements Dataset {
     public Integer getCodeNiveauSortie() {
         if (formationNiveauSortie == null || formationNiveauSortie.isBlank()) return 0;
         return switch (formationNiveauSortie) {
-            case "bac + 9 et plus", "bac + 8", "bac + 7", "bac + 6", "bac + 5" ->
-                    8; // niveau I (supérieur à la maîtrise)
-            case "bac + 4", "bac + 3" -> 7; // niveau II (licence ou maîtrise universitaire)
+            case "bac + 9 et plus", "bac + 8", "bac + 7", "bac + 6" -> 8; // niveau I (supérieur à la maîtrise)
+            case "bac + 5", "bac + 4", "bac + 3" -> 7; // niveau II (licence ou maîtrise universitaire)
             case "bac + 2" -> 6; // niveau III (BTS, DUT)
             case "bac + 1" -> 5; // niveau IV (BP, BT, baccalauréat professionnel ou technologique)
             default -> 0;
         };
     }
 
+    /**
+     *
+     * @return Indique si la formation est certifiante si on a le lien RNCP, sinon null
+     */
     public Boolean isCertifiante() {
-        return getCodeCertification() != null;
+        if (getCodeCertification() != null)
+            return true;
+        return null;
     }
 
     /**

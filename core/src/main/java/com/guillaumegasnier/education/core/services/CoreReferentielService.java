@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.domains.referentiels.CertificationNat
 import com.guillaumegasnier.education.core.domains.referentiels.CompetenceEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MacroCompetenceEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
+import com.guillaumegasnier.education.core.enums.TypologieDiplome;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,4 +32,6 @@ public interface CoreReferentielService {
     Optional<CertificationNationaleEntity> findCertification(String code);
 
     void saveCertifications(List<CertificationNationaleEntity> entities);
+
+    Optional<CertificationNationaleEntity> findCertification(TypologieDiplome typologieDiplome, String nom, boolean actif);
 }

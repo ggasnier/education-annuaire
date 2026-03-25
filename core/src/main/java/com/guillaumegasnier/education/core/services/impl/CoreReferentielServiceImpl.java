@@ -4,6 +4,7 @@ import com.guillaumegasnier.education.core.domains.referentiels.CertificationNat
 import com.guillaumegasnier.education.core.domains.referentiels.CompetenceEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MacroCompetenceEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
+import com.guillaumegasnier.education.core.enums.TypologieDiplome;
 import com.guillaumegasnier.education.core.repositories.referentiels.CertificationNationaleRepository;
 import com.guillaumegasnier.education.core.repositories.referentiels.CompetenceRepository;
 import com.guillaumegasnier.education.core.repositories.referentiels.MacroCompetenceRepository;
@@ -61,6 +62,7 @@ public class CoreReferentielServiceImpl implements CoreReferentielService {
 
     @Override
     public Optional<CertificationNationaleEntity> findCertification(String code) {
+        if (code == null) return Optional.empty();
         return certificationNationaleRepository.findById(code);
     }
 
@@ -90,5 +92,10 @@ public class CoreReferentielServiceImpl implements CoreReferentielService {
         certificationNationaleRepository.saveAll(entities);
         em.flush();
         em.clear();
+    }
+
+    @Override
+    public Optional<CertificationNationaleEntity> findCertification(TypologieDiplome typologieDiplome, String nom, boolean actif) {
+        return certificationNationaleRepository.findByTypologieDiplomeAndNomIgnoreCaseAndActifAndNouvelleCertificationIsNull(typologieDiplome, nom, actif);
     }
 }

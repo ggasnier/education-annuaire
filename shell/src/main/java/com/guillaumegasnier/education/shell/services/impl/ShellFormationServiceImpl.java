@@ -1,13 +1,13 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.services.CoreFormationService;
-import com.guillaumegasnier.education.shell.datasets.FormationType;
 import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.datasets.etablissements.TravailOrganismeFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
+import com.guillaumegasnier.education.shell.dto.formations.FormationDTO;
 import com.guillaumegasnier.education.shell.mappers.FormationMapper;
 import com.guillaumegasnier.education.shell.services.ShellFormationService;
 import com.guillaumegasnier.education.shell.services.ValidatorService;
@@ -55,33 +55,59 @@ public class ShellFormationServiceImpl implements ShellFormationService {
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateFormationsOnisepEsr(@NonNull List<OnisepFormationDataset> datasets) {
-        int size = datasets.size();
-        for (int i = 0; i < size; i += chunk) {
-            List<? extends OnisepFormationDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
-            log.info("Import formations et actions {}/{}", i, size);
+//        int size = datasets.size();
 
-            // Les formations
+//        log.info("Lignes:{}", size);
+        //log.info("Formations:{}", datasets.stream().map(formationMapper::toFormationDTO).distinct().count());
+
+        var formations = datasets.stream().map(formationMapper::toFormationDTO).distinct().toList();
+        var formationsSize = formations.size();
+        log.info("Formations distinctes:{}", formations.size());
+
+        for (int i = 0; i < formationsSize; i += chunk) {
+            List<FormationDTO> sub = formations.subList(i, Math.min(i + chunk, formationsSize));
+            log.info("Import formations {}/{}", i, formationsSize);
             coreFormationService.saveFormations(sub.stream()
-                    .map(formationMapper::toFormationDTO)
-                    .distinct() // On ne garde que les formations
                     .map(dto -> formationTransformer.toFormationEntity(dto, "onisep"))
                     .filter(Objects::nonNull)
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
                     .toList()
             );
-
-            // Les actions de formations
-            coreFormationService.saveActionFormation(sub.stream()
-                    .map(formationMapper::toActionFormationDTO)
-                    .map(dto -> formationTransformer.toActionFormationEntity(dto, "onisep"))
-                    .filter(Objects::nonNull)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
-                    .toList());
         }
 
-        log.info("Import terminé : {} formations ONISEP ESR traitées.", size);
+
+        //log.info("Import terminé : {} formations ONISEP ESR traitées.", formations.size());
+
+//        for (int i = 0; i < size; i += chunk) {
+//            List<? extends OnisepFormationDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
+//            log.info("Import formations et actions {}/{}", i, size);
+//
+//
+//            //log.info("", )
+//
+//            // Les formations
+//            coreFormationService.saveFormations(sub.stream()
+//                    .map(formationMapper::toFormationDTO)
+//                    .distinct() // On ne garde que les formations
+//                    .map(dto -> formationTransformer.toFormationEntity(dto, "onisep"))
+//                    .filter(Objects::nonNull)
+//                    .map(validatorService::toValidEntity)
+//                    .filter(Objects::nonNull)
+//                    .toList()
+//            );
+
+        // Les actions de formations
+//            coreFormationService.saveActionFormation(sub.stream()
+//                    .map(formationMapper::toActionFormationDTO)
+//                    .map(dto -> formationTransformer.toActionFormationEntity(dto, "onisep"))
+//                    .filter(Objects::nonNull)
+//                    .map(validatorService::toValidEntity)
+//                    .filter(Objects::nonNull)
+//                    .toList());
+//        }
+//
+//        log.info("Import terminé : {} formations ONISEP ESR traitées.", size);
     }
 
     @Override
@@ -149,36 +175,60 @@ public class ShellFormationServiceImpl implements ShellFormationService {
             return;
         }
 
-        List<FormationType> datasets = lheoSubtype.getOffres().getFormation();
-        var size = datasets.size();
+        List<FormationDTO> formations = lheoSubtype.getOffres()
+                .getFormation()
+                .stream()
+                .map(formationMapper::toFormationDTO)
+                .distinct()
+                .toList();
 
-        for (int i = 0; i < size; i += chunk) {
-            List<? extends FormationType> sub = datasets.subList(i, Math.min(i + chunk, size));
+        var formationsSize = formations.size();
+        log.info("Formations distinctes:{}", formations.size());
 
-            // Les formations
+        for (int i = 0; i < formationsSize; i += chunk) {
+            List<FormationDTO> sub = formations.subList(i, Math.min(i + chunk, formationsSize));
+            log.info("Import formations {}/{}", i, formationsSize);
             coreFormationService.saveFormations(sub.stream()
-                    .map(formationMapper::toFormationDTO)
-                    .distinct()
                     .map(dto -> formationTransformer.toFormationEntity(dto, "lheo"))
                     .filter(Objects::nonNull)
                     .map(validatorService::toValidEntity)
                     .filter(Objects::nonNull)
-                    .toList());
-
-            // Les actions
-            /*coreFormationService.saveActionFormation(sub.stream()
-                    .map(formationMapper::toActionFormationDTO)
-                    .flatMap(List::stream)
-                    .distinct()
-                    .map(dto -> formationTransformer.toActionFormationEntity(dto, "lheo"))
-                    .filter(Objects::nonNull)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
-                    .toList());*/
-
+                    .toList()
+            );
         }
 
-        log.info("Import terminé : {} actions formations LHEO traitées.", size);
+
+//
+//
+//        var size = datasets.size();
+//
+//        for (int i = 0; i < size; i += chunk) {
+//            List<? extends FormationType> sub = datasets.subList(i, Math.min(i + chunk, size));
+//
+//            // Les formations
+//            coreFormationService.saveFormations(sub.stream()
+//                    .map(formationMapper::toFormationDTO)
+//                    .distinct()
+//                    .map(dto -> formationTransformer.toFormationEntity(dto, "lheo"))
+//                    .filter(Objects::nonNull)
+//                    .map(validatorService::toValidEntity)
+//                    .filter(Objects::nonNull)
+//                    .toList());
+//
+//            // Les actions
+//            /*coreFormationService.saveActionFormation(sub.stream()
+//                    .map(formationMapper::toActionFormationDTO)
+//                    .flatMap(List::stream)
+//                    .distinct()
+//                    .map(dto -> formationTransformer.toActionFormationEntity(dto, "lheo"))
+//                    .filter(Objects::nonNull)
+//                    .map(validatorService::toValidEntity)
+//                    .filter(Objects::nonNull)
+//                    .toList());*/
+//
+//        }
+
+//        log.info("Import terminé : {} actions formations LHEO traitées.", size);
     }
 
     @Override
