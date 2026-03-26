@@ -32,8 +32,15 @@ public final class RechercheQueryBuilder {
      * Construit la partie textuelle de la query (sans filtres).
      * Retourne un match_all si aucun texte n'est fourni.
      * <p>
-     * {@code phrase} (sans boosts) + {@code most_fields} (avec boosts) :
-     * compatibles avec les champs multi-valeurs (List) et les analyzers {@code french}.
+     * Stratégie multi-clause :
+     * <ul>
+     *   <li>{@code phrase} (slop=2) : booste les correspondances de séquence dans un même champ</li>
+     *   <li>{@code cross_fields} (operator=AND) : les tokens peuvent être répartis sur plusieurs champs
+     *       (ex: "Lycée" dans {@code nom} et "Dreux" dans {@code nomCommune})</li>
+     *   <li>{@code most_fields} (operator=OR) : filet de sécurité, remonte les établissements
+     *       qui matchent au moins un token dans au moins un champ</li>
+     * </ul>
+     * {@code minimum_should_match=1} garantit qu'au moins l'une des trois clauses matche.
      */
     public static Query buildTextQuery(@NonNull RechercheCriteria criteria, List<String> textFields) {
         String q = criteria.getQ();
@@ -41,11 +48,16 @@ public final class RechercheQueryBuilder {
             return QueryBuilders.matchAll().build()._toQuery();
         }
         List<String> fieldsWithoutBoosts = stripBoosts(textFields);
+        // Séquence dans un même champ (boost fort sur correspondances proches)
         Query phrase = QueryBuilders.multiMatch(m -> m
                 .query(q).type(TextQueryType.Phrase).slop(2).fields(fieldsWithoutBoosts));
-        Query fuzzy = QueryBuilders.multiMatch(m -> m
-                .query(q).type(TextQueryType.MostFields).operator(Operator.And).fields(textFields));
-        return QueryBuilders.bool(b -> b.should(phrase, fuzzy));
+        // Tokens répartis entre les champs (ex: "Lycée" dans nom + "Dreux" dans nomCommune)
+        Query crossFields = QueryBuilders.multiMatch(m -> m
+                .query(q).type(TextQueryType.CrossFields).operator(Operator.And).fields(fieldsWithoutBoosts));
+        // Filet de sécurité : au moins un token dans au moins un champ (avec boosts)
+        Query mostFields = QueryBuilders.multiMatch(m -> m
+                .query(q).type(TextQueryType.MostFields).fields(textFields));
+        return QueryBuilders.bool(b -> b.should(phrase, crossFields, mostFields).minimumShouldMatch("1"));
     }
 
     /**
