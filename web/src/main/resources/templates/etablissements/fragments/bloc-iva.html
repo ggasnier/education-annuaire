@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 lg:col-span-2" th:fragment="bloc"
+     th:if="${iva != null && iva.size() > 0}">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Résultats aux examens</h2>
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+            <tr class="border-b border-gray-200">
+                <th class="text-left py-3 px-4 font-medium text-gray-900">Année</th>
+                <th class="text-left py-3 px-4 font-medium text-gray-900">Epreuve</th>
+                <th class="text-left py-3 px-4 font-medium text-gray-900 text-right">Inscrits</th>
+                <th class="text-left py-3 px-4 font-medium text-gray-900 text-right">Taux d'accès</th>
+                <th class="text-left py-3 px-4 font-medium text-gray-900 text-right">Taux de réussite</th>
+                <th class="text-left py-3 px-4 font-medium text-gray-900 text-right">Taux de mentions</th>
+                <th class="text-left py-3 px-4 font-medium text-gray-900 text-right">Valeur ajoutée</th>
+                <th class="text-left py-3 px-4 font-medium text-gray-900 text-right">Valeur ajoutée (mentions)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="i : ${iva}">
+                <td class="py-3 px-4 font-medium" th:text="${i.annee}"></td>
+                <td class="py-3 px-4 font-medium" th:text="${i.filiere.nom}"></td>
+                <td class="py-3 px-4 text-right" th:text="${i.effectifs}"></td>
+                <td class="py-3 px-4 text-right" th:text="${i.tauxAcces} + ' %'"></td>
+                <td class="py-3 px-4 text-right" th:text="${i.taux} + ' %'"></td>
+                <td class="py-3 px-4 text-right" th:text="${i.tauxMentions != null} ? ${i.tauxMentions} + ' %'"></td>
+                <td class="py-3 px-4 text-right" th:text="${i.valeurAjoutee}"></td>
+                <td class="py-3 px-4 text-right" th:text="${i.valeurAjouteeTauxMentions}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

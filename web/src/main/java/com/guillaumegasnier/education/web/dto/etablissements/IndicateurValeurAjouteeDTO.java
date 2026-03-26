@@ -1,29 +1,16 @@
-package com.guillaumegasnier.education.core.dto;
+package com.guillaumegasnier.education.web.dto.etablissements;
 
 import com.guillaumegasnier.education.core.enums.Filiere;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
-@AllArgsConstructor
-public class ResultatFiliereDto implements Serializable {
+public class IndicateurValeurAjouteeDTO {
 
-    /**
-     * Code filière
-     */
+    private Integer annee;
+
+    private Integer effectifs;
+
     private Filiere filiere;
-
-    /**
-     * Présents
-     */
-    private Integer effectif;
-
-    /**
-     * Taux d'accès : 2nd bac ou 6e 3e
-     */
-    private Double tauxAcces;
 
     /**
      * Taux de réussite
@@ -44,4 +31,9 @@ public class ResultatFiliereDto implements Serializable {
      * Valeur ajoutée du taux de mentions
      */
     private Double valeurAjouteeTauxMentions;
+
+    /**
+     * Taux de réussite en 3 ans
+     */
+    private Double tauxAcces;
 }

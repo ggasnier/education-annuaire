@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.services.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.guillaumegasnier.education.shell.config.RestClientConfig.TrustAllHttpConnectionFactory;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
@@ -29,8 +30,6 @@ import org.springframework.web.client.RestClient;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -47,66 +46,60 @@ import java.util.Optional;
 public class ProductionFileService implements FileService {
 
     private final RestClient restClient;
+    private final TrustAllHttpConnectionFactory connectionFactory;
 
     @Value("${app.datasets}")
     private String datasetsPath = "";
 
-    public ProductionFileService(RestClient restClient) {
+    public ProductionFileService(RestClient restClient, TrustAllHttpConnectionFactory connectionFactory) {
         this.restClient = restClient;
+        this.connectionFactory = connectionFactory;
+    }
+
+    /**
+     * Télécharge l'intégralité du contenu d'une URL en mémoire (byte[]).
+     * Gère le BOM UTF-8 et les requêtes POST simples.
+     * La configuration SSL (trust all) est déléguée à {@link TrustAllHttpConnectionFactory}.
+     */
+    private byte[] downloadRawBytes(@NonNull String url, @NonNull Charset charset, @NonNull String httpMethod) throws Exception {
+        HttpURLConnection conn = connectionFactory.open(url);
+
+        if (httpMethod.equals("POST")) {
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestMethod("POST");
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write("".getBytes(charset));
+            }
+        }
+
+        try (InputStream rawInputStream = conn.getInputStream()) {
+            InputStream filteredInputStream = charset.equals(StandardCharsets.UTF_8)
+                    ? BOMInputStream.builder()
+                    .setInputStream(rawInputStream)
+                    .setByteOrderMarks(ByteOrderMark.UTF_8)
+                    .setInclude(false)
+                    .get()
+                    : rawInputStream;
+
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            byte[] chunk = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = filteredInputStream.read(chunk)) != -1) {
+                buffer.write(chunk, 0, bytesRead);
+            }
+            return buffer.toByteArray();
+        }
     }
 
     @Override
     public Optional<BufferedReader> openFile(@NonNull String url, @NonNull Charset charset, @NonNull String httpMethod) {
-        if (httpMethod.equals("POST")) {
-            try {
-                InputStream rawInputStream;
-                HttpURLConnection conn;
-                var uri = new URI(url);
-                conn = (HttpURLConnection) uri.toURL().openConnection();
-                conn.setDoOutput(true);
-                conn.setRequestProperty("Content-Type", "application/json");
-                conn.setRequestMethod("POST");
-
-                String payload = "";
-
-                try (OutputStream os = conn.getOutputStream()) {
-                    byte[] input = payload.getBytes(charset);
-                    os.write(input, 0, input.length);
-                }
-
-                rawInputStream = conn.getInputStream();
-
-                InputStream filteredInputStream = charset.equals(StandardCharsets.UTF_8)
-                        ? BOMInputStream.builder()
-                        .setInputStream(rawInputStream)
-                        .setByteOrderMarks(ByteOrderMark.UTF_8)
-                        .setInclude(false)
-                        .get()
-                        : rawInputStream;
-
-                return Optional.of(new BufferedReader(new InputStreamReader(filteredInputStream, charset)));
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                return Optional.empty();
-            }
-        } else {
-            try {
-                InputStream rawInputStream;
-                var uri = new URI(url);
-                rawInputStream = uri.toURL().openStream();
-                InputStream filteredInputStream = charset.equals(StandardCharsets.UTF_8)
-                        ? BOMInputStream.builder()
-                        .setInputStream(rawInputStream)
-                        .setByteOrderMarks(ByteOrderMark.UTF_8)
-                        .setInclude(false)
-                        .get()
-                        : rawInputStream;
-
-                return Optional.of(new BufferedReader(new InputStreamReader(filteredInputStream, charset)));
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                return Optional.empty();
-            }
+        try {
+            byte[] rawBytes = downloadRawBytes(url, charset, httpMethod);
+            return Optional.of(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(rawBytes), charset)));
+        } catch (Exception e) {
+            log.error("Erreur lors de l'ouverture du fichier {} : {}", url, e.getMessage());
+            return Optional.empty();
         }
     }
 
@@ -119,38 +112,36 @@ public class ProductionFileService implements FileService {
         @SuppressWarnings("unchecked")
         Class<T> clazz = (Class<T>) source.getDatasetClass();
 
-        // Sauvegarde du CSV
-        openFile(source.getUrl(), source.getCharset(), source.getHttpMethod()).ifPresentOrElse(reader -> {
-            Path outPath = Paths.get(datasetsPath, source.getSource().name().toLowerCase(), source.getLocalPath());
-            try {
-                Files.createDirectories(outPath.getParent());
-                try (BufferedWriter writer = Files.newBufferedWriter(outPath, source.getCharset())) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        writer.write(line);
-                        writer.newLine();
-                    }
-                }
-                log.info("CSV sauvegardé dans : {}", outPath.toAbsolutePath());
-            } catch (Exception e) {
-                log.error("Erreur lors de la sauvegarde du CSV brut : {}", e.getMessage(), e);
-            }
-        }, () -> log.error("Impossible de lire le fichier : {}", source.getUrl()));
+        // Téléchargement unique en mémoire
+        byte[] rawBytes;
+        try {
+            rawBytes = downloadRawBytes(source.getUrl(), source.getCharset(), source.getHttpMethod());
+        } catch (Exception e) {
+            log.error("Impossible de télécharger le fichier {} : {}", source.getUrl(), e.getMessage(), e);
+            return result;
+        }
 
-        openFile(source.getUrl(), source.getCharset(), source.getHttpMethod()).ifPresentOrElse(reader -> {
-            try (reader) {
-                List<T> beans = new CsvToBeanBuilder<T>(reader)
-                        .withType(clazz)
-                        .withSeparator(source.getSeparator())
-                        .build()
-                        .parse();
+        // Sauvegarde locale du CSV
+        Path outPath = Paths.get(datasetsPath, source.getSource().name().toLowerCase(), source.getLocalPath());
+        try {
+            Files.createDirectories(outPath.getParent());
+            Files.write(outPath, rawBytes);
+            log.info("CSV sauvegardé dans : {}", outPath.toAbsolutePath());
+        } catch (Exception e) {
+            log.error("Erreur lors de la sauvegarde du CSV brut : {}", e.getMessage(), e);
+        }
 
-                result.addAll(beans);
-
-            } catch (Exception e) {
-                log.error("Erreur pendant le parsing CSV : {}", e.getMessage(), e);
-            }
-        }, () -> log.error("Impossible de lire le fichier : {}", source.getUrl()));
+        // Parsing CSV depuis le même buffer en mémoire
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(rawBytes), source.getCharset()))) {
+            List<T> beans = new CsvToBeanBuilder<T>(reader)
+                    .withType(clazz)
+                    .withSeparator(source.getSeparator())
+                    .build()
+                    .parse();
+            result.addAll(beans);
+        } catch (Exception e) {
+            log.error("Erreur pendant le parsing CSV : {}", e.getMessage(), e);
+        }
 
         log.info("Fin import {}, lignes importées : {}", source.getNom(), result.size());
         return result;
@@ -310,99 +301,51 @@ public class ProductionFileService implements FileService {
         return formationDatasetList;
     }
 
-//    @Override
-//    public FICHES importXmlFromZip(@NonNull SourcesDatasets sourcesDatasets) {
-//        log.info("Début import {}", sourcesDatasets.getNom());
-//
-//        try {
-//            var uri = new URI(sourcesDatasets.getUrl());
-//            try (InputStream inputStream = uri.toURL().openStream();
-//                 java.util.zip.ZipInputStream zipInputStream = new java.util.zip.ZipInputStream(inputStream)) {
-//
-//                java.util.zip.ZipEntry entry;
-//                while ((entry = zipInputStream.getNextEntry()) != null) {
-//                    if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
-//                        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(),
-//                                sourcesDatasets.getLocalPath());
-//                        Files.createDirectories(outPath.getParent());
-//
-//                        try (OutputStream outputStream = Files.newOutputStream(outPath)) {
-//                            byte[] buffer = new byte[8192];
-//                            int bytesRead;
-//                            while ((bytesRead = zipInputStream.read(buffer)) != -1) {
-//                                outputStream.write(buffer, 0, bytesRead);
-//                            }
-//                        }
-//                        log.info("Fichier XML enregistré dans : {}", outPath.toAbsolutePath());
-//
-//                        JAXBContext context = JAXBContext.newInstance(FICHES.class);
-//                        Unmarshaller unmarshaller = context.createUnmarshaller();
-//                        JAXBElement<FICHES> jaxbElement = unmarshaller
-//                                .unmarshal(new StreamSource(outPath.toFile()), FICHES.class);
-//
-//                        return jaxbElement.getValue();
-//                    }
-//                }
-//
-//                log.error("Aucun fichier XML trouvé dans le ZIP");
-//                return null;
-//            }
-//        } catch (Exception e) {
-//            log.error("Erreur lors de l'import du fichier LHEO : {}", e.getMessage(), e);
-//            return null;
-//        }
-//    }
 
     @Override
     public FICHES importXmlFromZip(@NonNull SourcesDatasets sourcesDatasets) {
         log.info("Début import {}", sourcesDatasets.getNom());
 
-        try {
-            // Télécharger le fichier zip depuis sourcesDatasets.getUrl()
-            //log.info("Téléchargement du fichier ZIP depuis : {}", sourcesDatasets.getUrl());
-            URL url = new URL(sourcesDatasets.getUrl());
+        try (InputStream inputStream = connectionFactory.open(sourcesDatasets.getUrl()).getInputStream();
+             java.util.zip.ZipInputStream zipInputStream = new java.util.zip.ZipInputStream(inputStream)) {
 
-            try (InputStream inputStream = url.openStream();
-                 java.util.zip.ZipInputStream zipInputStream = new java.util.zip.ZipInputStream(inputStream)) {
+            // Extraire du fichier zip le fichier xml (il y en a un seul)
+            java.util.zip.ZipEntry entry;
+            while ((entry = zipInputStream.getNextEntry()) != null) {
+                if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
+                    log.info("Fichier XML trouvé : {}", entry.getName());
 
-                // Extraire du fichier zip le fichier xml (il y en a un seul)
-                java.util.zip.ZipEntry entry;
-                while ((entry = zipInputStream.getNextEntry()) != null) {
-                    if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
-                        log.info("Fichier XML trouvé : {}", entry.getName());
+                    //if (!entry.getName().equals(sourcesDatasets.getLocalPath()))
+                    //    log.warn("Erreur de paramétrage sur le fichier local : {} vs {}", entry.getName(), sourcesDatasets.getLocalPath());
 
-                        //if (!entry.getName().equals(sourcesDatasets.getLocalPath()))
-                        //    log.warn("Erreur de paramétrage sur le fichier local : {} vs {}", entry.getName(), sourcesDatasets.getLocalPath());
+                    // Enregistrer le fichier en local
+                    Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
+                            sourcesDatasets.getLocalPath());
+                    Files.createDirectories(outPath.getParent());
 
-                        // Enregistrer le fichier en local
-                        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
-                                sourcesDatasets.getLocalPath());
-                        Files.createDirectories(outPath.getParent());
-
-                        // Copier le contenu du zip vers le fichier local
-                        try (OutputStream outputStream = Files.newOutputStream(outPath)) {
-                            byte[] buffer = new byte[8192];
-                            int bytesRead;
-                            while ((bytesRead = zipInputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, bytesRead);
-                            }
+                    // Copier le contenu du zip vers le fichier local
+                    try (OutputStream outputStream = Files.newOutputStream(outPath)) {
+                        byte[] buffer = new byte[8192];
+                        int bytesRead;
+                        while ((bytesRead = zipInputStream.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, bytesRead);
                         }
-                        log.info("Fichier XML enregistré dans : {}", outPath.toAbsolutePath());
-
-                        // Renvoyer le contenu du fichier xml dans la classe FICHES avec JAXB
-                        JAXBContext context = JAXBContext.newInstance(FICHES.class);
-                        Unmarshaller unmarshaller = context.createUnmarshaller();
-                        JAXBElement<FICHES> jaxbElement = unmarshaller
-                                .unmarshal(new StreamSource(outPath.toFile()), FICHES.class);
-                        //log.info("Fichier XML parsé avec succès");
-
-                        return jaxbElement.getValue();
                     }
-                }
+                    log.info("Fichier XML enregistré dans : {}", outPath.toAbsolutePath());
 
-                log.error("Aucun fichier XML trouvé dans le ZIP");
-                return null;
+                    // Renvoyer le contenu du fichier xml dans la classe FICHES avec JAXB
+                    JAXBContext context = JAXBContext.newInstance(FICHES.class);
+                    Unmarshaller unmarshaller = context.createUnmarshaller();
+                    JAXBElement<FICHES> jaxbElement = unmarshaller
+                            .unmarshal(new StreamSource(outPath.toFile()), FICHES.class);
+                    //log.info("Fichier XML parsé avec succès");
+
+                    return jaxbElement.getValue();
+                }
             }
+
+            log.error("Aucun fichier XML trouvé dans le ZIP");
+            return null;
         } catch (Exception e) {
             log.error("Erreur lors de l'import du fichier LHEO : {}", e.getMessage(), e);
             return null;
@@ -413,44 +356,41 @@ public class ProductionFileService implements FileService {
     public LheoSubtype importLheoSubtypeFromZip(@NonNull SourcesDatasets sourcesDatasets) {
         log.info("Début import {}", sourcesDatasets.getNom());
 
-        try {
-            var uri = new URI(sourcesDatasets.getUrl());
-            try (InputStream inputStream = uri.toURL().openStream();
-                 java.util.zip.ZipInputStream zipInputStream = new java.util.zip.ZipInputStream(inputStream)) {
+        try (InputStream inputStream = connectionFactory.open(sourcesDatasets.getUrl()).getInputStream();
+             java.util.zip.ZipInputStream zipInputStream = new java.util.zip.ZipInputStream(inputStream)) {
 
-                java.util.zip.ZipEntry entry;
-                while ((entry = zipInputStream.getNextEntry()) != null) {
-                    if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
-                        log.info("Fichier XML trouvé : {}", entry.getName());
+            java.util.zip.ZipEntry entry;
+            while ((entry = zipInputStream.getNextEntry()) != null) {
+                if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
+                    log.info("Fichier XML trouvé : {}", entry.getName());
 
-                        if (!entry.getName().equals(sourcesDatasets.getLocalPath()))
-                            log.warn("Erreur de paramétrage sur le fichier local : {} vs {}", entry.getName(), sourcesDatasets.getLocalPath());
+                    if (!entry.getName().equals(sourcesDatasets.getLocalPath()))
+                        log.warn("Erreur de paramétrage sur le fichier local : {} vs {}", entry.getName(), sourcesDatasets.getLocalPath());
 
-                        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
-                                sourcesDatasets.getLocalPath());
-                        Files.createDirectories(outPath.getParent());
+                    Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
+                            sourcesDatasets.getLocalPath());
+                    Files.createDirectories(outPath.getParent());
 
-                        try (OutputStream outputStream = Files.newOutputStream(outPath)) {
-                            byte[] buffer = new byte[8192];
-                            int bytesRead;
-                            while ((bytesRead = zipInputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, bytesRead);
-                            }
+                    try (OutputStream outputStream = Files.newOutputStream(outPath)) {
+                        byte[] buffer = new byte[8192];
+                        int bytesRead;
+                        while ((bytesRead = zipInputStream.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, bytesRead);
                         }
-                        log.info("Fichier XML enregistré dans : {}", outPath.toAbsolutePath());
-
-                        JAXBContext context = JAXBContext.newInstance(LheoSubtype.class);
-                        Unmarshaller unmarshaller = context.createUnmarshaller();
-                        JAXBElement<LheoSubtype> jaxbElement = unmarshaller
-                                .unmarshal(new StreamSource(outPath.toFile()), LheoSubtype.class);
-
-                        return jaxbElement.getValue();
                     }
-                }
+                    log.info("Fichier XML enregistré dans : {}", outPath.toAbsolutePath());
 
-                log.error("Aucun fichier XML trouvé dans le ZIP");
-                return null;
+                    JAXBContext context = JAXBContext.newInstance(LheoSubtype.class);
+                    Unmarshaller unmarshaller = context.createUnmarshaller();
+                    JAXBElement<LheoSubtype> jaxbElement = unmarshaller
+                            .unmarshal(new StreamSource(outPath.toFile()), LheoSubtype.class);
+
+                    return jaxbElement.getValue();
+                }
             }
+
+            log.error("Aucun fichier XML trouvé dans le ZIP");
+            return null;
         } catch (Exception e) {
             log.error("Erreur lors de l'import du fichier LHEO : {}", e.getMessage(), e);
             return null;
@@ -495,15 +435,11 @@ public class ProductionFileService implements FileService {
         log.info("Début import {}", sourcesDatasets.getNom());
 
         Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), fileName);
-//        List<RomeDataset> result = new ArrayList<>();
-
         List<T> result = new ArrayList<>();
-        @SuppressWarnings("unchecked")
-        Class<T> clazz = (Class<T>) datasetClass;
 
         try (BufferedReader reader = Files.newBufferedReader(outPath, sourcesDatasets.getCharset())) {
             List<T> beans = new CsvToBeanBuilder<T>(reader)
-                    .withType(clazz)
+                    .withType(datasetClass)
                     .withSeparator(sourcesDatasets.getSeparator())
                     .build()
                     .parse();
@@ -544,56 +480,28 @@ public class ProductionFileService implements FileService {
     public void importRomeFromZip(@NonNull SourcesDatasets sourcesDatasets) {
         log.info("Début import {}", sourcesDatasets.getNom());
 
-        try {
-            var uri = new URI(sourcesDatasets.getUrl());
-            try (InputStream inputStream = uri.toURL().openStream();
-                 java.util.zip.ZipInputStream zipInputStream = new java.util.zip.ZipInputStream(inputStream)) {
+        try (InputStream inputStream = connectionFactory.open(sourcesDatasets.getUrl()).getInputStream();
+             java.util.zip.ZipInputStream zipInputStream = new java.util.zip.ZipInputStream(inputStream)) {
 
-                java.util.zip.ZipEntry entry;
-                while ((entry = zipInputStream.getNextEntry()) != null) {
-                    if (!entry.isDirectory()) {
-                        //&& entry.getName().equals(sourcesDatasets.getLocalPath())) {
+            java.util.zip.ZipEntry entry;
+            while ((entry = zipInputStream.getNextEntry()) != null) {
+                if (!entry.isDirectory()) {
+                    Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
+                            entry.getName());
+                    Files.createDirectories(outPath.getParent());
 
-//                        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
-//                                sourcesDatasets.getLocalPath());
-                        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(),
-                                entry.getName());
-                        Files.createDirectories(outPath.getParent());
-
-                        // Copier le contenu du zip vers le fichier local
-                        try (OutputStream outputStream = Files.newOutputStream(outPath)) {
-                            byte[] buffer = new byte[8192];
-                            int bytesRead;
-                            while ((bytesRead = zipInputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, bytesRead);
-                            }
+                    try (OutputStream outputStream = Files.newOutputStream(outPath)) {
+                        byte[] buffer = new byte[8192];
+                        int bytesRead;
+                        while ((bytesRead = zipInputStream.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, bytesRead);
                         }
-                        log.info("Fichier csv enregistré dans : {}", outPath.toAbsolutePath());
                     }
+                    log.info("Fichier csv enregistré dans : {}", outPath.toAbsolutePath());
                 }
-
-//                Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
-//                List<RomeDataset> result = new ArrayList<>();
-
-//                try (BufferedReader reader = Files.newBufferedReader(outPath, sourcesDatasets.getCharset())) {
-//                    List<RomeDataset> beans = new CsvToBeanBuilder<RomeDataset>(reader)
-//                            .withType(RomeDataset.class)
-//                            .withSeparator(sourcesDatasets.getSeparator())
-//                            .build()
-//                            .parse();
-//
-//                    result.addAll(beans);
-//                } catch (Exception e) {
-//                    log.error("Erreur pendant le parsing CSV : {}", e.getMessage(), e);
-//                }
-
-//                return result;
             }
         } catch (Exception e) {
             log.error("Erreur lors de l'import du fichier ZIP : {}", e.getMessage(), e);
-//            return null;
         }
-
-        //return List.of();
     }
 }

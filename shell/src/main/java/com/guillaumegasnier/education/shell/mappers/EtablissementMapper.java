@@ -12,6 +12,8 @@ import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -223,6 +225,14 @@ public abstract class EtablissementMapper {
         iva.setTauxAcces(dataset.getTauxAcces());
         iva.setResultats(dataset.getResultats());
         return iva;
+    }
+
+    public IndicateurValeurAjouteeDto toIndicateurValeurAjouteeDto(@NonNull IndicateurValeurAjouteeCollege dataset) {
+        return toIndicateurValeurAjouteeDto((IndicateurValeurAjoutee & Metadata) dataset);
+    }
+
+    public IndicateurValeurAjouteeDto toIndicateurValeurAjouteeDto(@NonNull IndicateurValeurAjouteeLycee dataset) {
+        return toIndicateurValeurAjouteeDto((IndicateurValeurAjoutee & Metadata) dataset);
     }
 
     @Named("toOptions")

@@ -38,11 +38,19 @@ public interface ImportEtablissementShell {
 
     <T extends Effectifs & Metadata & Dataset> void importEffectifs();
 
+    void importIps();
+
+    void importIpsEcoles();
+
     void importIpsColleges();
 
     void importIpsLycees();
 
+    void importIva();
+
     void importIvaColleges();
+
+    void importIvaLycees();
 
     void importEtablissementsDetails();
 

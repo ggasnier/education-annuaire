@@ -24,6 +24,13 @@ spring:
     #enable: true
     baseline-on-migrate: true
     validate-on-migrate: true
+  datasource:
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 20000
 
 app:
   datasets: shell/datasets

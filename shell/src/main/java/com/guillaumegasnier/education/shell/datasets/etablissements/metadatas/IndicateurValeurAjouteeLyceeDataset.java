@@ -1,8 +1,8 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
 import com.guillaumegasnier.education.core.dto.ResultatFiliereDto;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
-import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
+import com.guillaumegasnier.education.core.enums.Filiere;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,9 +10,11 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatDouble;
+
 @Getter
 @Setter
-public class IndicateurValeurAjouteeLyceeDataset implements IndicateurValeurAjoutee, Metadata {
+public class IndicateurValeurAjouteeLyceeDataset implements IndicateurValeurAjouteeLycee {
 
     @CsvBindByName(column = "Année")
     private Integer annee;
@@ -27,12 +29,7 @@ public class IndicateurValeurAjouteeLyceeDataset implements IndicateurValeurAjou
     //Valeur ajoutée du taux de réussite - Toutes séries
 
     @CsvBindByName(column = "Taux d'accès 2nde-bac")
-    private Double tauxAcces;
-
-    //Valeur ajoutée du taux d'acces 2nde-bac
-
-    //Taux de mentions - Toutes séries
-
+    private String tauxAcces;
     //Valeur ajoutée du taux de mentions - Toutes séries
     //    @CsvBindByName(column = "Nombre de mentions TB avec félicitations - G")
     //    @CsvBindByName(column = "Nombre de mentions TB sans félicitations - G")
@@ -44,18 +41,22 @@ public class IndicateurValeurAjouteeLyceeDataset implements IndicateurValeurAjou
     //    @CsvBindByName(column = "Nombre de mentions AB - T")
     @CsvBindByName(column = "Effectif de seconde")
     private Integer effectifSeconde;
+
+    //Valeur ajoutée du taux d'acces 2nde-bac
+
+    //Taux de mentions - Toutes séries
     @CsvBindByName(column = "Effectif de premiere")
     private Integer effectifPremiere;
     @CsvBindByName(column = "Effectif de terminale")
     private Integer effectifTerminale;
     @CsvBindByName(column = "Taux d'accès 1ere-bac")
-    private Double tauxAcces1ereBac;
+    private String tauxAcces1ereBac;
     @CsvBindByName(column = "Taux d'accès terminale-bac")
-    private Double tauxAccesTerminaleBac;
+    private String tauxAccesTerminaleBac;
     @CsvBindByName(column = "Valeur ajoutée du taux d'accès 1ere-bac")
-    private Double valeurAjouteeTauxAcces1ereBac;
+    private String valeurAjouteeTauxAcces1ereBac;
     @CsvBindByName(column = "Valeur ajoutée du taux d'accès terminale-bac")
-    private Double valeurAjouteeTauxAccesTerminaleBac;
+    private String valeurAjouteeTauxAccesTerminaleBac;
     @CsvBindByName(column = "Présents - L")
     private Integer presentsL;
     @CsvBindByName(column = "Présents - ES")
@@ -79,93 +80,98 @@ public class IndicateurValeurAjouteeLyceeDataset implements IndicateurValeurAjou
     @CsvBindByName(column = "Présents - STHR")
     private Integer presentsSTHR;
     @CsvBindByName(column = "Taux de réussite - L")
-    private Double tauxReussiteL;
+    private String tauxReussiteL;
     @CsvBindByName(column = "Taux de réussite - ES")
-    private Double tauxReussiteES;
+    private String tauxReussiteES;
     @CsvBindByName(column = "Taux de réussite - S")
-    private Double tauxReussiteS;
+    private String tauxReussiteS;
     @CsvBindByName(column = "Taux de réussite - Gnle")
-    private Double tauxReussiteGnle;
+    private String tauxReussiteGnle;
     @CsvBindByName(column = "Taux de réussite - STI2D")
-    private Double tauxReussiteSTI2D;
+    private String tauxReussiteSTI2D;
     @CsvBindByName(column = "Taux de réussite - STD2A")
-    private Double tauxReussiteSTD2A;
+    private String tauxReussiteSTD2A;
     @CsvBindByName(column = "Taux de réussite - STMG")
-    private Double tauxReussiteSTMG;
+    private String tauxReussiteSTMG;
     @CsvBindByName(column = "Taux de réussite - STL")
-    private Double tauxReussiteSTL;
+    private String tauxReussiteSTL;
     @CsvBindByName(column = "Taux de réussite - ST2S")
-    private Double tauxReussiteST2S;
+    private String tauxReussiteST2S;
     @CsvBindByName(column = "Taux de réussite - S2TMD")
-    private Double tauxReussiteS2TMD;
+    private String tauxReussiteS2TMD;
     @CsvBindByName(column = "Taux de réussite - STHR")
-    private Double tauxReussiteSTHR;
+    private String tauxReussiteSTHR;
     @CsvBindByName(column = "Valeur ajoutée du taux de réussite - L")
-    private Double valeurAjouteeTauxReussiteL;
+    private String valeurAjouteeTauxReussiteL;
     @CsvBindByName(column = "Valeur ajoutée du taux de réussite - ES")
-    private Double valeurAjouteeTauxReussiteES;
+    private String valeurAjouteeTauxReussiteES;
     @CsvBindByName(column = "Valeur ajoutée du taux de réussite - S")
-    private Double valeurAjouteeTauxReussiteS;
+    private String valeurAjouteeTauxReussiteS;
     @CsvBindByName(column = "Valeur ajoutée du taux de réussite - Gnle")
-    private Double valeurAjouteeTauxReussiteGnle;
+    private String valeurAjouteeTauxReussiteGnle;
     @CsvBindByName(column = "Valeur ajoutée du taux de réussite - STI2D")
-    private Double valeurAjouteeTauxReussiteSTI2D;
+    private String valeurAjouteeTauxReussiteSTI2D;
     @CsvBindByName(column = "Valeur ajoutée du taux de réussite - STD2A")
-    private Double valeurAjouteeTauxReussiteSTD2A;
+    private String valeurAjouteeTauxReussiteSTD2A;
     @CsvBindByName(column = "Valeur ajoutée du taux de réussite - STMG")
-    private Double valeurAjouteeTauxReussiteSTMG;
+    private String valeurAjouteeTauxReussiteSTMG;
     @CsvBindByName(column = "Valeur ajoutée du taux de réussite - STL")
-    private Double valeurAjouteeTauxReussiteSTL;
+    private String valeurAjouteeTauxReussiteSTL;
     @CsvBindByName(column = "Valeur ajoutée du taux de réussite - ST2S")
-    private Double valeurAjouteeTauxReussiteST2S;
+    private String valeurAjouteeTauxReussiteST2S;
     @CsvBindByName(column = "Valeur ajoutée du taux de réussite - S2TMD")
-    private Double valeurAjouteeTauxReussiteS2TMD;
+    private String valeurAjouteeTauxReussiteS2TMD;
     @CsvBindByName(column = "Valeur ajoutée du taux de réussite - STHR")
-    private Double valeurAjouteeTauxReussiteSTHR;
+    private String valeurAjouteeTauxReussiteSTHR;
     @CsvBindByName(column = "Taux de mentions - L")
-    private Double tauxMentionsL;
+    private String tauxMentionsL;
     @CsvBindByName(column = "Taux de mentions - ES")
-    private Double tauxMentionsES;
+    private String tauxMentionsES;
     @CsvBindByName(column = "Taux de mentions - S")
-    private Double tauxMentionsS;
+    private String tauxMentionsS;
     @CsvBindByName(column = "Taux de mentions - Gnle")
-    private Double tauxMentionsGnle;
+    private String tauxMentionsGnle;
     @CsvBindByName(column = "Taux de mentions - STI2D")
-    private Double tauxMentionsSTI2D;
+    private String tauxMentionsSTI2D;
     @CsvBindByName(column = "Taux de mentions - STD2A")
-    private Double tauxMentionsSTD2A;
+    private String tauxMentionsSTD2A;
     @CsvBindByName(column = "Taux de mentions - STMG")
-    private Double tauxMentionsSTMG;
+    private String tauxMentionsSTMG;
     @CsvBindByName(column = "Taux de mentions - STL")
-    private Double tauxMentionsSTL;
+    private String tauxMentionsSTL;
     @CsvBindByName(column = "Taux de mentions - ST2S")
-    private Double tauxMentionsST2S;
+    private String tauxMentionsST2S;
     @CsvBindByName(column = "Taux de mentions - S2TMD")
-    private Double tauxMentionsS2TMD;
+    private String tauxMentionsS2TMD;
     @CsvBindByName(column = "Taux de mentions - STHR")
-    private Double tauxMentionsSTHR;
+    private String tauxMentionsSTHR;
     @CsvBindByName(column = "Valeur ajoutée du taux de mentions - L")
-    private Double valeurAjouteeTauxMentionsL;
+    private String valeurAjouteeTauxMentionsL;
     @CsvBindByName(column = "Valeur ajoutée du taux de mentions - ES")
-    private Double valeurAjouteeTauxMentionsES;
+    private String valeurAjouteeTauxMentionsES;
     @CsvBindByName(column = "Valeur ajoutée du taux de mentions - S")
-    private Double valeurAjouteeTauxMentionsS;
+    private String valeurAjouteeTauxMentionsS;
     @CsvBindByName(column = "Valeur ajoutée du taux de mentions - Gnle")
-    private Double valeurAjouteeTauxMentionsGnle;
+    private String valeurAjouteeTauxMentionsGnle;
     @CsvBindByName(column = "Valeur ajoutée du taux de mentions - STI2D")
-    private Double valeurAjouteeTauxMentionsSTI2D;
+    private String valeurAjouteeTauxMentionsSTI2D;
     @CsvBindByName(column = "Valeur ajoutée du taux de mentions - STD2A")
-    private Double valeurAjouteeTauxMentionsSTD2A;
+    private String valeurAjouteeTauxMentionsSTD2A;
     @CsvBindByName(column = "Valeur ajoutée du taux de mentions - STMG")
-    private Double valeurAjouteeTauxMentionsSTMG;
+    private String valeurAjouteeTauxMentionsSTMG;
     @CsvBindByName(column = "Valeur ajoutée du taux de mentions - STL")
-    private Double valeurAjouteeTauxMentionsSTL;
+    private String valeurAjouteeTauxMentionsSTL;
     @CsvBindByName(column = "Valeur ajoutée du taux de mentions - ST2S")
-    private Double valeurAjouteeTauxMentionsST2S;
+    private String valeurAjouteeTauxMentionsST2S;
     @CsvBindByName(column = "Valeur ajoutée du taux de mentions - S2TMD")
-    private Double valeurAjouteeTauxMentionsS2TMD;
+    private String valeurAjouteeTauxMentionsS2TMD;
     @CsvBindByName(column = "Valeur ajoutée du taux de mentions - STHR")
-    private Double valeurAjouteeTauxMentionsSTHR;
+    private String valeurAjouteeTauxMentionsSTHR;
+
+    @Override
+    public Double getTauxAcces() {
+        return formatDouble(tauxAcces);
+    }
 
     @Override
     public Set<ResultatFiliereDto> getResultats() {
@@ -173,51 +179,50 @@ public class IndicateurValeurAjouteeLyceeDataset implements IndicateurValeurAjou
 
         // L
         if (presentsL != null && presentsL > 0) {
-            resultats.add(new ResultatFiliereDto("L", presentsL, tauxReussiteL, valeurAjouteeTauxReussiteL, tauxMentionsL, valeurAjouteeTauxMentionsL));
+            resultats.add(new ResultatFiliereDto(Filiere.L, presentsL, formatDouble(tauxAcces), formatDouble(tauxReussiteL), formatDouble(valeurAjouteeTauxReussiteL), formatDouble(tauxMentionsL), formatDouble(valeurAjouteeTauxMentionsL)));
         }
         // ES
         if (presentsES != null && presentsES > 0) {
-            resultats.add(new ResultatFiliereDto("ES", presentsES, tauxReussiteES, valeurAjouteeTauxReussiteES, tauxMentionsES, valeurAjouteeTauxMentionsES));
+            resultats.add(new ResultatFiliereDto(Filiere.ES, presentsES, formatDouble(tauxAcces), formatDouble(tauxReussiteES), formatDouble(valeurAjouteeTauxReussiteES), formatDouble(tauxMentionsES), formatDouble(valeurAjouteeTauxMentionsES)));
         }
         // S
         if (presentsS != null && presentsS > 0) {
-            resultats.add(new ResultatFiliereDto("S", presentsS, tauxReussiteS, valeurAjouteeTauxReussiteS, tauxMentionsS, valeurAjouteeTauxMentionsS));
+            resultats.add(new ResultatFiliereDto(Filiere.S, presentsS, formatDouble(tauxAcces), formatDouble(tauxReussiteS), formatDouble(valeurAjouteeTauxReussiteS), formatDouble(tauxMentionsS), formatDouble(valeurAjouteeTauxMentionsS)));
         }
         // Gnle
         if (presentsGnle != null && presentsGnle > 0) {
-            resultats.add(new ResultatFiliereDto("GENERALE", presentsGnle, tauxReussiteGnle, valeurAjouteeTauxReussiteGnle, tauxMentionsGnle, valeurAjouteeTauxMentionsGnle));
+            resultats.add(new ResultatFiliereDto(Filiere.GENERALE, presentsGnle, formatDouble(tauxAcces), formatDouble(tauxReussiteGnle), formatDouble(valeurAjouteeTauxReussiteGnle), formatDouble(tauxMentionsGnle), formatDouble(valeurAjouteeTauxMentionsGnle)));
         }
         // STI2D
         if (presentsSTI2D != null && presentsSTI2D > 0) {
-            resultats.add(new ResultatFiliereDto("STI2D", presentsSTI2D, tauxReussiteSTI2D, valeurAjouteeTauxReussiteSTI2D, tauxMentionsSTI2D, valeurAjouteeTauxMentionsSTI2D));
+            resultats.add(new ResultatFiliereDto(Filiere.STI2D, presentsSTI2D, formatDouble(tauxAcces), formatDouble(tauxReussiteSTI2D), formatDouble(valeurAjouteeTauxReussiteSTI2D), formatDouble(tauxMentionsSTI2D), formatDouble(valeurAjouteeTauxMentionsSTI2D)));
         }
         // STD2A
         if (presentsSTD2A != null && presentsSTD2A > 0) {
-            resultats.add(new ResultatFiliereDto("STD2A", presentsSTD2A, tauxReussiteSTD2A, valeurAjouteeTauxReussiteSTD2A, tauxMentionsSTD2A, valeurAjouteeTauxMentionsSTD2A));
+            resultats.add(new ResultatFiliereDto(Filiere.STD2A, presentsSTD2A, formatDouble(tauxAcces), formatDouble(tauxReussiteSTD2A), formatDouble(valeurAjouteeTauxReussiteSTD2A), formatDouble(tauxMentionsSTD2A), formatDouble(valeurAjouteeTauxMentionsSTD2A)));
         }
         // SMG
         if (presentsSTMG != null && presentsSTMG > 0) {
-            resultats.add(new ResultatFiliereDto("STMG", presentsSTMG, tauxReussiteSTMG, valeurAjouteeTauxReussiteSTMG, tauxMentionsSTMG, valeurAjouteeTauxMentionsSTMG));
+            resultats.add(new ResultatFiliereDto(Filiere.STMG, presentsSTMG, formatDouble(tauxAcces), formatDouble(tauxReussiteSTMG), formatDouble(valeurAjouteeTauxReussiteSTMG), formatDouble(tauxMentionsSTMG), formatDouble(valeurAjouteeTauxMentionsSTMG)));
         }
         // STL
         if (presentsSTL != null && presentsSTL > 0) {
-            resultats.add(new ResultatFiliereDto("STL", presentsSTL, tauxReussiteSTL, valeurAjouteeTauxReussiteSTL, tauxMentionsSTL, valeurAjouteeTauxMentionsSTL));
+            resultats.add(new ResultatFiliereDto(Filiere.STL, presentsSTL, formatDouble(tauxAcces), formatDouble(tauxReussiteSTL), formatDouble(valeurAjouteeTauxReussiteSTL), formatDouble(tauxMentionsSTL), formatDouble(valeurAjouteeTauxMentionsSTL)));
         }
         // ST2S
         if (presentsST2S != null && presentsST2S > 0) {
-            resultats.add(new ResultatFiliereDto("ST2S", presentsST2S, tauxReussiteST2S, valeurAjouteeTauxReussiteST2S, tauxMentionsST2S, valeurAjouteeTauxMentionsST2S));
+            resultats.add(new ResultatFiliereDto(Filiere.ST2S, presentsST2S, formatDouble(tauxAcces), formatDouble(tauxReussiteST2S), formatDouble(valeurAjouteeTauxReussiteST2S), formatDouble(tauxMentionsST2S), formatDouble(valeurAjouteeTauxMentionsST2S)));
         }
         // S2TMD
         if (presentsS2TMD != null && presentsS2TMD > 0) {
-            resultats.add(new ResultatFiliereDto("S2TMD", presentsS2TMD, tauxReussiteS2TMD, valeurAjouteeTauxReussiteS2TMD, tauxMentionsS2TMD, valeurAjouteeTauxMentionsS2TMD));
+            resultats.add(new ResultatFiliereDto(Filiere.S2TMD, presentsS2TMD, formatDouble(tauxAcces), formatDouble(tauxReussiteS2TMD), formatDouble(valeurAjouteeTauxReussiteS2TMD), formatDouble(tauxMentionsS2TMD), formatDouble(valeurAjouteeTauxMentionsS2TMD)));
         }
         // STHR
         if (presentsSTHR != null && presentsSTHR > 0) {
-            resultats.add(new ResultatFiliereDto("STHR", presentsSTHR, tauxReussiteSTHR, valeurAjouteeTauxReussiteSTHR, tauxMentionsSTHR, valeurAjouteeTauxMentionsSTHR));
+            resultats.add(new ResultatFiliereDto(Filiere.STHR, presentsSTHR, formatDouble(tauxAcces), formatDouble(tauxReussiteSTHR), formatDouble(valeurAjouteeTauxReussiteSTHR), formatDouble(tauxMentionsSTHR), formatDouble(valeurAjouteeTauxMentionsSTHR)));
         }
 
         return resultats;
     }
-
 
 }

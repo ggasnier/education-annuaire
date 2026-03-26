@@ -5,7 +5,8 @@ import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -232,9 +233,37 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public <T extends IndicateurValeurAjoutee & Metadata> void createOrUpdateIVA(@NonNull List<T> datasets) {
+    public void createOrUpdateIVA(@NonNull List<IndicateurValeurAjouteeCollege> datasets) {
         for (int i = 0; i < datasets.size(); i += chunk) {
-            List<T> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
+            List<IndicateurValeurAjouteeCollege> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
+            coreEtablissementService.saveMetadata(sub.stream()
+                    .map(etablissementTransformer::toEtablissementMetadataEntity)
+                    .filter(Objects::nonNull)
+                    .toList());
+        }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void createOrUpdateIVALycees(@NonNull List<IndicateurValeurAjouteeLycee> datasets) {
+
+        record Clef(String uai, Integer annee) {}
+
+        // Fusion des deux sources (GT + Pro) sur la clef (uai, annee) :
+        // on cumule les ResultatFiliereDto de chaque source dans un même set
+        Map<Clef, IndicateurValeurAjouteeLycee> merged = new java.util.LinkedHashMap<>();
+        for (IndicateurValeurAjouteeLycee dataset : datasets) {
+            Clef clef = new Clef(dataset.getUai(), dataset.getAnnee());
+            merged.merge(clef, dataset, (existing, incoming) -> {
+                existing.getResultats().addAll(incoming.getResultats());
+                return existing;
+            });
+        }
+
+        List<IndicateurValeurAjouteeLycee> aggregated = new java.util.ArrayList<>(merged.values());
+
+        for (int i = 0; i < aggregated.size(); i += chunk) {
+            List<IndicateurValeurAjouteeLycee> sub = aggregated.subList(i, Math.min(i + chunk, aggregated.size()));
             coreEtablissementService.saveMetadata(sub.stream()
                     .map(etablissementTransformer::toEtablissementMetadataEntity)
                     .filter(Objects::nonNull)

@@ -4,7 +4,8 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
@@ -90,26 +91,39 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
     }
 
     @Override
-    public <T extends IndicateurValeurAjoutee & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull T dataset) {
+    public EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull IndicateurValeurAjouteeCollege dataset) {
         var uai = dataset.getUai();
         var annee = dataset.getAnnee();
-
-        log.info("uai: {}/{}", uai, annee);
-
         if (coreEtablissementService.isEtablissementExiste(uai)) {
-            Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
-
-            if (metadataEntityOptional.isPresent()) {
-                var entity = metadataEntityOptional.get();
-                var metadatas = entity.getMetadatas();
-                metadatas.setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
-                entity.setMetadatas(metadatas);
+            Optional<EtablissementMetadataEntity> opt = coreEtablissementService.findMetadata(uai, annee);
+            if (opt.isPresent()) {
+                var entity = opt.get();
+                entity.getMetadatas().setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
                 return entity;
             } else {
                 var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), coreEtablissementService.getEtablissementReferenceByUai(uai));
-                var metadatas = entity.getMetadatas();
-                metadatas.setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
-                entity.setMetadatas(metadatas);
+                entity.getMetadatas().setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
+                return entity;
+            }
+        } else {
+            log.warn("Etablissement {} non trouvé pour IVA {}", uai, annee);
+            return null;
+        }
+    }
+
+    @Override
+    public EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull IndicateurValeurAjouteeLycee dataset) {
+        var uai = dataset.getUai();
+        var annee = dataset.getAnnee();
+        if (coreEtablissementService.isEtablissementExiste(uai)) {
+            Optional<EtablissementMetadataEntity> opt = coreEtablissementService.findMetadata(uai, annee);
+            if (opt.isPresent()) {
+                var entity = opt.get();
+                entity.getMetadatas().setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
+                return entity;
+            } else {
+                var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), coreEtablissementService.getEtablissementReferenceByUai(uai));
+                entity.getMetadatas().setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
                 return entity;
             }
         } else {

@@ -21,7 +21,9 @@ public record EtablissementDetailsDto(
 
         List<JPODto> journees,
 
-        List<MetadataDto> metadatas,
+        List<IndicesPositionSocialeDTO> ips,
+
+        List<IndicateurValeurAjouteeDTO> iva,
 
         List<FormationDto> formations
 ) {

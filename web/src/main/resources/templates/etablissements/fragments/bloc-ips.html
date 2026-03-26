@@ -2,9 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 lg:col-span-2" th:fragment="bloc"
-     th:if="${metadatas != null && metadatas.size() > 0}">
-    <h2 class="text-xl font-semibold text-gray-900 mb-4">Indices de Position Sociale (IPS) et Indicateurs de Valeur
-        Ajoutée (IVA)</h2>
+     th:if="${ips != null && ips.size() > 0}">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Indices de Position Sociale (IPS)</h2>
     <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead>
@@ -16,23 +15,23 @@
                 <th class="text-left py-3 px-4 font-medium text-gray-900">IPS Dép.</th>
                 <th class="text-left py-3 px-4 font-medium text-gray-900">IPS Acad.</th>
                 <th class="text-left py-3 px-4 font-medium text-gray-900">IPS Nat.</th>
-                <th class="text-left py-3 px-4 font-medium text-gray-900">Taux réussite</th>
-                <th class="text-left py-3 px-4 font-medium text-gray-900">Taux mentions</th>
-                <th class="text-left py-3 px-4 font-medium text-gray-900">IVA</th>
+                <!--                <th class="text-left py-3 px-4 font-medium text-gray-900">Taux réussite</th>-->
+                <!--                <th class="text-left py-3 px-4 font-medium text-gray-900">Taux mentions</th>-->
+                <!--                <th class="text-left py-3 px-4 font-medium text-gray-900">IVA</th>-->
             </tr>
             </thead>
             <tbody>
-            <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="m : ${metadatas}">
-                <td class="py-3 px-4 font-medium" th:text="${m.annee}"></td>
-                <td class="py-3 px-4" th:text="${m.effectifs}"></td>
-                <td class="py-3 px-4" th:text="${m.indice}"></td>
-                <td class="py-3 px-4" th:text="${m.ecartType}"></td>
-                <td class="py-3 px-4" th:text="${m.indiceDepartement}"></td>
-                <td class="py-3 px-4" th:text="${m.indiceAcademie}"></td>
-                <td class="py-3 px-4" th:text="${m.indiceNational}"></td>
-                <td class="py-3 px-4" th:text="${m.tauxReussite}"></td>
-                <td class="py-3 px-4" th:text="${m.tauxMentions}"></td>
-                <td class="py-3 px-4" th:text="${m.valeurAjoutee}"></td>
+            <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="i : ${ips}">
+                <td class="py-3 px-4 font-medium" th:text="${i.annee}"></td>
+                <td class="py-3 px-4" th:text="${i.effectifs}"></td>
+                <td class="py-3 px-4" th:text="${i.indice}"></td>
+                <td class="py-3 px-4" th:text="${i.ecartType}"></td>
+                <td class="py-3 px-4" th:text="${i.indiceDepartement}"></td>
+                <td class="py-3 px-4" th:text="${i.indiceAcademie}"></td>
+                <td class="py-3 px-4" th:text="${i.indiceNational}"></td>
+                <!--                <td class="py-3 px-4" th:text="${m.tauxReussite}"></td>-->
+                <!--                <td class="py-3 px-4" th:text="${m.tauxMentions}"></td>-->
+                <!--                <td class="py-3 px-4" th:text="${m.valeurAjoutee}"></td>-->
             </tr>
             </tbody>
         </table>

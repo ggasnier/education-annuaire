@@ -15,8 +15,8 @@ public class IndicateurValeurAjouteeDto {
     @JsonIgnore
     private Double tauxAcces;
 
-    @JsonIgnore
-    public ResultatFiliereDto getResultat() {
-        return resultats.stream().filter(r -> r.getCode().equals("BREVETG")).findFirst().orElse(null);
-    }
+//    @JsonIgnore
+//    public ResultatFiliereDto getResultat() {
+//        return resultats.stream().filter(r -> r.getCode().equals("BREVETG")).findFirst().orElse(null);
+//    }
 }

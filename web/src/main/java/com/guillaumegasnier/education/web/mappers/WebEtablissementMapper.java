@@ -15,6 +15,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.lang.NonNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -122,17 +123,17 @@ public abstract class WebEtablissementMapper {
         return l;
     }
 
-    @Mapping(target = "tauxMentions", source = "metadatas.iva.resultat.tauxMentions")
-    @Mapping(target = "indiceNational", source = "metadatas.ips.indiceNational")
-    @Mapping(target = "valeurAjoutee", source = "metadatas.iva.resultat.valeurAjoutee")
-    @Mapping(target = "tauxReussite", source = "metadatas.iva.resultat.taux")
-    @Mapping(target = "indiceDepartement", source = "metadatas.ips.indiceDepartement")
-    @Mapping(target = "indiceAcademie", source = "metadatas.ips.indiceAcademie")
-    @Mapping(target = "indice", source = "metadatas.ips.indice")
-    @Mapping(target = "ecartType", source = "metadatas.ips.ecartType")
-    @Mapping(target = "effectifs", source = "metadatas.effectifs")
-    @Mapping(target = "annee", source = "pk.annee")
-    public abstract MetadataDto toMetadataDto(EtablissementMetadataEntity entity);
+//    @Mapping(target = "tauxMentions", source = "metadatas.iva.resultat.tauxMentions")
+//    @Mapping(target = "indiceNational", source = "metadatas.ips.indiceNational")
+//    @Mapping(target = "valeurAjoutee", source = "metadatas.iva.resultat.valeurAjoutee")
+//    @Mapping(target = "tauxReussite", source = "metadatas.iva.resultat.taux")
+//    @Mapping(target = "indiceDepartement", source = "metadatas.ips.indiceDepartement")
+//    @Mapping(target = "indiceAcademie", source = "metadatas.ips.indiceAcademie")
+//    @Mapping(target = "indice", source = "metadatas.ips.indice")
+//    @Mapping(target = "ecartType", source = "metadatas.ips.ecartType")
+//    @Mapping(target = "effectifs", source = "metadatas.effectifs")
+//    @Mapping(target = "annee", source = "pk.annee")
+//    public abstract MetadataDto toMetadataDto(EtablissementMetadataEntity entity);
 
     public List<SportWithCategorieDto> toSportWithCategorieDtoList(List<EtablissementSportEntity> entities) {
 
@@ -196,4 +197,30 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "nom", source = "formation.nom")
     @Mapping(target = "certifiante", source = "formation.certifiante", qualifiedByName = "toCertifiante")
     public abstract FormationDto toFormationDto(ActionFormationEntity entity);
+
+    @Mapping(target = "indiceNational", source = "metadatas.ips.indiceNational")
+    @Mapping(target = "indiceDepartement", source = "metadatas.ips.indiceDepartement")
+    @Mapping(target = "indiceAcademie", source = "metadatas.ips.indiceAcademie")
+    @Mapping(target = "indice", source = "metadatas.ips.indice")
+    @Mapping(target = "ecartType", source = "metadatas.ips.ecartType")
+    @Mapping(target = "annee", source = "pk.annee")
+    @Mapping(target = "effectifs", source = "metadatas.effectifs")
+    public abstract IndicesPositionSocialeDTO toIndicesPositionSocialeDTO(EtablissementMetadataEntity entity);
+
+    public List<IndicateurValeurAjouteeDTO> toIndicateurValeurAjouteeDTO(@NonNull EtablissementMetadataEntity entity) {
+        return entity.getMetadatas().getIva().getResultats().stream()
+                .map(resultat -> {
+                    IndicateurValeurAjouteeDTO dto = new IndicateurValeurAjouteeDTO();
+                    dto.setAnnee(entity.getPk().getAnnee());
+                    dto.setEffectifs(resultat.getEffectif());
+                    dto.setFiliere(resultat.getFiliere());
+                    dto.setTaux(resultat.getTaux());
+                    dto.setTauxMentions(resultat.getTauxMentions());
+                    dto.setValeurAjoutee(resultat.getValeurAjoutee());
+                    dto.setTauxAcces(resultat.getTauxAcces());
+                    dto.setValeurAjouteeTauxMentions(resultat.getValeurAjouteeTauxMentions());
+                    return dto;
+                })
+                .toList();
+    }
 }

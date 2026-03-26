@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.enums.Sources;
+import com.guillaumegasnier.education.shell.config.RestClientConfig;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
@@ -18,13 +19,13 @@ import static org.mockito.Mockito.*;
 
 class ProductionFileServiceTest {
 
-    private RestClient restClient;
     private ProductionFileService productionFileService;
+    private RestClientConfig.TrustAllHttpConnectionFactory connectionFactory;
 
     @BeforeEach
     void setUp() {
-        restClient = mock(RestClient.class, RETURNS_DEEP_STUBS);
-        productionFileService = new ProductionFileService(restClient);
+        RestClient restClient = mock(RestClient.class, RETURNS_DEEP_STUBS);
+        productionFileService = new ProductionFileService(restClient, connectionFactory);
     }
 
     @Test
