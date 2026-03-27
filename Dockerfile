@@ -25,9 +25,9 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 # Copy Spring Boot layers separately for better caching
 ARG EXTRACTED=/build/web/target/extracted
-COPY --from=build ${EXTRACTED}/BOOT-INF/lib ./lib
-COPY --from=build ${EXTRACTED}/META-INF ./META-INF
-COPY --from=build ${EXTRACTED}/BOOT-INF/classes ./
+COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/BOOT-INF/lib ./lib
+COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/META-INF ./META-INF
+COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/BOOT-INF/classes ./
 
 # Add metadata
 LABEL version="1.0.0" \
@@ -53,9 +53,9 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 # Copy Spring Boot layers separately for better caching
 ARG EXTRACTED=/build/shell/target/extracted
-COPY --from=build ${EXTRACTED}/BOOT-INF/lib ./lib
-COPY --from=build ${EXTRACTED}/META-INF ./META-INF
-COPY --from=build ${EXTRACTED}/BOOT-INF/classes ./
+COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/BOOT-INF/lib ./lib
+COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/META-INF ./META-INF
+COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/BOOT-INF/classes ./
 
 # Add metadata
 LABEL version="1.0.0" \
