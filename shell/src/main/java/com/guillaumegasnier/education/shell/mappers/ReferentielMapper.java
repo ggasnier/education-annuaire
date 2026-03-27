@@ -40,6 +40,7 @@ public abstract class ReferentielMapper {
         return (c >= '1' && c <= '8') ? (c - '0') : -1;
     }
 
+    @Mapping(target = "etat", ignore = true)
     @Mapping(target = "url", source = "LIENURLDESCRIPTION")
     @Mapping(target = "reglementationsActivites", source = "REGLEMENTATIONSACTIVITES")
     @Mapping(target = "publicationDecret", source = "PUBLICATIONDECRETCREATION", qualifiedByName = "toPublicationDecret")

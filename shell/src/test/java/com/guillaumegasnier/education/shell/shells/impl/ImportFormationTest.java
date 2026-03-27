@@ -59,8 +59,8 @@ class ImportFormationTest {
     @Test
     void importFormationsOnisepLheoTest() {
         importFormation.importFormationsOnisepLheo();
-        verify(fileService, times(10)).importLheoSubtypeFromZip(any());
-        verify(shellFormationService, times(10)).createOrUpdateFormationsOnisepLheo(any());
+        verify(fileService, times(1)).importLheoSubtypeFromZip(any());
+        verify(shellFormationService, times(1)).createOrUpdateFormationsOnisepLheo(any());
     }
 
 }

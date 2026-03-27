@@ -260,8 +260,6 @@ public class CarifFormationDataset implements Dataset {
     private String etablissementLieuFormationSiret;
     /**
      * Id de formation RCO (id_formation + id_action + id_certifinfo)
-     *
-     * @deprecated
      */
     @JsonProperty(value = "id_rco_formation")
     private String idRcoFormation;
