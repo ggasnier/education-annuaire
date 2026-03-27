@@ -9,20 +9,20 @@
 
 <body>
 <th:block layout:fragment="content">
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:border-indigo-300 transition mb-4">
         <div class="flex flex-col md:flex-row md:items-start md:justify-between">
             <div class="flex-1">
-                <div class="flex items-center gap-3 mb-3">
-                    <h1 class="text-3xl font-bold text-gray-900" th:text="${etablissement.nom}"></h1>
+                <div class="flex items-center gap-4">
+                    <h1 class="text-xl lg:text-3xl font-bold text-gray-900" th:text="${etablissement.nom}"></h1>
 
                     <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800"
+                            class="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800"
                             th:if="${etablissement.actif}">
                             Ouvert
                         </span>
 
                     <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800"
+                            class="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800"
                             th:unless="${etablissement.actif}">
                             Fermé
                         </span>
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         <div th:replace="~{etablissements/fragments/bloc-infos-principales :: bloc}"></div>
         <div th:replace="~{etablissements/fragments/bloc-options :: bloc}"></div>
         <div th:replace="~{etablissements/fragments/bloc-contacts :: bloc}"></div>

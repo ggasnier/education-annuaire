@@ -104,4 +104,18 @@ public class IndexController {
 
         return "departement.html";
     }
+
+    @GetMapping("/mentions-legales")
+    public String mentions(Model model) {
+        model.addAttribute("title", "Mentions légales");
+
+        return "pages/mentions.html";
+    }
+
+    @GetMapping("/a-propos")
+    public String apropos(Model model) {
+        model.addAttribute("title", "A propos");
+
+        return "pages/apropos.html";
+    }
 }

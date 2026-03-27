@@ -10,7 +10,7 @@
 <body>
 <th:block layout:fragment="content">
     <div class="lg:hidden mb-4">
-        <button @click="mobileFilters = !mobileFilters"
+        <button type="button" @click.prevent="mobileFilters = !mobileFilters"
                 class="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path d="M3 4h18M7 8h10M10 12h4" stroke-linecap="round" stroke-linejoin="round"/>
