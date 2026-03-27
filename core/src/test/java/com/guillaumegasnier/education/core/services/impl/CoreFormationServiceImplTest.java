@@ -4,12 +4,12 @@ import com.guillaumegasnier.education.core.domains.formations.ActionFormationEnt
 import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
-import com.guillaumegasnier.education.core.domains.referentiels.RomeEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
 import com.guillaumegasnier.education.core.repositories.formations.ActionFormationRepository;
 import com.guillaumegasnier.education.core.repositories.formations.FormationRepository;
 import com.guillaumegasnier.education.core.repositories.formations.LienOnisepRepository;
 import com.guillaumegasnier.education.core.repositories.formations.OrganismeRepository;
-import com.guillaumegasnier.education.core.repositories.referentiels.RomeRepository;
+import com.guillaumegasnier.education.core.repositories.referentiels.MetierRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class CoreFormationServiceImplTest {
     @Mock
     private ActionFormationRepository actionFormationRepository;
     @Mock
-    private RomeRepository romeRepository;
+    private MetierRepository metierRepository;
     @Mock
     private OrganismeRepository organismeRepository;
     @Mock
@@ -43,7 +43,7 @@ class CoreFormationServiceImplTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        service = new CoreFormationServiceImpl(formationRepository, actionFormationRepository, romeRepository, organismeRepository, lienOnisepRepository);
+        service = new CoreFormationServiceImpl(formationRepository, actionFormationRepository, metierRepository, organismeRepository, lienOnisepRepository);
         Field emField = CoreFormationServiceImpl.class.getDeclaredField("em");
         emField.setAccessible(true);
         emField.set(service, em);
@@ -85,9 +85,9 @@ class CoreFormationServiceImplTest {
 
     @Test
     void saveRomesTest() {
-        List<RomeEntity> entities = new ArrayList<>();
+        List<MetierEntity> entities = new ArrayList<>();
         service.saveRomes(entities);
-        verify(romeRepository).saveAll(entities);
+        verify(metierRepository).saveAll(entities);
         verify(em).flush();
         verify(em).clear();
     }
@@ -130,8 +130,8 @@ class CoreFormationServiceImplTest {
 
     @Test
     void getRomesTest() {
-        Set<RomeEntity> entities = new HashSet<>();
-        when(romeRepository.findAllByCodeIn(List.of("123", "456"))).thenReturn(entities);
+        Set<MetierEntity> entities = new HashSet<>();
+        when(metierRepository.findAllByCodeIn(List.of("123", "456"))).thenReturn(entities);
         assertSame(entities, service.getRomes(List.of("123", "456")));
     }
 
@@ -161,5 +161,5 @@ class CoreFormationServiceImplTest {
         assertTrue(result.isPresent());
         assertSame(entity, result.get());
     }
-    
+
 }

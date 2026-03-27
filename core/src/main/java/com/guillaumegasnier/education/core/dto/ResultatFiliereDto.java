@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.core.dto;
 
+import com.guillaumegasnier.education.core.enums.Filiere;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,15 +12,18 @@ public class ResultatFiliereDto implements Serializable {
 
     /**
      * Code filière
-     * <p>
-     * TODO à transforme en enum
      */
-    private String code;
+    private Filiere filiere;
 
     /**
      * Présents
      */
     private Integer effectif;
+
+    /**
+     * Taux d'accès : 2nd bac ou 6e 3e
+     */
+    private Double tauxAcces;
 
     /**
      * Taux de réussite

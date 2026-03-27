@@ -114,4 +114,6 @@ public interface CoreEtablissementService {
     Optional<EtablissementContactEntity> findContact(String uai, Contact contact, String valeur);
 
     List<EtablissementEntity> findEtablissementsActif();
+
+    List<EtablissementEntity> findEtablissementsNotActif();
 }

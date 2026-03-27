@@ -4,7 +4,10 @@ import com.guillaumegasnier.education.core.domains.etablissements.EtablissementE
 import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
 import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.services.CoreFormationService;
+import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
+import com.guillaumegasnier.education.web.configuration.AppProperties;
 import com.guillaumegasnier.education.web.dto.etablissements.CommuneWithEtablissementsDto;
 import com.guillaumegasnier.education.web.dto.etablissements.NatureWithEtablissementsDto;
 import com.guillaumegasnier.education.web.dto.references.AcademieWithDepartementsDto;
@@ -27,17 +30,24 @@ public class IndexController {
 
     private final CoreTerritoireService coreTerritoireService;
     private final CoreEtablissementService coreEtablissementService;
+    private final CoreFormationService coreFormationService;
+    private final CoreReferentielService coreReferentielService;
     private final WebReferenceMapper webReferenceMapper;
     private final WebEtablissementMapper webEtablissementMapper;
+    private final AppProperties appProperties;
 
     @GetMapping("")
     public String getHome(Model model) {
 
-        model.addAttribute("title", "Formakoi");
+        model.addAttribute("title", appProperties.getTitle());
 
         model.addAttribute("nbrEtabliseements", coreEtablissementService.getNbrEtablissements());
+        model.addAttribute("nbrFormations", coreFormationService.getNbrFormations());
+        model.addAttribute("nbrCertifications", coreReferentielService.getNbrCertifications());
+        model.addAttribute("nbrCompetences", coreReferentielService.getNbrCompetences());
+        model.addAttribute("nbrMetiers", coreReferentielService.getNbrMetiers());
 
-        return "home.html";
+        return "home/index.html";
     }
 
     @GetMapping("/academies")
@@ -93,5 +103,19 @@ public class IndexController {
         }
 
         return "departement.html";
+    }
+
+    @GetMapping("/mentions-legales")
+    public String mentions(Model model) {
+        model.addAttribute("title", "Mentions légales");
+
+        return "pages/mentions.html";
+    }
+
+    @GetMapping("/a-propos")
+    public String apropos(Model model) {
+        model.addAttribute("title", "A propos");
+
+        return "pages/apropos.html";
     }
 }

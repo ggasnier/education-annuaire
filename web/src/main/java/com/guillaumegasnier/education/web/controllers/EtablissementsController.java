@@ -36,7 +36,8 @@ public class EtablissementsController {
         model.addAttribute("sports", details.sports());
         model.addAttribute("contacts", details.contacts());
         model.addAttribute("journees", details.journees());
-        model.addAttribute("metadatas", details.metadatas());
+        model.addAttribute("ips", details.ips());
+        model.addAttribute("iva", details.iva());
         model.addAttribute("formations", details.formations());
         return "etablissements/details";
     }

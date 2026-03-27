@@ -98,6 +98,8 @@ public class FormationEntity extends AbstractSourcesEntity {
      * Cet élément décrit le niveau de sortie de la formation.
      * <p>
      * <a href="https://dev.lheo.org/languages/lheo/2.3/lheo/dict-niveaux.html#dict-niveaux">Référence</a>
+     * <p>
+     * Ne doit pas être confondu avec l'EQF (Cadre Européen des Certifications)
      */
     private Integer codeNiveauSortie;
 

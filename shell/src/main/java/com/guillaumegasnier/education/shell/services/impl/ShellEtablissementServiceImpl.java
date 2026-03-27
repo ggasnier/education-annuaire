@@ -5,7 +5,8 @@ import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -104,7 +105,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         for (int i = 0; i < size; i += chunk) {
             List<OnisepDispositifDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
 
-            log.info("Options: {}/{}", i, size);
+            log.info("Import des dispositifs: {}/{}", i, size);
             coreEtablissementService.saveOptions(sub.stream()
                     .filter(d -> d.getOption() != null)
                     .filter(d -> d.getUai() != null && !d.getUai().isBlank())
@@ -114,7 +115,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .filter(Objects::nonNull)
                     .toList());
 
-            log.info("Sports: {}/{}", i, size);
             coreEtablissementService.saveEtablissementSportEntity(sub.stream()
                     .filter(d -> d.getOption() != null &&
                             (d.getOption().equals(OptionEtablissement.SPORT_ETUDES) ||
@@ -128,7 +128,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .filter(Objects::nonNull)
                     .toList());
 
-            log.info("Import des dispositifs sections langues orientales");
             coreEtablissementService.saveLangues(sub.stream()
                     .filter(d -> d.getOption() != null
                             && d.getOption().equals(OptionEtablissement.SECTION_ORIENTALE))
@@ -141,7 +140,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .filter(Objects::nonNull)
                     .toList());
 
-            log.info("Langues: {}/{}", i, size);
             coreEtablissementService.saveLangues(sub.stream()
                     .filter(d -> d.getOption() != null &&
                             (d.getOption().equals(OptionEtablissement.SECTION_EUROPEENNE) ||
@@ -159,7 +157,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .toList());
 
 
-            log.info("Import des dispositifs sections internationales");
             coreEtablissementService.saveLangues(sub.stream()
                     .filter(d -> d.getOption() != null
                             && d.getOption().equals(OptionEtablissement.SECTION_INTERNATIONALE))
@@ -171,7 +168,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                     .filter(Objects::nonNull)
                     .toList());
 
-            log.info("Import des dispositifs sections bilingues");
             coreEtablissementService.saveLangues(sub.stream()
                     .filter(d -> d.getOption() != null
                             && d.getOption().equals(OptionEtablissement.SECTION_BILINGUE))
@@ -237,9 +233,37 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public <T extends IndicateurValeurAjoutee & Metadata> void createOrUpdateIVA(@NonNull List<T> datasets) {
+    public void createOrUpdateIVA(@NonNull List<IndicateurValeurAjouteeCollege> datasets) {
         for (int i = 0; i < datasets.size(); i += chunk) {
-            List<T> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
+            List<IndicateurValeurAjouteeCollege> sub = datasets.subList(i, Math.min(i + chunk, datasets.size()));
+            coreEtablissementService.saveMetadata(sub.stream()
+                    .map(etablissementTransformer::toEtablissementMetadataEntity)
+                    .filter(Objects::nonNull)
+                    .toList());
+        }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void createOrUpdateIVALycees(@NonNull List<IndicateurValeurAjouteeLycee> datasets) {
+
+        record Clef(String uai, Integer annee) {}
+
+        // Fusion des deux sources (GT + Pro) sur la clef (uai, annee) :
+        // on cumule les ResultatFiliereDto de chaque source dans un même set
+        Map<Clef, IndicateurValeurAjouteeLycee> merged = new java.util.LinkedHashMap<>();
+        for (IndicateurValeurAjouteeLycee dataset : datasets) {
+            Clef clef = new Clef(dataset.getUai(), dataset.getAnnee());
+            merged.merge(clef, dataset, (existing, incoming) -> {
+                existing.getResultats().addAll(incoming.getResultats());
+                return existing;
+            });
+        }
+
+        List<IndicateurValeurAjouteeLycee> aggregated = new java.util.ArrayList<>(merged.values());
+
+        for (int i = 0; i < aggregated.size(); i += chunk) {
+            List<IndicateurValeurAjouteeLycee> sub = aggregated.subList(i, Math.min(i + chunk, aggregated.size()));
             coreEtablissementService.saveMetadata(sub.stream()
                     .map(etablissementTransformer::toEtablissementMetadataEntity)
                     .filter(Objects::nonNull)
@@ -249,7 +273,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
     @Override
     public void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets) {
-        
+
     }
 
     @Override
@@ -327,7 +351,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             );
 
             // Les journees portes ouvertes
-            log.info("Import JPO {}/{}", i, size);
             coreEtablissementService.saveJPO(
                     sub.stream()
                             .flatMap(this::dedoublement)
@@ -342,12 +365,11 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
             if (source.equals("esr")) {
                 coreEtablissementService.saveMetadata(sub.stream()
+                        .flatMap(this::dedoublement)
                         .map(EtablissementDataset::getEffectifs)
                         .flatMap(List::stream)
                         .map(etablissementTransformer::toEtablissementMetadataEntity)
                         .filter(Objects::nonNull)
-                        //.map(validatorService::toValidEntity)
-                        //.filter(Objects::nonNull)
                         .toList());
             }
 
@@ -454,6 +476,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .stream()
                 .map(etablissementMapper::toSpecialiteDTO)
                 .flatMap(List::stream)
+                .filter(dto -> !dto.uai().isBlank())
                 .map(dto -> etablissementTransformer.toEtablissementSpecialiteEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)
@@ -493,13 +516,13 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         log.info("Import terminé : {} sections binationale enregistrée(s).", datasets.size());
     }
 
-    @Override
-    public void importEtablissementsRecherche() {
-        coreRechercheService.saveEtablissements(
-                coreEtablissementService
-                        .findEtablissementsActif()
-                        .stream()
-                        .map(etablissementMapper::toRechercheEtablissementEntity)
-                        .toList());
-    }
+//    @Override
+//    public void importEtablissementsRecherche() {
+//        coreRechercheService.saveEtablissements(
+//                coreEtablissementService
+//                        .findEtablissementsActif()
+//                        .stream()
+//                        .map(etablissementMapper::toRechercheEtablissementEntity)
+//                        .toList());
+//    }
 }

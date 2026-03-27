@@ -122,25 +122,7 @@ public class MasaEtablissementDataset implements EtablissementDataset {
             return true;
         return dateFinValidite.isBlank();
     }
-
-    @Override
-    public String getCodeNature() {
-        if (nomNature == null) return null;
-        return switch (nomNature) {
-            case "MFREO" -> "380";
-            case "Lycée polyvalent" -> "306"; // Lycée polyvalent
-            case "LEAP", "LPA" -> "320"; // Lycée professionnel
-            case "Collège" -> "340"; // Collège
-            case "CFPPA" -> "740"; // Centre de formation professionnelle et de promotion agricole
-            case "LEGTA" -> "300"; // Lycée d'enseignement général et technologique
-            case "CFA", "CFA privé" -> "605"; // Organisme de formation - Centre de formation d'apprentis
-            case "LEGTPA" -> "307"; // Lycée d'enseignement général, technologique et professionnel agricole
-            case "EREA" -> "370"; // Etablissement régional d'enseignement adapté / Lycée d'enseignement adapté
-            default -> null;
-        };
-
-    }
-
+    
     @Override
     public String getAdresse() {
         return formatAdresse(adresse4);

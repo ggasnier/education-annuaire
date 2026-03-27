@@ -4,7 +4,8 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
@@ -90,26 +91,39 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
     }
 
     @Override
-    public <T extends IndicateurValeurAjoutee & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull T dataset) {
+    public EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull IndicateurValeurAjouteeCollege dataset) {
         var uai = dataset.getUai();
         var annee = dataset.getAnnee();
-
-        log.info("uai: {}/{}", uai, annee);
-
         if (coreEtablissementService.isEtablissementExiste(uai)) {
-            Optional<EtablissementMetadataEntity> metadataEntityOptional = coreEtablissementService.findMetadata(uai, annee);
-
-            if (metadataEntityOptional.isPresent()) {
-                var entity = metadataEntityOptional.get();
-                var metadatas = entity.getMetadatas();
-                metadatas.setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
-                entity.setMetadatas(metadatas);
+            Optional<EtablissementMetadataEntity> opt = coreEtablissementService.findMetadata(uai, annee);
+            if (opt.isPresent()) {
+                var entity = opt.get();
+                entity.getMetadatas().setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
                 return entity;
             } else {
                 var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), coreEtablissementService.getEtablissementReferenceByUai(uai));
-                var metadatas = entity.getMetadatas();
-                metadatas.setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
-                entity.setMetadatas(metadatas);
+                entity.getMetadatas().setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
+                return entity;
+            }
+        } else {
+            log.warn("Etablissement {} non trouvé pour IVA {}", uai, annee);
+            return null;
+        }
+    }
+
+    @Override
+    public EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull IndicateurValeurAjouteeLycee dataset) {
+        var uai = dataset.getUai();
+        var annee = dataset.getAnnee();
+        if (coreEtablissementService.isEtablissementExiste(uai)) {
+            Optional<EtablissementMetadataEntity> opt = coreEtablissementService.findMetadata(uai, annee);
+            if (opt.isPresent()) {
+                var entity = opt.get();
+                entity.getMetadatas().setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
+                return entity;
+            } else {
+                var entity = new EtablissementMetadataEntity(new EtablissementAnneePK(annee, uai), coreEtablissementService.getEtablissementReferenceByUai(uai));
+                entity.getMetadatas().setIva(etablissementMapper.toIndicateurValeurAjouteeDto(dataset));
                 return entity;
             }
         } else {
@@ -131,11 +145,15 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
         // Le code commune
         setCodeComumne(entity, dataset.getCodeCommune(), dataset.getNomCommune());
         // Le code nature
-        setCodeNature(entity, dataset.getCodeNature());
+        setCodeNature(entity, dataset.getCodeNature(), entity.getUai());
         // Le code contrat pour le privé
         setCodeContrat(entity, dataset.getCodeContrat());
         //Les sources de données
         entity.addSource(source);
+
+        if (entity.getSecteur() == null && dataset.getSecteur() != null) {
+            entity.setSecteur(dataset.getSecteur());
+        }
 
         if (dataset.getDateOuverture() != null)
             entity.setDateOuverture(dataset.getDateOuverture());
@@ -159,7 +177,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
         // Le code commune
         setCodeComumne(entity, dataset.getCodeCommune(), dataset.getNomCommune());
         // Le code nature
-        setCodeNature(entity, dataset.getCodeNature());
+        setCodeNature(entity, dataset.getCodeNature(), entity.getUai());
         // Le code contrat pour le privé
         setCodeContrat(entity, dataset.getCodeContrat());
         //Les sources de données
@@ -173,9 +191,17 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
             coreEtablissementService.findContrat(codeContrat).ifPresent(entity::setContrat);
     }
 
-    void setCodeNature(EtablissementEntity entity, String codeNature) {
-        if (codeNature != null && entity.getNature().getCode().equals("$"))
+    void setCodeNature(EtablissementEntity entity, String codeNature, String uai) {
+        if (codeNature != null && entity.getNature().getCode().equals("$")) {
             coreEtablissementService.findNature(codeNature).ifPresent(entity::setNature);
+        } else {
+            if (codeNature != null && !entity.getNature().getCode().equals("$")) {
+                if (!codeNature.equals(entity.getNature().getCode())) {
+                    log.warn("Ecart de codeNature entre {} (ancien) et {} (nouveau) pour {}", entity.getNature().getCode(), codeNature, uai);
+                    coreEtablissementService.findNature(codeNature).ifPresent(entity::setNature);
+                }
+            }
+        }
     }
 
     void setCodeComumne(@NonNull EtablissementEntity entity, String codeCommune, String nomCommune) {
@@ -185,20 +211,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
                 if (communeOptional.isPresent()) {
                     entity.setCommune(communeOptional.get());
                 } else {
-                    communeOptional = coreTerritoireService.findCommuneByNom(nomCommune);
-                    if (communeOptional.isPresent()) {
-                        entity.setCommune(communeOptional.get());
-                    } else {
-                        log.warn("Commune inconnue pour {} / {}", codeCommune, nomCommune);
-                    }
-                }
-            } else if (nomCommune != null && !nomCommune.isBlank()) {
-                var communeOptional = coreTerritoireService.findCommuneByNom(nomCommune);
-
-                if (communeOptional.isPresent()) {
-                    entity.setCommune(communeOptional.get());
-                } else {
-                    log.warn("Commune absente pour {}", nomCommune);
+                    log.warn("Commune inconnue pour {} / {}", codeCommune, nomCommune);
                 }
             }
         }
@@ -358,5 +371,5 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
             return null;
         }
     }
-    
+
 }

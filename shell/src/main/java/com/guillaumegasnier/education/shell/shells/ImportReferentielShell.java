@@ -8,4 +8,6 @@ public interface ImportReferentielShell {
 
     void importRncp();
 
+    void importRome();
+
 }

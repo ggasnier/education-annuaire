@@ -1,9 +1,13 @@
 package com.guillaumegasnier.education.shell.transformers.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.formations.*;
+import com.guillaumegasnier.education.core.domains.formations.ActionFormationEntity;
+import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
+import com.guillaumegasnier.education.core.domains.formations.LienOnisepPK;
+import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
+import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.TravailOrganismeFormationDataset;
 import com.guillaumegasnier.education.shell.dto.formations.ActionFormationDTO;
@@ -31,6 +35,8 @@ class FormationTransformerImplTest {
     @Mock
     private CoreFormationService coreFormationService;
     @Mock
+    private CoreReferentielService coreReferentielService;
+    @Mock
     private CoreEtablissementService coreEtablissementService;
     private FormationTransformerImpl transformer;
 
@@ -39,7 +45,7 @@ class FormationTransformerImplTest {
         MockitoAnnotations.openMocks(this);
         EtablissementMapper etablissementMapper = Mappers.getMapper(EtablissementMapper.class);
         FormationMapper formationMapper = Mappers.getMapper(FormationMapper.class);
-        transformer = new FormationTransformerImpl(coreTerritoireService, coreFormationService, coreEtablissementService, formationMapper, etablissementMapper);
+        transformer = new FormationTransformerImpl(coreTerritoireService, coreFormationService, coreEtablissementService, formationMapper, etablissementMapper, coreReferentielService);
     }
 
     @Test
@@ -56,16 +62,15 @@ class FormationTransformerImplTest {
 
         dto.setOnisepId(null);
         dto.setParcoursupId(456);
-        when(coreFormationService.findLienOnisep("PS", "456")).thenReturn(Optional.empty());
+        when(coreFormationService.findLienOnisep("PSF", "456")).thenReturn(Optional.empty());
         assertEquals(1L, transformer.recalculId(dto).getFormationId());
 
         LienOnisepEntity entity = new LienOnisepEntity();
-        entity.setPk(new LienOnisepPK(123, "PS", "789"));
+        entity.setPk(new LienOnisepPK(123, "PSF", "789"));
 
         dto.setParcoursupId(789);
-        when(coreFormationService.findLienOnisep("PS", "789")).thenReturn(Optional.of(entity));
+        when(coreFormationService.findLienOnisep("PSF", "789")).thenReturn(Optional.of(entity));
         assertEquals(7284277920559019884L, transformer.recalculId(dto).getFormationId());
-
     }
 
     @Test
@@ -82,17 +87,6 @@ class FormationTransformerImplTest {
 
         when(coreEtablissementService.findOrganisme("123456")).thenReturn(Optional.of(entity));
         assertNotNull(transformer.toOrganismeEntity(dataset));
-
-    }
-
-    @Test
-    void toFormationEntity() {
-        FormationDTO dto = new FormationDTO();
-        assertNotNull(transformer.toFormationEntity(dto, "test"));
-
-        dto.setFormationId(123L);
-        when(coreFormationService.findFormation(123L)).thenReturn(Optional.of(new FormationEntity()));
-        assertNotNull(transformer.toFormationEntity(dto, "test"));
 
     }
 

@@ -101,6 +101,6 @@ public class ParcoursupFormationDataset implements Dataset {
     private Integer codeFormation;
 
     public Long getFormationId() {
-        return toNormalizedId("PS", codeFormation.toString());
+        return toNormalizedId("PSF", codeFormation.toString());
     }
 }

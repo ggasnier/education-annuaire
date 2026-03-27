@@ -26,7 +26,18 @@ public class FormationDTO {
     private String nda;
     private String identifiantModule;
     private Integer positionnement;
+    private String codeCertification;
     private Integer onisepId;
     private Integer parcoursupId;
     private String carifId;
+
+    public String getObjectif() {
+        if (objectif == null || objectif.isBlank() || objectif.equals("-")) return null;
+        return objectif;
+    }
+
+    public String getContenu() {
+        if (contenu == null || contenu.isBlank() || contenu.equals("-")) return null;
+        return contenu;
+    }
 }

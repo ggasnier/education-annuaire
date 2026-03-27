@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr"
+      layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${title} ?: 'Mentions légales'">Mentions légales</title>
+</head>
+
+<body>
+<th:block layout:fragment="content">
+    <section class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:border-indigo-300 transition mb-4">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900" th:text="${title} ?: 'Mentions légales'">Mentions légales</h1>
+        </header>
+
+        <div class="space-y-8 text-gray-700 leading-relaxed">
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">1. Éditeur du site</h2>
+                <p>
+                    Le présent site est édité par <strong>Guillaume Gasnier</strong>, dans le cadre d'un
+                    projet de développement personnel.
+                </p>
+                <p class="mt-2">
+                    Contact :
+                    <a class="text-indigo-600 hover:underline break-all"
+                       href="https://github.com/ggasnier/education-annuaire"
+                       rel="noopener noreferrer"
+                       target="_blank">https://github.com/ggasnier/education-annuaire</a>
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">2. Hébergement</h2>
+                <p>
+                    Le site est hébergé sur une infrastructure <strong>OVHcloud</strong>, localisée en France.
+                </p>
+                <p class="mt-2 text-sm text-gray-600">
+                    OVH SAS - 2 rue Kellermann, 59100 Roubaix, France - Tel. : 1007.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">3. Nature et objet du service</h2>
+                <p>
+                    Ce site est un service purement informatif d'agrégation, de recherche et de mise en forme
+                    de données publiques issues de jeux de données open data.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">4. Sources open data et propriété des données</h2>
+                <p>
+                    Les données affichées proviennent de sources open data publiées notamment par des ministères
+                    et organismes publics. Ces données restent la propriété de leurs producteurs respectifs,
+                    selon les licences de réutilisation applicables à chaque jeu de données.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">5. Données personnelles</h2>
+                <p>
+                    Le site ne met pas en oeuvre de collecte directe de données personnelles (pas de création de
+                    compte, pas de formulaire de contact nominatif à ce jour).
+                </p>
+                <p class="mt-2">
+                    Toutefois, des données techniques peuvent être traitées à des fins de sécurité et de
+                    fonctionnement (journaux serveurs, métadonnées de connexion).
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">6. Cookies et mesure d'audience</h2>
+                <p>
+                    Le site utilise (ou utilisera) <strong>Google Analytics</strong> pour la mesure d'audience.
+                    Cet outil est susceptible de déposer des cookies sur votre terminal, sous réserve de votre
+                    consentement lorsque la réglementation l'exige.
+                </p>
+                <p class="mt-2">
+                    Vous pouvez configurer votre navigateur pour refuser tout ou partie des cookies.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">7. Propriété intellectuelle</h2>
+                <p>
+                    La structure du site, son code, son design et ses contenus éditoriaux originaux sont protégés
+                    par le droit de la propriété intellectuelle et demeurent la propriété de l'éditeur,
+                    sauf mention contraire.
+                </p>
+                <p class="mt-2">
+                    Les données open data conservées dans leur forme d'origine restent soumises aux conditions
+                    de licence de leurs producteurs.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">8. Limitation de responsabilité</h2>
+                <p>
+                    Le site fournit une restitution de données open data publiées par des tiers. L'éditeur ne
+                    garantit ni l'exhaustivité, ni l'absence d'erreur, ni l'actualisation permanente de ces
+                    données, et ne saurait être tenu responsable des conséquences liées à leur interprétation
+                    ou réutilisation.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">9. Droit applicable</h2>
+                <p>
+                    Les présentes mentions légales sont soumises au droit français.
+                </p>
+            </section>
+        </div>
+    </section>
+</th:block>
+</body>
+</html>

@@ -7,6 +7,8 @@ import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDetailsDto;
+import com.guillaumegasnier.education.web.dto.etablissements.IndicateurValeurAjouteeDTO;
+import com.guillaumegasnier.education.web.dto.etablissements.IndicesPositionSocialeDTO;
 import com.guillaumegasnier.education.web.mappers.WebEtablissementMapper;
 import com.guillaumegasnier.education.web.services.WebEtablissementService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -72,6 +76,21 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
             return null;
         }
 
+        var metadataList = coreEtablissementService.getMetadataListByUai(uai);
+        // IPS
+        List<IndicesPositionSocialeDTO> ips = metadataList.stream().filter(etablissementMetadataEntity -> etablissementMetadataEntity.getMetadatas().getIps() != null)
+                .map(webEtablissementMapper::toIndicesPositionSocialeDTO).toList();
+
+        // IVA
+        List<IndicateurValeurAjouteeDTO> iva = metadataList
+                .stream()
+                .filter(etablissementMetadataEntity -> etablissementMetadataEntity.getMetadatas().getIva() != null)
+                .map(webEtablissementMapper::toIndicateurValeurAjouteeDTO)
+                .flatMap(List::stream)
+                .sorted(Comparator.comparingInt(IndicateurValeurAjouteeDTO::getAnnee).reversed()
+                        .thenComparing(IndicateurValeurAjouteeDTO::getFiliere))
+                .toList();
+
         return new EtablissementDetailsDto(
                 entity.map(webEtablissementMapper::toEtablissementDto).orElse(null),
                 webEtablissementMapper.toOptionWithCategorieDto(coreEtablissementService.getOptionListByUai(uai)),
@@ -80,7 +99,8 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
                 webEtablissementMapper.toSportWithCategorieDtoList(coreEtablissementService.getSportListByUai(uai)),
                 coreEtablissementService.getContactListByUai(uai).stream().map(webEtablissementMapper::toContactDto).toList(),
                 coreEtablissementService.getJourneesPortesOuvertes(uai).stream().map(webEtablissementMapper::toJPODto).toList(),
-                coreEtablissementService.getMetadataListByUai(uai).stream().map(webEtablissementMapper::toMetadataDto).toList(),
+                ips,
+                iva,
                 coreFormationService.findFormations(uai).stream().map(webEtablissementMapper::toFormationDto).distinct().toList());
     }
 }

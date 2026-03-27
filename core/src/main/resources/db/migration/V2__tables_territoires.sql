@@ -52,7 +52,7 @@ ALTER TABLE departements
 -- communes
 CREATE TABLE communes
 (
-    code             BPCHAR(5)                   NOT NULL,
+    code             VARCHAR(10)                 NOT NULL,
     nom              VARCHAR(255)                NOT NULL,
     code_pays        BPCHAR(2),
     code_departement BPCHAR(3),

@@ -1,40 +1,9 @@
 -- UTF-8 partout
 SET client_encoding = 'UTF8';
 
--- TODO à déplacer dans referentiels
-CREATE TABLE certifications
-(
-    code       VARCHAR(255)                NOT NULL,
-    nom        VARCHAR(255)                NOT NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    CONSTRAINT pk_certifications PRIMARY KEY (code)
-);
-
--- TODO à déplacer dans referentiels
-CREATE TABLE romes
-(
-    code       CHAR(5)                     NOT NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    nom        VARCHAR(255),
-    CONSTRAINT pk_romes PRIMARY KEY (code)
-);
-
--- TODO à déplacer dans referentiels
-CREATE TABLE certifications_romes
-(
-    certification_code VARCHAR(255) NOT NULL,
-    rome_code          CHAR(5)      NOT NULL,
-    CONSTRAINT pk_certifications_romes PRIMARY KEY (certification_code, rome_code)
-);
-
-ALTER TABLE certifications_romes
-    ADD CONSTRAINT fk_certifications_romes_certification FOREIGN KEY (certification_code) REFERENCES certifications (code);
-
-ALTER TABLE certifications_romes
-    ADD CONSTRAINT fk_certifications_romes_romes FOREIGN KEY (rome_code) REFERENCES romes (code);
-
+------------------------------
+-- offres de formations
+------------------------------
 CREATE TABLE formations
 (
     id                    BIGINT                      NOT NULL,
@@ -45,6 +14,7 @@ CREATE TABLE formations
     resultats             TEXT,
     contenu               TEXT,
     certifiante           BOOLEAN,
+    code_certification    VARCHAR(10)                 NULL,
     parcours_de_formation INTEGER,
     code_niveau_entree    INTEGER,
     code_niveau_sortie    INTEGER,
@@ -54,9 +24,13 @@ CREATE TABLE formations
     positionnement        INTEGER,
     onisep_id             INTEGER,
     parcoursup_id         INTEGER,
-    sources               varchar(50)                 NULL,
+    sources               VARCHAR(50)                 NULL,
+
     CONSTRAINT pk_formations PRIMARY KEY (id)
 );
+
+ALTER TABLE formations
+    ADD CONSTRAINT fk_formations_certifications FOREIGN KEY (code_certification) REFERENCES certifications (code);
 
 ALTER TABLE formations
     ADD CONSTRAINT fk_formations_etablissements FOREIGN KEY (uai) REFERENCES etablissements (uai);
@@ -64,28 +38,12 @@ ALTER TABLE formations
 ALTER TABLE formations
     ADD CONSTRAINT fk_formations_organismes FOREIGN KEY (nda) REFERENCES organismes (nda);
 
-
-CREATE TABLE formations_certifications
-(
-    formation_entity_id BIGINT       NOT NULL,
-    certifications_code VARCHAR(255) NOT NULL
-);
-
-ALTER TABLE formations_certifications
-    ADD CONSTRAINT uc_formations_certifications_certifications UNIQUE (certifications_code);
-
-ALTER TABLE formations_certifications
-    ADD CONSTRAINT fk_forcer_on_certification_entity FOREIGN KEY (certifications_code) REFERENCES certifications (code);
-
-ALTER TABLE formations_certifications
-    ADD CONSTRAINT fk_forcer_on_formation_entity FOREIGN KEY (formation_entity_id) REFERENCES formations (id);
-
+------------------------------
 -- actions de formations
+------------------------------
 CREATE TABLE formations_actions
 (
     id                                BIGINT                      NOT NULL,
-    created_at                        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_at                        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     formation_id                      BIGINT                      NOT NULL,
     rythme_formation                  TEXT,
     code_public_vise                  CHAR(5),
@@ -127,14 +85,16 @@ CREATE TABLE formations_actions
     organisme_financeur               VARCHAR(255),
     onisep_id                         INTEGER,
     parcoursup_id                     INTEGER,
-    sources                           varchar(50)                 NULL,
+    sources                           VARCHAR(50)                 NULL,
+    created_at                        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at                        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_formations_actions PRIMARY KEY (id)
 );
 
 ALTER TABLE formations_actions
-    ADD CONSTRAINT FK_ACTIONS_FORMATIONS FOREIGN KEY (formation_id) REFERENCES formations (id);
+    ADD CONSTRAINT fk_actions_formations FOREIGN KEY (formation_id) REFERENCES formations (id);
 
 ALTER TABLE formations_actions
-    ADD CONSTRAINT FK_ACTIONS_FORMATIONS_ETABLISSEMENTS FOREIGN KEY (uai) REFERENCES etablissements (uai);
+    ADD CONSTRAINT fk_actions_formations_etablissements FOREIGN KEY (uai) REFERENCES etablissements (uai);
 
 -- sessions de formations

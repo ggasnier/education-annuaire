@@ -10,6 +10,7 @@ import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationRe
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.references.*;
+import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -45,6 +46,7 @@ public enum SourcesDatasets {
     MASA_ETABS("RefEA : Liste des établissements proposant des formations agricoles 2025-2026", MASA, "https://www.data.gouv.fr/api/1/datasets/r/3f56237d-db7a-4957-9d5d-f4b529d6bc36", "etablissements.csv", StandardCharsets.UTF_8, ';', "GET", MasaEtablissementDataset.class),
     MASA_JPO("RefEA : Les journées Portes ouvertes", MASA, "https://www.data.gouv.fr/api/1/datasets/r/d1d559fb-c952-4448-837c-7ca375b67e62", "jpo.csv", StandardCharsets.UTF_8, ';', "GET", MasaJpoDataset.class),
 
+    ETABS_AD("Etablissements Andorre", AUTRE, "https://ggasnier.github.io/education-annuaire-datasets/etablissements/etablissements_ad.csv", "etablissements_ad.csv", StandardCharsets.UTF_8, ',', "GET", GithubEtablissementDataset.class),
 
     // Indicateurs valeur ajoutée
     IVA_COLLEGES("Indicateurs de valeur ajoutée des collèges", EN, "https://www.data.gouv.fr/api/1/datasets/r/a230247a-8aea-4112-be41-bc008c0d6966", "iva_colleges.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeCollegeDataset.class),
@@ -69,7 +71,7 @@ public enum SourcesDatasets {
     EFFECTIFS_LYCEES_PRO("Effectifs d’élèves en lycée professionnel", EN, "https://www.data.gouv.fr/api/1/datasets/r/204c9fbf-5e88-4a69-a922-1ad1b369115c", "effectifs_lycees_pro.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsLyceeDataset.class),
 
     // Compléments
-    SECTIONS_SPORTIVES("Sections Sportives Scolaires", EN, "https://www.data.gouv.fr/api/1/datasets/r/c479b9b8-8224-46ef-b2f4-f6a3468726fc", "sections_sportives.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),
+    SECTIONS_SPORTIVES("Sections Sportives Scolaires", EN, "https://www.data.gouv.fr/api/1/datasets/r/3706c479-3c41-4ee3-8f18-81bfca86e8d7", "sections_sportives.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),
     SECTIONS_SPORT_ETUDES("Implantation des sections Sport-Etudes", EN, "https://www.data.gouv.fr/api/1/datasets/r/654ba2b1-fc50-4f36-a053-dbf9056ca53a", "sections_sports-etudes.csv", StandardCharsets.UTF_8, ';', "GET", SportDataset.class),
     SECTIONS_INTERNATIONALES("Sections internationales", EN, "https://www.data.gouv.fr/api/1/datasets/r/877befc2-2b3c-4e27-902b-abcf7f1e800f", "sections-internationales.csv", StandardCharsets.UTF_8, ';', "GET", SectionInternationaleDataset.class),
     LANGUES("Offre de langues dans les collèges et lycées", EN, "https://www.data.gouv.fr/api/1/datasets/r/60ca51e3-05b7-4b90-9433-ebbd68803f8c", "langues.csv", StandardCharsets.UTF_8, ';', "GET", LangueDataset.class),
@@ -110,6 +112,9 @@ public enum SourcesDatasets {
     FORMATIONS_LHEO_OCCITANIE("Idéo-Actions de formation-Occitanie", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa432469f421/5fa432469f421.zip", "lheo_action_Occitanie.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
     FORMATIONS_LHEO_ARA("Idéo-Actions de formation-Auvergne-Rhône-Alpes", ONISEP, "https://www.data.gouv.fr/api/1/datasets/r/63d11a26-d25d-4886-aeb5-402558e19827", "lheo_action_AURA.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
     FORMATIONS_LHEO_IDF("Idéo-Actions de formation-Ile-de-France", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa41861a282c/5fa41861a282c.zip", "lheo_action_IDF.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
+
+    // ROME
+    ROME("Répertoire Opérationnel des Métiers et des Emplois (ROME)", FT, "https://www.data.gouv.fr/api/1/datasets/r/8cf674b6-ef21-446a-8190-178e2defd6fc", "unix_referentiel_code_rome_v460_utf8.csv", StandardCharsets.UTF_8, ',', "GET", RomeDataset.class),
 
     // Default
     NULL(null, AUTRE, null, null, null, ',', null, null);

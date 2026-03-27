@@ -1,30 +1,31 @@
 package com.guillaumegasnier.education.core.services;
 
 import com.guillaumegasnier.education.core.domains.recherche.RechercheEtablissementEntity;
+import com.guillaumegasnier.education.core.domains.recherche.RechercheFormationEntity;
+import com.guillaumegasnier.education.core.domains.recherche.RechercheMetierEntity;
 import com.guillaumegasnier.education.core.dto.RechercheCriteria;
-import com.guillaumegasnier.education.core.dto.RechercheDTO;
-import com.guillaumegasnier.education.core.dto.RechercheFacetteDTO;
-import com.guillaumegasnier.education.core.dto.RechercheResultatsDTO;
+import com.guillaumegasnier.education.core.dto.recherche.*;
 import org.springframework.lang.NonNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface CoreRechercheService {
 
     void saveEtablissements(@NonNull List<RechercheEtablissementEntity> entities);
 
-    @Deprecated
-    default RechercheResultatsDTO searchEtablissements(RechercheCriteria criteria) {
-        return new RechercheResultatsDTO();
-    }
+    void saveMetiers(@NonNull List<RechercheMetierEntity> entities);
 
-    @Deprecated
-    default List<RechercheFacetteDTO> searchEtablissementsFacettes(RechercheCriteria criteria) {
-        return new ArrayList<>();
-    }
+    RechercheMetierDTO rechercheMetiers(@NonNull RechercheCriteria rechercheCriteria);
 
-    default RechercheDTO recherche(RechercheCriteria criteria) {
-        return new RechercheDTO();
-    }
+    RechercheEtablissementDTO rechercheEtablissements(@NonNull RechercheCriteria rechercheCriteria);
+
+    RechercheCompetenceDTO rechercheCompetences(@NonNull RechercheCriteria rechercheCriteria);
+
+    RechercheCertificationDTO rechercheCertifications(@NonNull RechercheCriteria rechercheCriteria);
+
+    RechercheFormationDTO rechercheFormations(@NonNull RechercheCriteria rechercheCriteria);
+
+    void saveFormations(List<RechercheFormationEntity> entities);
+
+    void deleteEtablissements(List<RechercheEtablissementEntity> entities);
 }

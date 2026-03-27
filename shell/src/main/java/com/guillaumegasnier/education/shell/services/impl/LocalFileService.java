@@ -15,6 +15,7 @@ import jakarta.xml.bind.Unmarshaller;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,9 @@ import java.util.Optional;
 @Service
 @Profile("local")
 public class LocalFileService implements FileService {
+
+    @Value("${app.datasets}")
+    private String datasetsPath = "";
 
     @Override
     public Optional<BufferedReader> openFile(@NonNull String filePath, @NonNull Charset charset, @NonNull String httpMethod) {
@@ -61,13 +65,13 @@ public class LocalFileService implements FileService {
     public <T extends Dataset> List<T> importCSV(@NonNull SourcesDatasets sourcesDatasets) {
         log.info("Début import csv {}", sourcesDatasets.getLocalPath());
 
-        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
 
         List<T> result = new ArrayList<>();
         @SuppressWarnings("unchecked")
         Class<T> clazz = (Class<T>) sourcesDatasets.getDatasetClass();
 
-        openFile(String.valueOf(outPath), StandardCharsets.UTF_8, "GET").ifPresentOrElse(reader -> {
+        openFile(String.valueOf(outPath), sourcesDatasets.getCharset(), "GET").ifPresentOrElse(reader -> {
             try (reader) {
                 List<T> beans = new CsvToBeanBuilder<T>(reader)
                         .withType(clazz)
@@ -105,7 +109,7 @@ public class LocalFileService implements FileService {
     public FICHES importXmlFromZip(@NonNull SourcesDatasets sourcesDatasets) {
         log.info("Début import zip {}", sourcesDatasets.getLocalPath());
 
-        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
 
         if (!Files.exists(outPath)) {
             log.error("Le fichier xml {} n'existe pas", outPath.getFileName());
@@ -130,7 +134,7 @@ public class LocalFileService implements FileService {
     public LheoSubtype importLheoSubtypeFromZip(@NonNull SourcesDatasets sourcesDatasets) {
         log.info("Début import zip {}", sourcesDatasets.getLocalPath());
 
-        Path outPath = Paths.get("datasets", sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
+        Path outPath = Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), sourcesDatasets.getLocalPath());
 
         if (!Files.exists(outPath)) {
             log.error("Le fichier xml {} n'existe pas", outPath.getFileName());
@@ -149,6 +153,29 @@ public class LocalFileService implements FileService {
         }
 
         return null;
+    }
+
+    @Override
+    public <T extends Dataset> List<T> importRomeData(@NonNull SourcesDatasets sourcesDatasets, String fileName, Class<T> datasetClass) {
+        log.info("Début import {}", fileName);
+
+        List<T> result = new ArrayList<>();
+        @SuppressWarnings("unchecked")
+        Class<T> clazz = (Class<T>) datasetClass;
+
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(datasetsPath, sourcesDatasets.getSource().name().toLowerCase(), fileName), sourcesDatasets.getCharset())) {
+            List<T> beans = new CsvToBeanBuilder<T>(reader)
+                    .withType(clazz)
+                    .withSeparator(sourcesDatasets.getSeparator())
+                    .build()
+                    .parse();
+
+            result.addAll(beans);
+        } catch (Exception e) {
+            log.error("Erreur pendant le parsing CSV : {}", e.getMessage(), e);
+        }
+
+        return result;
     }
 
 }

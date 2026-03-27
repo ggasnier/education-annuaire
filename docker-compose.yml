@@ -1,43 +1,25 @@
 services:
   postgres:
     image: postgres:18.1
-    command: >
-      postgres
-      -c fsync=off
-      -c synchronous_commit=off
-      -c full_page_writes=off
-      -c wal_buffers=64MB
-      -c commit_delay=1000
-      -c commit_siblings=10
-      -c wal_writer_delay=200ms
-      -c checkpoint_timeout=1h
-      -c checkpoint_completion_target=0.95
-      -c max_wal_size=16GB
-      -c min_wal_size=4GB
-      -c shared_buffers=4GB
-      -c work_mem=128MB
-      -c maintenance_work_mem=2GB
-      -c effective_cache_size=6GB
-      -c autovacuum=on
-      -c max_connections=20
-      -c random_page_cost=1.0
-      -c temp_buffers=256MB
-      -c log_min_duration_statement=0
-      -c log_checkpoints=on
-
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - pgdata:/var/lib/postgresql/18/docker
+      - ./postgresql.conf:/var/lib/postgresql/18/docker/postgresql.conf
+    command:
+      [
+        "bash", "-c",
+        "mkdir -p /var/lib/postgresql/18/docker/logs && exec postgres -c config_file=/var/lib/postgresql/18/docker/postgresql.conf"
+      ]
     ports:
       - "5432:5432"
     networks:
       - myapp-net
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    image: elasticsearch:9.3.0
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
@@ -50,74 +32,9 @@ services:
     networks:
       - myapp-net
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:8.15.3
-    container_name: kibana
-    environment:
-      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-    ports:
-      - "5601:5601"
-    depends_on:
-      - elasticsearch
-    networks:
-      - myapp-net
-
-  web:
-    image: ghcr.io/ggasnier/education-annuaire/web:latest
-    restart: always
-    environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-    depends_on:
-      - postgres
-      - elasticsearch
-    networks:
-      - myapp-net
-
-  shell:
-    image: ghcr.io/ggasnier/education-annuaire/shell:latest
-    restart: "no"
-    environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-    depends_on:
-      - postgres
-      - elasticsearch
-    networks:
-      - myapp-net
-
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./certs:/etc/nginx/certs:ro
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - web
-    networks:
-      - myapp-net
-
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - ./certs:/etc/letsencrypt
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    entrypoint: /bin/sh
-    command: -c "trap exit TERM; while :; do certbot renew --webroot -w /var/www/html --quiet; sleep 12h; done"
-    networks:
-      - myapp-net
-
 volumes:
   pgdata:
   es_data:
-
 
 networks:
   myapp-net:

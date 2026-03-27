@@ -6,6 +6,8 @@ import com.guillaumegasnier.education.shell.datasets.Dataset;
 
 public interface ImportEtablissementShell {
 
+    void importEtablissementsGlobal();
+
     void importEtablissements();
 
     void importEtablissementsEsr();
@@ -19,6 +21,8 @@ public interface ImportEtablissementShell {
     void importEtablissementsOnisep();
 
     void importEtablissementsMasa();
+
+    void importEtablissementsGithub();
 
     void importJpo();
 
@@ -34,13 +38,23 @@ public interface ImportEtablissementShell {
 
     <T extends Effectifs & Metadata & Dataset> void importEffectifs();
 
+    void importIps();
+
+    void importIpsEcoles();
+
     void importIpsColleges();
 
+    void importIpsLycees();
+
+    void importIva();
+
     void importIvaColleges();
+
+    void importIvaLycees();
 
     void importEtablissementsDetails();
 
     void importEtablissementsMetadatas();
-    
-    void importEtablissementsRecherche();
+
+    //void importEtablissementsRecherche();
 }

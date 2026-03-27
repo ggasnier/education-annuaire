@@ -1,8 +1,8 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
 import com.guillaumegasnier.education.core.dto.ResultatFiliereDto;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
-import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
+import com.guillaumegasnier.education.core.enums.Filiere;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class IndicateurValeurAjouteeCollegeDataset implements IndicateurValeurAjoutee, Metadata {
+public class IndicateurValeurAjouteeCollegeDataset implements IndicateurValeurAjouteeCollege {
 
     @CsvBindByName(column = "Session")
     private Integer annee;
@@ -59,11 +59,11 @@ public class IndicateurValeurAjouteeCollegeDataset implements IndicateurValeurAj
 
         // Général
         if (effectifCandidatGeneral != null && effectifCandidatGeneral > 0) {
-            resultats.add(new ResultatFiliereDto("BREVETG", effectifCandidatGeneral, tauxReussiteGeneral, valeurAjouteeTauxReussiteGeneral, (double) nbrMentionGlobalGeneral / effectifCandidatGeneral * 100.00, null));
+            resultats.add(new ResultatFiliereDto(Filiere.BREVETG, effectifCandidatGeneral, tauxAcces, tauxReussiteGeneral, valeurAjouteeTauxReussiteGeneral, Math.round((double) nbrMentionGlobalGeneral / effectifCandidatGeneral * 1000.0) / 10.0, null));
         }
         // Pro
         if (effectifCandidatPro != null && effectifCandidatPro > 0) {
-            resultats.add(new ResultatFiliereDto("BREVETPRO", effectifCandidatPro, tauxReussitePro, null, null, null));
+            resultats.add(new ResultatFiliereDto(Filiere.BREVETPRO, effectifCandidatPro, tauxAcces, tauxReussitePro, null, null, null));
         }
 
         return resultats;

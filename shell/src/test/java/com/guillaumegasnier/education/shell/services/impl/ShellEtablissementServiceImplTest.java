@@ -3,6 +3,7 @@ package com.guillaumegasnier.education.shell.services.impl;
 import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.EffectifsCollegeDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.IPSLycee2023Dataset;
@@ -181,7 +182,7 @@ class ShellEtablissementServiceImplTest {
 
     @Test
     void createOrUpdateIVATest() {
-        List<IndicateurValeurAjouteeCollegeDataset> datasets = new ArrayList<>();
+        List<IndicateurValeurAjouteeCollege> datasets = new ArrayList<>();
         IndicateurValeurAjouteeCollegeDataset dataset = new IndicateurValeurAjouteeCollegeDataset();
         dataset.setUai(uaiExiste);
         dataset.setAnnee(2025);

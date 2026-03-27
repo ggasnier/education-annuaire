@@ -78,63 +78,29 @@ import-territoires
     ├──import-academies
     ├──import-departements
     └──import-communes
-    
-import-etablissements
-    ├──import-etablissements-en-ouverts
-    ├──import-etablissements-esr
-    ├──import-etablissements-carif
-    ├──import-etablissements-onisep
-    ├──import-etablissements-masa
-    └──import-etablissements-en-fermes
-    
-import-etablissements-details
-    ├──import-dispositifs
-    ├──import-langues
-    ├──import-sports
-    ├──import-specialites
-    ├──import-jpo
-    └──import-euroscol
-    
-import-etablissements-metadatas
-    ├──import-effectifs
-    ├──import-ips-colleges
-    ├──import-ips-lycees
-    └──import-iva-colleges
-    
-```
 
-## Chargement
-
-```
-import-contrats
-import-natures
-
-import-territoires
-    ├──import-pays
-    ├──import-regions
-    ├──import-academies
-    ├──import-departements
-    └──import-communes
-    
-import-etablissements
-    ├──import-etablissements-en-ouverts
-    ├──import-etablissements-esr
-    ├──import-etablissements-carif
-    ├──import-etablissements-onisep
-    ├──import-etablissements-masa
-    └──import-etablissements-en-fermes
-    
-import-etablissements-details
-    ├──import-dispositifs
-    ├──import-langues
-    ├──import-sports
-    ├──import-specialites
-    ├──import-jpo
-    └──import-euroscol
-    
-import-etablissements-metadatas
-    ├──import-effectifs
-    ├──import-ips-colleges
-    └──import-iva-colleges
-    
+import-etablissements-global    
+    ├──import-etablissements
+    │   ├──import-etablissements-en-ouverts
+    │   ├──import-etablissements-esr
+    │   ├──import-etablissements-carif
+    │   ├──import-etablissements-onisep
+    │   ├──import-etablissements-masa
+    │   └──import-etablissements-en-fermes
+    ├──import-etablissements-details
+    │   ├──import-dispositifs
+    │   ├──import-langues
+    │   ├──import-sports
+    │   ├──import-specialites
+    │   ├──import-jpo
+    │   └──import-euroscol
+    └──import-etablissements-metadatas
+        ├──import-effectifs
+        ├──import-ips
+        │   ├──import-ips-ecoles
+        │   ├──import-ips-colleges
+        │   └──import-ips-lycees
+        └──import-iva
+            ├──import-iva-colleges
+            └──import-iva-lycees
 ```

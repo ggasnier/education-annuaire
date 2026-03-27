@@ -1,11 +1,14 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
+import com.guillaumegasnier.education.core.services.CoreRechercheService;
+import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.mappers.ReferentielMapper;
 import com.guillaumegasnier.education.shell.services.ShellReferencielService;
+import com.guillaumegasnier.education.shell.transformers.ReferentielTransformer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -21,14 +24,23 @@ class ShellReferencielServiceImplTest {
 
     private CoreEtablissementService coreEtablissementService;
 
+    private CoreReferentielService coreReferentielService;
+
+    private ReferentielTransformer referentielTransformer;
+
+    private CoreRechercheService coreRechercheService;
+
     private ShellReferencielService service;
 
     @BeforeEach
     void setUp() {
         coreEtablissementService = mock(CoreEtablissementService.class);
+        coreReferentielService = mock(CoreReferentielService.class);
+        coreRechercheService = mock(CoreRechercheService.class);
+        referentielTransformer = mock(ReferentielTransformer.class);
         EtablissementMapper etablissementMapper = Mappers.getMapper(EtablissementMapper.class);
         ReferentielMapper referentielMapper = Mappers.getMapper(ReferentielMapper.class);
-        service = new ShellReferencielServiceImpl(coreEtablissementService, etablissementMapper, referentielMapper);
+        service = new ShellReferencielServiceImpl(coreEtablissementService, coreReferentielService, coreRechercheService, etablissementMapper, referentielMapper, referentielTransformer);
     }
 
     @Test

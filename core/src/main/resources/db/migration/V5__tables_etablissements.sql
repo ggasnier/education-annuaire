@@ -38,7 +38,7 @@ CREATE TABLE etablissements
     adresse        VARCHAR(50),
     complement     VARCHAR(50),
     code_postal    BPCHAR(5),
-    code_commune   BPCHAR(5),
+    code_commune   VARCHAR(10),
     sources        VARCHAR(100),
     created_at     TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at     TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE etablissements_sports
     uai        CHAR(8)                     NOT NULL,
     sport      VARCHAR(50)                 NOT NULL,
     categorie  CHAR(2)                     NOT NULL,
-    sources    varchar(50)                 NULL,
+    sources    VARCHAR(50)                 NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_etablissements_sports PRIMARY KEY (uai, sport, categorie)
@@ -91,7 +91,7 @@ CREATE TABLE etablissements_contacts
     uai        CHAR(8)                     NOT NULL,
     contact    VARCHAR(10)                 NOT NULL,
     valeur     VARCHAR(255)                NOT NULL,
-    sources    varchar(50)                 NULL,
+    sources    VARCHAR(50)                 NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_etablissements_contacts PRIMARY KEY (uai, contact, valeur)
@@ -105,7 +105,7 @@ CREATE TABLE etablissements_options
 (
     uai        BPCHAR(8)                   NOT NULL,
     option     VARCHAR(255)                NOT NULL,
-    sources    varchar(50)                 NULL,
+    sources    VARCHAR(50)                 NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_etablissements_options PRIMARY KEY (uai, option)
@@ -121,7 +121,7 @@ CREATE TABLE etablissements_langues
     langue       CHAR(2)                     NOT NULL,
     categorie    CHAR(2)                     NOT NULL,
     enseignement CHAR(3)                     NOT NULL,
-    sources      varchar(50)                 NULL,
+    sources      VARCHAR(50)                 NULL,
     created_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_etablissements_langues PRIMARY KEY (uai, langue, categorie, enseignement)
@@ -142,4 +142,4 @@ CREATE TABLE etablissements_metadatas
 );
 
 ALTER TABLE etablissements_metadatas
-    ADD CONSTRAINT FK_METADATAS_ETABLISSEMENTS FOREIGN KEY (uai) REFERENCES etablissements (uai);
+    ADD CONSTRAINT fk_metadatas_etablissements FOREIGN KEY (uai) REFERENCES etablissements (uai);

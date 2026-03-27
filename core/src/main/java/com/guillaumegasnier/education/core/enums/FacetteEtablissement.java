@@ -7,15 +7,25 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum FacetteEtablissement {
 
-    SECTEUR("codeSecteur", "nomSecteur", "Secteur"),
-    NATURE("codeNature", "nomNature", "Nature"),
-    COMMUNE("codeCommune", "nomCommune", "Commune"),
-    DEPARTEMENT("codeDepartement", "nomDepartement", "Département"),
-    ACADEMIE("codeAcademie", "nomAcademie", "Académie"),
-    //REGION("codeRegion", "nomRegion", "Région"),
-    PAYS("codePays", "nomPays", "Pays");
+    SECTEUR("codeSecteur", "nomSecteur", "Secteur", null),
+    NATURE("codeNature", "nomNature", "Nature", null),
+    OPTION("options.codeOption", "options.nomOption", "Option", "options"),
+    COMMUNE("codeCommune", "nomCommune", "Commune", null),
+    DEPARTEMENT("codeDepartement", "nomDepartement", "Département", null),
+    ACADEMIE("codeAcademie", "nomAcademie", "Académie", null);
+    //REGION("codeRegion", "nomRegion", "Région", null),
+    //PAYS("codePays", "nomPays", "Pays", null);
 
     private final String code;
     private final String codeNom;
     private final String nom;
+
+    /**
+     * Chemin du champ nested (null si champ plat)
+     */
+    private final String nestedPath;
+
+    public boolean isNested() {
+        return nestedPath != null;
+    }
 }

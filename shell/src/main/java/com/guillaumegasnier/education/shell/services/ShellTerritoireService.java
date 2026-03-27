@@ -18,5 +18,9 @@ public interface ShellTerritoireService {
 
     void createOrUpdateCommunes(@NonNull List<CommuneDataset> datasets);
 
+    default void createOrUpdateCommunes(@NonNull List<CommuneDataset> datasets, String codePays) {
+
+    }
+
     HashMap<String, String> setAcademieDepartement(@NonNull List<AcademieDepartementDataset> datasets);
 }

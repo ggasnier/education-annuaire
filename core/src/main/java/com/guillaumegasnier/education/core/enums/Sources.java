@@ -11,6 +11,7 @@ public enum Sources {
     ESR(""),
     ONISEP(""),
     CDC(""),
+    FT("France Travail"),
     FC("France compétences"),
     CARIF("Carif-Oref"),
     MTEDS("Ministère du Travail du Plein emploi et de l'Insertion"),

@@ -2,7 +2,8 @@ package com.guillaumegasnier.education.shell.services;
 
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -35,11 +36,13 @@ public interface ShellEtablissementService {
 
     <T extends Effectifs & Metadata> void createOrUpdateEffectifs(@NonNull List<T> datasets);
 
-    <T extends IndicateurValeurAjoutee & Metadata> void createOrUpdateIVA(@NonNull List<T> datasets);
+    void createOrUpdateIVA(@NonNull List<IndicateurValeurAjouteeCollege> datasets);
+
+    void createOrUpdateIVALycees(@NonNull List<IndicateurValeurAjouteeLycee> datasets);
 
     void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets);
 
-    void importEtablissementsRecherche();
+//    void importEtablissementsRecherche();
 
     void createOrUpdateJpo(@NonNull List<MasaJpoDataset> datasets, @NonNull String masa);
 

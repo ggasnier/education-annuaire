@@ -12,6 +12,8 @@ import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
@@ -160,8 +162,8 @@ public abstract class EtablissementMapper {
     @Mapping(target = "certificationQualiopi", ignore = true)
     public abstract OrganismeEntity toOrganismeEntity(TravailOrganismeFormationDataset dataset);
 
-    @Mapping(target = "nomSecteur", ignore = true)
-    @Mapping(target = "codeSecteur", ignore = true)
+    @Mapping(target = "nomSecteur", source = "secteur.nom")
+    @Mapping(target = "codeSecteur", source = "secteur")
     @Mapping(target = "nomRegion", source = "commune.departement.region.nom")
     @Mapping(target = "nomPays", source = "commune.pays.nom")
     @Mapping(target = "nomNature", source = "nature.nom")
@@ -174,6 +176,7 @@ public abstract class EtablissementMapper {
     @Mapping(target = "codeDepartement", source = "commune.departement.code")
     @Mapping(target = "codeCommune", source = "commune.code")
     @Mapping(target = "codeAcademie", source = "commune.departement.academie.code")
+    @Mapping(target = "options", source = "options", qualifiedByName = "toOptions")
     public abstract RechercheEtablissementEntity toRechercheEtablissementEntity(EtablissementEntity entity);
 
     @Named("toDescription")
@@ -224,14 +227,23 @@ public abstract class EtablissementMapper {
         return iva;
     }
 
+    public IndicateurValeurAjouteeDto toIndicateurValeurAjouteeDto(@NonNull IndicateurValeurAjouteeCollege dataset) {
+        return toIndicateurValeurAjouteeDto((IndicateurValeurAjoutee & Metadata) dataset);
+    }
+
+    public IndicateurValeurAjouteeDto toIndicateurValeurAjouteeDto(@NonNull IndicateurValeurAjouteeLycee dataset) {
+        return toIndicateurValeurAjouteeDto((IndicateurValeurAjoutee & Metadata) dataset);
+    }
+
     @Named("toOptions")
-    public List<RechercheEtablissementEntity.RechercheOption> toOptions(@NonNull List<EtablissementOptionEntity> entities) {
+    public List<RechercheEtablissementEntity.RechercheOption> toOptions(List<EtablissementOptionEntity> entities) {
+        if (entities == null)
+            return null;
         return entities.stream().map(this::toOption).toList();
     }
 
-    @Mapping(target = "couleur", source = "pk.option.categorie.couleur")
-    @Mapping(target = "nom", source = "pk.option.nom")
-    @Mapping(target = "code", source = "pk.option")
+    @Mapping(target = "nomOption", source = "pk.option.nom")
+    @Mapping(target = "codeOption", source = "pk.option")
     public abstract RechercheEtablissementEntity.RechercheOption toOption(EtablissementOptionEntity entity);
 
 }

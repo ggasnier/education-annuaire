@@ -1,10 +1,7 @@
 package com.guillaumegasnier.education.web.api.impl;
 
 import com.guillaumegasnier.education.core.dto.RechercheCriteria;
-import com.guillaumegasnier.education.core.dto.RechercheDTO;
-import com.guillaumegasnier.education.core.services.CoreRechercheService;
-import com.guillaumegasnier.education.core.dto.RechercheCriteria;
-import com.guillaumegasnier.education.core.dto.RechercheDTO;
+import com.guillaumegasnier.education.core.dto.recherche.RechercheEtablissementDTO;
 import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.web.api.ApiRechercheController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +23,11 @@ public class ApiRechercheImpl implements ApiRechercheController {
         this.coreRechercheService = coreRechercheService;
     }
 
-//    @Override
-//    public ResponseEntity<RechercheResultatsDTO> getResultatRecherche(@RequestParam MultiValueMap<String, String> facettes) {
-//        return ResponseEntity.ok(coreRechercheService.searchEtablissements(new RechercheCriteria(facettes)));
-//    }
-//
-//    @Override
-//    public ResponseEntity<List<RechercheFacetteDTO>> getFacetteRecherche(@RequestParam MultiValueMap<String, String> facettes) throws IOException {
-//        return ResponseEntity.ok(coreRechercheService.searchEtablissementsFacettes(new RechercheCriteria(facettes)));
-//    }
-
     @Override
-    public ResponseEntity<RechercheDTO> getRecherche(MultiValueMap<String, String> facettes) {
-        return ResponseEntity.ok(coreRechercheService.recherche(new RechercheCriteria(facettes)));
+    public ResponseEntity<RechercheEtablissementDTO> getResultatRecherche(MultiValueMap<String, String> facettes) {
+        RechercheCriteria critere = new RechercheCriteria(facettes);
+        critere.setType("etablissement");
+        return ResponseEntity.ok(coreRechercheService.rechercheEtablissements(critere));
     }
+
 }

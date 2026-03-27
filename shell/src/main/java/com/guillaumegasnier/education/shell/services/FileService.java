@@ -5,6 +5,7 @@ import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.LheoSubtype;
 import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
+import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
 import org.springframework.lang.NonNull;
 
@@ -31,4 +32,16 @@ public interface FileService {
     FICHES importXmlFromZip(@NonNull SourcesDatasets source);
 
     LheoSubtype importLheoSubtypeFromZip(@NonNull SourcesDatasets sourcesDatasets);
+
+    default List<RomeDataset> importRome(@NonNull SourcesDatasets sourcesDatasets) {
+        return List.of();
+    }
+
+    default void importRomeFromZip(@NonNull SourcesDatasets sourcesDatasets) {
+
+    }
+
+    default <T extends Dataset> List<T> importRomeData(@NonNull SourcesDatasets sourcesDatasets, String fileName, Class<T> datasetClass) {
+        return List.of();
+    }
 }

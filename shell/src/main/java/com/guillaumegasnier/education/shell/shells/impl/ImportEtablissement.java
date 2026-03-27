@@ -2,6 +2,8 @@ package com.guillaumegasnier.education.shell.shells.impl;
 
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
+import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
 import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.services.FileService;
@@ -11,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
@@ -24,7 +27,14 @@ public class ImportEtablissement implements ImportEtablissementShell {
     private final FileService fileService;
 
     @Override
+    @ShellMethod(value = "Import global des établissements")
+    public void importEtablissementsGlobal() {
+        importEtablissements();
+        importEtablissementsDetails();
+        importEtablissementsMetadatas();
+    }
 
+    @Override
     @ShellMethod(value = "Import établissements (ouverts)")
     public void importEtablissementsEnOuverts() {
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(EN_ETABS_OUVERTS), "en");
@@ -74,9 +84,8 @@ public class ImportEtablissement implements ImportEtablissementShell {
     @ShellMethod(value = "Import global des metadatas")
     public void importEtablissementsMetadatas() {
         importEffectifs();
-        importIpsColleges();
-        importIpsLycees();
-        importIvaColleges();
+        importIps();
+        importIva();
     }
 
     @Override
@@ -103,6 +112,12 @@ public class ImportEtablissement implements ImportEtablissementShell {
     @ShellMethod(value = "Import établissements (MASA)")
     public void importEtablissementsMasa() {
         shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(MASA_ETABS), "masa");
+    }
+
+    @Override
+    @ShellMethod(value = "Import établissements (Github)")
+    public void importEtablissementsGithub() {
+        shellEtablissementService.createOrUpdateEtablissements(fileService.importCSV(ETABS_AD), "github");
     }
 
     @ShellMethod(value = "Import sections sport études et sections sportives")
@@ -157,6 +172,20 @@ public class ImportEtablissement implements ImportEtablissementShell {
     }
 
     @Override
+    @ShellMethod(value = "Import IPS")
+    public void importIps() {
+        importIpsEcoles();
+        importIpsColleges();
+        importIpsLycees();
+    }
+
+    @Override
+    @ShellMethod(value = "Import IPS Ecoles")
+    public void importIpsEcoles() {
+
+    }
+
+    @Override
     @ShellMethod(value = "Import IPS Collèges")
     public void importIpsColleges() {
         shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_COLLEGES_1));
@@ -173,17 +202,25 @@ public class ImportEtablissement implements ImportEtablissementShell {
     }
 
     @Override
-    @ShellMethod(value = "Import IVA Collèges")
-    public void importIvaColleges() {
-        shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_COLLEGES));
-        shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_LYCEES_GT));
-        shellEtablissementService.createOrUpdateIVA(fileService.importCSV(IVA_LYCEES_PRO));
+    @ShellMethod(value = "Import IVA")
+    public void importIva() {
+        importIvaColleges();
+        importIvaLycees();
     }
 
     @Override
-    @ShellMethod(value = "Import des établissements dans Elasticsearch pour la recherche")
-    public void importEtablissementsRecherche() {
-        shellEtablissementService.importEtablissementsRecherche();
+    @ShellMethod(value = "Import IVA Collèges")
+    public void importIvaColleges() {
+        List<IndicateurValeurAjouteeCollege> colleges = new ArrayList<>(fileService.importCSV(IVA_COLLEGES));
+        shellEtablissementService.createOrUpdateIVA(colleges);
     }
- 
+
+    @Override
+    @ShellMethod(value = "Import IVA Lycées")
+    public void importIvaLycees() {
+        List<IndicateurValeurAjouteeLycee> lycees = new ArrayList<>(fileService.importCSV(IVA_LYCEES_GT));
+        lycees.addAll(fileService.importCSV(IVA_LYCEES_PRO));
+        shellEtablissementService.createOrUpdateIVALycees(lycees);
+    }
+
 }
