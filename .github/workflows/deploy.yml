@@ -20,9 +20,9 @@ jobs:
 
       - name: Build & Push images
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/web:latest ./web
+          docker build --target web -t ghcr.io/${{ github.repository }}/web:latest .
           docker push ghcr.io/${{ github.repository }}/web:latest
-          docker build -t ghcr.io/${{ github.repository }}/shell:latest ./shell
+          docker build --target shell -t ghcr.io/${{ github.repository }}/shell:latest .
           docker push ghcr.io/${{ github.repository }}/shell:latest
 
 #      - name: Deploy to VPS
