@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:border-indigo-300 transition"
+     th:fragment="bloc"
+     th:if="${specialites != null && specialites.size() > 0}">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Enseignements de spécialités</h2>
+
+    <div class="space-y-3">
+        <th:block th:each="specialite : ${specialites}">
+            <div th:text="${specialite.nom}"></div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

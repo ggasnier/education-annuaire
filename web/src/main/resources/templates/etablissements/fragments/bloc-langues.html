@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:border-indigo-300 transition"
+     th:fragment="bloc"
+     th:if="${langues != null && langues.size() > 0}">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Langues enseignées</h2>
+
+    <div class="space-y-3">
+        <div th:each="l : ${langues}">
+            <dt class="text-sm font-medium text-gray-700 mb-2" th:text="${l.categorie.nom}"></dt>
+            <dd class="flex flex-wrap gap-2">
+                <th:block th:each="langue : ${l.langues}">
+                        <span
+                                th:class="${'inline-flex items-center px-3 py-1 rounded-full text-sm ' + l.categorie.couleur}">
+                            <span th:text="${langue.emoji}"></span>&nbsp;<span th:text="${langue.nom}"></span>
+                            &nbsp;<th:block th:if="${l.categorie.name() == 'LV'}">(<span
+                                th:text="${langue.enseignement}"></span>)</th:block>
+                        </span>
+                </th:block>
+            </dd>
+        </div>
+    </div>
+</div>
+</body>
+</html>

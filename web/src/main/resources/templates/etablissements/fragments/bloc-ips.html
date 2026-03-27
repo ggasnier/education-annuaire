@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:border-indigo-300 transition lg:col-span-2"
+     th:fragment="bloc"
+     th:if="${ips != null && ips.size() > 0}">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Indices de Position Sociale (IPS)</h2>
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+            <tr class="border-b border-gray-200">
+                <th class="text-left p-2 font-medium text-gray-900">Année</th>
+                <th class="text-left p-2 font-medium text-gray-900">Effectifs</th>
+                <th class="text-left p-2 font-medium text-gray-900">IPS</th>
+                <th class="text-left p-2 font-medium text-gray-900">Écart-type</th>
+                <th class="text-left p-2 font-medium text-gray-900 hidden md:table-cell">IPS Dép.</th>
+                <th class="text-left p-2 font-medium text-gray-900 hidden md:table-cell">IPS Acad.</th>
+                <th class="text-left p-2 font-medium text-gray-900 hidden md:table-cell">IPS Nat.</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="i : ${ips}">
+                <td class="p-2 font-medium" th:text="${i.annee}"></td>
+                <td class="p-2" th:text="${i.effectifs}"></td>
+                <td class="p-2" th:text="${i.indice}"></td>
+                <td class="p-2" th:text="${i.ecartType}"></td>
+                <td class="p-2 hidden md:table-cell" th:text="${i.indiceDepartement}"></td>
+                <td class="p-2 hidden md:table-cell" th:text="${i.indiceAcademie}"></td>
+                <td class="p-2 hidden md:table-cell" th:text="${i.indiceNational}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

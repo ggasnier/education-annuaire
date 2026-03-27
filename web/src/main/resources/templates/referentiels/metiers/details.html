@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${metier.nom}"></title>
+</head>
+
+<body>
+<th:block layout:fragment="content">
+    <h1 th:text="${metier.nom}"></h1>
+
+    <h2>Synonymes</h2>
+    <ul>
+        <li th:each="appellation : ${metier.appellations}">
+            <span th:text="${appellation}"></span>
+        </li>
+    </ul>
+
+    <h2>Description</h2>
+    <ul>
+        <li th:each="definition : ${metier.definitions}">
+            <span th:text="${definition}"></span>
+        </li>
+    </ul>
+
+    <h2>Accès</h2>
+    <ul>
+        <li th:each="acces : ${metier.access}">
+            <span th:text="${acces}"></span>
+        </li>
+    </ul>
+</th:block>
+</body>
+</html>

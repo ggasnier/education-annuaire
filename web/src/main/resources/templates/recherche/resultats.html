@@ -1,0 +1,94 @@
+<th:block th:fragment="resultats">
+
+    <!--<div class="bg-white p-4 rounded-lg shadow mb-6 hover:shadow-md transition" th:if="${recherche.total > 0}">
+        <span th:text="${recherche.total}"></span> résultats pour : <span
+            class="font-semibold text-gray-900"
+            th:text="${recherche.q}"></span>
+    </div>-->
+
+    <p class="text-xs text-gray-400 mb-4">Environ <span th:text="${recherche.total}"></span>
+        résultats pour <span th:text="${recherche.q}"></span></p>
+
+
+    <th:block th:each="resultat : ${recherche.resultats}">
+        <div class="bg-white p-4 rounded-lg shadow mb-6 hover:shadow-md transition">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold text-blue-700 hover:underline cursor-pointer"
+                ><a th:href="@{/etablissements/{uai}(uai=${resultat.uai})}"
+                    th:text="${resultat.nom}"></a></h2>
+            </div>
+            <div class="flex items-start justify-between">
+                <div class="flex-1">
+                    <p>
+                        <th:block th:if="${resultat.nomNature}">
+                            <span class="text-sm font-medium">Nature :</span> <span
+                                class="text-sm font-medium text-gray-500"
+                                th:text="${resultat.nomNature}">Nature</span>
+                        </th:block>
+                        <th:block th:if="${resultat.nomSecteur}">
+                            <span class="text-sm font-medium">Secteur :</span> <span
+                                class="text-sm font-medium text-gray-500"
+                                th:text="${resultat.nomSecteur}"></span>
+                        </th:block>
+                    </p>
+
+                    <!-- Adresse complète si disponible -->
+                    <p>
+                        <th:block th:if="${resultat.adresse}">
+                            <span class="text-sm font-medium">Adresse :</span> <span
+                                class="text-sm font-medium text-gray-500"
+                                th:text="${resultat.adresse}"></span>
+                        </th:block>
+
+                        <th:block th:if="${resultat.codePostal}">
+                                        <span class="text-sm font-medium text-gray-500"
+                                              th:text="${resultat.codePostal}"></span>
+                        </th:block>
+
+                        <th:block th:if="${resultat.nomCommune}">
+                                        <span class="text-sm font-medium text-gray-500"
+                                              th:text="${resultat.nomCommune}"></span>
+                        </th:block>
+                    </p>
+
+                    <p>
+                        <th:block th:if="${resultat.nomDepartement}">
+                            <span class="text-sm font-medium">Département :</span> <span
+                                class="text-sm font-medium text-gray-500"
+                                th:text="${resultat.nomDepartement}"></span>
+                        </th:block>
+                        <th:block th:if="${resultat.nomAcademie}">
+                            <span class="text-sm font-medium">Académie :</span> <span
+                                class="text-sm font-medium text-gray-500"
+                                th:text="${resultat.nomAcademie}"></span>
+                        </th:block>
+                        <th:block th:if="${resultat.nomRegion}">
+                            <span class="text-sm font-medium">Région :</span> <span
+                                class="text-sm font-medium text-gray-500"
+                                th:text="${resultat.nomRegion}"></span>
+                        </th:block>
+                    </p>
+
+                    <!-- Sinon afficher commune / département / académie -->
+                    <!--                            <p class="" th:if="${resultat.nomCommune != null}">-->
+                    <!--                                <span th:text="${resultat.nomCommune}">Commune</span>-->
+                    <!--                                <span th:if="${resultat.nomDepartement != null}"-->
+                    <!--                                      th:text="' - ' + ${resultat.nomDepartement}"></span>-->
+                    <!--                                <span th:if="${resultat.nomAcademie != null}"-->
+                    <!--                                      th:text="' - ' + ${resultat.nomAcademie}"></span>-->
+                    <!--                            </p>-->
+
+                    <p th:if="${resultat.options.size() > 0}">
+                        <span class="text-sm font-medium">Options :</span>
+                        <th:block th:each="option : ${resultat.options}">
+                                        <span
+                                                th:class="${'inline-flex items-center px-3 py-1 rounded-full text-sm ' + option.couleur}"
+                                                th:text="${option.nom}"></span>
+                        </th:block>
+                    </p>
+
+                </div>
+            </div>
+        </div><!--resultat-->
+    </th:block>
+</th:block>

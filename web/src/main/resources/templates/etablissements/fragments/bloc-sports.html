@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:border-indigo-300 transition"
+     th:fragment="bloc"
+     th:if="${sports != null && sports.size() > 0}">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Sports</h2>
+    <div class="space-y-3">
+        <div th:each="s : ${sports}">
+            <dt class="text-sm font-medium text-gray-700 mb-2" th:text="${s.categorie.nom}"></dt>
+            <dd class="flex flex-wrap gap-2">
+                <th:block th:each="sport : ${s.sections}">
+                        <span
+                                class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+                            <span th:text="${sport.emoji}"></span>&nbsp;<span th:text="${sport.nom}"></span>
+                        </span>
+                </th:block>
+            </dd>
+        </div>
+    </div>
+</div>
+</body>
+</html>

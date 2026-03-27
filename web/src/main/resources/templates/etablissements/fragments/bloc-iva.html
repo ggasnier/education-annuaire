@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:border-indigo-300 transition lg:col-span-2"
+     th:fragment="bloc"
+     th:if="${iva != null && iva.size() > 0}">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Résultats aux examens</h2>
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+            <tr class="border-b border-gray-200">
+                <th class="text-left p-2 font-medium text-gray-900">Année</th>
+                <th class="text-left p-2 font-medium text-gray-900">Epreuve</th>
+                <th class="text-left p-2 font-medium text-gray-900 text-right hidden md:table-cell">Inscrits</th>
+                <th class="text-left p-2 font-medium text-gray-900 text-right hidden md:table-cell">Taux d'accès
+                </th>
+                <th class="text-left p-2 font-medium text-gray-900 text-right">Taux de réussite</th>
+                <th class="text-left p-2 font-medium text-gray-900 text-right">Taux de mentions</th>
+                <th class="text-left p-2 font-medium text-gray-900 text-right hidden md:table-cell">Valeur
+                    ajoutée
+                </th>
+                <th class="text-left p-2 font-medium text-gray-900 text-right hidden md:table-cell">Valeur ajoutée
+                    (mentions)
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="i : ${iva}">
+                <td class="p-2 font-medium" th:text="${i.annee}"></td>
+                <td class="p-2 font-medium" th:text="${i.filiere.nom}"></td>
+                <td class="p-2 text-right hidden md:table-cell" th:text="${i.effectifs}"></td>
+                <td class="p-2 text-right hidden md:table-cell" th:text="${i.tauxAcces} + ' %'"></td>
+                <td class="p-2 text-right" th:text="${i.taux} + ' %'"></td>
+                <td class="p-2 text-right" th:text="${i.tauxMentions != null} ? ${i.tauxMentions} + ' %'"></td>
+                <td class="p-2 text-right hidden md:table-cell" th:text="${i.valeurAjoutee}"></td>
+                <td class="p-2 text-right hidden md:table-cell" th:text="${i.valeurAjouteeTauxMentions}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

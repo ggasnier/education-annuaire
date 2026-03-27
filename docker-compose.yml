@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:18.1
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/18/docker
+      - ./postgresql.conf:/var/lib/postgresql/18/docker/postgresql.conf
+    command:
+      [
+        "bash", "-c",
+        "mkdir -p /var/lib/postgresql/18/docker/logs && exec postgres -c config_file=/var/lib/postgresql/18/docker/postgresql.conf"
+      ]
+    ports:
+      - "5432:5432"
+    networks:
+      - myapp-net
+
+  elasticsearch:
+    image: elasticsearch:9.3.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - myapp-net
+
+volumes:
+  pgdata:
+  es_data:
+
+networks:
+  myapp-net:

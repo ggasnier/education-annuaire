@@ -1,0 +1,17 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx @tailwindcss/cli -i ./styles.css -o ../resources/static/css/main.min.css --minify",
+    "watch": "npx @tailwindcss/cli -i ./styles.css -o ../resources/static/css/main.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "tailwindcss": "^4.1.11"
+  }
+}

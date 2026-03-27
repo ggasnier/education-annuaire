@@ -1,0 +1,25 @@
+package com.guillaumegasnier.education.core.domains.etablissements;
+
+import com.guillaumegasnier.education.core.domains.AbstractEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "contrats")
+public class ContratEntity extends AbstractEntity {
+
+    @Id
+    @NotBlank
+    @Column(columnDefinition = "BPCHAR(2)", length = 2, nullable = false, unique = true, updatable = false)
+    private String code;
+
+    @NotBlank
+    private String nom;
+}

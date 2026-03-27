@@ -1,0 +1,320 @@
+package com.guillaumegasnier.education.shell.datasets.etablissements;
+
+import com.guillaumegasnier.education.core.enums.Secteur;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.EffectifsSuperieurDataset;
+import com.opencsv.bean.CsvBindByName;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.lang.Nullable;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static com.guillaumegasnier.education.core.enums.Contact.*;
+
+/**
+ * identifiant interne
+ * libellé
+ * nom court
+ * sigle
+ * type d'établissement
+ * typologie d'universités et assimilés
+ * secteur d'établissement
+ * vague contractuelle
+ * localisation
+ * site internet
+ * géolocalisation
+ * uai - identifiant
+ * anciens codes uai
+ * siret
+ * siren
+ * rna
+ * Identifiant wikidata
+ * Elément wikidata
+ * identifiant_idref
+ * Identifiant ETER
+ * Identifiant ROR
+ * Elément ROR
+ * Identifiant PIC
+ * Identifiant OrgRef
+ * Identifiant ISNI
+ * Elément ISNI
+ * Elément Funding Data
+ * date_creation
+ * texte_de_ref_creation_lib
+ * texte_de_ref_creation
+ * Code commune
+ * Commune
+ * Code unité urbaine
+ * Unité urbaine
+ * Code département
+ * Département
+ * Code académie
+ * Académie
+ * Code région
+ * Région
+ * Ancien code région
+ * Ancienne région
+ * Mention distribution
+ * Adresse
+ * Lieu dit
+ * Boite postale
+ * Code postal
+ * Localité
+ * Pays
+ * Numéro de téléphone
+ * statut_juridique_court
+ * Statut juridique
+ * compte_facebook
+ * compte_twitter
+ * compte_instagram
+ * compte_flickr
+ * compte_pinterest
+ * flux_rss
+ * compte_linkedin
+ * compte_france_culture
+ * compte_scribd
+ * compte_scoopit
+ * compte_tumblr
+ * compte_youtube
+ * compte_vimeo
+ * compte_dailymotion
+ * compte_github
+ * Page Wikipédia en français
+ * Page Wikipédia en anglais
+ * scanr
+ * hal
+ * mooc
+ * article
+ * uo_lib_officiel
+ * English name
+ * Site internet en anglais
+ * Site internet en chinois
+ * Site internet en espagnol
+ * Site internet en allemand
+ * Site internet en italien
+ * universites_fusionnees
+ * etablissement_experimental
+ * champ_recherche
+ * inscrits
+ * Effectifs d'étudiants inscrits 2010-11
+ * Effectifs d'étudiants inscrits 2011-12
+ * Effectifs d'étudiants inscrits 2012-13
+ * Effectifs d'étudiants inscrits 2013-14
+ * Effectifs d'étudiants inscrits 2014-15
+ * Effectifs d'étudiants inscrits 2015-16
+ * Effectifs d'étudiants inscrits 2016-17
+ * Effectifs d'étudiants inscrits 2017-18
+ * Effectifs d'étudiants inscrits 2018-19
+ * Effectifs d'étudiants inscrits 2019-20
+ * Effectifs d'étudiants inscrits 2020-21
+ * Effectifs d'étudiants inscrits 2021-22
+ * Effectifs d'étudiants inscrits 2022-23
+ */
+@Getter
+@Setter
+@ToString
+public class EsrEtablissementDataset implements EtablissementDataset {
+
+    @CsvBindByName(column = "uai - identifiant")
+    private String uai;
+    @CsvBindByName(column = "siret")
+    private String siret;
+    @CsvBindByName(column = "libellé")
+    private String nom;
+    @CsvBindByName(column = "Adresse")
+    private String adresse;
+    @CsvBindByName(column = "Lieu dit")
+    private String lieuDit;
+    @CsvBindByName(column = "Boite postale")
+    private String boitePostale;
+    @CsvBindByName(column = "Code postal")
+    private String codePostal;
+    @CsvBindByName(column = "Code commune")
+    private String codeCommune;
+    @CsvBindByName(column = "Commune")
+    private String nomCommune;
+    @CsvBindByName(column = "Numéro de téléphone")
+    private String contactTelephone;
+    @CsvBindByName(column = "site internet")
+    private String contactWeb;
+    @CsvBindByName(column = "compte_facebook")
+    private String contactFacebook;
+    @CsvBindByName(column = "compte_twitter")
+    private String contactTwitter;
+    @CsvBindByName(column = "compte_linkedin")
+    private String contactLinkedin;
+    @CsvBindByName(column = "compte_youtube")
+    private String contactYoutube;
+    @CsvBindByName(column = "Page Wikipédia en français")
+    private String contactWikipedia;
+    @CsvBindByName(column = "date_creation")
+    private String dateOuverture;
+    @CsvBindByName(column = "secteur d'établissement")
+    private String secteurEtablissement;
+
+    // compte_flickr
+    // compte_pinterest
+    // flux_rss
+    // compte_france_culture
+    // compte_scribd
+    // compte_scoopit
+    // compte_tumblr
+    // compte_vimeo
+    // compte_dailymotion
+    // compte_github
+
+    // * Page Wikipédia en français
+    // * Page Wikipédia en anglais
+
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2010-11")
+    private String effectif2010;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2011-12")
+    private String effectif2011;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2012-13")
+    private String effectif2012;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2013-14")
+    private String effectif2013;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2014-15")
+    private String effectif2014;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2015-16")
+    private String effectif2015;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2016-17")
+    private String effectif2016;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2017-18")
+    private String effectif2017;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2018-19")
+    private String effectif2018;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2019-20")
+    private String effectif2019;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2020-21")
+    private String effectif2020;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2021-22")
+    private String effectif2021;
+    @CsvBindByName(column = "Effectifs d'étudiants inscrits 2022-23")
+    private String effectif2022;
+
+    @Override
+    public Secteur getSecteur() {
+        if (secteurEtablissement != null) {
+            if (secteurEtablissement.equals("public")) {
+                return Secteur.PU;
+            } else if (secteurEtablissement.equals("privé")) {
+                return Secteur.PV;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getUai() {
+        if (uai == null) return "";
+        return uai;
+    }
+
+    @Override
+    public String getSiret() {
+        if (siret == null) return null;
+        if (siret.isBlank()) return null;
+        return siret;
+    }
+
+    @Nullable
+    @Override
+    public LocalDate getDateOuverture() {
+        try {
+            return LocalDate.parse(dateOuverture);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public String getComplement() {
+        if (lieuDit == null && boitePostale == null)
+            return null;
+
+        if (lieuDit != null && !lieuDit.isEmpty())
+            return lieuDit;
+
+        if (boitePostale != null && !boitePostale.isEmpty())
+            return boitePostale;
+
+        return null;
+    }
+
+    @Override
+    public List<ContactEtablissementDataset> getContacts() {
+        List<ContactEtablissementDataset> contacts = new ArrayList<>();
+
+        if (contactTelephone != null && !contactTelephone.isEmpty())
+            contacts.add(new ContactEtablissementDataset(TEL, contactTelephone));
+
+        if (contactWeb != null && !contactWeb.isEmpty())
+            contacts.add(new ContactEtablissementDataset(WEB, contactWeb));
+
+        if (contactFacebook != null && !contactFacebook.isEmpty())
+            contacts.add(new ContactEtablissementDataset(FACEBOOK, contactFacebook));
+
+        if (contactTwitter != null && !contactTwitter.isEmpty())
+            contacts.add(new ContactEtablissementDataset(TWITTER, contactTwitter));
+
+        if (contactLinkedin != null && !contactLinkedin.isEmpty())
+            contacts.add(new ContactEtablissementDataset(LINKEDIN, contactLinkedin));
+
+        if (contactYoutube != null && !contactYoutube.isEmpty())
+            contacts.add(new ContactEtablissementDataset(YOUTUBE, contactYoutube));
+
+        if (contactWikipedia != null && !contactWikipedia.isEmpty())
+            contacts.add(new ContactEtablissementDataset(WIKIPEDIA, contactWikipedia));
+
+        return contacts;
+    }
+
+    @Override
+    public EsrEtablissementDataset cloneWithUai(String uai) {
+        try {
+            EsrEtablissementDataset copy = (EsrEtablissementDataset) this.clone();
+            copy.setUai(uai);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public EsrEtablissementDataset cloneWithSiret(String siret) {
+        try {
+            EsrEtablissementDataset copy = (EsrEtablissementDataset) this.clone();
+            copy.setSiret(siret);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<EffectifsSuperieurDataset> getEffectifs() {
+        return Stream.of(
+                        new EffectifsSuperieurDataset(2010, uai, effectif2010),
+                        new EffectifsSuperieurDataset(2011, uai, effectif2011),
+                        new EffectifsSuperieurDataset(2012, uai, effectif2012),
+                        new EffectifsSuperieurDataset(2013, uai, effectif2013),
+                        new EffectifsSuperieurDataset(2014, uai, effectif2014),
+                        new EffectifsSuperieurDataset(2015, uai, effectif2015),
+                        new EffectifsSuperieurDataset(2016, uai, effectif2016),
+                        new EffectifsSuperieurDataset(2017, uai, effectif2017),
+                        new EffectifsSuperieurDataset(2018, uai, effectif2018),
+                        new EffectifsSuperieurDataset(2019, uai, effectif2019),
+                        new EffectifsSuperieurDataset(2020, uai, effectif2020),
+                        new EffectifsSuperieurDataset(2021, uai, effectif2021),
+                        new EffectifsSuperieurDataset(2022, uai, effectif2022)
+                )
+                .filter(d -> d.getEffectifs() > 0)
+                .toList();
+    }
+}

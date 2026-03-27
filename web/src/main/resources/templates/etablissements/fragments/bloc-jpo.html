@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:border-indigo-300 transition"
+     th:fragment="bloc"
+     th:if="${journees != null && journees.size() > 0}">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+        Journées Portes Ouvertes
+    </h2>
+
+    <div class="space-y-2">
+        <th:block th:each="jpo : ${journees}">
+            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex-1">
+                    <!-- Date(s) -->
+                    <span class="font-medium text-gray-900">
+                            <th:block th:if="${jpo.dateDebut.isEqual(jpo.dateFin)}">
+                                <span th:text="${#temporals.format(jpo.dateDebut, 'dd/MM/yyyy')}"></span>
+                            </th:block>
+                            <th:block th:unless="${jpo.dateDebut.isEqual(jpo.dateFin)}">
+                                Du <span th:text="${#temporals.format(jpo.dateDebut, 'dd/MM/yyyy')}"></span>
+                                au <span th:text="${#temporals.format(jpo.dateFin, 'dd/MM/yyyy')}"></span>
+                            </th:block>
+                        </span>
+
+                    <!-- Horaires -->
+                    <span class="text-gray-600 ml-2" th:if="${jpo.heureDebut != null && jpo.heureFin != null}">
+                            de <span th:text="${#temporals.format(jpo.heureDebut, 'HH:mm')}"></span>
+                            à <span th:text="${#temporals.format(jpo.heureFin, 'HH:mm')}"></span>
+                        </span>
+
+                    <!-- Commentaire -->
+                    <span class="text-sm text-gray-500 ml-2 italic"
+                          th:if="${jpo.commentaire != null && !jpo.commentaire.isBlank()}">
+                            - <span th:text="${jpo.commentaire}"></span>
+                        </span>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

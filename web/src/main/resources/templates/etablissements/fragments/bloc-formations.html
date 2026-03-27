@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:border-indigo-300 transition lg:col-span-2"
+     th:fragment="bloc"
+     th:if="${formations != null && formations.size() > 0}">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Formations</h2>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+            <tr class="border-b border-gray-200">
+                <th class="text-left py-3 px-4 font-medium text-gray-900">Nom de la formation</th>
+                <th class="text-left py-3 px-4 font-medium text-gray-900">Certifiante</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="f : ${formations}">
+                <td class="py-3 px-4" th:text="${f.nom}"></td>
+                <td class="py-3 px-4" th:text="${f.certifiante}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
