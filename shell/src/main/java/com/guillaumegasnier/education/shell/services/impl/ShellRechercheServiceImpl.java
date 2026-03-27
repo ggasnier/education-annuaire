@@ -34,6 +34,13 @@ public class ShellRechercheServiceImpl implements ShellRechercheService {
                         .stream()
                         .map(etablissementMapper::toRechercheEtablissementEntity)
                         .toList());
+
+        coreRechercheService.deleteEtablissements(coreEtablissementService
+                .findEtablissementsNotActif()
+                .stream()
+                .map(etablissementMapper::toRechercheEtablissementEntity)
+                .toList());
+
         log.info("Fin import établissements dans ES");
     }
 

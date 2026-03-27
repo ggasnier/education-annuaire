@@ -312,6 +312,11 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    public List<EtablissementEntity> findEtablissementsNotActif() {
+        return etablissementRepository.findAllNotActifWithOptions();
+    }
+
+    @Override
     public Optional<EtablissementMasaEntity> findMasa(String masaId) {
         return etablissementMasaRepository.findById(masaId);
     }

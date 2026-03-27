@@ -81,6 +81,11 @@ public class CoreRechercheServiceImpl implements CoreRechercheService {
     }
 
     @Override
+    public void deleteEtablissements(List<RechercheEtablissementEntity> entities) {
+        etablissementService.deleteEtablissements(entities);
+    }
+
+    @Override
     public void saveMetiers(@NonNull List<RechercheMetierEntity> entities) {
         metierService.saveMetiers(entities);
     }

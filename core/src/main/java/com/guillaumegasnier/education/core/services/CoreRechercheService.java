@@ -26,4 +26,6 @@ public interface CoreRechercheService {
     RechercheFormationDTO rechercheFormations(@NonNull RechercheCriteria rechercheCriteria);
 
     void saveFormations(List<RechercheFormationEntity> entities);
+
+    void deleteEtablissements(List<RechercheEtablissementEntity> entities);
 }

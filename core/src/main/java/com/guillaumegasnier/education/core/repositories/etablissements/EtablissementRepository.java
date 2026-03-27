@@ -48,8 +48,21 @@ public interface EtablissementRepository extends JpaRepository<EtablissementEnti
             LEFT JOIN FETCH d.region
             LEFT JOIN FETCH d.academie
             LEFT JOIN FETCH e.options
-            WHERE e.actif = true
+            WHERE e.actif = true or e.actif IS NULL
             """)
     List<EtablissementEntity> findAllActifWithOptions();
 
+    @Query("""
+            SELECT DISTINCT e FROM EtablissementEntity e
+            LEFT JOIN FETCH e.contrat
+            LEFT JOIN FETCH e.nature
+            LEFT JOIN FETCH e.commune co
+            LEFT JOIN FETCH co.pays
+            LEFT JOIN FETCH co.departement d
+            LEFT JOIN FETCH d.region
+            LEFT JOIN FETCH d.academie
+            LEFT JOIN FETCH e.options
+            WHERE e.actif = false
+            """)
+    List<EtablissementEntity> findAllNotActifWithOptions();
 }

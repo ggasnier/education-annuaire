@@ -37,12 +37,12 @@ public class EtablissementRechercheService {
     private static final int FACET_SIZE = 50;
 
     private static final Map<String, String> FILTRE_KEY_TO_FIELD = Map.of(
-            "contrat",     "codeContrat",
-            "nature",      "codeNature",
-            "commune",     "codeCommune",
+            "contrat", "codeContrat",
+            "nature", "codeNature",
+            "commune", "codeCommune",
             "departement", "codeDepartement",
-            "academie",    "codeAcademie",
-            "option",      "options.codeOption"   // champ nested
+            "academie", "codeAcademie",
+            "option", "options.codeOption"   // champ nested
     );
 
     private static final List<String> TEXT_FIELDS = List.of(
@@ -217,7 +217,7 @@ public class EtablissementRechercheService {
     // -------------------------------------------------------------------------
 
     private void extractBuckets(Aggregate aggregate, FacetteEtablissement facette,
-                                 RechercheCriteria criteria, List<RechercheFacetteValeurDTO> valeurs) {
+                                RechercheCriteria criteria, List<RechercheFacetteValeurDTO> valeurs) {
         // Pour les champs nested, on descend d'un niveau supplémentaire (nested → terms)
         Aggregate termsAgg = aggregate;
         if (facette.isNested() && aggregate.isNested()) {
@@ -261,7 +261,9 @@ public class EtablissementRechercheService {
     // Utilitaires
     // -------------------------------------------------------------------------
 
-    /** Retrouve la FacetteEtablissement dont le champ URL correspond à la clé. */
+    /**
+     * Retrouve la FacetteEtablissement dont le champ URL correspond à la clé.
+     */
     private FacetteEtablissement facetteByUrlKey(String key) {
         String field = FILTRE_KEY_TO_FIELD.getOrDefault(key, key);
         for (FacetteEtablissement f : FacetteEtablissement.values()) {
@@ -278,5 +280,9 @@ public class EtablissementRechercheService {
         var map = new org.springframework.util.LinkedMultiValueMap<String, String>();
         map.addAll(field, values);
         return new RechercheCriteria(map);
+    }
+
+    public void deleteEtablissements(@NonNull List<RechercheEtablissementEntity> entities) {
+        repository.deleteAll(entities);
     }
 }
