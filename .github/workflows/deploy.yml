@@ -4,6 +4,10 @@ on:
   push:
     branches: [ "main", "master" ]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,12 +22,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set lowercase repo name
+        run: echo "REPO=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build & Push images
         run: |
-          docker build --target web -t ghcr.io/${{ github.repository }}/web:latest .
-          docker push ghcr.io/${{ github.repository }}/web:latest
-          docker build --target shell -t ghcr.io/${{ github.repository }}/shell:latest .
-          docker push ghcr.io/${{ github.repository }}/shell:latest
+          docker build --target web -t ghcr.io/${{ env.REPO }}/web:latest .
+          docker push ghcr.io/${{ env.REPO }}/web:latest
+          docker build --target shell -t ghcr.io/${{ env.REPO }}/shell:latest .
+          docker push ghcr.io/${{ env.REPO }}/shell:latest
 
 #      - name: Deploy to VPS
 #        uses: appleboy/ssh-action@v1.2.0
