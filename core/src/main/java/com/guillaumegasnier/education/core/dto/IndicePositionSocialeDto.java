@@ -5,9 +5,15 @@ import com.guillaumegasnier.education.core.validations.etablissements.IndicePosi
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class IndicePositionSocialeDto implements IndicePositionSociale {
+public class IndicePositionSocialeDto implements IndicePositionSociale, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @JsonProperty(value = "ecart_type")
     public Double ecartType;
