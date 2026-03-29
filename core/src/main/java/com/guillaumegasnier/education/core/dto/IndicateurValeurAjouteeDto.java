@@ -4,11 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Set;
 
 @Getter
 @Setter
-public class IndicateurValeurAjouteeDto {
+public class IndicateurValeurAjouteeDto implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Set<ResultatFiliereDto> resultats;
 
