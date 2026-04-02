@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.web.configuration;
+package com.guillaumegasnier.education.web.config;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +14,6 @@ import org.springframework.stereotype.Component;
 public class AppProperties {
 
     private String title;
-    
+
     private String apiKey;
 }

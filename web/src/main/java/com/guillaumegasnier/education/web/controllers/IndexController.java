@@ -7,7 +7,7 @@ import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
-import com.guillaumegasnier.education.web.configuration.AppProperties;
+import com.guillaumegasnier.education.web.config.AppProperties;
 import com.guillaumegasnier.education.web.dto.etablissements.CommuneWithEtablissementsDto;
 import com.guillaumegasnier.education.web.dto.etablissements.NatureWithEtablissementsDto;
 import com.guillaumegasnier.education.web.dto.references.AcademieWithDepartementsDto;

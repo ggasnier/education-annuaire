@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.web.configuration;
+package com.guillaumegasnier.education.web.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;

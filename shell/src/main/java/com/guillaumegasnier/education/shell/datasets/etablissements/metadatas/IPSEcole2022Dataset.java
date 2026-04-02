@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
 import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
 import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
+import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,48 +10,39 @@ import lombok.Setter;
 @Setter
 public class IPSEcole2022Dataset implements IndicePositionSociale, Metadata {
 
-    @Override
-    public Double getIndice() {
-        return 0.0;
-    }
+    @CsvBindByName(column = "Rentrée scolaire")
+    private String rentreeScolaire;
+    @CsvBindByName(column = "UAI")
+    private String uai;
+    @CsvBindByName(column = "IPS")
+    private Double indice;
+    @CsvBindByName(column = "IPS national")
+    private Double indiceNational;
+    @CsvBindByName(column = "IPS national privé")
+    private Double indiceNationalPrive;
+    @CsvBindByName(column = "IPS national public")
+    private Double indiceNationalPublic;
+    @CsvBindByName(column = "IPS académique")
+    private String indiceAcademie;
+    @CsvBindByName(column = "IPS académique privé")
+    private String indiceAcademiePrive;
+    @CsvBindByName(column = "IPS académique public")
+    private String indiceAcademiePublic;
+    @CsvBindByName(column = "IPS départemental")
+    private String indiceDepartement;
+    @CsvBindByName(column = "IPS départemental privé")
+    private String indiceDepartementPrive;
+    @CsvBindByName(column = "IPS départemental public")
+    private String indiceDepartementPublic;
 
     @Override
     public Double getEcartType() {
-        return 0.0;
+        return null;
     }
 
     @Override
     public Integer getAnnee() {
-        return 0;
+        return Integer.parseInt(rentreeScolaire.substring(0, 4));
     }
 
-    @Override
-    public String getUai() {
-        return "";
-    }
-
-
-    // Rentrée scolaire;
-    // Code région;
-    // Région;
-    // Code de l'académie;
-    // Académie;
-    // Code du département;
-    // Département;
-    // Code INSEE de la commune;
-    // Nom de la commune;
-    // UAI;
-    // Nom de l'établissement;
-    // Secteur;
-    // IPS;
-    // IPS national privé;
-    // IPS national public;
-    // IPS national;
-    // IPS académique privé;
-    // IPS académique public;
-    // IPS académique;
-    // IPS départemental privé;
-    // IPS départemental public;
-    // IPS départemental;
-    // num_ligne
 }

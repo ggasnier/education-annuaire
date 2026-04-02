@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.web.configuration;
+package com.guillaumegasnier.education.web.config;
 
 import com.guillaumegasnier.education.web.dto.ApiError;
 import com.guillaumegasnier.education.web.exceptions.EtablissementAlreadyExistsException;

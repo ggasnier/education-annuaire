@@ -39,9 +39,9 @@
         </sonar.exclusions>
         <sonar.coverage.exclusions>
             *Application.java,
-            /**/enums/*,
-            /**/dto/*,
-            /**/repositories/*,
+            /**/enums/**,
+            /**/dto/**,
+            /**/repositories/**,
             /**/*FileService.java
         </sonar.coverage.exclusions>
         <sonar.organization>ggasnier</sonar.organization>

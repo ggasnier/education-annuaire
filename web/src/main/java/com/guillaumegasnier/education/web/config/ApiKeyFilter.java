@@ -1,4 +1,4 @@
-package com.guillaumegasnier.education.web.configuration;
+package com.guillaumegasnier.education.web.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
