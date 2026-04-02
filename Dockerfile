@@ -17,7 +17,7 @@ RUN mvn -B clean package -DskipTests
 RUN mkdir -p web/target/extracted && (cd web/target/extracted; jar -xf ../web-1.0.0.jar)
 RUN mkdir -p shell/target/extracted && (cd shell/target/extracted; jar -xf ../shell-1.0.0.jar)
 
-FROM eclipse-temurin:21-jre-alpine as web
+FROM eclipse-temurin:21-jre-alpine AS web
 WORKDIR /app
 
 # Add non-root user for security
@@ -45,7 +45,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
 
 ENTRYPOINT ["java", "-cp", ".:lib/*", "com.guillaumegasnier.education.web.WebApplication"]
 
-FROM eclipse-temurin:21-jre-alpine as shell
+FROM eclipse-temurin:21-jre-alpine AS shell
 WORKDIR /app
 
 # Add non-root user for security
