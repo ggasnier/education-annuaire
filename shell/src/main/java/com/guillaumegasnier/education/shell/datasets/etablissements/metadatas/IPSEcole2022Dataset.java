@@ -6,6 +6,8 @@ import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatDouble;
+
 @Getter
 @Setter
 public class IPSEcole2022Dataset implements IndicePositionSociale, Metadata {
@@ -23,13 +25,13 @@ public class IPSEcole2022Dataset implements IndicePositionSociale, Metadata {
     @CsvBindByName(column = "IPS national public")
     private Double indiceNationalPublic;
     @CsvBindByName(column = "IPS académique")
-    private String indiceAcademie;
+    private Double indiceAcademie;
     @CsvBindByName(column = "IPS académique privé")
     private String indiceAcademiePrive;
     @CsvBindByName(column = "IPS académique public")
     private String indiceAcademiePublic;
     @CsvBindByName(column = "IPS départemental")
-    private String indiceDepartement;
+    private Double indiceDepartement;
     @CsvBindByName(column = "IPS départemental privé")
     private String indiceDepartementPrive;
     @CsvBindByName(column = "IPS départemental public")
@@ -45,4 +47,23 @@ public class IPSEcole2022Dataset implements IndicePositionSociale, Metadata {
         return Integer.parseInt(rentreeScolaire.substring(0, 4));
     }
 
+    @Override
+    public Double getIndiceAcademiePrive() {
+        return formatDouble(indiceAcademiePrive);
+    }
+
+    @Override
+    public Double getIndiceAcademiePublic() {
+        return formatDouble(indiceAcademiePublic);
+    }
+
+    @Override
+    public Double getIndiceDepartementPrive() {
+        return formatDouble(indiceDepartementPrive);
+    }
+
+    @Override
+    public Double getIndiceDepartementPublic() {
+        return formatDouble(indiceDepartementPublic);
+    }
 }

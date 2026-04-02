@@ -136,6 +136,7 @@ public abstract class EtablissementMapper {
     @Mapping(target = "nature", ignore = true)
     @Mapping(target = "contrat", ignore = true)
     @Mapping(target = "commune", ignore = true)
+    @Mapping(target = "options", ignore = true)
     @Mapping(target = "sources", ignore = true) // Ne pas mapper
     @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper
