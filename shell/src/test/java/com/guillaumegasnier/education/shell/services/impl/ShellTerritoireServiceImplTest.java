@@ -2,7 +2,7 @@ package com.guillaumegasnier.education.shell.services.impl;
 
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.shell.datasets.references.*;
-import com.guillaumegasnier.education.shell.mappers.ReferenceMapper;
+import com.guillaumegasnier.education.shell.mappers.TerritoireMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -19,15 +19,15 @@ class ShellTerritoireServiceImplTest {
 
     private CoreTerritoireService coreTerritoireService;
 
-    private ReferenceMapper referenceMapper;
+    private TerritoireMapper territoireMapper;
 
     private ShellTerritoireServiceImpl service;
 
     @BeforeEach
     void setUp() {
-        referenceMapper = Mappers.getMapper(ReferenceMapper.class);
+        territoireMapper = Mappers.getMapper(TerritoireMapper.class);
         coreTerritoireService = Mockito.mock(CoreTerritoireService.class);
-        service = new ShellTerritoireServiceImpl(coreTerritoireService, referenceMapper);
+        service = new ShellTerritoireServiceImpl(coreTerritoireService, territoireMapper);
     }
 
     @Test

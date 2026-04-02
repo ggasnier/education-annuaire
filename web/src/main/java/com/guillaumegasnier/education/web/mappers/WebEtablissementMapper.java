@@ -25,11 +25,10 @@ public abstract class WebEtablissementMapper {
 
     @Mapping(target = "nomSecteur", source = "secteur.nom")
     @Mapping(target = "codeSecteur", source = "secteur")
-    @Mapping(target = "nomEtat", ignore = true)
     @Mapping(target = "codeContrat", source = "contrat.code")
     @Mapping(target = "nomContrat", source = "contrat.nom")
-    @Mapping(target = "nomPays", ignore = true)
-    @Mapping(target = "codePays", ignore = true)
+    @Mapping(target = "nomPays", source = "commune.pays.nom")
+    @Mapping(target = "codePays", source = "commune.pays.code")
     @Mapping(target = "nomNature", source = "nature.nom")
     @Mapping(target = "codeNature", source = "nature.code")
     @Mapping(target = "codeCommune", source = "commune.code")

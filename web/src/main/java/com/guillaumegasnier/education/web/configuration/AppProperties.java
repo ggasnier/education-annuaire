@@ -14,4 +14,6 @@ import org.springframework.stereotype.Component;
 public class AppProperties {
 
     private String title;
+    
+    private String apiKey;
 }

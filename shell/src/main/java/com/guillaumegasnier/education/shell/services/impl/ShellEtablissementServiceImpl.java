@@ -4,11 +4,7 @@ import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreRechercheService;
-import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
-import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
+import com.guillaumegasnier.education.core.validations.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.dto.etablissements.OptionDTO;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
@@ -247,7 +243,8 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateIVALycees(@NonNull List<IndicateurValeurAjouteeLycee> datasets) {
 
-        record Clef(String uai, Integer annee) {}
+        record Clef(String uai, Integer annee) {
+        }
 
         // Fusion des deux sources (GT + Pro) sur la clef (uai, annee) :
         // on cumule les ResultatFiliereDto de chaque source dans un même set
@@ -301,7 +298,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateEuroscol(@NonNull List<EuroscolDataset> datasets, @NonNull String source) {
         coreEtablissementService.saveOptions(datasets.stream()
-                .map(dataset -> new OptionDTO(dataset.getUai(), OptionEtablissement.EUROSCOL))
+                .map(dataset -> new OptionDTO(dataset.getUai(), OptionEtablissement.EUROSCOL, dataset.getNomEtablissement()))
                 .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::toValidEntity)

@@ -105,4 +105,17 @@ public class CoreTerritoireServiceImpl implements CoreTerritoireService {
     public Optional<CommuneEntity> findCommune(@NonNull String codeCommune) {
         return communeRepository.findById(codeCommune);
     }
+
+    @Override
+    public List<PaysEntity> getPaysList() {
+        return paysRepository.findAll();
+    }
+
+    @Override
+    public CommuneEntity createCommune(@NonNull CommuneEntity entity) {
+        if (communeRepository.existsById(entity.getCode())) {
+            throw new IllegalStateException("La commune avec le code " + entity.getCode() + " existe déjà.");
+        }
+        return communeRepository.save(entity);
+    }
 }

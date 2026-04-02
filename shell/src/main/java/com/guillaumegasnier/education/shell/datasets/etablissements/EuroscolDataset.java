@@ -11,4 +11,7 @@ public class EuroscolDataset implements Dataset {
 
     @CsvBindByName(column = "RNE")
     private String uai;
+
+    @CsvBindByName(column = "Nom_etablissement")
+    private String nomEtablissement;
 }

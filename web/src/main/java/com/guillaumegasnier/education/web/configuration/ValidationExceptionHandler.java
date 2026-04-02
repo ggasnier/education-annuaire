@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.web.configuration;
 
 import com.guillaumegasnier.education.web.dto.ApiError;
+import com.guillaumegasnier.education.web.exceptions.EtablissementAlreadyExistsException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -45,6 +46,14 @@ public class ValidationExceptionHandler {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage("Validation error");
         apiError.addValidationErrors(ex.getConstraintViolations());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(EtablissementAlreadyExistsException.class)
+    protected ResponseEntity<ApiError> handleEtablissementAlreadyExistsException(EtablissementAlreadyExistsException ex) {
+        log.warn("Tentative de création d'un établissement déjà existant : UAI={}", ex.getUai());
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT);
+        apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
 

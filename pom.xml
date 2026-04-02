@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.10</version>
+        <version>3.5.13</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.guillaumegasnier.education</groupId>
     <artifactId>annuaire</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>education-annuaire</name>
     <description>education-annuaire</description>
     <packaging>pom</packaging>
@@ -35,13 +35,15 @@
         <spring-shell.version>3.4.1</spring-shell.version>
         <core.version>1.0.0</core.version>
         <sonar.exclusions>
-            *Entity.java,
-            *FileService.java,
-            *PK.java,
-            /**/enums/*,
-            /**/repositories/*,
-            /**/validations/**/*
+            /**/config/*
         </sonar.exclusions>
+        <sonar.coverage.exclusions>
+            *Application.java,
+            /**/enums/*,
+            /**/dto/*,
+            /**/repositories/*,
+            /**/*FileService.java
+        </sonar.coverage.exclusions>
         <sonar.organization>ggasnier</sonar.organization>
     </properties>
 
@@ -85,6 +87,15 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.14</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/enums/*</exclude>
+                        <exclude>**/dto/*</exclude>
+                        <exclude>**/repositories/*</exclude>
+                        <exclude>**/*FileService.class</exclude>
+                        <exclude>**/config/*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

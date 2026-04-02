@@ -3,13 +3,8 @@ package com.guillaumegasnier.education.shell.transformers.impl;
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
-import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
-import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
-import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
-import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
+import com.guillaumegasnier.education.core.validations.etablissements.*;
+import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
 import com.guillaumegasnier.education.shell.dto.etablissements.*;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.transformers.EtablissementTransformer;
@@ -31,6 +26,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
     private final CoreEtablissementService coreEtablissementService;
     private final CoreTerritoireService coreTerritoireService;
     private final EtablissementMapper etablissementMapper;
+    private final UaiValidator uaiValidator = new UaiValidator();
 
     @Override
     public <T extends IndicePositionSociale & Metadata> EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull T dataset) {
@@ -274,7 +270,12 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
                 entity = new EtablissementOptionEntity(new EtablissementOptionPK(dto.uai(), dto.option()), coreEtablissementService.getEtablissementReferenceByUai(dto.uai()));
             } else {
                 log.warn("Etablissement {} non trouvé pour options {}", dto.uai(), dto.option());
-                return null;
+                if (!uaiValidator.isValid(dto.uai(), null)) {
+                    log.warn("UAI {} invalide, création de l'établissement ignorée", dto.uai());
+                    return null;
+                }
+                var q = coreEtablissementService.createEtablissement(dto.uai(), dto.nom());
+                entity = new EtablissementOptionEntity(new EtablissementOptionPK(dto.uai(), dto.option()), q);
             }
         }
 
