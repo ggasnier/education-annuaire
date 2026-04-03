@@ -16,7 +16,7 @@ import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatDouble;
 @Setter
 public class IndicateurValeurAjouteeLyceeProDataset implements IndicateurValeurAjouteeLycee {
 
-    @CsvBindByName(column = "Annee")
+    @CsvBindByName(column = "Année")
     private Integer annee;
 
     @CsvBindByName(column = "UAI")
