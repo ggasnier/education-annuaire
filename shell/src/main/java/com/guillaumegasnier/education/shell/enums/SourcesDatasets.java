@@ -66,6 +66,7 @@ public enum SourcesDatasets {
     IPS_LYCEES_3("IPS Lycées (2016 - 2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/27d469ff-9908-4b7e-a2e0-9439bb38a395", "ips_lycees_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSLycee2016Dataset.class),
     // Erea
 
+    EFFECTIFS_ECOLE("Effectifs d’élèves par école", EN, "https://www.data.gouv.fr/api/1/datasets/r/8a0b8d35-fea2-4c8d-9af1-fb25edb16980", "effectifs_ecoles.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsEcoleDataset.class),
     EFFECTIFS_COLLEGE("Effectifs d’élèves en collège", EN, "https://www.data.gouv.fr/api/1/datasets/r/6bf59bae-3c3b-40f5-ad8e-f05b0b2ac271", "effectifs_college.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsCollegeDataset.class),
     EFFECTIFS_LYCEES_GT("Effectifs d’élèves en lycée d'enseignement général et technologique", EN, "https://www.data.gouv.fr/api/1/datasets/r/74335ea1-17da-4794-8ba2-4ae19c21f981", "effectifs_lycees_gt.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsLyceeDataset.class),
     EFFECTIFS_LYCEES_PRO("Effectifs d’élèves en lycée professionnel", EN, "https://www.data.gouv.fr/api/1/datasets/r/204c9fbf-5e88-4a69-a922-1ad1b369115c", "effectifs_lycees_pro.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsLyceeDataset.class),

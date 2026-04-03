@@ -17,7 +17,7 @@ public class IPSEcole2022Dataset implements IndicePositionSociale, Metadata {
     @CsvBindByName(column = "UAI")
     private String uai;
     @CsvBindByName(column = "IPS")
-    private Double indice;
+    private String indice;
     @CsvBindByName(column = "IPS national")
     private Double indiceNational;
     @CsvBindByName(column = "IPS national privé")
@@ -40,6 +40,11 @@ public class IPSEcole2022Dataset implements IndicePositionSociale, Metadata {
     @Override
     public Double getEcartType() {
         return null;
+    }
+
+    @Override
+    public Double getIndice() {
+        return formatDouble(indice);
     }
 
     @Override
