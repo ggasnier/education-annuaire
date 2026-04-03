@@ -5,7 +5,6 @@ import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.CertificationNationaleEntity;
-import com.guillaumegasnier.education.core.enums.TypologieDiplome;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreReferentielService;
@@ -120,10 +119,29 @@ public class FormationTransformerImpl implements FormationTransformer {
 
     private ActionFormationEntity toActionFormationEntityOld(@NonNull ActionFormationEntity entity, @NonNull ActionFormationDTO dto, @NonNull String source) {
         BeanMergeUtil.mergeWhenTargetNull(dto, entity, "formation", "etablissement", "source");
+
+        if (entity.getEtablissement() == null) {
+            log.warn("Il manque l'établissement pour la formation {}", dto.getOnisepId());
+            if (dto.getUai() != null && !dto.getUai().isBlank()) {
+                log.info("UAI:{}", dto.getUai());
+                if (coreEtablissementService.isEtablissementExiste(dto.getUai())) {
+                    entity.setEtablissement(coreEtablissementService.getEtablissementReferenceByUai(dto.getUai()));
+                } else {
+                    log.warn("Pas d'établissement {} pour action de formation {}", dto.getUai(), dto.getOnisepId());
+                }
+            }
+        }
         entity.addSource(source);
         return entity;
     }
 
+    /**
+     * Création d'une nouvelle formation
+     *
+     * @param dto    Le DTO qui contient les informations sur la formation
+     * @param source La source des données
+     * @return La nouvelle formation
+     */
     @NonNull
     private FormationEntity toFormationEntityNew(@NonNull FormationDTO dto, @NonNull String source) {
 
@@ -142,6 +160,14 @@ public class FormationTransformerImpl implements FormationTransformer {
         return entity;
     }
 
+    /**
+     * Mise à jour d'une formation existante
+     *
+     * @param entity La fomration actuelle
+     * @param dto    Le DTO qui contient les informations sur la formation
+     * @param source La source des données
+     * @return La formation actuelle mise à jour
+     */
     private FormationEntity toFormationEntityOld(@NonNull FormationEntity entity, @NonNull FormationDTO dto, @NonNull String source) {
 
         // Les ids
@@ -175,18 +201,19 @@ public class FormationTransformerImpl implements FormationTransformer {
                 Optional<CertificationNationaleEntity> opt = coreReferentielService.findCertification(dto.getCodeCertification());
                 opt.ifPresent(entity::setCertification);
                 entity.setCertifiante(true);
-            } else {
-                if (dto.getNom().startsWith("BTS ")) {
-                    var nom = dto.getNom().substring(4).toLowerCase();
-                    var typologieDiplome = TypologieDiplome.BTS;
-                    var actif = true;
-                    Optional<CertificationNationaleEntity> opt2 = coreReferentielService.findCertification(typologieDiplome, nom, actif);
-                    if (opt2.isPresent()) {
-                        opt2.ifPresent(entity::setCertification);
-                        entity.setCertifiante(true);
-                    }
-                }
             }
+//            else {
+//                if (dto.getNom().startsWith("BTS ")) {
+//                    var nom = dto.getNom().substring(4).toLowerCase();
+//                    var typologieDiplome = TypologieDiplome.BTS;
+//                    var actif = true;
+//                    Optional<CertificationNationaleEntity> opt2 = coreReferentielService.findCertification(typologieDiplome, nom, actif);
+//                    if (opt2.isPresent()) {
+//                        opt2.ifPresent(entity::setCertification);
+//                        entity.setCertifiante(true);
+//                    }
+//                }
+//            }
         }
 
         entity.addSource(source);

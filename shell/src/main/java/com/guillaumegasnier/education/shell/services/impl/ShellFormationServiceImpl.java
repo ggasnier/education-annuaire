@@ -7,6 +7,7 @@ import com.guillaumegasnier.education.shell.datasets.formations.CPFFormationData
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
+import com.guillaumegasnier.education.shell.dto.formations.ActionFormationDTO;
 import com.guillaumegasnier.education.shell.dto.formations.FormationDTO;
 import com.guillaumegasnier.education.shell.mappers.FormationMapper;
 import com.guillaumegasnier.education.shell.services.ShellFormationService;
@@ -55,14 +56,10 @@ public class ShellFormationServiceImpl implements ShellFormationService {
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateFormationsOnisepEsr(@NonNull List<OnisepFormationDataset> datasets) {
-//        int size = datasets.size();
-
-//        log.info("Lignes:{}", size);
-        //log.info("Formations:{}", datasets.stream().map(formationMapper::toFormationDTO).distinct().count());
 
         var formations = datasets.stream().map(formationMapper::toFormationDTO).distinct().toList();
         var formationsSize = formations.size();
-        log.info("Formations distinctes:{}", formations.size());
+        log.info("Formations distinctes:{}", formationsSize);
 
         for (int i = 0; i < formationsSize; i += chunk) {
             List<FormationDTO> sub = formations.subList(i, Math.min(i + chunk, formationsSize));
@@ -76,6 +73,21 @@ public class ShellFormationServiceImpl implements ShellFormationService {
             );
         }
 
+        var actions = datasets.stream().map(formationMapper::toActionFormationDTO).toList();
+        var actionsSize = actions.size();
+        log.info("Actions de Formations distinctes:{}", actionsSize);
+
+        for (int i = 0; i < actionsSize; i += chunk) {
+            List<ActionFormationDTO> sub = actions.subList(i, Math.min(i + chunk, actionsSize));
+//            log.info("Import actions {}/{}", i, actionsSize);
+
+            coreFormationService.saveActionFormation(sub.stream()
+                    .map(dto -> formationTransformer.toActionFormationEntity(dto, "onisep"))
+                    .filter(Objects::nonNull)
+                    .map(validatorService::toValidEntity)
+                    .filter(Objects::nonNull)
+                    .toList());
+        }
 
         //log.info("Import terminé : {} formations ONISEP ESR traitées.", formations.size());
 

@@ -103,17 +103,16 @@ public abstract class FormationMapper {
     public abstract ActionFormationDTO toActionFormationDTO(CarifFormationDataset dataset);
 
     // Partie Onisep
-    @Mapping(target = "nom", source = "formationNom")
-    @Mapping(target = "uai", ignore = true)
     @Mapping(target = "resultats", ignore = true)
     @Mapping(target = "positionnement", ignore = true)
     @Mapping(target = "parcoursDeFormation", ignore = true)
     @Mapping(target = "objectif", ignore = true)
-    @Mapping(target = "nda", ignore = true)
     @Mapping(target = "identifiantModule", ignore = true)
     @Mapping(target = "contenu", ignore = true)
     @Mapping(target = "codeNiveauEntree", ignore = true)
     @Mapping(target = "onisepId", source = "formationOnisepId")
+    @Mapping(target = "uai", ignore = true) // Ne pas mapper
+    @Mapping(target = "nda", ignore = true) // Ne pas mapper
     @Mapping(target = "carifId", ignore = true) // Ne pas mapper
     @Mapping(target = "parcoursupId", ignore = true) // Ne pas mapper
     public abstract FormationDTO toFormationDTO(OnisepFormationDataset dataset);
