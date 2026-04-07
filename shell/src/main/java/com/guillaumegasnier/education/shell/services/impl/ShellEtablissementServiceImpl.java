@@ -20,10 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -248,7 +245,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
 
         // Fusion des deux sources (GT + Pro) sur la clef (uai, annee) :
         // on cumule les ResultatFiliereDto de chaque source dans un même set
-        Map<Clef, IndicateurValeurAjouteeLycee> merged = new java.util.LinkedHashMap<>();
+        Map<Clef, IndicateurValeurAjouteeLycee> merged = new LinkedHashMap<>();
         for (IndicateurValeurAjouteeLycee dataset : datasets) {
             Clef clef = new Clef(dataset.getUai(), dataset.getAnnee());
             merged.merge(clef, dataset, (existing, incoming) -> {
@@ -257,7 +254,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
             });
         }
 
-        List<IndicateurValeurAjouteeLycee> aggregated = new java.util.ArrayList<>(merged.values());
+        List<IndicateurValeurAjouteeLycee> aggregated = new ArrayList<>(merged.values());
 
         for (int i = 0; i < aggregated.size(); i += chunk) {
             List<IndicateurValeurAjouteeLycee> sub = aggregated.subList(i, Math.min(i + chunk, aggregated.size()));
