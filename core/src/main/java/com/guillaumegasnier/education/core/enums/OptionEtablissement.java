@@ -10,7 +10,7 @@ public enum OptionEtablissement {
 
     // Les comodités
     RESTAURATION("Restauration", "🍽️", Categorie.COMODITE),
-    HEBERGEMENT("Hébergement", "🏨", Categorie.COMODITE),
+    HEBERGEMENT("Internat", "🏨", Categorie.COMODITE),
 
     // les labels
     EUROSCOL("Euroscol", "🇪🇺", Categorie.LABEL),
