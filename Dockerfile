@@ -14,8 +14,9 @@ COPY shell/src shell/src
 
 # Build the application
 RUN mvn -B clean package -DskipTests
-RUN mkdir -p web/target/extracted && (cd web/target/extracted; jar -xf ../web-1.0.0.jar)
-RUN mkdir -p shell/target/extracted && (cd shell/target/extracted; jar -xf ../shell-1.0.0.jar)
+ARG VERSION=1.0.1
+RUN mkdir -p web/target/extracted && (cd web/target/extracted; jar -xf ../web-${VERSION}.jar)
+RUN mkdir -p shell/target/extracted && (cd shell/target/extracted; jar -xf ../shell-${VERSION}.jar)
 
 FROM eclipse-temurin:21-jre-alpine AS web
 WORKDIR /app
@@ -30,8 +31,9 @@ COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/META-INF ./META-INF
 COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/BOOT-INF/classes ./
 
 # Add metadata
-LABEL version="1.0.0" \
-    description="Education Annuaire - Web Service" \
+ARG VERSION=1.0.1
+LABEL version="${VERSION}" \
+    description="Formakoi - Web Service" \
     maintainer="Guillaume Gasnier"
 
 # Switch to non-root user
@@ -58,8 +60,9 @@ COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/META-INF ./META-INF
 COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/BOOT-INF/classes ./
 
 # Add metadata
-LABEL version="1.0.0" \
-    description="Education Annuaire - Shell CLI" \
+ARG VERSION=1.0.1
+LABEL version="${VERSION}" \
+    description="Formakoi - Shell CLI" \
     maintainer="Guillaume Gasnier"
 
 # Switch to non-root user
