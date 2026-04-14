@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @JsonPropertyOrder(
         {"uai", "nom", "siret",
                 "code_nature", "nom_nature",
@@ -52,9 +54,6 @@ public class EtablissementDto {
     @JsonProperty(value = "nom_nature")
     protected String nomNature;
 
-    @JsonProperty(value = "nom_etat")
-    protected String nomEtat;
-
     @JsonProperty(value = "code_contrat")
     protected String codeContrat;
 
@@ -89,5 +88,7 @@ public class EtablissementDto {
     protected String nomSecteur;
 
     protected boolean actif;
+
+    protected List<String> sources;
 
 }

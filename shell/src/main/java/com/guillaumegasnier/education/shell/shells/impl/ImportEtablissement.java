@@ -182,7 +182,8 @@ public class ImportEtablissement implements ImportEtablissementShell {
     @Override
     @ShellMethod(value = "Import IPS Ecoles")
     public void importIpsEcoles() {
-
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_ECOLES_1));
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_ECOLES_2));
     }
 
     @Override

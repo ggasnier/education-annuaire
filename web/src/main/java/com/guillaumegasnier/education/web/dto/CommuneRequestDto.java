@@ -11,11 +11,8 @@ import lombok.Setter;
 @Schema(name = "CommuneRequest")
 public class CommuneRequestDto {
 
-    /**
-     * TODO gestion de communes autre que france
-     */
     @JsonProperty(required = true)
-    @Size(min = 5, max = 5)
+    @Size(min = 5, max = 10)
     protected String code;
 
     @JsonProperty(required = true)

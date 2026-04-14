@@ -21,6 +21,8 @@ public interface CoreTerritoireService {
 
     void saveCommunes(List<CommuneEntity> entities);
 
+    CommuneEntity createCommune(@NonNull CommuneEntity entity);
+
     RegionEntity getRegion(String codeRegion);
 
     AcademieEntity getAcademie(String codeAcademie);
@@ -36,4 +38,6 @@ public interface CoreTerritoireService {
     PaysEntity getPays(String codePays);
 
     List<DepartementEntity> getDepartements();
+
+    List<PaysEntity> getPaysList();
 }

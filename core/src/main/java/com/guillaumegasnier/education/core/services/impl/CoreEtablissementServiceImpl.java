@@ -326,4 +326,17 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
         return etablissementContactRepository.findByPkUaiAndPkContactAndPkValeur(uai, contact, valeur);
     }
 
+    @Override
+    public List<NatureEntity> getNatureList() {
+        return natureRepository.findAll();
+    }
+
+    @Override
+    public EtablissementEntity createEtablissement(String uai, String nom) {
+        EtablissementEntity entity = new EtablissementEntity();
+        entity.setUai(uai);
+        entity.setNom(nom);
+        entity.setActif(true);
+        return etablissementRepository.save(entity);
+    }
 }

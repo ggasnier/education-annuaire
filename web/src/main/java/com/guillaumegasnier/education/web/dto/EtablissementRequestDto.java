@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @ToString
@@ -45,5 +47,17 @@ public class EtablissementRequestDto {
     @Size(max = 2)
     @JsonProperty(value = "code_contrat")
     protected String codeContrat;
+
+    @JsonProperty(value = "date_ouverture")
+    protected LocalDate dateOuverture;
+
+    @JsonProperty(value = "date_fermeture")
+    protected LocalDate dateFermeture;
+
+    @Size(min = 2, max = 2)
+    @JsonProperty(value = "code_secteur")
+    protected String codeSecteur;
+
+    protected Boolean actif;
 
 }

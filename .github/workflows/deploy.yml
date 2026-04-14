@@ -32,12 +32,12 @@ jobs:
           docker build --target shell -t ghcr.io/${{ env.REPO }}/shell:latest .
           docker push ghcr.io/${{ env.REPO }}/shell:latest
 
-#      - name: Deploy to VPS
-#        uses: appleboy/ssh-action@v1.2.0
-#        with:
-#          host: ${{ secrets.VPS_HOST }}
-#          username: root
-#          key: ${{ secrets.VPS_SSH_KEY }}
-#          script: |
-#            cd /srv/apps
-#            ./deploy.sh
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: annuaire
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /opt/annuaire
+            ./deploy.sh

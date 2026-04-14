@@ -10,7 +10,7 @@ public enum OptionEtablissement {
 
     // Les comodités
     RESTAURATION("Restauration", "🍽️", Categorie.COMODITE),
-    HEBERGEMENT("Hébergement", "🏨", Categorie.COMODITE),
+    HEBERGEMENT("Internat", "🏨", Categorie.COMODITE),
 
     // les labels
     EUROSCOL("Euroscol", "🇪🇺", Categorie.LABEL),
@@ -43,22 +43,23 @@ public enum OptionEtablissement {
     ULIS("Unités Localisées pour l'Inclusion Scolaire (ULIS)", "🤝", Categorie.ENSEIGNEMENT),
     APPRENTISSAGE("Apprentissage", "🎓", Categorie.ENSEIGNEMENT),
     SEGPA("Section d'Enseignement Général et Professionnel Adapté (SEGPA)", "📖", Categorie.ENSEIGNEMENT),
+    @Deprecated
     POST_BAC("Post BAC", "🎓", Categorie.ENSEIGNEMENT),
     CPGE("CPGE", "📚", Categorie.ENSEIGNEMENT),
     @Deprecated
     CL_H_AM("Classe à horaires aménagés", "⏰", Categorie.ENSEIGNEMENT),
-    CHA_ARTS("Classe à horaires aménagés arts et métiers du spectacle", "", Categorie.ENSEIGNEMENT),
-    CHA_ARTS2("Classe à horaires aménagés arts plastiques", "", Categorie.ENSEIGNEMENT),
-    CHA_CINE("Classe à horaires aménagés cinéma", "", Categorie.ENSEIGNEMENT),
-    CHA_DANSE("Classe à horaires aménagés danse", "", Categorie.ENSEIGNEMENT),
-    CHA_MUSIQUE("Classe à horaires aménagés musique", "", Categorie.ENSEIGNEMENT),
-    CHA_THEATRE("Classe à horaires aménagés théâtre", "", Categorie.ENSEIGNEMENT),
-    CHAMS("Classes à horaires aménagés mathématiques et sciences", "", Categorie.ENSEIGNEMENT),
-    BREVET_MER("Brevet d'initiation à la mer", "", Categorie.ENSEIGNEMENT),
-    BREVET_AERO("Brevet d'initiation aéronautique (BIA)", "", Categorie.ENSEIGNEMENT),
-    PREPA_METIERS("Classe de 3e \"prépa-métiers\"", "", Categorie.ENSEIGNEMENT),
-    FORAINS("Classe pour enfants de familles itinérantes et de voyageurs", "", Categorie.ENSEIGNEMENT),
-    RELAIS("Dispositif relais", "", Categorie.ENSEIGNEMENT),
+    CHA_ARTS("Classe à horaires aménagés arts et métiers du spectacle", "⏰", Categorie.ENSEIGNEMENT),
+    CHA_ARTS2("Classe à horaires aménagés arts plastiques", "⏰", Categorie.ENSEIGNEMENT),
+    CHA_CINE("Classe à horaires aménagés cinéma", "⏰", Categorie.ENSEIGNEMENT),
+    CHA_DANSE("Classe à horaires aménagés danse", "⏰", Categorie.ENSEIGNEMENT),
+    CHA_MUSIQUE("Classe à horaires aménagés musique", "⏰", Categorie.ENSEIGNEMENT),
+    CHA_THEATRE("Classe à horaires aménagés théâtre", "⏰", Categorie.ENSEIGNEMENT),
+    CHAMS("Classes à horaires aménagés mathématiques et sciences", "⏰", Categorie.ENSEIGNEMENT),
+    BREVET_MER("Brevet d'initiation à la mer", "⚓", Categorie.ENSEIGNEMENT),
+    BREVET_AERO("Brevet d'initiation aéronautique (BIA)", "✈️", Categorie.ENSEIGNEMENT),
+    PREPA_METIERS("Classe de 3e \"prépa-métiers\"", "🔨", Categorie.ENSEIGNEMENT),
+    FORAINS("Classe pour enfants de familles itinérantes et de voyageurs", "🚌", Categorie.ENSEIGNEMENT),
+    RELAIS("Dispositif relais", "🔄", Categorie.ENSEIGNEMENT),
     UPE2A("Unité pédagogique pour élèves allophones arrivants (UPE2A)", "🌐", Categorie.ENSEIGNEMENT);
 
     private final String nom;

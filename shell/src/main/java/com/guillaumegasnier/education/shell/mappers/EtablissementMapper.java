@@ -11,11 +11,7 @@ import com.guillaumegasnier.education.core.dto.IndicePositionSocialeDto;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjoutee;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
-import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
+import com.guillaumegasnier.education.core.validations.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.dto.etablissements.*;
 import lombok.extern.slf4j.Slf4j;
@@ -81,21 +77,21 @@ public abstract class EtablissementMapper {
 
     // Les options
     public OptionDTO toOptionDTO(@NonNull OnisepDispositifDataset dataset) {
-        return new OptionDTO(dataset.getUai(), dataset.getOption());
+        return new OptionDTO(dataset.getUai(), dataset.getOption(), dataset.getNomEtablissement());
     }
 
     public OptionDTO toOptionDTO(@NonNull SectionBinationaleDataset dataset) {
-        return new OptionDTO(dataset.getUai(), dataset.getOption());
+        return new OptionDTO(dataset.getUai(), dataset.getOption(), dataset.getNomEtablissement());
     }
 
     public List<OptionDTO> toOptionDTO(@NonNull SectionInternationaleDataset dataset) {
         List<OptionDTO> dtos = new ArrayList<>();
         // Indicateur SI
-        dtos.add(new OptionDTO(dataset.getUai(), OptionEtablissement.SECTION_INTERNATIONALE));
+        dtos.add(new OptionDTO(dataset.getUai(), OptionEtablissement.SECTION_INTERNATIONALE, dataset.getNomEtablissement()));
         // Indicateur BFI
         dataset.getNiveaux().forEach(niveau -> {
             if (niveau.equals("BFI")) {
-                dtos.add(new OptionDTO(dataset.getUai(), OptionEtablissement.BFI));
+                dtos.add(new OptionDTO(dataset.getUai(), OptionEtablissement.BFI, dataset.getNomEtablissement()));
             }
         });
         return dtos;
@@ -103,7 +99,7 @@ public abstract class EtablissementMapper {
 
     public List<OptionDTO> toOptionDTO(@NonNull EtablissementDataset dataset) {
         return dataset.getOptions().stream()
-                .map(option -> new OptionDTO(dataset.getUai(), option)
+                .map(option -> new OptionDTO(dataset.getUai(), option, dataset.getNom())
                 ).toList();
     }
 
@@ -140,6 +136,7 @@ public abstract class EtablissementMapper {
     @Mapping(target = "nature", ignore = true)
     @Mapping(target = "contrat", ignore = true)
     @Mapping(target = "commune", ignore = true)
+    @Mapping(target = "options", ignore = true)
     @Mapping(target = "sources", ignore = true) // Ne pas mapper
     @Mapping(target = "updatedAt", ignore = true) // Ne pas mapper
     @Mapping(target = "createdAt", ignore = true) // Ne pas mapper

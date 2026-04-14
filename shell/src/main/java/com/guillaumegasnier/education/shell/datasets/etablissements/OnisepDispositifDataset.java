@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
+import com.guillaumegasnier.education.core.enums.Secteur;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
@@ -76,6 +77,13 @@ public class OnisepDispositifDataset implements Dataset {
     @CsvBindByName(column = "ENS site web")
     private String contactWeb;
 
+    @CsvBindByName(column = "Structure d'enseignement (ENS) libellé")
+    private String nomEtablissement;
+    //ENS URL et ID Onisep
+    //ENS type
+    @CsvBindByName(column = "ENS statut")
+    private String statutEtablissement;
+
     public OptionEtablissement getOption() {
         if (nom == null) return null;
         var i = switch (nom) {
@@ -122,6 +130,8 @@ public class OnisepDispositifDataset implements Dataset {
         return i;
     }
 
+    //TYPDISP indexation Onisep
+
     public List<Langue> getLangueList() {
         if (getOption().equals(OptionEtablissement.SECTION_EUROPEENNE) || getOption().equals(OptionEtablissement.SECTION_ORIENTALE) || getOption().equals(OptionEtablissement.SECTION_INTERNATIONALE) || getOption().equals(OptionEtablissement.SECTION_BILINGUE)) {
             return Stream.of(enseignement.split(","))
@@ -143,11 +153,6 @@ public class OnisepDispositifDataset implements Dataset {
         return Collections.emptyList();
     }
 
-    //TYPDISP indexation Onisep
-    //Structure d'enseignement (ENS) libellé
-    //ENS URL et ID Onisep
-    //ENS type
-    //ENS statut
     //ENS adresse
     //ENS code postal
     //ENS commune
@@ -162,4 +167,10 @@ public class OnisepDispositifDataset implements Dataset {
     //AD durée
     //AD modalités accueil
     //AD date de modification
+
+    public Secteur getSecteur() {
+        if (statutEtablissement == null) return null;
+        if (statutEtablissement.equals("public")) return Secteur.PU;
+        return Secteur.PV;
+    }
 }
