@@ -4,7 +4,7 @@ package com.guillaumegasnier.education.shell.services.impl;
 import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.shell.datasets.references.*;
-import com.guillaumegasnier.education.shell.mappers.ReferenceMapper;
+import com.guillaumegasnier.education.shell.mappers.TerritoireMapper;
 import com.guillaumegasnier.education.shell.services.ShellTerritoireService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +20,11 @@ import java.util.List;
 public class ShellTerritoireServiceImpl implements ShellTerritoireService {
 
     private final CoreTerritoireService coreTerritoireService;
-    private final ReferenceMapper referenceMapper;
+    private final TerritoireMapper territoireMapper;
 
     @Override
     public void createOrUpdatePays(@NonNull List<PaysDataset> datasets) {
-        coreTerritoireService.savePays(datasets.stream().map(referenceMapper::toPaysEntity).toList());
+        coreTerritoireService.savePays(datasets.stream().map(territoireMapper::toPaysEntity).toList());
         log.info("Import terminé : {} pays enregistrés.", datasets.size());
     }
 
@@ -32,7 +32,7 @@ public class ShellTerritoireServiceImpl implements ShellTerritoireService {
     public void createOrUpdateAcademies(@NonNull List<AcademieDataset> datasets) {
         coreTerritoireService.saveAcademies(datasets.stream()
                 .filter(dataset -> dataset.getDateFin() != null && dataset.getDateFin().isEmpty())
-                .map(referenceMapper::toAcademieEntity)
+                .map(territoireMapper::toAcademieEntity)
                 .toList());
         log.info("Import terminé : {} académies enregistrées.", datasets.size());
     }
@@ -40,7 +40,7 @@ public class ShellTerritoireServiceImpl implements ShellTerritoireService {
     @Override
     public void createOrUpdateRegions(@NonNull List<RegionDataset> datasets) {
         coreTerritoireService.saveRegions(datasets.stream()
-                .map(referenceMapper::toRegionEntity)
+                .map(territoireMapper::toRegionEntity)
                 .toList());
         log.info("Import terminé : {} régions enregistrées.", datasets.size());
     }
@@ -49,7 +49,7 @@ public class ShellTerritoireServiceImpl implements ShellTerritoireService {
     public void createOrUpdateDepartements(@NonNull List<DepartementDataset> datasets, @NonNull HashMap<String, String> codeAcademieMap) {
         List<DepartementEntity> departements = datasets.stream()
                 .map(dataset -> {
-                    DepartementEntity entity = referenceMapper.toDepartementEntity(dataset);
+                    DepartementEntity entity = territoireMapper.toDepartementEntity(dataset);
 
                     // Association à une région si le code est renseigné
                     String codeRegion = dataset.getCodeRegion();
@@ -77,7 +77,7 @@ public class ShellTerritoireServiceImpl implements ShellTerritoireService {
         var pays = coreTerritoireService.getPays("FR");
 
         coreTerritoireService.saveCommunes(datasets.stream().map(dataset -> {
-            var entity = referenceMapper.toCommuneEntity(dataset);
+            var entity = territoireMapper.toCommuneEntity(dataset);
             if (!dataset.getCodeDepartement().isEmpty()) {
                 entity.setDepartement(coreTerritoireService.getDepartement(dataset.getCodeDepartement()));
             } else {

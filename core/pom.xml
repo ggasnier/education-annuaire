@@ -5,7 +5,8 @@
     <parent>
         <groupId>com.guillaumegasnier.education</groupId>
         <artifactId>annuaire</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>core</artifactId>
     <name>core</name>

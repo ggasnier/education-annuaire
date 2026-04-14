@@ -9,8 +9,18 @@ import lombok.Setter;
 public class CommuneOutreMerDataset extends CommuneDataset {
 
     @CsvBindByName(column = "COM_COMER")
-    protected String code;
+    protected String code2;
 
     @CsvBindByName(column = "COMER")
-    protected String codeDepartement;
+    protected String codeDepartement2;
+
+    @Override
+    public String getCode() {
+        return code2;
+    }
+
+    @Override
+    public String getCodeDepartement() {
+        return codeDepartement2;
+    }
 }

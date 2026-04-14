@@ -216,16 +216,16 @@ class EtablissementTransformerTest {
     @Test
     void toEtablissementOptionEntityTest() {
         when(coreEtablissementService.findOption(uaiAbsent, OptionEtablissement.BFI)).thenReturn(Optional.of(new EtablissementOptionEntity()));
-        OptionDTO dto = new OptionDTO(uaiAbsent, OptionEtablissement.BFI);
+        OptionDTO dto = new OptionDTO(uaiAbsent, OptionEtablissement.BFI, null);
         assertNotNull(transformer.toEtablissementOptionEntity(dto, "en"));
 
         when(coreEtablissementService.findOption(uaiExiste, OptionEtablissement.BFI)).thenReturn(Optional.empty());
-        dto = new OptionDTO(uaiExiste, OptionEtablissement.BFI);
+        dto = new OptionDTO(uaiExiste, OptionEtablissement.BFI, null);
         assertNotNull(transformer.toEtablissementOptionEntity(dto, "en"));
 
         when(coreEtablissementService.findOption(uaiAbsent, OptionEtablissement.BFI)).thenReturn(Optional.empty());
-        dto = new OptionDTO(uaiAbsent, OptionEtablissement.BFI);
-        assertNull(transformer.toEtablissementOptionEntity(dto, "en"));
+        dto = new OptionDTO(uaiAbsent, OptionEtablissement.BFI, null);
+        assertNotNull(transformer.toEtablissementOptionEntity(dto, "en"));
     }
 
     @Test

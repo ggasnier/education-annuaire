@@ -139,8 +139,8 @@ public class EnEtablissementDataset implements EtablissementDataset {
     private String lyceeMilitaire;
     @CsvBindByName(column = "Lycee_des_metiers")
     private String lyceeDesMetiers;
-    @CsvBindByName(column = "Post_BAC")
-    private String postBac;
+    //    @CsvBindByName(column = "Post_BAC")
+//    private String postBac;
     @CsvBindByName(column = "Appartenance_Education_Prioritaire")
     private String educationPrioritaire;
 
@@ -249,7 +249,7 @@ public class EnEtablissementDataset implements EtablissementDataset {
         if (lyceeAgricole != null && lyceeAgricole.equals("1")) options.add(OptionEtablissement.LYCEE_AGRICOLE);
         if (lyceeMilitaire != null && lyceeMilitaire.equals("1")) options.add(OptionEtablissement.LYCEE_MILITAIRE);
         if (lyceeDesMetiers != null && lyceeDesMetiers.equals("1")) options.add(OptionEtablissement.LYCEE_DES_METIERS);
-        if (postBac != null && postBac.equals("1")) options.add(OptionEtablissement.POST_BAC);
+//        if (postBac != null && postBac.equals("1")) options.add(OptionEtablissement.POST_BAC);
 
         if (educationPrioritaire != null) {
             if (educationPrioritaire.equals("REP"))

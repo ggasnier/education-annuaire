@@ -116,4 +116,8 @@ public interface CoreEtablissementService {
     List<EtablissementEntity> findEtablissementsActif();
 
     List<EtablissementEntity> findEtablissementsNotActif();
+
+    List<NatureEntity> getNatureList();
+
+    EtablissementEntity createEtablissement(String uai, String nom);
 }

@@ -112,6 +112,11 @@ public class OnisepFormationDataset implements Dataset {
         return Integer.parseInt(actionFormationDureeCycleStandard.substring(0, 1));
     }
 
+    public String getNom() {
+        if (formationNom == null || formationNom.isBlank()) return formationNom;
+        return formationNom.substring(0, 1).toUpperCase() + formationNom.substring(1);
+    }
+
     /**
      *
      * @return
@@ -128,7 +133,6 @@ public class OnisepFormationDataset implements Dataset {
     }
 
     /**
-     *
      * @return Indique si la formation est certifiante si on a le lien RNCP, sinon null
      */
     public Boolean isCertifiante() {
@@ -138,7 +142,6 @@ public class OnisepFormationDataset implements Dataset {
     }
 
     /**
-     *
      * @return code RNCP
      */
     public String getCodeCertification() {

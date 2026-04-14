@@ -88,6 +88,20 @@ class CoreEtablissementServiceImplTest {
     }
 
     @Test
+    void saveNaturesTest() {
+        List<NatureEntity> list = List.of(mock(NatureEntity.class));
+        service.saveNatures(list);
+        verify(natureRepository).saveAll(list);
+    }
+
+    @Test
+    void saveContratsTest() {
+        List<ContratEntity> list = List.of(mock(ContratEntity.class));
+        service.saveContrats(list);
+        verify(contratRepository).saveAll(list);
+    }
+
+    @Test
     void saveOrganismes_callsSaveAllAndFlushClear() {
         OrganismeEntity o = mock(OrganismeEntity.class);
         List<OrganismeEntity> list = List.of(o);

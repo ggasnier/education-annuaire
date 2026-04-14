@@ -36,7 +36,7 @@ class AllDTOTest {
 
     @Test
     void optionDTOTest() {
-        var dto = new OptionDTO(uai, SECTION_SPORT);
+        var dto = new OptionDTO(uai, SECTION_SPORT, null);
         assertEquals(uai, dto.uai());
         assertEquals(SECTION_SPORT, dto.option());
     }
