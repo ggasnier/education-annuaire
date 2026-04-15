@@ -69,7 +69,7 @@ public interface ApiEtablissementController {
             )
     )
     @PostMapping("")
-    default ResponseEntity<EtablissementDto> createEtablissement(@org.springframework.web.bind.annotation.RequestBody EtablissementRequestDto dto) {
+    default ResponseEntity<EtablissementDto> createEtablissement(@RequestBody EtablissementRequestDto dto) {
         return ResponseEntity.status(NOT_IMPLEMENTED).build();
     }
 
