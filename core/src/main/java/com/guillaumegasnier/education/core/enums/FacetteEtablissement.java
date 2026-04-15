@@ -10,13 +10,14 @@ public enum FacetteEtablissement {
     SECTEUR("codeSecteur", "nomSecteur", "Secteur", null, "codeSecteur"),
     NATURE("codeNature", "nomNature", "Nature", null, "codeNature"),
     OPTION("options.codeOption", "options.nomOption", "Option", "options", "codeOption"),
+    LANGUE("langues.codeLangue", "langues.nomLangue", "Langue", "langues", "codeLangue"),
     COMMUNE("codeCommune", "nomCommune", "Commune", null, "codeCommune"),
     DEPARTEMENT("codeDepartement", "nomDepartement", "Département", null, "codeDepartement"),
     ACADEMIE("codeAcademie", "nomAcademie", "Académie", null, "codeAcademie");
-    //REGION("codeRegion", "nomRegion", "Région", null, "codeRegion"),
-    //PAYS("codePays", "nomPays", "Pays", null, "codePays");
 
-    /** Champ Elasticsearch (utilisé pour les queries/aggregations ES) */
+    /**
+     * Champ Elasticsearch (utilisé pour les queries/aggregations ES)
+     */
     private final String code;
     private final String codeNom;
     private final String nom;
@@ -32,10 +33,6 @@ public enum FacetteEtablissement {
      */
     private final String urlKey;
 
-    public boolean isNested() {
-        return nestedPath != null;
-    }
-
     /**
      * Retrouve une facette par sa clé URL.
      */
@@ -45,5 +42,9 @@ public enum FacetteEtablissement {
             if (f.urlKey.equals(urlKey)) return f;
         }
         return null;
+    }
+
+    public boolean isNested() {
+        return nestedPath != null;
     }
 }

@@ -36,11 +36,10 @@ public class EtablissementRechercheService {
     private static final int DEFAULT_PAGE_SIZE = 20;
     private static final int FACET_SIZE = 50;
 
-
     private static final List<String> TEXT_FIELDS = List.of(
             "nom^5", "adresse", "codePostal", "nomSecteur", "nomNature",
             "nomCommune", "nomDepartement", "nomAcademie", "nomRegion", "nomPays",
-            "options.nomOption"
+            "options.nomOption", "langues.nomLangue"
     );
 
     private final RechercheEtablissementRepository repository;
@@ -99,6 +98,28 @@ public class EtablissementRechercheService {
     }
 
     // -------------------------------------------------------------------------
+    // Gestion de l'index
+    // -------------------------------------------------------------------------
+
+    /**
+     * Supprime et recrée l'index ES à partir du mapping déclaré dans
+     * {@link RechercheEtablissementEntity}.
+     * <p>
+     * À appeler systématiquement avant chaque import complet pour éviter
+     * les {@code search_phase_execution_exception} causées par un mapping obsolète.
+     */
+    public void recreateIndex() {
+        var indexOps = elasticsearchOperations.indexOps(RechercheEtablissementEntity.class);
+        if (indexOps.exists()) {
+            log.info("Index 'etablissements' existant détecté — suppression...");
+            indexOps.delete();
+        }
+        log.info("Création de l'index 'etablissements' avec le mapping courant...");
+        indexOps.createWithMapping();
+        log.info("Index 'etablissements' recréé avec succès.");
+    }
+
+    // -------------------------------------------------------------------------
     // Persistence
     // -------------------------------------------------------------------------
 
@@ -133,7 +154,8 @@ public class EtablissementRechercheService {
             String urlKey = entry.getKey();
             List<String> values = entry.getValue();
             if (urlKey == null || values == null || values.isEmpty()) continue;
-            if ("q".equalsIgnoreCase(urlKey) || "page".equalsIgnoreCase(urlKey) || "size".equalsIgnoreCase(urlKey)) continue;
+            if ("q".equalsIgnoreCase(urlKey) || "page".equalsIgnoreCase(urlKey) || "size".equalsIgnoreCase(urlKey))
+                continue;
             if (urlKey.equals(excludeKey)) continue;
 
             // Résolution urlKey → facette → champ ES

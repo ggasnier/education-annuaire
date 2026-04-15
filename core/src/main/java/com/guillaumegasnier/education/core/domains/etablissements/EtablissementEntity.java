@@ -13,9 +13,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -90,7 +88,10 @@ public class EtablissementEntity extends AbstractSourcesEntity {
     private EtablissementMasaEntity masa;
 
     @OneToMany(mappedBy = "etablissement", fetch = FetchType.LAZY)
-    private List<EtablissementOptionEntity> options = new ArrayList<>();
+    private Set<EtablissementOptionEntity> options = new HashSet<>();
+
+    @OneToMany(mappedBy = "etablissement", fetch = FetchType.LAZY)
+    private Set<EtablissementLangueEntity> langues = new HashSet<>();
 
     public NatureEntity getNature() {
         if (nature == null) return new NatureEntity("$", "Non renseigné");

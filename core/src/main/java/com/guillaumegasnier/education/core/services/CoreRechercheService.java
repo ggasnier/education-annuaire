@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface CoreRechercheService {
 
+    void recreateEtablissementsIndex();
+
     void saveEtablissements(@NonNull List<RechercheEtablissementEntity> entities);
 
     void saveMetiers(@NonNull List<RechercheMetierEntity> entities);
