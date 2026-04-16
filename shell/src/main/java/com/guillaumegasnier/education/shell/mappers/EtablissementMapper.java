@@ -125,6 +125,7 @@ public abstract class EtablissementMapper {
     }
 
     // Les entitées JPA
+    @Mapping(target = "langues", ignore = true)
     @Mapping(target = "masa", ignore = true)
     @Mapping(target = "identifiants", ignore = true)
     @Mapping(target = "organisme", ignore = true)
@@ -171,30 +172,6 @@ public abstract class EtablissementMapper {
     @Mapping(target = "options", source = "options", qualifiedByName = "toOptions")
     @Mapping(target = "langues", source = "langues", qualifiedByName = "toLangues")
     public abstract RechercheEtablissementEntity toRechercheEtablissementEntity(EtablissementEntity entity);
-
-    @Named("toDescription")
-    public String toDescription(@NonNull EtablissementEntity entity) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(entity.getUai());
-        sb.append(" ");
-        sb.append(entity.getNature().getNom());
-        sb.append(" ");
-        sb.append(entity.getNom());
-        sb.append(" ");
-        sb.append(entity.getAdresse());
-        sb.append(" ");
-        if (entity.getComplement() != null) {
-            sb.append(entity.getComplement());
-            sb.append(" ");
-        }
-        sb.append(entity.getCodePostal());
-        sb.append(" ");
-        sb.append(entity.getCommune().getNom());
-        sb.append(" ");
-        sb.append(entity.getCommune().getDepartement().getNom());
-        sb.append(" ");
-        return sb.toString();
-    }
 
     // Les metadatas
     public <T extends IndicePositionSociale & Metadata> IndicePositionSocialeDto toIndicePositionSocialeDto(@NonNull T dataset) {
