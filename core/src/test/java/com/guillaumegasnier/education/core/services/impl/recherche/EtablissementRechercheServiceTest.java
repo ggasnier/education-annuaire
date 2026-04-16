@@ -12,6 +12,7 @@ import com.guillaumegasnier.education.core.dto.RechercheFacetteValeurDTO;
 import com.guillaumegasnier.education.core.dto.recherche.RechercheEtablissementDTO;
 import com.guillaumegasnier.education.core.enums.FacetteEtablissement;
 import com.guillaumegasnier.education.core.repositories.RechercheEtablissementRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -241,7 +242,12 @@ class EtablissementRechercheServiceTest {
     // extractBuckets
     // -------------------------------------------------------------------------
 
-    private static final JacksonJsonpMapper MAPPER = new JacksonJsonpMapper();
+    private static JacksonJsonpMapper MAPPER;
+
+    @BeforeAll
+    static void setUpMapper() {
+        MAPPER = new JacksonJsonpMapper();
+    }
 
     /**
      * Construit un Aggregate top_hits portant un document source JSON.
