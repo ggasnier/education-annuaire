@@ -7,11 +7,11 @@ import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
-import com.guillaumegasnier.education.web.exceptions.EtablissementAlreadyExistsException;
 import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDetailsDto;
 import com.guillaumegasnier.education.web.dto.etablissements.IndicateurValeurAjouteeDTO;
 import com.guillaumegasnier.education.web.dto.etablissements.IndicesPositionSocialeDTO;
 import com.guillaumegasnier.education.web.dto.etablissements.NatureDto;
+import com.guillaumegasnier.education.web.exceptions.EtablissementAlreadyExistsException;
 import com.guillaumegasnier.education.web.mappers.WebEtablissementMapper;
 import com.guillaumegasnier.education.web.services.WebEtablissementService;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +71,6 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
     @Override
     public Optional<EtablissementDto> updateEtablissement(@NonNull EtablissementRequestDto dto) {
         return coreEtablissementService.findEtablissement(dto.getUai()).map(entity -> {
-
             if (dto.getNom() != null) entity.setNom(dto.getNom());
             if (dto.getSiret() != null) entity.setSiret(dto.getSiret());
             if (dto.getAdresse() != null) entity.setAdresse(dto.getAdresse());

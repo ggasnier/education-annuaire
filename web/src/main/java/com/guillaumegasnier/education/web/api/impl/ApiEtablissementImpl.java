@@ -8,6 +8,7 @@ import com.guillaumegasnier.education.web.services.WebEtablissementService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +30,7 @@ public class ApiEtablissementImpl implements ApiEtablissementController {
     }
 
     @Override
-    public ResponseEntity<EtablissementDto> createEtablissement(EtablissementRequestDto dto) {
+    public ResponseEntity<EtablissementDto> createEtablissement(@RequestBody EtablissementRequestDto dto) {
         try {
             return webEtablissementService.createEtablissement(dto)
                     .map(created -> ResponseEntity.status(201).body(created))
@@ -41,7 +42,7 @@ public class ApiEtablissementImpl implements ApiEtablissementController {
     }
 
     @Override
-    public ResponseEntity<EtablissementDto> updateEtablissement(EtablissementRequestDto dto) {
+    public ResponseEntity<EtablissementDto> updateEtablissement(@RequestBody EtablissementRequestDto dto) {
         try {
             return webEtablissementService.updateEtablissement(dto)
                     .map(ResponseEntity::ok)

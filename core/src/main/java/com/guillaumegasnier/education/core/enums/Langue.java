@@ -29,7 +29,7 @@ public enum Langue {
     ES("Espagnol", "🇪🇸", "espagnol", Categorie.LV),
     IT("Italien", "🇮🇹", "italien", Categorie.LV),
     EL("Grec", "🇬🇷", "grec", Categorie.LC),
-    OC("Occitan/Provençal", "🏵️", "occitan", Categorie.LV),
+    OC("Occitan", "🏵️", "occitan", Categorie.LV),
     JP("Japonais", "🇯🇵", "japonais", Categorie.LV),
     SV("Suédois", "🇸🇪", "suédois", Categorie.LV),
     BR("Breton", "🏴", "breton", Categorie.LV),
