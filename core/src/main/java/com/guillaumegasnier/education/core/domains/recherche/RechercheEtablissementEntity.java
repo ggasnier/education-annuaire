@@ -2,11 +2,7 @@ package com.guillaumegasnier.education.core.domains.recherche;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.InnerField;
-import org.springframework.data.elasticsearch.annotations.MultiField;
+import org.springframework.data.elasticsearch.annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,11 +61,24 @@ public class RechercheEtablissementEntity {
     @Field(type = FieldType.Nested)
     private List<RechercheOption> options = new ArrayList<>();
 
+    @Field(type = FieldType.Nested)
+    private List<RechercheLangue> langues = new ArrayList<>();
+
     public record RechercheOption(
             @Field(type = FieldType.Keyword) String codeOption,
             @MultiField(
-                mainField = @Field(type = FieldType.Text, analyzer = "french", searchAnalyzer = "french"),
-                otherFields = @InnerField(suffix = "keyword", type = FieldType.Keyword)
+                    mainField = @Field(type = FieldType.Text, analyzer = "french", searchAnalyzer = "french"),
+                    otherFields = @InnerField(suffix = "keyword", type = FieldType.Keyword)
             ) String nomOption
-    ) {}
+    ) {
+    }
+
+    public record RechercheLangue(
+            @Field(type = FieldType.Keyword) String codeLangue,
+            @MultiField(
+                    mainField = @Field(type = FieldType.Text, analyzer = "french", searchAnalyzer = "french"),
+                    otherFields = @InnerField(suffix = "keyword", type = FieldType.Keyword)
+            ) String nomLangue
+    ) {
+    }
 }

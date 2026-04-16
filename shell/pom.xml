@@ -5,11 +5,10 @@
     <parent>
         <groupId>com.guillaumegasnier.education</groupId>
         <artifactId>annuaire</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>shell</artifactId>
-    <version>1.0.1</version>
     <name>shell</name>
     <description>shell</description>
     <packaging>jar</packaging>

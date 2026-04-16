@@ -1,9 +1,6 @@
 package com.guillaumegasnier.education.shell.mappers;
 
-import com.guillaumegasnier.education.core.domains.etablissements.ContratEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.EtablissementOptionEntity;
-import com.guillaumegasnier.education.core.domains.etablissements.NatureEntity;
+import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.recherche.RechercheEtablissementEntity;
 import com.guillaumegasnier.education.core.dto.IndicateurValeurAjouteeDto;
@@ -21,9 +18,7 @@ import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.lang.NonNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Slf4j
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN, uses = {DateMapper.class})
@@ -130,6 +125,7 @@ public abstract class EtablissementMapper {
     }
 
     // Les entitées JPA
+    @Mapping(target = "langues", ignore = true)
     @Mapping(target = "masa", ignore = true)
     @Mapping(target = "identifiants", ignore = true)
     @Mapping(target = "organisme", ignore = true)
@@ -174,31 +170,8 @@ public abstract class EtablissementMapper {
     @Mapping(target = "codeCommune", source = "commune.code")
     @Mapping(target = "codeAcademie", source = "commune.departement.academie.code")
     @Mapping(target = "options", source = "options", qualifiedByName = "toOptions")
+    @Mapping(target = "langues", source = "langues", qualifiedByName = "toLangues")
     public abstract RechercheEtablissementEntity toRechercheEtablissementEntity(EtablissementEntity entity);
-
-    @Named("toDescription")
-    public String toDescription(@NonNull EtablissementEntity entity) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(entity.getUai());
-        sb.append(" ");
-        sb.append(entity.getNature().getNom());
-        sb.append(" ");
-        sb.append(entity.getNom());
-        sb.append(" ");
-        sb.append(entity.getAdresse());
-        sb.append(" ");
-        if (entity.getComplement() != null) {
-            sb.append(entity.getComplement());
-            sb.append(" ");
-        }
-        sb.append(entity.getCodePostal());
-        sb.append(" ");
-        sb.append(entity.getCommune().getNom());
-        sb.append(" ");
-        sb.append(entity.getCommune().getDepartement().getNom());
-        sb.append(" ");
-        return sb.toString();
-    }
 
     // Les metadatas
     public <T extends IndicePositionSociale & Metadata> IndicePositionSocialeDto toIndicePositionSocialeDto(@NonNull T dataset) {
@@ -233,14 +206,25 @@ public abstract class EtablissementMapper {
     }
 
     @Named("toOptions")
-    public List<RechercheEtablissementEntity.RechercheOption> toOptions(List<EtablissementOptionEntity> entities) {
+    public List<RechercheEtablissementEntity.RechercheOption> toOptions(Set<EtablissementOptionEntity> entities) {
         if (entities == null)
-            return null;
-        return entities.stream().map(this::toOption).toList();
+            return Collections.emptyList();
+        return entities.stream().map(this::toOption).distinct().toList();
+    }
+
+    @Named("toLangues")
+    public List<RechercheEtablissementEntity.RechercheLangue> toLangues(Set<EtablissementLangueEntity> entities) {
+        if (entities == null)
+            return Collections.emptyList();
+        return entities.stream().map(this::toLangue).distinct().toList();
     }
 
     @Mapping(target = "nomOption", source = "pk.option.nom")
     @Mapping(target = "codeOption", source = "pk.option")
     public abstract RechercheEtablissementEntity.RechercheOption toOption(EtablissementOptionEntity entity);
+
+    @Mapping(target = "nomLangue", source = "pk.langue.nom")
+    @Mapping(target = "codeLangue", source = "pk.langue")
+    public abstract RechercheEtablissementEntity.RechercheLangue toLangue(EtablissementLangueEntity entity);
 
 }

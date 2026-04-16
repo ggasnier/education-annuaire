@@ -36,19 +36,10 @@ public class EtablissementRechercheService {
     private static final int DEFAULT_PAGE_SIZE = 20;
     private static final int FACET_SIZE = 50;
 
-    private static final Map<String, String> FILTRE_KEY_TO_FIELD = Map.of(
-            "contrat", "codeContrat",
-            "nature", "codeNature",
-            "commune", "codeCommune",
-            "departement", "codeDepartement",
-            "academie", "codeAcademie",
-            "option", "options.codeOption"   // champ nested
-    );
-
     private static final List<String> TEXT_FIELDS = List.of(
             "nom^5", "adresse", "codePostal", "nomSecteur", "nomNature",
             "nomCommune", "nomDepartement", "nomAcademie", "nomRegion", "nomPays",
-            "options.nomOption"
+            "options.nomOption", "langues.nomLangue"
     );
 
     private final RechercheEtablissementRepository repository;
@@ -77,8 +68,8 @@ public class EtablissementRechercheService {
 
         for (FacetteEtablissement facette : FacetteEtablissement.values()) {
             final FacetteEtablissement f = facette;
-            Query filtreAgg = buildFiltresAvecNested(criteria, f.getCode());
-            builder.withAggregation(f.getCode(), buildAggregation(f, filtreAgg));
+            Query filtreAgg = buildFiltresAvecNested(criteria, f.getUrlKey());
+            builder.withAggregation(f.getUrlKey(), buildAggregation(f, filtreAgg));
         }
 
         SearchHits<RechercheEtablissementEntity> hits = elasticsearchOperations.search(
@@ -92,18 +83,40 @@ public class EtablissementRechercheService {
             aggregations.aggregationsAsMap()
                     .forEach((name, agg) -> aggs.put(name, agg.aggregation().getAggregate()));
             for (FacetteEtablissement facette : FacetteEtablissement.values()) {
-                Aggregate filterAgg = aggs.get(facette.getCode());
+                Aggregate filterAgg = aggs.get(facette.getUrlKey());
                 if (filterAgg == null || !filterAgg.isFilter()) continue;
-                Aggregate innerAgg = filterAgg.filter().aggregations().get(facette.getCode() + "_inner");
+                Aggregate innerAgg = filterAgg.filter().aggregations().get(facette.getUrlKey() + "_inner");
                 if (innerAgg == null) continue;
                 List<RechercheFacetteValeurDTO> valeurs = new ArrayList<>();
                 extractBuckets(innerAgg, facette, criteria, valeurs);
                 if (!valeurs.isEmpty()) {
-                    dto.getFacettes().add(new RechercheFacetteDTO(facette.getCode(), facette.getNom(), valeurs));
+                    dto.getFacettes().add(new RechercheFacetteDTO(facette.getUrlKey(), facette.getNom(), valeurs));
                 }
             }
         }
         return dto;
+    }
+
+    // -------------------------------------------------------------------------
+    // Gestion de l'index
+    // -------------------------------------------------------------------------
+
+    /**
+     * Supprime et recrée l'index ES à partir du mapping déclaré dans
+     * {@link RechercheEtablissementEntity}.
+     * <p>
+     * À appeler systématiquement avant chaque import complet pour éviter
+     * les {@code search_phase_execution_exception} causées par un mapping obsolète.
+     */
+    public void recreateIndex() {
+        var indexOps = elasticsearchOperations.indexOps(RechercheEtablissementEntity.class);
+        if (indexOps.exists()) {
+            log.info("Index 'etablissements' existant détecté — suppression...");
+            indexOps.delete();
+        }
+        log.info("Création de l'index 'etablissements' avec le mapping courant...");
+        indexOps.createWithMapping();
+        log.info("Index 'etablissements' recréé avec succès.");
     }
 
     // -------------------------------------------------------------------------
@@ -126,7 +139,7 @@ public class EtablissementRechercheService {
      * les champs nested (ex: options.codeOption) : ils doivent être wrappés dans
      * une nested query, les champs plats restent des terms classiques.
      *
-     * @param excludeKey clé de facette à exclure (sticky facets), null = tout inclure
+     * @param excludeKey clé URL de la facette à exclure (sticky facets), null = tout inclure
      */
     private Query buildFiltresAvecNested(@NonNull RechercheCriteria criteria, String excludeKey) {
         var filtres = criteria.getFiltres();
@@ -138,20 +151,20 @@ public class EtablissementRechercheService {
         boolean hasFilter = false;
 
         for (Map.Entry<String, List<String>> entry : filtres.entrySet()) {
-            String key = entry.getKey();
+            String urlKey = entry.getKey();
             List<String> values = entry.getValue();
-            if (key == null || values == null || values.isEmpty()) continue;
-            if ("q".equalsIgnoreCase(key) || "page".equalsIgnoreCase(key) || "size".equalsIgnoreCase(key)) continue;
-            if (key.equals(excludeKey)) continue;
+            if (urlKey == null || values == null || values.isEmpty()) continue;
+            if ("q".equalsIgnoreCase(urlKey) || "page".equalsIgnoreCase(urlKey) || "size".equalsIgnoreCase(urlKey))
+                continue;
+            if (urlKey.equals(excludeKey)) continue;
 
-            String field = FILTRE_KEY_TO_FIELD.getOrDefault(key, key);
+            // Résolution urlKey → facette → champ ES
+            FacetteEtablissement facette = FacetteEtablissement.byUrlKey(urlKey);
+            String field = facette != null ? facette.getCode() : urlKey;
             List<String> cleaned = values.stream().filter(v -> v != null && !v.isBlank()).toList();
             if (cleaned.isEmpty()) continue;
 
-            // Déterminer si le champ appartient à un objet nested
-            FacetteEtablissement facette = facetteByUrlKey(key);
             if (facette != null && facette.isNested()) {
-                // nested query : le filtre doit être exécuté dans le contexte du nested
                 final String nestedPath = facette.getNestedPath();
                 final String nestedField = field;
                 final List<String> nestedValues = cleaned;
@@ -181,10 +194,9 @@ public class EtablissementRechercheService {
      */
     private Aggregation buildAggregation(FacetteEtablissement f, Query filtreAgg) {
         if (f.isNested()) {
-            // Pour un champ nested : filter > nested > terms > top_hits
             return Aggregation.of(a -> a
                     .filter(filtreAgg)
-                    .aggregations(f.getCode() + "_inner",
+                    .aggregations(f.getUrlKey() + "_inner",
                             Aggregation.of(inner -> inner
                                     .nested(n -> n.path(f.getNestedPath()))
                                     .aggregations(f.getCode() + "_terms",
@@ -197,10 +209,9 @@ public class EtablissementRechercheService {
                                                                             .source(s -> s
                                                                                     .filter(fi -> fi.includes(f.getCodeNom())))))))))));
         } else {
-            // Champ plat : filter > terms > top_hits (pattern original)
             return Aggregation.of(a -> a
                     .filter(filtreAgg)
-                    .aggregations(f.getCode() + "_inner",
+                    .aggregations(f.getUrlKey() + "_inner",
                             Aggregation.of(inner -> inner
                                     .terms(t -> t.field(f.getCode()).size(FACET_SIZE))
                                     .aggregations(f.getCodeNom(),
@@ -216,7 +227,7 @@ public class EtablissementRechercheService {
     // Helpers privés — extraction des buckets
     // -------------------------------------------------------------------------
 
-    private void extractBuckets(Aggregate aggregate, FacetteEtablissement facette,
+    void extractBuckets(Aggregate aggregate, FacetteEtablissement facette,
                                 RechercheCriteria criteria, List<RechercheFacetteValeurDTO> valeurs) {
         // Pour les champs nested, on descend d'un niveau supplémentaire (nested → terms)
         Aggregate termsAgg = aggregate;
@@ -231,13 +242,12 @@ public class EtablissementRechercheService {
                 v.setCode(RechercheQueryBuilder.fieldValueToString(b.key()));
                 var topHitsHit = b.aggregations().get(facette.getCodeNom())
                         .topHits().hits().hits().getFirst().source();
-                // nomOption est un MultiField : on récupère via le chemin relatif au nested
                 String nomField = facette.getCodeNom().contains(".")
                         ? facette.getCodeNom().substring(facette.getCodeNom().lastIndexOf('.') + 1)
                         : facette.getCodeNom();
                 v.setNom((String) topHitsHit.to(Map.class).get(nomField));
                 v.setTotal((int) Math.min(b.docCount(), Integer.MAX_VALUE));
-                v.setChecked(RechercheQueryBuilder.toChecked(facette.getCode(), v.getCode(), criteria));
+                v.setChecked(RechercheQueryBuilder.toChecked(facette.getUrlKey(), v.getCode(), criteria));
                 valeurs.add(v);
             });
         } else if (termsAgg.isLterms()) {
@@ -251,7 +261,7 @@ public class EtablissementRechercheService {
                         : facette.getCodeNom();
                 v.setNom((String) topHitsHit.to(Map.class).get(nomField));
                 v.setTotal((int) Math.min(b.docCount(), Integer.MAX_VALUE));
-                v.setChecked(RechercheQueryBuilder.toChecked(facette.getCode(), v.getCode(), criteria));
+                v.setChecked(RechercheQueryBuilder.toChecked(facette.getUrlKey(), v.getCode(), criteria));
                 valeurs.add(v);
             });
         }
@@ -261,16 +271,6 @@ public class EtablissementRechercheService {
     // Utilitaires
     // -------------------------------------------------------------------------
 
-    /**
-     * Retrouve la FacetteEtablissement dont le champ URL correspond à la clé.
-     */
-    private FacetteEtablissement facetteByUrlKey(String key) {
-        String field = FILTRE_KEY_TO_FIELD.getOrDefault(key, key);
-        for (FacetteEtablissement f : FacetteEtablissement.values()) {
-            if (f.getCode().equals(field)) return f;
-        }
-        return null;
-    }
 
     /**
      * Crée un RechercheCriteria minimal portant un seul filtre (field=values)
