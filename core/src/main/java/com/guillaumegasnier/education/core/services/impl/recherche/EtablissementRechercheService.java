@@ -227,7 +227,7 @@ public class EtablissementRechercheService {
     // Helpers privés — extraction des buckets
     // -------------------------------------------------------------------------
 
-    private void extractBuckets(Aggregate aggregate, FacetteEtablissement facette,
+    void extractBuckets(Aggregate aggregate, FacetteEtablissement facette,
                                 RechercheCriteria criteria, List<RechercheFacetteValeurDTO> valeurs) {
         // Pour les champs nested, on descend d'un niveau supplémentaire (nested → terms)
         Aggregate termsAgg = aggregate;
