@@ -17,7 +17,7 @@ import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatDouble;
 @Setter
 public class IPSCollege2023Dataset implements IndicePositionSociale, Metadata {
 
-    @CsvBindByName(column = "Rentrée scolaire")
+    @CsvBindByName(column = "Année scolaire")
     private String rentreeScolaire;
     @CsvBindByName(column = "UAI")
     private String uai;
