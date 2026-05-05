@@ -15,6 +15,7 @@ public enum Sport {
 
     ACTIVIT_SPORT_AQUATIQUES_PLEINE_NATURE("Activités aquatiques en pleine nature", "🚣", List.of("ACTIVIT. SPORT. AQUATIQUES PLEINE NATURE", "ACTIVITÉS SPORTIVES AQUATIQUES PLEINE NATURE")),
     ACTIVIT_SPORT_TERRESTRES_PLEINE_NATURE("Activités terrestres en pleine nature", "🌲", List.of("ACTIVITES SPORT.TERRESTRES PLEINE NATURE", "ACTIVITÉS PHYSIQUES PLEINE NATURE")),
+    ACTIVITES_PHYSIQUES_SPORTIVES_PLEIN_AIR("Activités physiques et sportives de plein-air", "🌲", List.of("ACTIVITÉS PHYSIQUES ET SPORTIVES DE PLEIN-AIR")),
     TRAIL("Trail", "🌲", List.of("TRAIL", "COURSE EN PLEINE NATURE", "COURSE DE PLEINE NATURE (TRAIL)")),
     RANDO("Randonnée", "🌲", List.of("RANDONNÉE EN MONTAGNE")),
     ACTIVITES_SPORTIVES_DE_MONTAGNE("Activités sportives de montagne", "🏔️", List.of("ACTIVITES SPORTIVES DE MONTAGNE", "ACTIVITÉS SPORTIVES DE MONTAGNE")),
@@ -50,6 +51,7 @@ public enum Sport {
     MECANIQUE("Mécanique", "🏎️", List.of("SPORTS MECANIQUE (AUTO-MOTO)")),
     CYCLISME_PISTE("Cyclisme sur piste", "🚴", List.of("CYCLISME PISTE")),
     DANSE("Danse", "💃", List.of("DANSE SPORTIVE", "DANSE", "DANSE CONTEMPORAINE")),
+    CAPOEIRA("Capoeira", "💃", List.of("CAPOEIRA")),
     HIPHOP("Hip-hop", "💃", List.of("HIP-HOP")),
     DISCIPLINES_NORDIQUES("Disciplines nordiques", "🎿", List.of("DISCIPLINES NORDIQUES")),
     EQUITATION("Equitation", "🏇", List.of("EQUITATION", "HIPPOLOGIE ET EQUITATION", "HIPPOLOGIE & EQUITATION", "ÉQUITATION")),
@@ -135,7 +137,7 @@ public enum Sport {
     SPORTS_NAUTIQUES("Sports nautiques", "🚤", List.of("SPORTS NAUTIQUES")),
     SQUASH("Squash", "🎾", List.of("SQUASH")),
     SURF("Surf", "🏄", List.of("SURF")),
-    WAKEBOARD("Wakeboard", "🏄", List.of("WAKEBOARD")),
+    WAKEBOARD("Wakeboard", "🏄", List.of("WAKEBOARD", "PLANCHE DE SILLAGE (WAKEBOARD)")),
     PADEL("Padel", "🏄", List.of("PADEL")),
     TAEKWONDO("Taekwondo", "🥋", List.of("TAEKWONDO", "TAE KWON DO")),
     TENNIS("Tennis", "🎾", List.of("TENNIS")),
@@ -154,12 +156,14 @@ public enum Sport {
     VOLTIGE_EQUESTRE("Voltige équestre", "🏇", List.of("VOLTIGE ÉQUESTRE")),
     VTT("VTT", "🚵", List.of("VTT", "VTT ET CYCLISME", "VÉLO TOUT-TERRAIN", "VTT-RAID")),
     PECHE("Pêche", "🎣", List.of("PÊCHE")),
-    KITESURF("Kitesurf", "🪁", List.of("KITESURF")),
+    KITESURF("Kitesurf", "🪁", List.of("KITESURF", "PLANCHE VOLANTE (KITE SURF)")),
     PROVENCAL("Jeu provençal", "🎯", List.of("PÉTANQUE ET JEU PROVENÇAL", "PETANQUE")),
     ECHECS("Échecs", "♟️", List.of("ÉCHECS", "ECHECS")),
     LONGUE_PAUME("Longue paume", "🎾", List.of("LONGUE PAUME")),
     KARTING("Karting", "🏎️", List.of("KARTING")),
-    SPORT_ADAPTE_MULTISPORTS("Sport adapté multisports", "♿", List.of("SPORT ADAPTÉ MULTISPORTS"));
+    SPORT_ADAPTE_MULTISPORTS("Sport adapté multisports", "♿", List.of("SPORT ADAPTÉ MULTISPORTS")),
+    SPELEOLOGIE("Spéléologie", "", List.of("SPÉLÉOLOGIE")),
+    WATER_POLO("", "", List.of("WATER-POLO", "WATER POLO", "WATERPOLO"));
 
     private final String nom;
     private final String emoji;
