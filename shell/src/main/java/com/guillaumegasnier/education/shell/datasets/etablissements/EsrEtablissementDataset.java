@@ -317,4 +317,15 @@ public class EsrEtablissementDataset implements EtablissementDataset {
                 .filter(d -> d.getEffectifs() > 0)
                 .toList();
     }
+
+    @Override
+    public String getCodeCommune() {
+        return switch (nomCommune) {
+            case "Rome" -> "3169070";
+            case "Madrid" -> "3117735";
+            case "Le Caire" -> "360630";
+            case "Athènes" -> "264371";
+            default -> codeCommune;
+        };
+    }
 }

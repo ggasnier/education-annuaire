@@ -4,7 +4,8 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.core.validations.etablissements.*;
-import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
+import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
 import com.guillaumegasnier.education.shell.dto.etablissements.*;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.transformers.EtablissementTransformer;
@@ -255,6 +256,7 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
         }
 
         entity.addSource(source);
+        entity.setUpdatedAt(LocalDateTime.now());
         return entity;
     }
 

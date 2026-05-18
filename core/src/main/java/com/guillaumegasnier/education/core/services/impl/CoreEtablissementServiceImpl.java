@@ -312,8 +312,18 @@ public class CoreEtablissementServiceImpl implements CoreEtablissementService {
     }
 
     @Override
+    public List<EtablissementEntity> findEtablissementsActif(@NonNull String uai) {
+        return etablissementRepository.findAllActifWithOptions(uai);
+    }
+
+    @Override
     public List<EtablissementEntity> findEtablissementsNotActif() {
         return etablissementRepository.findAllNotActifWithOptions();
+    }
+
+    @Override
+    public List<EtablissementEntity> findEtablissementsNotActif(@NonNull String uai) {
+        return etablissementRepository.findAllNotActifWithOptions(uai);
     }
 
     @Override

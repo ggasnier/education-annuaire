@@ -115,7 +115,11 @@ public interface CoreEtablissementService {
 
     List<EtablissementEntity> findEtablissementsActif();
 
+    List<EtablissementEntity> findEtablissementsActif(@NonNull String uai);
+
     List<EtablissementEntity> findEtablissementsNotActif();
+
+    List<EtablissementEntity> findEtablissementsNotActif(@NonNull String uai);
 
     List<NatureEntity> getNatureList();
 
