@@ -14,11 +14,7 @@ COPY shell/src shell/src
 
 # Build the application
 RUN mvn -B clean package -DskipTests
-<<<<<<< develop
 ARG VERSION=1.0.3
-=======
-ARG VERSION=1.0.2
->>>>>>> main
 RUN mkdir -p web/target/extracted && (cd web/target/extracted; jar -xf ../web-${VERSION}.jar)
 RUN mkdir -p shell/target/extracted && (cd shell/target/extracted; jar -xf ../shell-${VERSION}.jar)
 
@@ -35,11 +31,7 @@ COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/META-INF ./META-INF
 COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/BOOT-INF/classes ./
 
 # Add metadata
-<<<<<<< develop
 ARG VERSION=1.0.3
-=======
-ARG VERSION=1.0.2
->>>>>>> main
 LABEL version="${VERSION}" \
     description="Formakoi - Web Service" \
     maintainer="Guillaume Gasnier"
@@ -68,11 +60,7 @@ COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/META-INF ./META-INF
 COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/BOOT-INF/classes ./
 
 # Add metadata
-<<<<<<< develop
 ARG VERSION=1.0.3
-=======
-ARG VERSION=1.0.2
->>>>>>> main
 LABEL version="${VERSION}" \
     description="Formakoi - Shell CLI" \
     maintainer="Guillaume Gasnier"

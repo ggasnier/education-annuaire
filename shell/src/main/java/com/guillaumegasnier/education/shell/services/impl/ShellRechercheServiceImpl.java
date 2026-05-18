@@ -29,12 +29,6 @@ public class ShellRechercheServiceImpl implements ShellRechercheService {
     public void importEtablissementsRecherche() {
         log.info("Début import établissements dans ES");
 
-<<<<<<< develop
-        // coreRechercheService.recreateEtablissementsIndex();
-=======
-        coreRechercheService.recreateEtablissementsIndex();
->>>>>>> main
-
         coreRechercheService.saveEtablissements(
                 coreEtablissementService
                         .findEtablissementsActif()
