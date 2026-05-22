@@ -457,7 +457,8 @@ public class CarifFormationDataset implements Dataset {
     }
 
     public String getFormationOnisepId() {
-        return extractOnisepId(onisepUrl).toString();
+        Integer onisepId = extractOnisepId(onisepUrl);
+        return onisepId != null ? onisepId.toString() : null;
     }
 
     public Long getFormationId() {
