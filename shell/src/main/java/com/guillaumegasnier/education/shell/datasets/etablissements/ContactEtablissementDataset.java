@@ -25,7 +25,8 @@ public class ContactEtablissementDataset {
     public static Optional<ContactEtablissementDataset> of(@NonNull Contact contact, @NonNull String valeur) {
         return switch (contact) {
             case TEL -> {
-                String normalized = valeur.replaceAll("[^0-9]", "");
+                String normalized = valeur.replaceAll("\\D", "");
+                log.info(normalized);
                 if (isValidPhoneNumber(normalized)) {
                     yield Optional.of(new ContactEtablissementDataset(contact, normalized));
                 }

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatAdresse;
 
@@ -139,8 +141,6 @@ public class EnEtablissementDataset implements EtablissementDataset {
     private String lyceeMilitaire;
     @CsvBindByName(column = "Lycee_des_metiers")
     private String lyceeDesMetiers;
-    //    @CsvBindByName(column = "Post_BAC")
-//    private String postBac;
     @CsvBindByName(column = "Appartenance_Education_Prioritaire")
     private String educationPrioritaire;
 
@@ -230,32 +230,32 @@ public class EnEtablissementDataset implements EtablissementDataset {
 
     @Override
     public Set<OptionEtablissement> getOptions() {
+        record Indicateur(String valeur, OptionEtablissement option) {
+        }
 
-        Set<OptionEtablissement> options = new HashSet<>();
-
-        if (restauration != null && restauration.equals("1")) options.add(OptionEtablissement.RESTAURATION);
-        if (hebergement != null && hebergement.equals("1")) options.add(OptionEtablissement.HEBERGEMENT);
-        if (ulis != null && ulis.equals("1")) options.add(OptionEtablissement.ULIS);
-        if (apprentissage != null && apprentissage.equals("1")) options.add(OptionEtablissement.APPRENTISSAGE);
-        if (segpa != null && segpa.equals("1")) options.add(OptionEtablissement.SEGPA);
-        if (sectionArts != null && sectionArts.equals("1")) options.add(OptionEtablissement.SECTION_ARTS);
-        if (sectionCinema != null && sectionCinema.equals("1")) options.add(OptionEtablissement.SECTION_CINEMA);
-        if (sectionTheatre != null && sectionTheatre.equals("1")) options.add(OptionEtablissement.SECTION_THEATRE);
-        if (sectionSport != null && sectionSport.equals("1")) options.add(OptionEtablissement.SECTION_SPORT);
-        if (sectionInternationale != null && sectionInternationale.equals("1"))
-            options.add(OptionEtablissement.SECTION_INTERNATIONALE);
-        if (sectionEuropeenne != null && sectionEuropeenne.equals("1"))
-            options.add(OptionEtablissement.SECTION_EUROPEENNE);
-        if (lyceeAgricole != null && lyceeAgricole.equals("1")) options.add(OptionEtablissement.LYCEE_AGRICOLE);
-        if (lyceeMilitaire != null && lyceeMilitaire.equals("1")) options.add(OptionEtablissement.LYCEE_MILITAIRE);
-        if (lyceeDesMetiers != null && lyceeDesMetiers.equals("1")) options.add(OptionEtablissement.LYCEE_DES_METIERS);
-//        if (postBac != null && postBac.equals("1")) options.add(OptionEtablissement.POST_BAC);
+        Set<OptionEtablissement> options = Stream.of(
+                        new Indicateur(restauration, OptionEtablissement.RESTAURATION),
+                        new Indicateur(hebergement, OptionEtablissement.HEBERGEMENT),
+                        new Indicateur(ulis, OptionEtablissement.ULIS),
+                        new Indicateur(apprentissage, OptionEtablissement.APPRENTISSAGE),
+                        new Indicateur(segpa, OptionEtablissement.SEGPA),
+                        new Indicateur(sectionArts, OptionEtablissement.SECTION_ARTS),
+                        new Indicateur(sectionCinema, OptionEtablissement.SECTION_CINEMA),
+                        new Indicateur(sectionTheatre, OptionEtablissement.SECTION_THEATRE),
+                        new Indicateur(sectionSport, OptionEtablissement.SECTION_SPORT),
+                        new Indicateur(sectionInternationale, OptionEtablissement.SECTION_INTERNATIONALE),
+                        new Indicateur(sectionEuropeenne, OptionEtablissement.SECTION_EUROPEENNE),
+                        new Indicateur(lyceeAgricole, OptionEtablissement.LYCEE_AGRICOLE),
+                        new Indicateur(lyceeMilitaire, OptionEtablissement.LYCEE_MILITAIRE),
+                        new Indicateur(lyceeDesMetiers, OptionEtablissement.LYCEE_DES_METIERS)
+                )
+                .filter(i -> "1".equals(i.valeur()))
+                .map(Indicateur::option)
+                .collect(Collectors.toCollection(HashSet::new));
 
         if (educationPrioritaire != null) {
-            if (educationPrioritaire.equals("REP"))
-                options.add(OptionEtablissement.REP);
-            else if (educationPrioritaire.equals("REP+"))
-                options.add(OptionEtablissement.REPP);
+            if ("REP".equals(educationPrioritaire)) options.add(OptionEtablissement.REP);
+            else if ("REP+".equals(educationPrioritaire)) options.add(OptionEtablissement.REPP);
         }
 
         return options;
