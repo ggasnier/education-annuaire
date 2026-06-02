@@ -11,26 +11,48 @@
 <th:block layout:fragment="content">
     <h1 th:text="${metier.nom}"></h1>
 
-    <h2>Synonymes</h2>
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Autres emplois décrits (2)</h2>
     <ul>
         <li th:each="appellation : ${metier.appellations}">
             <span th:text="${appellation}"></span>
         </li>
     </ul>
 
-    <h2>Description</h2>
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Définition (3)</h2>
     <ul>
         <li th:each="definition : ${metier.definitions}">
             <span th:text="${definition}"></span>
         </li>
     </ul>
 
-    <h2>Accès</h2>
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Accès à l'emploi (4)</h2>
     <ul>
         <li th:each="acces : ${metier.access}">
             <span th:text="${acces}"></span>
         </li>
     </ul>
+
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Compétences (5)</h2>
+
+    <h3 class="text-l font-semibold text-gray-900 mb-4">Certifications et diplômes</h3>
+
+    <h3 class="text-l font-semibold text-gray-900 mb-4">Savoir-faire (5.1)</h3>
+
+    <h4 class="text-m font-semibold text-gray-900 mb-4">Savoir-faire principaux</h4>
+
+    <h4 class="text-m font-semibold text-gray-900 mb-4">Savoir-faire secondaires</h4>
+
+    <h3 class="text-l font-semibold text-gray-900 mb-4">Savoir-être professionnels (5.2)</h3>
+
+    <h3 class="text-l font-semibold text-gray-900 mb-4">Savoirs (5.3)</h3>
+
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Contextes de travail (6)</h2>
+
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Secteurs d'activité (7)</h2>
+
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Mobilité professionnelle (8)</h2>
+
+
 </th:block>
 </body>
 </html>

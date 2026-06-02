@@ -252,25 +252,25 @@ public class EsrEtablissementDataset implements EtablissementDataset {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 
         if (contactTelephone != null && !contactTelephone.isEmpty())
-            contacts.add(new ContactEtablissementDataset(TEL, contactTelephone));
+            ContactEtablissementDataset.of(TEL, contactTelephone).ifPresent(contacts::add);
 
         if (contactWeb != null && !contactWeb.isEmpty())
-            contacts.add(new ContactEtablissementDataset(WEB, contactWeb));
+            ContactEtablissementDataset.of(WEB, contactWeb).ifPresent(contacts::add);
 
         if (contactFacebook != null && !contactFacebook.isEmpty())
-            contacts.add(new ContactEtablissementDataset(FACEBOOK, contactFacebook));
+            ContactEtablissementDataset.of(FACEBOOK, contactFacebook).ifPresent(contacts::add);
 
         if (contactTwitter != null && !contactTwitter.isEmpty())
-            contacts.add(new ContactEtablissementDataset(TWITTER, contactTwitter));
+            ContactEtablissementDataset.of(TWITTER, contactTwitter).ifPresent(contacts::add);
 
         if (contactLinkedin != null && !contactLinkedin.isEmpty())
-            contacts.add(new ContactEtablissementDataset(LINKEDIN, contactLinkedin));
+            ContactEtablissementDataset.of(LINKEDIN, contactLinkedin).ifPresent(contacts::add);
 
         if (contactYoutube != null && !contactYoutube.isEmpty())
-            contacts.add(new ContactEtablissementDataset(YOUTUBE, contactYoutube));
+            ContactEtablissementDataset.of(YOUTUBE, contactYoutube).ifPresent(contacts::add);
 
         if (contactWikipedia != null && !contactWikipedia.isEmpty())
-            contacts.add(new ContactEtablissementDataset(WIKIPEDIA, contactWikipedia));
+            ContactEtablissementDataset.of(WIKIPEDIA, contactWikipedia).ifPresent(contacts::add);
 
         return contacts;
     }

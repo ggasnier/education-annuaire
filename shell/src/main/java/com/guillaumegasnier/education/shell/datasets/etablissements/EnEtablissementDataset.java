@@ -217,13 +217,13 @@ public class EnEtablissementDataset implements EtablissementDataset {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 
         if (contactTelephone != null && !contactTelephone.isEmpty())
-            contacts.add(new ContactEtablissementDataset(Contact.TEL, contactTelephone));
+            ContactEtablissementDataset.of(Contact.TEL, contactTelephone).ifPresent(contacts::add);
 
         if (contactMail != null && !contactMail.isEmpty())
-            contacts.add(new ContactEtablissementDataset(Contact.EMAIL, contactMail));
+            ContactEtablissementDataset.of(Contact.EMAIL, contactMail).ifPresent(contacts::add);
 
         if (contactWeb != null && !contactWeb.isEmpty())
-            contacts.add(new ContactEtablissementDataset(Contact.WEB, contactWeb));
+            ContactEtablissementDataset.of(Contact.WEB, contactWeb).ifPresent(contacts::add);
 
         return contacts;
     }

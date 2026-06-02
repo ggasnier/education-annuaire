@@ -2,34 +2,58 @@ package com.guillaumegasnier.education.shell.datasets.etablissements;
 
 import com.guillaumegasnier.education.core.enums.Contact;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 
+import java.util.Optional;
+import java.util.regex.Pattern;
+
+@Slf4j
 @Getter
-@Setter
-@NoArgsConstructor
 public class ContactEtablissementDataset {
 
-    private Contact contact;
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
 
-    private String valeur;
+    private final Contact contact;
+    private final String valeur;
 
-    public ContactEtablissementDataset(@NonNull Contact contact, @NonNull String valeur) {
-        switch (contact) {
-            case TEL:
-//            case FAX:
-            case WEB:
-            case EMAIL:
-            case TWITTER:
-            case FACEBOOK:
-            case LINKEDIN:
-            case YOUTUBE:
-            case WIKIPEDIA:
-                this.contact = contact;
-                this.valeur = valeur.trim();
-                break;
-        }
+    private ContactEtablissementDataset(Contact contact, String valeur) {
+        this.contact = contact;
+        this.valeur = valeur;
     }
 
+    public static Optional<ContactEtablissementDataset> of(@NonNull Contact contact, @NonNull String valeur) {
+        return switch (contact) {
+            case TEL -> {
+                String normalized = valeur.replaceAll("[^0-9]", "");
+                if (isValidPhoneNumber(normalized)) {
+                    yield Optional.of(new ContactEtablissementDataset(contact, normalized));
+                }
+                log.warn("Numéro de téléphone invalide ({}), ignoré", valeur);
+                yield Optional.empty();
+            }
+            case EMAIL -> {
+                String trimmed = valeur.trim();
+                if (isValidEmail(trimmed)) {
+                    yield Optional.of(new ContactEtablissementDataset(contact, trimmed));
+                }
+                log.warn("Adresse e-mail invalide ({}), ignorée", valeur);
+                yield Optional.empty();
+            }
+            case WEB, TWITTER, FACEBOOK, LINKEDIN, YOUTUBE, WIKIPEDIA ->
+                    Optional.of(new ContactEtablissementDataset(contact, valeur.trim()));
+            default -> {
+                log.warn("Type de contact non géré : {}", contact);
+                yield Optional.empty();
+            }
+        };
+    }
+
+    private static boolean isValidPhoneNumber(String normalized) {
+        return normalized.length() == 10;
+    }
+
+    private static boolean isValidEmail(String value) {
+        return EMAIL_PATTERN.matcher(value).matches();
+    }
 }

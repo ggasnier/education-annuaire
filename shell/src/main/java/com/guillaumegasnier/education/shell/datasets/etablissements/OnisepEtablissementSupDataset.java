@@ -169,7 +169,7 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 
         if (contactTelephone != null && !contactTelephone.isEmpty())
-            contacts.add(new ContactEtablissementDataset(TEL, contactTelephone));
+            ContactEtablissementDataset.of(TEL, contactTelephone).ifPresent(contacts::add);
 
         return contacts;
     }

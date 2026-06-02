@@ -151,5 +151,16 @@ public class MetierRechercheService {
             });
         }
     }
+
+    public void recreateIndex() {
+        var indexOps = elasticsearchOperations.indexOps(RechercheMetierEntity.class);
+        if (indexOps.exists()) {
+            log.info("Index 'metiers' existant détecté — suppression...");
+            indexOps.delete();
+        }
+        log.info("Création de l'index 'metiers' avec le mapping courant...");
+        indexOps.createWithMapping();
+        log.info("Index 'metiers' recréé avec succès.");
+    }
 }
 
