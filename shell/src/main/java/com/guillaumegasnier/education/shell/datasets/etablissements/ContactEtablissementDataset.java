@@ -43,10 +43,6 @@ public class ContactEtablissementDataset {
             }
             case WEB, TWITTER, FACEBOOK, LINKEDIN, YOUTUBE, WIKIPEDIA ->
                     Optional.of(new ContactEtablissementDataset(contact, valeur.trim()));
-            default -> {
-                log.warn("Type de contact non géré : {}", contact);
-                yield Optional.empty();
-            }
         };
     }
 
