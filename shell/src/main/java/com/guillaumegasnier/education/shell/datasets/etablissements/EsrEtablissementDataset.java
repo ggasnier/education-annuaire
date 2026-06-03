@@ -118,7 +118,7 @@ import static com.guillaumegasnier.education.core.enums.Contact.*;
 @Getter
 @Setter
 @ToString
-public class EsrEtablissementDataset implements EtablissementDataset {
+public final class EsrEtablissementDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "uai - identifiant")
     private String uai;

@@ -48,7 +48,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class EnEtablissementFermeDataset implements EtablissementDataset {
+public final class EnEtablissementFermeDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "numero_uai")
     private String uai;

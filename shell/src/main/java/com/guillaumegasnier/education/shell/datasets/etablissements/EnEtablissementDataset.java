@@ -79,7 +79,7 @@ import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatAdresse
 @Getter
 @Setter
 @ToString
-public class EnEtablissementDataset implements EtablissementDataset {
+public final class EnEtablissementDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "Identifiant_de_l_etablissement")
     private String uai;

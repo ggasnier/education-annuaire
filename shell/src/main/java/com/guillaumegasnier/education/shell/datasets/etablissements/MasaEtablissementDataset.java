@@ -15,7 +15,7 @@ import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatAdresse
 @Getter
 @Setter
 @ToString
-public class MasaEtablissementDataset implements EtablissementDataset {
+public final class MasaEtablissementDataset implements EtablissementDataset {
 
     //Année scolaire
     //uai_id_cdn

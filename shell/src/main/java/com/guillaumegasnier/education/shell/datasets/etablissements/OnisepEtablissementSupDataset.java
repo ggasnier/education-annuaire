@@ -48,7 +48,7 @@ import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatJPOData
 @Getter
 @Setter
 @ToString
-public class OnisepEtablissementSupDataset implements EtablissementDataset {
+public final class OnisepEtablissementSupDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "code UAI")
     private String uai;
