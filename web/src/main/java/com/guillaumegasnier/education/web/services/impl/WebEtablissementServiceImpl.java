@@ -7,10 +7,7 @@ import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
-import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDetailsDto;
-import com.guillaumegasnier.education.web.dto.etablissements.IndicateurValeurAjouteeDTO;
-import com.guillaumegasnier.education.web.dto.etablissements.IndicesPositionSocialeDTO;
-import com.guillaumegasnier.education.web.dto.etablissements.NatureDto;
+import com.guillaumegasnier.education.web.dto.etablissements.*;
 import com.guillaumegasnier.education.web.exceptions.EtablissementAlreadyExistsException;
 import com.guillaumegasnier.education.web.mappers.WebEtablissementMapper;
 import com.guillaumegasnier.education.web.services.WebEtablissementService;
@@ -124,6 +121,11 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
                         .thenComparing(IndicateurValeurAjouteeDTO::getFiliere))
                 .toList();
 
+        List<Internat> internats = metadataList.stream()
+                .filter(m -> m.getMetadatas().getInternat() != null)
+                .map(webEtablissementMapper::toInternatDto)
+                .toList();
+
         return new EtablissementDetailsDto(
                 entity.map(webEtablissementMapper::toEtablissementDto).orElse(null),
                 webEtablissementMapper.toOptionWithCategorieDto(coreEtablissementService.getOptionListByUai(uai)),
@@ -134,6 +136,7 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
                 coreEtablissementService.getJourneesPortesOuvertes(uai).stream().map(webEtablissementMapper::toJPODto).toList(),
                 ips,
                 iva,
+                internats,
                 coreFormationService.findFormations(uai).stream().map(webEtablissementMapper::toFormationDto).distinct().toList());
     }
 

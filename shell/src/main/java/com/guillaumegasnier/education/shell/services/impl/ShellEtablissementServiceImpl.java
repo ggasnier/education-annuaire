@@ -7,6 +7,7 @@ import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.core.validations.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.InternatDataset;
 import com.guillaumegasnier.education.shell.dto.etablissements.OptionDTO;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
@@ -59,42 +60,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         }
         log.info("Import terminé : {} sports enregistré(s).", datasets.size());
     }
-
-//    @Override
-//    public void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets, String source) {
-//
-//        log.info("Import des dispositifs comme option");
-//        coreEtablissementService.saveOptions(datasets.stream()
-//                .filter(d -> d.getOption() != null)
-//                .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-//                .map(etablissementTransformer::toEtablissementOptionEntity)
-//                .filter(Objects::nonNull)
-//                .map(validatorService::toValidEntity)
-//                .filter(Objects::nonNull)
-//                .toList());
-//
-//        // Le sport (section sportive et sport études)
-//
-//        log.info("Import des dispositifs sections européennes");
-//        coreEtablissementService.saveLangues(datasets.stream()
-//                .filter(d -> d.getOption() != null
-//                        && d.getOption().equals(OptionEtablissement.SECTION_EUROPEENNE))
-//                .filter(d -> d.getUai() != null && !d.getUai().isBlank())
-//                .map(l -> etablissementTransformer.toLangueEntity(l, Langue.Categorie.EU))
-//                .flatMap(List::stream)
-//                .map(validatorService::toValidEntity)
-//                .filter(Objects::nonNull)
-//                .toList());
-//    }
-
-//    @Transactional(propagation = Propagation.NOT_SUPPORTED)
-//    public void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets, @NonNull String source) {
-//        int size = datasets.size();
-//        for (int i = 0; i < size; i += chunk) {
-//            List<OnisepDispositifDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
-//            log.info("Options: {}/{}", i, size);
-//        }
-//    }
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateDispositifs(@NonNull List<OnisepDispositifDataset> datasets, @NonNull String source) {
@@ -440,37 +405,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 });
     }
 
-    /*
-     * @Override
-     * public void createOrUpdateNatures(@NonNull List<NatureDataset> datasets) {
-     * coreEtablissementService.saveNatures(datasets.stream()
-     * .filter(dataset -> dataset.getDateFin() != null &&
-     * dataset.getDateFin().isEmpty())
-     * .map(etablissementMapper::toNatureEntity)
-     * .toList());
-     * log.info("Import terminé : {} natures(s) enregistrée(s).", datasets.size());
-     * }
-     */
-
-    /*
-     * @Override
-     * public void createOrUpdateContrats(List<ContratDataset> datasets) {
-     *
-     * }
-     */
-
-    /*
-     * @Override
-     * public void createOrUpdateContrats(@NonNull List<ContratDataset> datasets) {
-     * coreEtablissementService.saveContrats(datasets.stream()
-     * .filter(dataset -> dataset.getDateFin() != null &&
-     * dataset.getDateFin().isEmpty())
-     * .map(etablissementMapper::toContratEntity)
-     * .toList());
-     * log.info("Import terminé : {} contrat(s) enregistré(s).", datasets.size());
-     * }
-     */
-
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void createOrUpdateLangues(@NonNull List<LangueDataset> datasets, @NonNull String source) {
@@ -532,13 +466,22 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         log.info("Import terminé : {} sections binationale enregistrée(s).", datasets.size());
     }
 
-//    @Override
-//    public void importEtablissementsRecherche() {
-//        coreRechercheService.saveEtablissements(
-//                coreEtablissementService
-//                        .findEtablissementsActif()
-//                        .stream()
-//                        .map(etablissementMapper::toRechercheEtablissementEntity)
-//                        .toList());
-//    }
+    @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void createOrUpdateInternats(@NonNull List<InternatDataset> datasets) {
+
+        coreEtablissementService.saveMetadata(datasets
+                .stream()
+                .distinct()
+                .map(etablissementMapper::toInternatDTO)
+                .flatMap(List::stream)
+                .map(dto -> etablissementTransformer.toEtablissementMetadataEntity(dto))
+                .filter(Objects::nonNull)
+                .map(validatorService::validate)
+                .flatMap(Optional::stream)
+                .toList());
+
+        log.info("Import terminé : {} internats enregistrés.", datasets.size());
+    }
+
 }

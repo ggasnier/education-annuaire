@@ -210,4 +210,10 @@ public abstract class WebEtablissementMapper {
                 })
                 .toList();
     }
+
+
+    @Mapping(target = "annee", source = "pk.annee")
+    @Mapping(target = "occupe", source = "metadatas.internat.occupe")
+    @Mapping(target = "disponible", source = "metadatas.internat.disponible")
+    public abstract Internat toInternatDto(EtablissementMetadataEntity entity);
 }

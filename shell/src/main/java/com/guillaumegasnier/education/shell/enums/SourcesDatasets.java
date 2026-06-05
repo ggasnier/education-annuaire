@@ -47,6 +47,7 @@ public enum SourcesDatasets {
     MASA_JPO("RefEA : Les journées Portes ouvertes", MASA, "https://www.data.gouv.fr/api/1/datasets/r/d1d559fb-c952-4448-837c-7ca375b67e62", "jpo.csv", StandardCharsets.UTF_8, ';', "GET", MasaJpoDataset.class),
 
     ETABS_AD("Etablissements Andorre", AUTRE, "https://ggasnier.github.io/education-annuaire-datasets/etablissements/etablissements_ad.csv", "etablissements_ad.csv", StandardCharsets.UTF_8, ',', "GET", GithubEtablissementDataset.class),
+    INTERNATS("Occupation des internats", EN, "https://www.data.gouv.fr/api/1/datasets/r/8440016f-b8c4-48d7-8ad5-618430b58ea4", "internats.csv", StandardCharsets.UTF_8, ';', "GET", InternatDataset.class),
 
     // Indicateurs valeur ajoutée
     IVA_COLLEGES("Indicateurs de valeur ajoutée des collèges", EN, "https://www.data.gouv.fr/api/1/datasets/r/a230247a-8aea-4112-be41-bc008c0d6966", "iva_colleges.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeCollegeDataset.class),
@@ -115,7 +116,7 @@ public enum SourcesDatasets {
     FORMATIONS_LHEO_IDF("Idéo-Actions de formation-Ile-de-France", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa41861a282c/5fa41861a282c.zip", "lheo_action_IDF.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
 
     // ROME
-    ROME("Répertoire Opérationnel des Métiers et des Emplois (ROME)", FT, "https://www.data.gouv.fr/api/1/datasets/r/8cf674b6-ef21-446a-8190-178e2defd6fc", "unix_referentiel_code_rome_v460_utf8.csv", StandardCharsets.UTF_8, ',', "GET", RomeDataset.class),
+    ROME("Répertoire Opérationnel des Métiers et des Emplois (ROME)", FT, "https://www.data.gouv.fr/api/1/datasets/r/8cf674b6-ef21-446a-8190-178e2defd6fc", "", StandardCharsets.UTF_8, ',', "GET", RomeDataset.class),
 
     // Default
     NULL(null, AUTRE, null, null, null, ',', null, null);

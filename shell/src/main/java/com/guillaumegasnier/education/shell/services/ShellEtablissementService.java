@@ -1,12 +1,9 @@
 package com.guillaumegasnier.education.shell.services;
 
 import com.guillaumegasnier.education.core.enums.Sport;
-import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
-import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
+import com.guillaumegasnier.education.core.validations.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.InternatDataset;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -46,4 +43,5 @@ public interface ShellEtablissementService {
 
     void createOrUpdateJpo(@NonNull List<MasaJpoDataset> datasets, @NonNull String masa);
 
+    void createOrUpdateInternats(@NonNull List<InternatDataset> datasets);
 }

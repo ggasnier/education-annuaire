@@ -25,6 +25,8 @@ public record EtablissementDetailsDto(
 
         List<IndicateurValeurAjouteeDTO> iva,
 
+        List<Internat> internats,
+
         List<FormationDto> formations
 ) {
 }

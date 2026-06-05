@@ -224,4 +224,9 @@ public class ImportEtablissement implements ImportEtablissementShell {
         shellEtablissementService.createOrUpdateIVALycees(lycees);
     }
 
+    @Override
+    @ShellMethod(value = "Import Internats")
+    public void importEtablissementsInternats() {
+        shellEtablissementService.createOrUpdateInternats(fileService.importCSV(INTERNATS));
+    }
 }
