@@ -7,7 +7,7 @@ import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
 /**
- * Fichier: unix_referentiel_appellation_v460_utf8.csv
+ * Fichier : unix_referentiel_appellation_v460_utf8.csv
  */
 @Data
 public class RomeAppellationDataset implements Dataset {
