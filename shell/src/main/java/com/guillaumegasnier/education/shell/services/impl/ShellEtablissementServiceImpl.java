@@ -67,7 +67,6 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         for (int i = 0; i < size; i += chunk) {
             List<OnisepDispositifDataset> sub = datasets.subList(i, Math.min(i + chunk, size));
 
-            log.info("Import des dispositifs: {}/{}", i, size);
             coreEtablissementService.saveOptions(sub.stream()
                     .filter(d -> d.getOption() != null)
                     .filter(d -> d.getUai() != null && !d.getUai().isBlank())
@@ -475,7 +474,7 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
                 .distinct()
                 .map(etablissementMapper::toInternatDTO)
                 .flatMap(List::stream)
-                .map(dto -> etablissementTransformer.toEtablissementMetadataEntity(dto))
+                .map(etablissementTransformer::toEtablissementMetadataEntity)
                 .filter(Objects::nonNull)
                 .map(validatorService::validate)
                 .flatMap(Optional::stream)

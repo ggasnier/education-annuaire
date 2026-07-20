@@ -8,10 +8,23 @@
         Places en internat
     </h2>
 
-    <div class="space-y-2">
-
-        <th:block th:text="${internats}">
-        </th:block>
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+            <tr class="border-b border-gray-200">
+                <th class="text-left p-2 font-medium text-gray-900">Année</th>
+                <th class="text-left p-2 font-medium text-gray-900">Disponibles</th>
+                <th class="text-left p-2 font-medium text-gray-900">Occupées</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="i : ${internats}">
+                <td class="p-2 font-medium" th:text="${i.annee}"></td>
+                <td class="p-2 font-medium" th:text="${i.disponible}"></td>
+                <td class="p-2 font-medium" th:text="${i.occupe}"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>

@@ -8,6 +8,7 @@ import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
+import com.guillaumegasnier.education.shell.services.ShellRechercheService;
 import com.guillaumegasnier.education.shell.shells.ImportEtablissementShell;
 import lombok.AllArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
@@ -24,6 +25,7 @@ public class ImportEtablissement implements ImportEtablissementShell {
 
     private static final String ONISEP = "onisep";
     private final ShellEtablissementService shellEtablissementService;
+    private final ShellRechercheService shellRechercheService;
     private final FileService fileService;
 
     @Override
@@ -32,6 +34,7 @@ public class ImportEtablissement implements ImportEtablissementShell {
         importEtablissements();
         importEtablissementsDetails();
         importEtablissementsMetadatas();
+        shellRechercheService.importEtablissementsRecherche();
     }
 
     @Override
@@ -86,6 +89,7 @@ public class ImportEtablissement implements ImportEtablissementShell {
         importEffectifs();
         importIps();
         importIva();
+        importEtablissementsInternats();
     }
 
     @Override
