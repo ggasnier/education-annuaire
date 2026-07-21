@@ -96,6 +96,10 @@ public final class OnisepEtablissementSupDataset implements EtablissementDataset
                     "69123";
             case "13200" -> // Marseille
                     "13055";
+            case "99138" -> // Monaco
+                    "2993458";
+            case "99147" -> // Andorre-la-Vella
+                    "3041563";
             default -> codeCommune;
         };
 

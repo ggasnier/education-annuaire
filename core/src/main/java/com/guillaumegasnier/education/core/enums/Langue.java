@@ -21,6 +21,7 @@ import org.springframework.lang.Nullable;
 @AllArgsConstructor
 public enum Langue {
 
+    AU("Australien", "\uD83C\uDDE6\uD83C\uDDFA", "australien", Categorie.LV),
     FR("Français", "🇫🇷", "français", Categorie.LV),
     LA("Latin", "🏛️", "latin", Categorie.LC),
     CO("Corse", "\uD83C\uDFF4\uDB40\uDC66\uDB40\uDC72\uDB40\uDC63\uDB40\uDC6F\uDB40\uDC72\uDB40\uDC7F", "corse", Categorie.LV),

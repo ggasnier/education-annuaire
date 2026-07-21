@@ -137,7 +137,7 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
                 ips,
                 iva,
                 internats,
-                coreFormationService.findFormations(uai).stream().map(webEtablissementMapper::toFormationDto).distinct().toList());
+                coreFormationService.findActionFormations(uai).stream().map(webEtablissementMapper::toActionFormationDto).distinct().toList());
     }
 
     @Override

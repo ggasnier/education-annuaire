@@ -11,6 +11,7 @@ import com.guillaumegasnier.education.web.dto.CommuneDto;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
 import com.guillaumegasnier.education.web.dto.LangueDto;
 import com.guillaumegasnier.education.web.dto.etablissements.*;
+import com.guillaumegasnier.education.web.dto.formations.ActionFormationDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -184,6 +185,11 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "nom", source = "formation.nom")
     @Mapping(target = "certifiante", source = "formation.certifiante", qualifiedByName = "toCertifiante")
     public abstract FormationDto toFormationDto(ActionFormationEntity entity);
+
+    @Mapping(target = "certifiante", source = "formation.certifiante")
+    @Mapping(target = "formationId", source = "formation.id")
+    @Mapping(target = "nom", source = "formation.nom")
+    public abstract ActionFormationDto toActionFormationDto(ActionFormationEntity entity);
 
     @Mapping(target = "indiceNational", source = "metadatas.ips.indiceNational")
     @Mapping(target = "indiceDepartement", source = "metadatas.ips.indiceDepartement")

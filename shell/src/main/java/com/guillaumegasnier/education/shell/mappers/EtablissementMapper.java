@@ -102,7 +102,7 @@ public abstract class EtablissementMapper {
     // Les contacts
     public List<ContactDTO> toContactDTO(@NonNull EtablissementDataset dataset) {
         return dataset.getContacts().stream()
-                .map(contact -> new ContactDTO(dataset.getUai(), contact.getContact(), contact.getValeur()))
+                .map(contact -> new ContactDTO(dataset.getUai(), contact.contact(), contact.valeur()))
                 .toList();
     }
 

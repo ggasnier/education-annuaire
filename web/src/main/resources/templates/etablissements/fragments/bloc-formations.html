@@ -16,7 +16,9 @@
             </thead>
             <tbody>
             <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="f : ${formations}">
-                <td class="py-3 px-4" th:text="${f.nom}"></td>
+                <td class="py-3 px-4"><a
+                        th:href="@{/formations/{formationId}/actions/{id}(formationId=${f.formationId},id=${f.id})}"
+                        th:text="${f.nom}"></a></td>
                 <td class="py-3 px-4" th:text="${f.certifiante}"></td>
             </tr>
             </tbody>

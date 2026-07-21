@@ -66,6 +66,8 @@ public enum SourcesDatasets {
     IPS_LYCEES_2("IPS Lycées (2022)", EN, "https://www.data.gouv.fr/api/1/datasets/r/df2cbcb3-da0a-4265-a24e-c36f2c787db2", "ips_lycees_2022.csv", StandardCharsets.UTF_8, ';', "GET", IPSLycee2022Dataset.class),
     IPS_LYCEES_3("IPS Lycées (2016 - 2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/27d469ff-9908-4b7e-a2e0-9439bb38a395", "ips_lycees_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSLycee2016Dataset.class),
     // Erea
+    IPS_EREA_1("Indices de position sociale des EREA (à partir de 2022)", EN, "https://www.data.gouv.fr/api/1/datasets/r/35269648-d2eb-4864-ad8b-08b3f85ced0b", "ips_erea_2022.csv", StandardCharsets.UTF_8, ';', "GET", IPSEREA2022Dataset.class),
+    IPS_EREA_2("Indices de position sociale des EREA (2016-2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/6d8469f4-a2e8-4b79-8919-19e8bf928691", "ips_erea_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSEREA2016Dataset.class),
 
     EFFECTIFS_ECOLE("Effectifs d’élèves par école", EN, "https://www.data.gouv.fr/api/1/datasets/r/8a0b8d35-fea2-4c8d-9af1-fb25edb16980", "effectifs_ecoles.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsEcoleDataset.class),
     EFFECTIFS_COLLEGE("Effectifs d’élèves en collège", EN, "https://www.data.gouv.fr/api/1/datasets/r/6bf59bae-3c3b-40f5-ad8e-f05b0b2ac271", "effectifs_college.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsCollegeDataset.class),

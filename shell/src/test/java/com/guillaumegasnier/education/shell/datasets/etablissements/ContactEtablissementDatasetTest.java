@@ -3,7 +3,8 @@ package com.guillaumegasnier.education.shell.datasets.etablissements;
 import com.guillaumegasnier.education.core.enums.Contact;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ContactEtablissementDatasetTest {
 
@@ -11,7 +12,7 @@ class ContactEtablissementDatasetTest {
     void tel_valide_normalise() {
         var result = ContactEtablissementDataset.of(Contact.TEL, "01 02 03 04 05");
         assertTrue(result.isPresent());
-        assertEquals("0102030405", result.get().getValeur());
+        assertEquals("0102030405", result.get().valeur());
     }
 
     @Test
@@ -23,7 +24,7 @@ class ContactEtablissementDatasetTest {
     void email_valide() {
         var result = ContactEtablissementDataset.of(Contact.EMAIL, "contact@ecole.fr");
         assertTrue(result.isPresent());
-        assertEquals("contact@ecole.fr", result.get().getValeur());
+        assertEquals("contact@ecole.fr", result.get().valeur());
     }
 
     @Test
@@ -35,6 +36,6 @@ class ContactEtablissementDatasetTest {
     void web_accepte_sans_validation() {
         var result = ContactEtablissementDataset.of(Contact.WEB, "  https://ecole.fr  ");
         assertTrue(result.isPresent());
-        assertEquals("https://ecole.fr", result.get().getValeur());
+        assertEquals("https://ecole.fr", result.get().valeur());
     }
 }

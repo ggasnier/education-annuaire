@@ -181,6 +181,7 @@ public class ImportEtablissement implements ImportEtablissementShell {
         importIpsEcoles();
         importIpsColleges();
         importIpsLycees();
+        importIpsEREA();
     }
 
     @Override
@@ -204,6 +205,13 @@ public class ImportEtablissement implements ImportEtablissementShell {
         shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_LYCEES_1));
         shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_LYCEES_2));
         shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_LYCEES_3));
+    }
+
+    @Override
+    @ShellMethod(value = "Import IPS EREA")
+    public void importIpsEREA() {
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_EREA_1));
+        shellEtablissementService.createOrUpdateIPS(fileService.importCSV(IPS_EREA_2));
     }
 
     @Override
