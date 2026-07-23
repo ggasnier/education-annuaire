@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+/**
+ * <a href="https://bcn.depp.education.fr/bcn/workspace/viewTable/n/N_SPECIALITE_BAC_2021_SISE">Référentiel</a>
+ */
 @Slf4j
 @Getter
 @AllArgsConstructor

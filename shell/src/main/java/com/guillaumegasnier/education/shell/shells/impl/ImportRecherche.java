@@ -15,6 +15,12 @@ public class ImportRecherche implements ImportRechercheShell {
     private final ShellRechercheService shellRechercheService;
 
     @Override
+    @ShellMethod(value = "Recréation de l'index établissements dans Elasticsearch pour la recherche")
+    public void recreateEtablissementsIndex() {
+        shellRechercheService.recreateEtablissementsIndex();
+    }
+
+    @Override
     @ShellMethod(value = "Import des établissements dans Elasticsearch pour la recherche")
     public void importRechercheEtablissements() {
         shellRechercheService.importEtablissementsRecherche();

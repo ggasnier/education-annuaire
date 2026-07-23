@@ -7,11 +7,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class MetierAppellationDto {
+public class MetierAppellationDto implements Serializable {
 
     @EqualsAndHashCode.Include
     private String nom;

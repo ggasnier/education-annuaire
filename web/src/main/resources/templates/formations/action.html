@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${action.nom}"></title>
+</head>
+
+
+<body>
+<th:block layout:fragment="content">
+
+    <div th:text="${action}"></div>
+
+</th:block>
+</body>
+</html>

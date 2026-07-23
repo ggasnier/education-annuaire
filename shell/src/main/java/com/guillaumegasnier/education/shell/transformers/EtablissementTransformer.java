@@ -1,11 +1,7 @@
 package com.guillaumegasnier.education.shell.transformers;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
-import com.guillaumegasnier.education.core.validations.etablissements.Effectifs;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
-import com.guillaumegasnier.education.core.validations.etablissements.IndicePositionSociale;
-import com.guillaumegasnier.education.core.validations.etablissements.Metadata;
+import com.guillaumegasnier.education.core.validations.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
 import com.guillaumegasnier.education.shell.dto.etablissements.*;
@@ -20,6 +16,8 @@ public interface EtablissementTransformer {
     EtablissementMetadataEntity toEtablissementMetadataEntity(IndicateurValeurAjouteeCollege dataset);
 
     EtablissementMetadataEntity toEtablissementMetadataEntity(IndicateurValeurAjouteeLycee dataset);
+
+    EtablissementMetadataEntity toEtablissementMetadataEntity(InternatDTO dataset);
 
     <T extends EtablissementDataset> EtablissementEntity toEtablissementEntity(@NonNull T dataset, @NonNull String source);
 

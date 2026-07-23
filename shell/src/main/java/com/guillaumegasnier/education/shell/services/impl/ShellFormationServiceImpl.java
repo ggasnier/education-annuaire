@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -46,8 +47,8 @@ public class ShellFormationServiceImpl implements ShellFormationService {
             coreFormationService.saveOrganismes(sub.stream()
                     .map(formationTransformer::toOrganismeEntity)
                     .filter(Objects::nonNull)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
+                    .map(validatorService::validate)
+                    .flatMap(Optional::stream)
                     .toList());
         }
         log.info("Import terminé : {} organismes(s) traité(s).", datasets.size());
@@ -67,8 +68,8 @@ public class ShellFormationServiceImpl implements ShellFormationService {
             coreFormationService.saveFormations(sub.stream()
                     .map(dto -> formationTransformer.toFormationEntity(dto, "onisep"))
                     .filter(Objects::nonNull)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
+                    .map(validatorService::validate)
+                    .flatMap(Optional::stream)
                     .toList()
             );
         }
@@ -84,8 +85,8 @@ public class ShellFormationServiceImpl implements ShellFormationService {
             coreFormationService.saveActionFormation(sub.stream()
                     .map(dto -> formationTransformer.toActionFormationEntity(dto, "onisep"))
                     .filter(Objects::nonNull)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
+                    .map(validatorService::validate)
+                    .flatMap(Optional::stream)
                     .toList());
         }
 
@@ -137,8 +138,8 @@ public class ShellFormationServiceImpl implements ShellFormationService {
                     .distinct() // On ne garde que les formations
                     .map(dto -> formationTransformer.toFormationEntity(dto, "carif"))
                     .filter(Objects::nonNull)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
+                    .map(validatorService::validate)
+                    .flatMap(Optional::stream)
                     .toList()
 
             );
@@ -172,8 +173,8 @@ public class ShellFormationServiceImpl implements ShellFormationService {
                 .map(formationTransformer::recalculId)
                 .map(dto -> formationTransformer.toFormationEntity(dto, "ps"))
                 .filter(Objects::nonNull)
-                .map(validatorService::toValidEntity)
-                .filter(Objects::nonNull)
+                .map(validatorService::validate)
+                .flatMap(Optional::stream)
                 .toList());
 
         log.info("Import terminé : {} formations Parcoursup traitées.", datasets.size());
@@ -203,8 +204,8 @@ public class ShellFormationServiceImpl implements ShellFormationService {
             coreFormationService.saveFormations(sub.stream()
                     .map(dto -> formationTransformer.toFormationEntity(dto, "lheo"))
                     .filter(Objects::nonNull)
-                    .map(validatorService::toValidEntity)
-                    .filter(Objects::nonNull)
+                    .map(validatorService::validate)
+                    .flatMap(Optional::stream)
                     .toList()
             );
         }

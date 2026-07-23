@@ -149,7 +149,7 @@ class CoreFormationServiceImplTest {
         List<ActionFormationEntity> entities = new ArrayList<>();
         entities.add(mock(ActionFormationEntity.class));
         when(actionFormationRepository.findAllByEtablissementUaiOrderByFormationNom("1234567A")).thenReturn(entities);
-        var result = service.findFormations("1234567A");
+        var result = service.findActionFormations("1234567A");
         assertNotNull(result);
     }
 

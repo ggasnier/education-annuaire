@@ -38,6 +38,7 @@ public class EtablissementsController {
         model.addAttribute("journees", details.journees());
         model.addAttribute("ips", details.ips());
         model.addAttribute("iva", details.iva());
+        model.addAttribute("internats", details.internats());
         model.addAttribute("formations", details.formations());
         return "etablissements/details";
     }

@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.referentiels;
 
+import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class RomeBlocDataset extends AbtractRomeDataset {
+public class RomeBlocDataset implements Dataset {
 
     @CsvBindByName(column = "code_rome")
     private String codeRome;

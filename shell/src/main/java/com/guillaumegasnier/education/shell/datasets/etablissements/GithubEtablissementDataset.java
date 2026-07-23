@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @Getter
 @Setter
-public class GithubEtablissementDataset implements EtablissementDataset {
+public final class GithubEtablissementDataset implements EtablissementDataset {
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 

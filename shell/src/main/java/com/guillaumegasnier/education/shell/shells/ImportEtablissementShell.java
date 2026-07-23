@@ -46,6 +46,8 @@ public interface ImportEtablissementShell {
 
     void importIpsLycees();
 
+    void importIpsEREA();
+
     void importIva();
 
     void importIvaColleges();
@@ -56,5 +58,5 @@ public interface ImportEtablissementShell {
 
     void importEtablissementsMetadatas();
 
-    //void importEtablissementsRecherche();
+    void importEtablissementsInternats();
 }

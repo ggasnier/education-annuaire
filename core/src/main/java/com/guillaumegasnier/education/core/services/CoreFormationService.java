@@ -39,7 +39,7 @@ public interface CoreFormationService {
 
     Optional<ActionFormationEntity> findActionFormation(Long id);
 
-    List<ActionFormationEntity> findFormations(String uai);
+    List<ActionFormationEntity> findActionFormations(String uai);
 
     Optional<LienOnisepEntity> findLienOnisep(String clef, String valeur);
 

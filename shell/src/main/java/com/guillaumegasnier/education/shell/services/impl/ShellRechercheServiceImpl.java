@@ -26,6 +26,12 @@ public class ShellRechercheServiceImpl implements ShellRechercheService {
     private final FormationMapper formationMapper;
 
     @Override
+    public void recreateEtablissementsIndex() {
+        log.info("Recréation de l'index établissements dans ES");
+        coreRechercheService.recreateEtablissementsIndex();
+    }
+
+    @Override
     public void importEtablissementsRecherche() {
         log.info("Début import établissements dans ES");
 

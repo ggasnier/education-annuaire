@@ -107,7 +107,7 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
 
         coreReferentielService.saveMetiers(metiers);
 
-        // Synchronisation ES : mise à jour de l'index en même temps que PostgreSQL
+        // Synchronisation ES : mise à jour de l'index en même temps que PostgreSQL TODO à déplacer
         coreRechercheService.saveMetiers(
                 metiers.stream().map(referentielMapper::toRechercheMetierEntity).toList());
     }

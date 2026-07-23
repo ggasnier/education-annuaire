@@ -107,7 +107,7 @@ public class CoreFormationServiceImpl implements CoreFormationService {
     }
 
     @Override
-    public List<ActionFormationEntity> findFormations(String uai) {
+    public List<ActionFormationEntity> findActionFormations(String uai) {
         return actionFormationRepository.findAllByEtablissementUaiOrderByFormationNom(uai);
     }
 

@@ -10,6 +10,7 @@ import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
+import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.InternatDataset;
 import com.guillaumegasnier.education.shell.dto.etablissements.*;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
@@ -101,7 +102,7 @@ public abstract class EtablissementMapper {
     // Les contacts
     public List<ContactDTO> toContactDTO(@NonNull EtablissementDataset dataset) {
         return dataset.getContacts().stream()
-                .map(contact -> new ContactDTO(dataset.getUai(), contact.getContact(), contact.getValeur()))
+                .map(contact -> new ContactDTO(dataset.getUai(), contact.contact(), contact.valeur()))
                 .toList();
     }
 
@@ -226,5 +227,15 @@ public abstract class EtablissementMapper {
     @Mapping(target = "nomLangue", source = "pk.langue.nom")
     @Mapping(target = "codeLangue", source = "pk.langue")
     public abstract RechercheEtablissementEntity.RechercheLangue toLangue(EtablissementLangueEntity entity);
+
+    public List<InternatDTO> toInternatDTO(@NonNull InternatDataset dataset) {
+        List<InternatDTO> internats = new ArrayList<>();
+        internats.add(new InternatDTO(dataset.getUai(), 2020, dataset.getDisponible2020(), dataset.getOccupes2020()));
+        internats.add(new InternatDTO(dataset.getUai(), 2021, dataset.getDisponible2021(), dataset.getOccupes2021()));
+        internats.add(new InternatDTO(dataset.getUai(), 2022, dataset.getDisponible2022(), dataset.getOccupes2022()));
+        internats.add(new InternatDTO(dataset.getUai(), 2023, dataset.getDisponible2023(), dataset.getOccupes2023()));
+        internats.add(new InternatDTO(dataset.getUai(), 2024, dataset.getDisponible2024(), dataset.getOccupes2024()));
+        return internats;
+    }
 
 }

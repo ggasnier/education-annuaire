@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:border-indigo-300 transition"
+     th:fragment="bloc"
+     th:if="${internats != null && internats.size() > 0}">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+        Places en internat
+    </h2>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+            <tr class="border-b border-gray-200">
+                <th class="text-left p-2 font-medium text-gray-900">Année</th>
+                <th class="text-left p-2 font-medium text-gray-900">Disponibles</th>
+                <th class="text-left p-2 font-medium text-gray-900">Occupées</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="border-b border-gray-100 hover:bg-gray-50" th:each="i : ${internats}">
+                <td class="p-2 font-medium" th:text="${i.annee}"></td>
+                <td class="p-2 font-medium" th:text="${i.disponible}"></td>
+                <td class="p-2 font-medium" th:text="${i.occupe}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

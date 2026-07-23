@@ -43,10 +43,11 @@ public enum SourcesDatasets {
     ONISEP_ETABS_SUP("Idéo-Structures d'enseignement supérieur", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa586da5c4b6/5fa586da5c4b6.csv", "etablissements_ouverts_esr.csv", StandardCharsets.UTF_8, ';', "GET", OnisepEtablissementSupDataset.class),
     ONISEP_ETABS_SEC("Idéo-Structures d'enseignement secondaire", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa5816ac6a6e/5fa5816ac6a6e.csv", "etablissements_ouverts_sec.csv", StandardCharsets.UTF_8, ';', "GET", OnisepEtablissementSupDataset.class),
     TRAVAIL_ETABS("Liste Publique des Organismes de Formation", MTEDS, "https://www.data.gouv.fr/api/1/datasets/r/ac59a0f5-fa83-4b82-bf12-3c5806d4f19f", "organismes_formations.csv", StandardCharsets.UTF_8, ';', "GET", TravailOrganismeFormationDataset.class),
-    MASA_ETABS("RefEA : Liste des établissements proposant des formations agricoles 2025-2026", MASA, "https://www.data.gouv.fr/api/1/datasets/r/3f56237d-db7a-4957-9d5d-f4b529d6bc36", "etablissements.csv", StandardCharsets.UTF_8, ';', "GET", MasaEtablissementDataset.class),
+    MASA_ETABS("RefEA : Liste des établissements proposant des formations agricoles 2025-2026", MASA, "https://www.data.gouv.fr/api/1/datasets/r/98070418-a2ee-4366-a121-ef7a1245c61f", "etablissements.csv", StandardCharsets.UTF_8, ';', "GET", MasaEtablissementDataset.class),
     MASA_JPO("RefEA : Les journées Portes ouvertes", MASA, "https://www.data.gouv.fr/api/1/datasets/r/d1d559fb-c952-4448-837c-7ca375b67e62", "jpo.csv", StandardCharsets.UTF_8, ';', "GET", MasaJpoDataset.class),
 
     ETABS_AD("Etablissements Andorre", AUTRE, "https://ggasnier.github.io/education-annuaire-datasets/etablissements/etablissements_ad.csv", "etablissements_ad.csv", StandardCharsets.UTF_8, ',', "GET", GithubEtablissementDataset.class),
+    INTERNATS("Occupation des internats", EN, "https://www.data.gouv.fr/api/1/datasets/r/8440016f-b8c4-48d7-8ad5-618430b58ea4", "internats.csv", StandardCharsets.UTF_8, ';', "GET", InternatDataset.class),
 
     // Indicateurs valeur ajoutée
     IVA_COLLEGES("Indicateurs de valeur ajoutée des collèges", EN, "https://www.data.gouv.fr/api/1/datasets/r/a230247a-8aea-4112-be41-bc008c0d6966", "iva_colleges.csv", StandardCharsets.UTF_8, ';', "GET", IndicateurValeurAjouteeCollegeDataset.class),
@@ -65,6 +66,8 @@ public enum SourcesDatasets {
     IPS_LYCEES_2("IPS Lycées (2022)", EN, "https://www.data.gouv.fr/api/1/datasets/r/df2cbcb3-da0a-4265-a24e-c36f2c787db2", "ips_lycees_2022.csv", StandardCharsets.UTF_8, ';', "GET", IPSLycee2022Dataset.class),
     IPS_LYCEES_3("IPS Lycées (2016 - 2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/27d469ff-9908-4b7e-a2e0-9439bb38a395", "ips_lycees_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSLycee2016Dataset.class),
     // Erea
+    IPS_EREA_1("Indices de position sociale des EREA (à partir de 2022)", EN, "https://www.data.gouv.fr/api/1/datasets/r/35269648-d2eb-4864-ad8b-08b3f85ced0b", "ips_erea_2022.csv", StandardCharsets.UTF_8, ';', "GET", IPSEREA2022Dataset.class),
+    IPS_EREA_2("Indices de position sociale des EREA (2016-2021)", EN, "https://www.data.gouv.fr/api/1/datasets/r/6d8469f4-a2e8-4b79-8919-19e8bf928691", "ips_erea_2016.csv", StandardCharsets.UTF_8, ';', "GET", IPSEREA2016Dataset.class),
 
     EFFECTIFS_ECOLE("Effectifs d’élèves par école", EN, "https://www.data.gouv.fr/api/1/datasets/r/8a0b8d35-fea2-4c8d-9af1-fb25edb16980", "effectifs_ecoles.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsEcoleDataset.class),
     EFFECTIFS_COLLEGE("Effectifs d’élèves en collège", EN, "https://www.data.gouv.fr/api/1/datasets/r/6bf59bae-3c3b-40f5-ad8e-f05b0b2ac271", "effectifs_college.csv", StandardCharsets.UTF_8, ';', "GET", EffectifsCollegeDataset.class),
@@ -115,7 +118,7 @@ public enum SourcesDatasets {
     FORMATIONS_LHEO_IDF("Idéo-Actions de formation-Ile-de-France", ONISEP, "https://api.opendata.onisep.fr/downloads/5fa41861a282c/5fa41861a282c.zip", "lheo_action_IDF.xml", StandardCharsets.UTF_8, ';', "GET", LheoSubtype.class),
 
     // ROME
-    ROME("Répertoire Opérationnel des Métiers et des Emplois (ROME)", FT, "https://www.data.gouv.fr/api/1/datasets/r/8cf674b6-ef21-446a-8190-178e2defd6fc", "unix_referentiel_code_rome_v460_utf8.csv", StandardCharsets.UTF_8, ',', "GET", RomeDataset.class),
+    ROME("Répertoire Opérationnel des Métiers et des Emplois (ROME)", FT, "https://www.data.gouv.fr/api/1/datasets/r/8cf674b6-ef21-446a-8190-178e2defd6fc", "", StandardCharsets.UTF_8, ',', "GET", RomeDataset.class),
 
     // Default
     NULL(null, AUTRE, null, null, null, ',', null, null);

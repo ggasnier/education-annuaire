@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Fichier: unix_arborescence_competences_v460_utf8
+ * Fichier : unix_arborescence_competences_v460_utf8
  */
 @Getter
 @Setter

@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.datasets.referentiels;
 
 import com.guillaumegasnier.education.core.enums.OuiNon;
 import com.guillaumegasnier.education.core.enums.TransitionEcologique;
+import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,16 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 @Slf4j
-public class RomeDataset extends AbtractRomeDataset {
+public class RomeDataset implements Dataset {
+
+    /**
+     * Identifiant fonctionnel du métier
+     */
+    @CsvBindByName(column = "code_rome")
+    private String codeRome;
+
+    @CsvBindByName(column = "code_ogr")
+    private int codeOgr;
 
     /**
      * Indication du niveau d’association à la transition écologique du métier
@@ -29,7 +39,7 @@ public class RomeDataset extends AbtractRomeDataset {
      */
     @CsvBindByName(column = "transition_eco")
     private String transitionEco;
-    
+
     /**
      * Indication de si le métier est associé à la transition numérique
      */

@@ -48,7 +48,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class EnEtablissementFermeDataset implements EtablissementDataset {
+public final class EnEtablissementFermeDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "numero_uai")
     private String uai;
@@ -79,6 +79,9 @@ public class EnEtablissementFermeDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "nature_uai")
     private String codeNature;
+
+    @CsvBindByName(column = "nature_uai_libe")
+    private String nomNature;
 
     private String codeContrat;
 
@@ -111,7 +114,8 @@ public class EnEtablissementFermeDataset implements EtablissementDataset {
 
     public String getNom() {
         if (nom != null && !nom.isBlank()) return nom;
-        return nom2;
+        if (nom2 != null && !nom2.isBlank()) return nom2;
+        return nomNature;
     }
 
     @Override
