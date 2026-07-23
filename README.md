@@ -162,10 +162,12 @@ import-etablissements-global
         ├── import-ips
         │   ├── import-ips-ecoles
         │   ├── import-ips-colleges
-        │   └── import-ips-lycees
-        └── import-iva
-            ├── import-iva-colleges
-            └── import-iva-lycees
+        │   ├── import-ips-lycees
+        │   └── import-ips-erea
+        ├── import-iva
+        │   ├── import-iva-colleges
+        │   └── import-iva-lycees
+        └── import-etablissements-internats
 
 import-rncp
 import-rome

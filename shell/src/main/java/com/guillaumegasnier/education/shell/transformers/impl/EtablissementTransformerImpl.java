@@ -1,6 +1,7 @@
 package com.guillaumegasnier.education.shell.transformers.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
+import com.guillaumegasnier.education.core.dto.InternatDto;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.core.validations.etablissements.*;
@@ -125,6 +126,20 @@ public class EtablissementTransformerImpl implements EtablissementTransformer {
             }
         } else {
             log.warn("Etablissement {} non trouvé pour IVA {}", uai, annee);
+            return null;
+        }
+    }
+
+    @Override
+    public EtablissementMetadataEntity toEtablissementMetadataEntity(@NonNull InternatDTO dataset) {
+        var uai = dataset.getUai();
+        var annee = dataset.getAnnee();
+        Optional<EtablissementMetadataEntity> opt = coreEtablissementService.findMetadata(uai, annee);
+        if (opt.isPresent()) {
+            var entity = opt.get();
+            entity.getMetadatas().setInternat(new InternatDto(dataset.getDisponible(), dataset.getOccupe()));
+            return entity;
+        } else {
             return null;
         }
     }

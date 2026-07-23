@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.shell.shells.impl;
 
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.guillaumegasnier.education.shell.services.ShellEtablissementService;
+import com.guillaumegasnier.education.shell.services.ShellRechercheService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,14 +11,16 @@ import static org.mockito.Mockito.*;
 class ImportEtablissementTest {
 
     private ShellEtablissementService shellEtablissementService;
+    private ShellRechercheService shellRechercheService;
     private FileService fileService;
     private ImportEtablissement importEtablissement;
 
     @BeforeEach
     void setUp() {
         shellEtablissementService = mock(ShellEtablissementService.class);
+        shellRechercheService = mock(ShellRechercheService.class);
         fileService = mock(FileService.class);
-        importEtablissement = new ImportEtablissement(shellEtablissementService, fileService);
+        importEtablissement = new ImportEtablissement(shellEtablissementService, shellRechercheService, fileService);
     }
 
     @Test

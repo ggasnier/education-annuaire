@@ -33,4 +33,6 @@ public class EtablissementMetadataDto implements Serializable {
      */
     private PersonnelDto personnels;
 
+    private InternatDto internat;
+
 }

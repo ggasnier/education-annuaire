@@ -48,7 +48,7 @@ import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatJPOData
 @Getter
 @Setter
 @ToString
-public class OnisepEtablissementSupDataset implements EtablissementDataset {
+public final class OnisepEtablissementSupDataset implements EtablissementDataset {
 
     @CsvBindByName(column = "code UAI")
     private String uai;
@@ -96,6 +96,10 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
                     "69123";
             case "13200" -> // Marseille
                     "13055";
+            case "99138" -> // Monaco
+                    "2993458";
+            case "99147" -> // Andorre-la-Vella
+                    "3041563";
             default -> codeCommune;
         };
 
@@ -169,7 +173,7 @@ public class OnisepEtablissementSupDataset implements EtablissementDataset {
         List<ContactEtablissementDataset> contacts = new ArrayList<>();
 
         if (contactTelephone != null && !contactTelephone.isEmpty())
-            contacts.add(new ContactEtablissementDataset(TEL, contactTelephone));
+            ContactEtablissementDataset.of(TEL, contactTelephone).ifPresent(contacts::add);
 
         return contacts;
     }

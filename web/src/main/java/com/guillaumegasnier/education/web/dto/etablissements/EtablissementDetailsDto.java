@@ -2,6 +2,7 @@ package com.guillaumegasnier.education.web.dto.etablissements;
 
 import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.web.dto.EtablissementDto;
+import com.guillaumegasnier.education.web.dto.formations.ActionFormationDto;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public record EtablissementDetailsDto(
 
         List<IndicateurValeurAjouteeDTO> iva,
 
-        List<FormationDto> formations
+        List<Internat> internats,
+
+        List<ActionFormationDto> formations
 ) {
 }

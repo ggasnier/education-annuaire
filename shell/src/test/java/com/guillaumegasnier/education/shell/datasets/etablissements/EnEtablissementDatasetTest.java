@@ -1,5 +1,6 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements;
 
+import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,10 +22,20 @@ class EnEtablissementDatasetTest {
     @Test
     void testGetEducationPrioritaire() {
         assertNull(dataset.getEducationPrioritaire());
+        assertFalse(dataset.getOptions().contains(OptionEtablissement.REP));
+
         dataset.setEducationPrioritaire("");
         assertNull(dataset.getEducationPrioritaire());
+        assertFalse(dataset.getOptions().contains(OptionEtablissement.REP));
+
         dataset.setEducationPrioritaire("REP");
         assertEquals("REP", dataset.getEducationPrioritaire());
+        assertTrue(dataset.getOptions().contains(OptionEtablissement.REP));
+
+        dataset.setEducationPrioritaire("REP+");
+        assertEquals("REP+", dataset.getEducationPrioritaire());
+        assertTrue(dataset.getOptions().contains(OptionEtablissement.REPP));
+
     }
 
     @Test

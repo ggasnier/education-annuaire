@@ -13,6 +13,8 @@ public interface CoreRechercheService {
 
     void recreateEtablissementsIndex();
 
+    void recreateMetiersIndex();
+
     void saveEtablissements(@NonNull List<RechercheEtablissementEntity> entities);
 
     void saveMetiers(@NonNull List<RechercheMetierEntity> entities);

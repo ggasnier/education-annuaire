@@ -11,7 +11,14 @@ import java.util.List;
 import java.util.Set;
 
 
-public interface EtablissementDataset extends Cloneable, Dataset {
+public sealed interface EtablissementDataset extends Cloneable, Dataset
+        permits CarifEtablissementDataset,
+                EnEtablissementDataset,
+                EnEtablissementFermeDataset,
+                EsrEtablissementDataset,
+                GithubEtablissementDataset,
+                MasaEtablissementDataset,
+                OnisepEtablissementSupDataset {
 
     EtablissementDataset cloneWithUai(String uai);
 

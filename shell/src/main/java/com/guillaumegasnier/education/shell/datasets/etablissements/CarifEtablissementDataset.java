@@ -18,7 +18,7 @@ import static com.guillaumegasnier.education.shell.utils.ShellUtil.formatAdresse
 @Getter
 @Setter
 @ToString
-public class CarifEtablissementDataset implements EtablissementDataset {
+public final class CarifEtablissementDataset implements EtablissementDataset {
 
     @JsonProperty("siege_social")
     private Boolean siegeSocial;

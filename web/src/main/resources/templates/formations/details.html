@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${formation.nom}"></title>
+</head>
+
+
+<body>
+<th:block layout:fragment="content">
+
+    <div class="flex flex-wrap gap-6">
+        <div th:text="${formation.id}"></div>
+        <div th:text="${formation.nom}"></div>
+        <div th:text="${formation.objectif}"></div>
+        <div th:text="${formation.resultats}"></div>
+        <div th:text="${formation.contenu}"></div>
+        <div th:text="${formation.certifiante}"></div>
+        <div th:text="${formation.parcoursDeFormation}"></div>
+        <div th:text="${formation.codeNiveauEntree}"></div>
+        <div th:text="${formation.codeNiveauSortie}"></div>
+        <div th:text="${formation.positionnement}"></div>
+    </div>
+
+</th:block>
+</body>
+</html>

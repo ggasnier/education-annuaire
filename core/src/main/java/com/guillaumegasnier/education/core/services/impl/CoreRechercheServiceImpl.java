@@ -51,6 +51,11 @@ public class CoreRechercheServiceImpl implements CoreRechercheService {
         etablissementService.recreateIndex();
     }
 
+    @Override
+    public void recreateMetiersIndex() {
+        metierService.recreateIndex();
+    }
+
     // -------------------------------------------------------------------------
     // Recherche
     // -------------------------------------------------------------------------
