@@ -441,12 +441,12 @@ public class ShellEtablissementServiceImpl implements ShellEtablissementService 
         coreEtablissementService.saveOptions(datasets.stream()
                 .map(etablissementMapper::toOptionDTO)
                 .flatMap(List::stream)
+                .filter(e -> !e.uai().equals("350001SH")) // Collège royal (Maroc), pas d'UAI officiel
                 .map(dto -> etablissementTransformer.toEtablissementOptionEntity(dto, source))
                 .filter(Objects::nonNull)
                 .map(validatorService::validate)
                 .flatMap(Optional::stream)
                 .toList());
-
         log.info("Import terminé : {} sections internationale(s).", datasets.size());
     }
 
