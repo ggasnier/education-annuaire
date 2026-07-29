@@ -15,7 +15,8 @@ public record ContactEtablissementDataset(Contact contact, String valeur) {
     public static Optional<ContactEtablissementDataset> of(@NonNull Contact contact, @NonNull String valeur) {
         return switch (contact) {
             case TEL -> {
-                String normalized = valeur.replaceAll("\\D", "");
+                String normalized = valeur.replace("+33", "0");
+                normalized = normalized.replaceAll("\\D", "");
                 if (normalized.startsWith("0689"))
                     normalized = normalized.replace("0689", "689");
                 if (normalized.startsWith("00687"))
