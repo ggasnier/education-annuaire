@@ -16,6 +16,13 @@ class ContactEtablissementDatasetTest {
     }
 
     @Test
+    void telValide33() {
+        var result = ContactEtablissementDataset.of(Contact.TEL, "+33298038400");
+        assertTrue(result.isPresent());
+        assertEquals("0298038400", result.get().valeur());
+    }
+
+    @Test
     void tel_invalide_retourne_vide() {
         assertTrue(ContactEtablissementDataset.of(Contact.TEL, "123").isEmpty());
     }

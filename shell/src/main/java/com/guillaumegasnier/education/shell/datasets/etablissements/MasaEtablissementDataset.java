@@ -122,7 +122,7 @@ public final class MasaEtablissementDataset implements EtablissementDataset {
             return true;
         return dateFinValidite.isBlank();
     }
-    
+
     @Override
     public String getAdresse() {
         return formatAdresse(adresse4);
@@ -148,6 +148,12 @@ public final class MasaEtablissementDataset implements EtablissementDataset {
         if (hebergement != null && hebergement.equals("Oui")) options.add(OptionEtablissement.HEBERGEMENT);
 
         return options;
+    }
+
+    @Override
+    public String getUai() {
+        if (uai != null && uai.equals("0783815G")) return "0783915G";
+        return uai;
     }
 
     //adressegeographique_ligne1
