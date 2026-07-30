@@ -22,7 +22,7 @@ public class ApiConfiguration {
         return new OpenAPI()
                 .info(new Info()
                         .title("API de l'Annuaire de l'Education et de la Formation en France")
-                        .version("1.0.5")
+                        .version("1.0.6")
                         .description("Cette API permet de gérer les établissements scolaires via leur UAI.")
                         .contact(new Contact()
                                 .name("Guillaume GASNIER")
