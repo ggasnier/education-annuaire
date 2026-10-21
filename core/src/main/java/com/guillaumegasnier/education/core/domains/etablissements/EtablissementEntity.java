@@ -62,15 +62,15 @@ public class EtablissementEntity extends AbstractSourcesEntity {
     @Column(columnDefinition = "BPCHAR(5)", length = 5)
     private String codePostal;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code_commune", foreignKey = @ForeignKey(name = "fk_etablissements_communes"))
     private CommuneEntity commune;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code_nature", foreignKey = @ForeignKey(name = "fk_etablissements_natures"))
     private NatureEntity nature;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code_contrat", foreignKey = @ForeignKey(name = "fk_etablissements_contrats"))
     private ContratEntity contrat;
 
@@ -84,9 +84,6 @@ public class EtablissementEntity extends AbstractSourcesEntity {
     @OneToMany(mappedBy = "etablissement", cascade = CascadeType.ALL)
     private Set<EtablissementIdentifiantEntity> identifiants = new HashSet<>();
 
-    @OneToOne(mappedBy = "etablissement")
-    private EtablissementMasaEntity masa;
-
     @OneToMany(mappedBy = "etablissement", fetch = FetchType.LAZY)
     private Set<EtablissementOptionEntity> options = new HashSet<>();
 
@@ -97,5 +94,4 @@ public class EtablissementEntity extends AbstractSourcesEntity {
         if (nature == null) return new NatureEntity("$", "Non renseigné");
         return nature;
     }
-
 }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+</head>
+
+<body>
+<th:block layout:fragment="content">
+    <h1> Métiers</h1>
+
+
+    <ul>
+        <li th:each="metier : ${metiers}">
+            <span th:text="${metier}"></span>
+        </li>
+    </ul>
+
+</th:block>
+</body>
+</html>

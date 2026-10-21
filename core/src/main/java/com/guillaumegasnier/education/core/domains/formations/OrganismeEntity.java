@@ -36,7 +36,7 @@ public class OrganismeEntity extends AbstractEntity {
     @Column(columnDefinition = "VARCHAR(5)", length = 5)
     private String codePostal;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code_commune", foreignKey = @ForeignKey(name = "fk_organismes_communes"))
     private CommuneEntity commune;
 

@@ -12,7 +12,7 @@ import static org.springframework.data.web.config.EnableSpringDataWebSupport.Pag
 @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class WebApplication {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(WebApplication.class, args);
     }
 

@@ -18,7 +18,7 @@ import com.guillaumegasnier.education.shell.transformers.FormationTransformer;
 import com.guillaumegasnier.education.shell.utils.BeanMergeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

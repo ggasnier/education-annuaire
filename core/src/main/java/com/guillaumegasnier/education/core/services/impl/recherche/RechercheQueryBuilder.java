@@ -5,7 +5,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import com.guillaumegasnier.education.core.dto.RechercheCriteria;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.util.MultiValueMap;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.web.controllers;
 
-import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDetailsDto;
+import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDetailsDTO;
 import com.guillaumegasnier.education.web.services.WebEtablissementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ public class EtablissementsController {
     @GetMapping("/{uai}")
     public String getEtablissement(@PathVariable String uai, Model model) {
 
-        EtablissementDetailsDto details = webEtablissementService.findEtablissementDetailsDtoByUai(uai);
+        EtablissementDetailsDTO details = webEtablissementService.findEtablissementDetailsDtoByUai(uai);
 
         if (details == null)
             return "etablissements/404";

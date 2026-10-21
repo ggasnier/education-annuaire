@@ -1,8 +1,9 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
-import com.guillaumegasnier.education.core.dto.ResultatFiliereDto;
+import com.guillaumegasnier.education.core.domains.etablissements.ResultatFiliereDto;
 import com.guillaumegasnier.education.core.enums.Filiere;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeCollege;
+import com.guillaumegasnier.education.core.validations.etablissements.ResultatFiliere;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,8 +55,8 @@ public class IndicateurValeurAjouteeCollegeDataset implements IndicateurValeurAj
 //    @CsvBindByName(column = "Part présents 3eme segpa total")
 
     @Override
-    public Set<ResultatFiliereDto> getResultats() {
-        Set<ResultatFiliereDto> resultats = new HashSet<>();
+    public Set<ResultatFiliere> getResultats() {
+        Set<ResultatFiliere> resultats = new HashSet<>();
 
         // Général
         if (effectifCandidatGeneral != null && effectifCandidatGeneral > 0) {

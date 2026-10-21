@@ -8,8 +8,8 @@ import com.guillaumegasnier.education.core.dto.recherche.*;
 import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.core.services.impl.recherche.*;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,6 +54,11 @@ public class CoreRechercheServiceImpl implements CoreRechercheService {
     @Override
     public void recreateMetiersIndex() {
         metierService.recreateIndex();
+    }
+
+    @Override
+    public void recreateFormationsIndex() {
+        formationService.recreateIndex();
     }
 
     // -------------------------------------------------------------------------

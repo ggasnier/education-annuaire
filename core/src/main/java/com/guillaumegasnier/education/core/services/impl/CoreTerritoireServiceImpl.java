@@ -5,9 +5,9 @@ import com.guillaumegasnier.education.core.repositories.territoires.*;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

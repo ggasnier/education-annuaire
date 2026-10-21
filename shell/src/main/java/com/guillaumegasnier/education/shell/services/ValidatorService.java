@@ -1,6 +1,6 @@
 package com.guillaumegasnier.education.shell.services;
 
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Optional;
 

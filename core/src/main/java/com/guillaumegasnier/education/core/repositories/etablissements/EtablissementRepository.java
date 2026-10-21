@@ -23,7 +23,6 @@ public interface EtablissementRepository extends JpaRepository<EtablissementEnti
             LEFT JOIN FETCH co.departement d
             LEFT JOIN FETCH d.region
             LEFT JOIN FETCH d.academie
-            LEFT JOIN FETCH e.masa
             WHERE e.uai = :uai
             """)
     Optional<EtablissementEntity> findEtablissementByUai(@Param("uai") String uai);
@@ -32,7 +31,6 @@ public interface EtablissementRepository extends JpaRepository<EtablissementEnti
 
     List<EtablissementEntity> findAllByCommuneCodeOrderByNatureAscNomAsc(String code);
 
-    Optional<EtablissementEntity> findByMasaId(String masaId);
 
     int countByActif(boolean b);
 

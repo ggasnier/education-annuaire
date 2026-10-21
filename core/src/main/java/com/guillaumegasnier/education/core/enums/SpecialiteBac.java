@@ -3,7 +3,7 @@ package com.guillaumegasnier.education.core.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.lang.Nullable;
 
 /**

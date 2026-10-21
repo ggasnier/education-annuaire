@@ -1,12 +1,13 @@
 package com.guillaumegasnier.education.shell.datasets.referentiels;
 
+import com.guillaumegasnier.education.core.enums.OuiNon;
 import com.guillaumegasnier.education.shell.datasets.Dataset;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Fichier : unix_referentiel_savoir_v460_utf8.csv
+ * Fichier : unix_referentiel_savoir_v461_utf8.csv
  */
 @Getter
 @Setter
@@ -29,4 +30,14 @@ public class SavoirDataset implements Dataset {
 
     @CsvBindByName(column = "transition_num")
     private String transitionNum;
+
+    private int codeRubrique;
+
+    public OuiNon getTransitionEco() {
+        if (transitionEco != null && transitionEco.equals("O")) {
+            return OuiNon.O;
+        } else {
+            return OuiNon.N;
+        }
+    }
 }

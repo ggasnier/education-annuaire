@@ -1,8 +1,8 @@
 package com.guillaumegasnier.education.web.api.impl;
 
 import com.guillaumegasnier.education.web.api.ApiTerritoireController;
-import com.guillaumegasnier.education.web.dto.CommuneDto;
-import com.guillaumegasnier.education.web.dto.CommuneRequestDto;
+import com.guillaumegasnier.education.web.dto.territoires.CommuneDTO;
+import com.guillaumegasnier.education.web.dto.territoires.CommuneRequestDTO;
 import com.guillaumegasnier.education.web.dto.territoires.PaysDTO;
 import com.guillaumegasnier.education.web.services.WebTerritoireService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +31,9 @@ public class ApiTerritoireImpl implements ApiTerritoireController {
     }
 
     @Override
-    public ResponseEntity<CommuneDto> createCommune(CommuneRequestDto communeRequestDto) {
+    public ResponseEntity<CommuneDTO> createCommune(CommuneRequestDTO communeRequestDto) {
         try {
-            CommuneDto created = webTerritoireService.createCommune(communeRequestDto);
+            CommuneDTO created = webTerritoireService.createCommune(communeRequestDto);
             return ResponseEntity.status(201).body(created);
         } catch (IllegalStateException e) {
             log.warn("Conflit lors de la création de la commune : {}", e.getMessage());

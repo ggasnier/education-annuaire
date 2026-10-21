@@ -11,12 +11,13 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class AbstractEntity {
 
+    @Setter
     @Column(nullable = false, updatable = false)
-    public LocalDateTime createdAt;
+    protected LocalDateTime createdAt;
 
     @Setter
     @Column(nullable = false)
-    public LocalDateTime updatedAt;
+    protected LocalDateTime updatedAt;
 
     @PrePersist
     void preInsert() {

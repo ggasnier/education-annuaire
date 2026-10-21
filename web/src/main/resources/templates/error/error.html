@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr" layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Erreur</title>
+</head>
+
+<body>
+<th:block layout:fragment="content">
+    <div class="container mx-auto px-4 py-16">
+        <div class="flex flex-col items-center justify-center min-h-screen -mt-32">
+            <!-- Error Card -->
+            <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-8">
+                <div class="flex flex-col items-center">
+                    <!-- Error Icon -->
+                    <div class="flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-6">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor"
+                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2"></path>
+                        </svg>
+                    </div>
+
+                    <!-- Error Status -->
+                    <h1 class="text-4xl font-bold text-gray-900 mb-2" th:text="${status}">
+                        500
+                    </h1>
+
+                    <!-- Error Message -->
+                    <p class="text-center text-gray-600 mb-8" th:text="${message}">
+                        Une erreur est survenue
+                    </p>
+
+                    <!-- Stable error code -->
+                    <div class="w-full bg-gray-50 rounded p-4 mb-4" th:if="${errorCode}">
+                        <p class="text-xs text-gray-500 font-semibold mb-1">Code erreur</p>
+                        <p class="text-sm font-mono text-gray-700 break-all" th:text="${errorCode}">
+                            ERR-500-00000000
+                        </p>
+                    </div>
+
+                    <!-- Correlation ID -->
+                    <div class="w-full bg-gray-50 rounded p-4 mb-6">
+                        <p class="text-xs text-gray-500 font-semibold mb-1">ID de corrélation</p>
+                        <p class="text-sm font-mono text-gray-700 break-all" th:text="${errorId}">
+                            CORR-00000000-0000-0000-0000-000000000000
+                        </p>
+                        <p class="text-xs text-gray-400 mt-2">
+                            Cet ID change à chaque requête. Communiquez-le au support pour retrouver cet appel précis.
+                        </p>
+                    </div>
+
+                    <!-- Request URI (if available) -->
+                    <div class="w-full bg-gray-50 rounded p-4 mb-6" th:if="${requestUri}">
+                        <p class="text-xs text-gray-500 font-semibold mb-1">Adresse</p>
+                        <p class="text-sm text-gray-700 break-all" th:text="${requestUri}">
+                            /
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="w-full flex flex-col gap-3">
+                        <a class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold
+                           py-2 px-4 rounded text-center transition duration-200" href="/">
+                            Retour à l'accueil
+                        </a>
+                        <a class="w-full border-2 border-blue-600 text-blue-600
+                           hover:bg-blue-50 font-semibold py-2 px-4 rounded text-center transition duration-200" href="/recherche">
+                            Retour à la recherche
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="mt-12 text-center text-gray-600">
+                <p class="text-sm">
+                    Si ce problème persiste,
+                    <a class="text-blue-600 hover:underline"
+                       href="https://github.com/ggasnier/education-annuaire/issues">
+                        ouvrez un ticket sur Github
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+
+</html>

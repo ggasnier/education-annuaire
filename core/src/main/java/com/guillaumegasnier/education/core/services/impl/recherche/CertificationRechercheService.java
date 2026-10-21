@@ -3,8 +3,8 @@ package com.guillaumegasnier.education.core.services.impl.recherche;
 import com.guillaumegasnier.education.core.dto.RechercheCriteria;
 import com.guillaumegasnier.education.core.dto.recherche.RechercheCertificationDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 @Slf4j

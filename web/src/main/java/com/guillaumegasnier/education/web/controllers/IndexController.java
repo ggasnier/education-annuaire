@@ -1,18 +1,13 @@
 package com.guillaumegasnier.education.web.controllers;
 
-import com.guillaumegasnier.education.core.domains.etablissements.EtablissementEntity;
-import com.guillaumegasnier.education.core.domains.territoires.CommuneEntity;
-import com.guillaumegasnier.education.core.domains.territoires.DepartementEntity;
-import com.guillaumegasnier.education.core.services.CoreEtablissementService;
-import com.guillaumegasnier.education.core.services.CoreFormationService;
-import com.guillaumegasnier.education.core.services.CoreReferentielService;
-import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.web.config.AppProperties;
-import com.guillaumegasnier.education.web.dto.etablissements.CommuneWithEtablissementsDto;
-import com.guillaumegasnier.education.web.dto.etablissements.NatureWithEtablissementsDto;
-import com.guillaumegasnier.education.web.dto.references.AcademieWithDepartementsDto;
-import com.guillaumegasnier.education.web.mappers.WebEtablissementMapper;
-import com.guillaumegasnier.education.web.mappers.WebReferenceMapper;
+import com.guillaumegasnier.education.web.dto.etablissements.CommuneWithEtablissementsDTO;
+import com.guillaumegasnier.education.web.dto.etablissements.NatureWithEtablissementsDTO;
+import com.guillaumegasnier.education.web.dto.territoires.AcademieWithDepartementsDTO;
+import com.guillaumegasnier.education.web.dto.territoires.CommuneDTO;
+import com.guillaumegasnier.education.web.dto.territoires.DepartementDTO;
+import com.guillaumegasnier.education.web.exceptions.CommuneNotFoundException;
+import com.guillaumegasnier.education.web.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,26 +21,24 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
-public class IndexController {
+public class IndexController extends WebController {
 
-    private final CoreTerritoireService coreTerritoireService;
-    private final CoreEtablissementService coreEtablissementService;
-    private final CoreFormationService coreFormationService;
-    private final CoreReferentielService coreReferentielService;
-    private final WebReferenceMapper webReferenceMapper;
-    private final WebEtablissementMapper webEtablissementMapper;
+    private final WebEtablissementService webEtablissementService;
+    private final WebFormationService webFormationService;
+    private final WebRechercheService webRechercheService;
+    private final WebReferentielService webReferentielService;
+    private final WebTerritoireService webTerritoireService;
     private final AppProperties appProperties;
 
     @GetMapping("")
     public String getHome(Model model) {
 
-        model.addAttribute("title", appProperties.getTitle());
-
-        model.addAttribute("nbrEtabliseements", coreEtablissementService.getNbrEtablissements());
-        model.addAttribute("nbrFormations", coreFormationService.getNbrFormations());
-        model.addAttribute("nbrCertifications", coreReferentielService.getNbrCertifications());
-        model.addAttribute("nbrCompetences", coreReferentielService.getNbrCompetences());
-        model.addAttribute("nbrMetiers", coreReferentielService.getNbrMetiers());
+        model.addAttribute(TITLE, appProperties.getTitle());
+        model.addAttribute("nbrEtabliseements", webEtablissementService.getNbrEtablissements());
+        model.addAttribute("nbrFormations", webFormationService.getNbrFormations());
+        model.addAttribute("nbrCertifications", webReferentielService.getNbrCertifications());
+        model.addAttribute("nbrCompetences", webReferentielService.getNbrCompetences());
+        model.addAttribute("nbrMetiers", webReferentielService.getNbrMetiers());
 
         return "home/index.html";
     }
@@ -53,11 +46,10 @@ public class IndexController {
     @GetMapping("/academies")
     public String getAcademies(Model model) {
 
-        model.addAttribute("title", "Academies");
-
-        List<DepartementEntity> departementEntityList = coreTerritoireService.getDepartements();
-
-        List<AcademieWithDepartementsDto> academies = webReferenceMapper.groupByAcademie(departementEntityList);
+        model.addAttribute(TITLE, "Academies");
+//        List<DepartementEntity> departementEntityList = coreTerritoireService.getDepartements();
+//        List<AcademieWithDepartementsDTO> academies = webReferenceMapper.groupByAcademie(departementEntityList);
+        List<AcademieWithDepartementsDTO> academies = webTerritoireService.getAcademiesWithDepartements();
 
         model.addAttribute("academies", academies);
 
@@ -66,17 +58,15 @@ public class IndexController {
 
     @GetMapping("/communes/{code}")
     public String getCommune(@PathVariable String code, Model model) {
-        Optional<CommuneEntity> communeEntityOptional = coreTerritoireService.findCommune(code);
+        Optional<CommuneDTO> communeOptional = webTerritoireService.findCommune(code);
 
-        if (communeEntityOptional.isPresent()) {
-            var entity = communeEntityOptional.get();
-
-            List<EtablissementEntity> etablissementEntityList = coreEtablissementService.findEtablissementListByCommune(entity.getCode());
-
-            List<NatureWithEtablissementsDto> natures = webEtablissementMapper.groupbyNature(etablissementEntityList);
-
-            model.addAttribute("title", entity.getNom());
+        if (communeOptional.isPresent()) {
+            var commune = communeOptional.get();
+            List<NatureWithEtablissementsDTO> natures = webEtablissementService.getNatureWithEtablissementsList(commune.code());
+            model.addAttribute(TITLE, commune.nom());
             model.addAttribute("natures", natures);
+        } else {
+            throw new CommuneNotFoundException(code);
         }
 
         return "references/commune.html";
@@ -85,37 +75,47 @@ public class IndexController {
     @GetMapping("/departements/{code}")
     public String getDepartement(@PathVariable String code, Model model) {
 
-        Optional<DepartementEntity> departementEntityOptional = coreTerritoireService.findDepartement(code);
+        Optional<DepartementDTO> departementOptional = webTerritoireService.findDepartement(code);
 
-        if (departementEntityOptional.isPresent()) {
-            var entity = departementEntityOptional.get();
+        if (departementOptional.isPresent()) {
+            var departement = departementOptional.get();
+            model.addAttribute(TITLE, departement.nom());
+            model.addAttribute("departement", departement);
 
-            // Liste des communes
-
-            // Liste des établissements
-            List<EtablissementEntity> etablissementEntityList = coreEtablissementService.findEtablissementListByDepartement(code);
-
-            List<CommuneWithEtablissementsDto> communes = webEtablissementMapper.groupByCommune(etablissementEntityList);
-
-
-            model.addAttribute("title", entity.getNom());
+            // TODO à revoir, on ne devrait pas faire appel à un service pour récupérer les communes avec établissements, mais plutôt récupérer les communes et ensuite les établissements par commune
+            List<CommuneWithEtablissementsDTO> communes = webTerritoireService.getCommuneWithEtablissementsDTO(departement.code());
             model.addAttribute("communes", communes);
+
+//        Optional<DepartementEntity> departementEntityOptional = coreTerritoireService.findDepartement(code);
+//
+//        if (departementEntityOptional.isPresent()) {
+//            var entity = departementEntityOptional.get();
+//
+//            // Liste des communes
+//
+//            // Liste des établissements
+//            List<EtablissementEntity> etablissementEntityList = coreEtablissementService.findEtablissementListByDepartement(code);
+//
+//            List<CommuneWithEtablissementsDto> communes = webEtablissementMapper.groupByCommune(etablissementEntityList);
+//
+
+            //  model.addAttribute(TITLE, entity.getNom());
+            //model.addAttribute("communes", communes);
         }
+        // TODO exception si le département n'existe pas
 
         return "departement.html";
     }
 
     @GetMapping("/mentions-legales")
     public String mentions(Model model) {
-        model.addAttribute("title", "Mentions légales");
-
+        model.addAttribute(TITLE, "Mentions légales");
         return "pages/mentions.html";
     }
 
     @GetMapping("/a-propos")
     public String apropos(Model model) {
-        model.addAttribute("title", "A propos");
-
+        model.addAttribute(TITLE, "A propos");
         return "pages/apropos.html";
     }
 }

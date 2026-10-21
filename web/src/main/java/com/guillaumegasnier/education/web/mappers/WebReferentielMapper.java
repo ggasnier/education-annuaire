@@ -1,9 +1,10 @@
 package com.guillaumegasnier.education.web.mappers;
 
-import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
-import com.guillaumegasnier.education.core.dto.MetierAppellationDto;
-import com.guillaumegasnier.education.core.dto.MetierBlocDto;
-import com.guillaumegasnier.education.web.dto.referentiels.MetierDetailsDto;
+import com.guillaumegasnier.education.core.domains.referentiels.*;
+import com.guillaumegasnier.education.web.dto.referentiels.CompetenceDTO;
+import com.guillaumegasnier.education.web.dto.referentiels.MetierDTO;
+import com.guillaumegasnier.education.web.dto.referentiels.MetierDetailsDTO;
+import com.guillaumegasnier.education.web.dto.referentiels.SavoirDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -43,5 +44,17 @@ public abstract class WebReferentielMapper {
     @Mapping(target = "definitions", source = "metdatas.blocs", qualifiedByName = "toDefinitions")
     @Mapping(target = "appellations", source = "metdatas.appellations", qualifiedByName = "toAppellations")
     @Mapping(target = "access", source = "metdatas.blocs", qualifiedByName = "toAccess")
-    public abstract MetierDetailsDto toMetierDetailsDto(MetierEntity entity);
+    public abstract MetierDetailsDTO toMetierDetailsDTO(MetierEntity entity);
+
+    public abstract MetierDTO toMetierDTO(MetierEntity metierEntity);
+
+    @Mapping(target = "sousCategorie", source = "savoir.sousCategorie")
+    @Mapping(target = "categorie", source = "savoir.categorie")
+    @Mapping(target = "transitionEco", source = "savoir.transitionEco")
+    @Mapping(target = "nom", source = "savoir.nom")
+    public abstract SavoirDTO toSavoirDTO(MetierSavoirLienEntity entity);
+
+    @Mapping(target = "nom", source = "competence.nom")
+    @Mapping(target = "categorie", source = "competence.macroCompetence.objectif.enjeu.domaine.nom")
+    public abstract CompetenceDTO toCompetenceDTO(MetierCompetenceEntity entity);
 }

@@ -16,7 +16,7 @@ import java.util.List;
 public class CompetenceEntity extends AbstractEntity {
 
     @Id
-    private int code;
+    private Integer code;
 
     private String nom;
 

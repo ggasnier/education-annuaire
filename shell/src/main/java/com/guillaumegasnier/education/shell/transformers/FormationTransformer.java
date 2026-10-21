@@ -6,7 +6,7 @@ import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.shell.datasets.etablissements.TravailOrganismeFormationDataset;
 import com.guillaumegasnier.education.shell.dto.formations.ActionFormationDTO;
 import com.guillaumegasnier.education.shell.dto.formations.FormationDTO;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 public interface FormationTransformer {
 

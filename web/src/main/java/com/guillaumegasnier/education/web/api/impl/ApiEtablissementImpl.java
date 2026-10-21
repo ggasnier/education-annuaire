@@ -1,11 +1,12 @@
 package com.guillaumegasnier.education.web.api.impl;
 
 import com.guillaumegasnier.education.web.api.ApiEtablissementController;
-import com.guillaumegasnier.education.web.dto.EtablissementDto;
-import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
-import com.guillaumegasnier.education.web.dto.etablissements.NatureDto;
+import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDTO;
+import com.guillaumegasnier.education.web.dto.etablissements.EtablissementRequestDTO;
+import com.guillaumegasnier.education.web.dto.etablissements.NatureDTO;
 import com.guillaumegasnier.education.web.services.WebEtablissementService;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +31,7 @@ public class ApiEtablissementImpl implements ApiEtablissementController {
     }
 
     @Override
-    public ResponseEntity<EtablissementDto> createEtablissement(@RequestBody EtablissementRequestDto dto) {
+    public ResponseEntity<@NonNull EtablissementDTO> createEtablissement(@RequestBody EtablissementRequestDTO dto) {
         try {
             return webEtablissementService.createEtablissement(dto)
                     .map(created -> ResponseEntity.status(201).body(created))
@@ -42,7 +43,7 @@ public class ApiEtablissementImpl implements ApiEtablissementController {
     }
 
     @Override
-    public ResponseEntity<EtablissementDto> updateEtablissement(@RequestBody EtablissementRequestDto dto) {
+    public ResponseEntity<@NonNull EtablissementDTO> updateEtablissement(@RequestBody EtablissementRequestDTO dto) {
         try {
             return webEtablissementService.updateEtablissement(dto)
                     .map(ResponseEntity::ok)
@@ -54,7 +55,7 @@ public class ApiEtablissementImpl implements ApiEtablissementController {
     }
 
     @Override
-    public ResponseEntity<List<NatureDto>> getNatureList() {
+    public ResponseEntity<@NonNull List<NatureDTO>> getNatureList() {
         return ResponseEntity.ok().body(webEtablissementService.getNatureList());
     }
 }

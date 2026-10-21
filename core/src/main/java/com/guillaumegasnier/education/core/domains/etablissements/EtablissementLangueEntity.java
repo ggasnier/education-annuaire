@@ -25,7 +25,7 @@ public class EtablissementLangueEntity extends AbstractSourcesEntity {
     private EtablissementLanguePK pk;
 
     @MapsId("uai")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_langues_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 }

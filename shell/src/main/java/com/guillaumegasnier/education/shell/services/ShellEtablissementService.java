@@ -4,7 +4,7 @@ import com.guillaumegasnier.education.core.enums.Sport;
 import com.guillaumegasnier.education.core.validations.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.InternatDataset;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 

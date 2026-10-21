@@ -5,15 +5,13 @@ import com.guillaumegasnier.education.core.enums.Secteur;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreFormationService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
-import com.guillaumegasnier.education.web.dto.EtablissementDto;
-import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
 import com.guillaumegasnier.education.web.dto.etablissements.*;
 import com.guillaumegasnier.education.web.exceptions.EtablissementAlreadyExistsException;
 import com.guillaumegasnier.education.web.mappers.WebEtablissementMapper;
 import com.guillaumegasnier.education.web.services.WebEtablissementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,12 +30,12 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
     private final WebEtablissementMapper webEtablissementMapper;
 
     @Override
-    public Optional<EtablissementDto> findEtablissementByUai(String uai) {
-        return coreEtablissementService.findEtablissement(uai).map(webEtablissementMapper::toEtablissementDto);
+    public Optional<EtablissementDTO> findEtablissementByUai(String uai) {
+        return coreEtablissementService.findEtablissement(uai).map(webEtablissementMapper::toEtablissementDTO);
     }
 
     @Override
-    public Optional<EtablissementDto> createEtablissement(@NonNull EtablissementRequestDto dto) {
+    public Optional<EtablissementDTO> createEtablissement(@NonNull EtablissementRequestDTO dto) {
         if (coreEtablissementService.findEtablissement(dto.getUai()).isPresent()) {
             throw new EtablissementAlreadyExistsException(dto.getUai());
         }
@@ -62,11 +60,11 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
         entity.addSource("api");
 
         return Optional.of(coreEtablissementService.saveEtablissement(entity))
-                .map(webEtablissementMapper::toEtablissementDto);
+                .map(webEtablissementMapper::toEtablissementDTO);
     }
 
     @Override
-    public Optional<EtablissementDto> updateEtablissement(@NonNull EtablissementRequestDto dto) {
+    public Optional<EtablissementDTO> updateEtablissement(@NonNull EtablissementRequestDTO dto) {
         return coreEtablissementService.findEtablissement(dto.getUai()).map(entity -> {
             if (dto.getNom() != null) entity.setNom(dto.getNom());
             if (dto.getSiret() != null) entity.setSiret(dto.getSiret());
@@ -90,13 +88,13 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
 
             entity.addSource("api");
 
-            return webEtablissementMapper.toEtablissementDto(coreEtablissementService.saveEtablissement(entity));
+            return webEtablissementMapper.toEtablissementDTO(coreEtablissementService.saveEtablissement(entity));
         });
     }
 
     @Override
     @Transactional(readOnly = true)
-    public EtablissementDetailsDto findEtablissementDetailsDtoByUai(@NonNull String uai) {
+    public EtablissementDetailsDTO findEtablissementDetailsDtoByUai(@NonNull String uai) {
 
         Optional<EtablissementEntity> entity = coreEtablissementService.findEtablissementByUai(uai);
 
@@ -106,42 +104,49 @@ public class WebEtablissementServiceImpl implements WebEtablissementService {
 
         var metadataList = coreEtablissementService.getMetadataListByUai(uai);
 
-        // IPS
-        List<IndicesPositionSocialeDTO> ips = metadataList.stream()
-                .filter(m -> m.getMetadatas().getIps() != null)
-                .map(webEtablissementMapper::toIndicesPositionSocialeDTO)
-                .toList();
-
-        // IVA
-        List<IndicateurValeurAjouteeDTO> iva = metadataList.stream()
-                .filter(m -> m.getMetadatas().getIva() != null)
-                .map(webEtablissementMapper::toIndicateurValeurAjouteeDTO)
-                .flatMap(List::stream)
-                .sorted(Comparator.comparingInt(IndicateurValeurAjouteeDTO::getAnnee).reversed()
-                        .thenComparing(IndicateurValeurAjouteeDTO::getFiliere))
-                .toList();
-
-        List<Internat> internats = metadataList.stream()
-                .filter(m -> m.getMetadatas().getInternat() != null)
-                .map(webEtablissementMapper::toInternatDto)
-                .toList();
-
-        return new EtablissementDetailsDto(
-                entity.map(webEtablissementMapper::toEtablissementDto).orElse(null),
+        return new EtablissementDetailsDTO(
+                entity.map(webEtablissementMapper::toEtablissementDTO).orElse(null),
                 webEtablissementMapper.toOptionWithCategorieDto(coreEtablissementService.getOptionListByUai(uai)),
                 coreEtablissementService.getSpecialiteListByUai(uai).stream().map(webEtablissementMapper::toSpecialiteBac).toList(),
                 webEtablissementMapper.toLangueWithCategorieDtoList(coreEtablissementService.getLangueListByUai(uai)),
                 webEtablissementMapper.toSportWithCategorieDtoList(coreEtablissementService.getSportListByUai(uai)),
                 coreEtablissementService.getContactListByUai(uai).stream().map(webEtablissementMapper::toContactDto).toList(),
                 coreEtablissementService.getJourneesPortesOuvertes(uai).stream().map(webEtablissementMapper::toJPODto).toList(),
-                ips,
-                iva,
-                internats,
-                coreFormationService.findActionFormations(uai).stream().map(webEtablissementMapper::toActionFormationDto).distinct().toList());
+                metadataList.stream()
+                        .filter(m -> m.getMetadatas().getIps() != null)
+                        .map(webEtablissementMapper::toIndicesPositionSocialeDTO)
+                        .toList(),
+                metadataList.stream()
+                        .filter(m -> m.getMetadatas().getIva() != null)
+                        .map(webEtablissementMapper::toIndicateurValeurAjouteeDTO)
+                        .flatMap(List::stream)
+                        .sorted(Comparator.comparingInt(IndicateurValeurAjouteeDTO::getAnnee).reversed()
+                                .thenComparing(IndicateurValeurAjouteeDTO::getFiliere))
+                        .toList(),
+                metadataList.stream()
+                        .filter(m -> m.getMetadatas().getInternat() != null)
+                        .map(webEtablissementMapper::toInternatDto)
+                        .toList(),
+                coreFormationService.findActionFormations(uai).stream().map(webEtablissementMapper::toActionFormationDTO).distinct().toList());
     }
 
     @Override
-    public List<NatureDto> getNatureList() {
-        return coreEtablissementService.getNatureList().stream().map(webEtablissementMapper::toNatureDto).toList();
+    public List<NatureDTO> getNatureList() {
+        return coreEtablissementService.getNatureList().stream().map(webEtablissementMapper::toNatureDTO).toList();
+    }
+
+    @Override
+    public int getNbrEtablissements() {
+        return coreEtablissementService.getNbrEtablissements();
+    }
+
+    @Override
+    public List<EtablissementDTO> findEtablissementListByCommune(String code) {
+        return coreEtablissementService.findEtablissementListByCommune(code).stream().map(webEtablissementMapper::toEtablissementDTO).toList();
+    }
+
+    @Override
+    public List<NatureWithEtablissementsDTO> getNatureWithEtablissementsList(String code) {
+        return webEtablissementMapper.groupbyNature(this.findEtablissementListByCommune(code));
     }
 }

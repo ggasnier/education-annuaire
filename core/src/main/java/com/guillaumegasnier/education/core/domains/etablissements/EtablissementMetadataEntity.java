@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.core.domains.etablissements;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
-import com.guillaumegasnier.education.core.dto.EtablissementMetadataDto;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Getter;

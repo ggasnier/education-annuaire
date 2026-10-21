@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "bootui": {
+      "type": "http",
+      "url": "http://localhost:8080/bootui/api/mcp"
+    }
+  }
+}

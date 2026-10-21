@@ -108,7 +108,8 @@ public class OnisepDispositifDataset implements Dataset {
             case "classe à horaires aménagés danse" -> CHA_DANSE;
             case "classe à horaires aménagés musique" -> CHA_MUSIQUE;
             case "classe à horaires aménagés théâtre" -> CHA_THEATRE;
-            case "classes à horaires aménagés mathématiques et sciences" -> CHAMS;
+            case "classes à horaires aménagés mathématiques et sciences",
+                 "classe à horaires aménagés mathématiques et sciences" -> CHAMS;
             case "section bilangue de collège",
                  "section bilingue de langue régionale de collège",
                  "section bilingue de langue régionale de lycée" -> OptionEtablissement.SECTION_BILINGUE;

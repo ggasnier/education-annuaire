@@ -64,7 +64,7 @@ public class ActionFormationEntity extends AbstractSourcesEntity {
     @Column(columnDefinition = "BIGINT", nullable = false, updatable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "formation_id", foreignKey = @ForeignKey(name = "fk_actions_formations"), columnDefinition = "BIGINT", nullable = false)
     private FormationEntity formation;
 

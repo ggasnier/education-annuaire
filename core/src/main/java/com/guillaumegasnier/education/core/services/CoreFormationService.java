@@ -5,7 +5,7 @@ import com.guillaumegasnier.education.core.domains.formations.FormationEntity;
 import com.guillaumegasnier.education.core.domains.formations.LienOnisepEntity;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Optional;

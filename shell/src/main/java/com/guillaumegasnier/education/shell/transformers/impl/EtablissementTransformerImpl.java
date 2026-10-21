@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.shell.transformers.impl;
 
 import com.guillaumegasnier.education.core.domains.etablissements.*;
-import com.guillaumegasnier.education.core.dto.InternatDto;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreTerritoireService;
 import com.guillaumegasnier.education.core.validations.etablissements.*;
@@ -12,7 +11,7 @@ import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.transformers.EtablissementTransformer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

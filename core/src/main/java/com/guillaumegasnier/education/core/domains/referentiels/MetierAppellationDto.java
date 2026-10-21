@@ -1,0 +1,26 @@
+package com.guillaumegasnier.education.core.domains.referentiels;
+
+import com.guillaumegasnier.education.core.enums.OuiNon;
+import com.guillaumegasnier.education.core.enums.TransitionEcologique;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.io.Serializable;
+
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class MetierAppellationDto implements Serializable {
+
+    @EqualsAndHashCode.Include
+    private String nom;
+
+    private TransitionEcologique transitionEco;
+    private OuiNon transitionNum;
+    private OuiNon transitionDemo;
+    private OuiNon emploiReglemente;
+    private OuiNon emploiCadre;
+}

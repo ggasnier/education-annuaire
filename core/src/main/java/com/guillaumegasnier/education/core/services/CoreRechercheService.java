@@ -5,7 +5,7 @@ import com.guillaumegasnier.education.core.domains.recherche.RechercheFormationE
 import com.guillaumegasnier.education.core.domains.recherche.RechercheMetierEntity;
 import com.guillaumegasnier.education.core.dto.RechercheCriteria;
 import com.guillaumegasnier.education.core.dto.recherche.*;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -14,6 +14,8 @@ public interface CoreRechercheService {
     void recreateEtablissementsIndex();
 
     void recreateMetiersIndex();
+
+    void recreateFormationsIndex();
 
     void saveEtablissements(@NonNull List<RechercheEtablissementEntity> entities);
 

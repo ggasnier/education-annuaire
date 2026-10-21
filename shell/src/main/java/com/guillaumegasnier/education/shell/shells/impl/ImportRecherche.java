@@ -21,6 +21,16 @@ public class ImportRecherche implements ImportRechercheShell {
     }
 
     @Override
+    public void recreateMetiersIndex() {
+        shellRechercheService.recreateMetiersIndex();
+    }
+
+    @Override
+    public void recreateFormationsIndex() {
+        shellRechercheService.recreateFormationsIndex();
+    }
+
+    @Override
     @ShellMethod(value = "Import des établissements dans Elasticsearch pour la recherche")
     public void importRechercheEtablissements() {
         shellRechercheService.importEtablissementsRecherche();

@@ -2,7 +2,7 @@ package com.guillaumegasnier.education.core.validations.etablissements;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 public class UaiValidator implements ConstraintValidator<ValidUai, String> {
 
