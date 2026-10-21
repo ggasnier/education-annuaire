@@ -2,10 +2,37 @@ spring:
   application:
     name: web
   flyway:
-    enable: true
+    enabled: true
     baseline-on-migrate: true
     validate-on-migrate: true
+  jpa:
+    open-in-view: false
+  threads:
+    virtual:
+      enabled: true
+  web:
+    resources:
+      add-mappings: false
+
+hibernate:
+  jdbc:
+    time_zone: Europe/Paris
+    batch_size: 25
+  generate_statistics: true
+
 app:
   properties:
     title: "Formakoi"
     api-key: ${API_KEY}
+
+server:
+  compression:
+    enabled: true
+  http2:
+    enabled: true
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: never
+    include-exception: false
+

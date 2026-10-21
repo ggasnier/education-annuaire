@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.shell.services;
 
 import com.guillaumegasnier.education.shell.datasets.references.*;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,31 +1,30 @@
 package com.guillaumegasnier.education.shell.services.impl;
 
+import com.guillaumegasnier.education.core.domains.referentiels.MetierAppellationDto;
+import com.guillaumegasnier.education.core.domains.referentiels.MetierBlocDto;
 import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
-import com.guillaumegasnier.education.core.dto.MetierAppellationDto;
-import com.guillaumegasnier.education.core.dto.MetierBlocDto;
+import com.guillaumegasnier.education.core.domains.referentiels.MetierSavoirEntity;
 import com.guillaumegasnier.education.core.services.CoreEtablissementService;
 import com.guillaumegasnier.education.core.services.CoreRechercheService;
 import com.guillaumegasnier.education.core.services.CoreReferentielService;
 import com.guillaumegasnier.education.shell.datasets.FICHES;
 import com.guillaumegasnier.education.shell.datasets.etablissements.ContratDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.NatureDataset;
-import com.guillaumegasnier.education.shell.datasets.referentiels.ArborescenceCompetenceDataset;
-import com.guillaumegasnier.education.shell.datasets.referentiels.RomeAppellationDataset;
-import com.guillaumegasnier.education.shell.datasets.referentiels.RomeBlocDataset;
-import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
+import com.guillaumegasnier.education.shell.datasets.referentiels.*;
 import com.guillaumegasnier.education.shell.mappers.EtablissementMapper;
 import com.guillaumegasnier.education.shell.mappers.ReferentielMapper;
 import com.guillaumegasnier.education.shell.services.ShellReferencielService;
 import com.guillaumegasnier.education.shell.transformers.ReferentielTransformer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -133,19 +132,34 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
 
     @Override
     public void createOrUpdateRome(@NonNull List<ArborescenceCompetenceDataset> datasets) {
-
         // 1. Domaine de compétence
-        var a = datasets.stream().map(referentielMapper::toDomaineCompetenceDTO).distinct().toList();
-        log.info("Compétences : {}", a.size());
+        coreReferentielService.saveDomaines(
+                datasets.stream()
+                        .map(referentielMapper::toDomaineCompetenceDTO)
+                        .distinct()
+                        .map(referentielTransformer::toDomaineCompetenceEntity)
+                        .toList());
         // 2. Enjeu
-        var b = datasets.stream().map(referentielMapper::toEnjeuDTO).distinct().toList();
-        log.info("Enjeux : {}", b.size());
+        coreReferentielService.saveEnjeux(
+                datasets.stream()
+                        .map(referentielMapper::toEnjeuDTO)
+                        .distinct()
+                        .map(referentielTransformer::toEnjeuEntity)
+                        .toList());
         // 3. Objectif
-        var c = datasets.stream().map(referentielMapper::toObjectifDTO).distinct().toList();
-        log.info("Objectifs : {}", c.size());
+        coreReferentielService.saveObjectifs(
+                datasets.stream()
+                        .map(referentielMapper::toObjectifDTO)
+                        .distinct()
+                        .map(referentielTransformer::toObjectifEntity)
+                        .toList());
         // 4. MacroCompetence
-        var d = datasets.stream().map(referentielMapper::toMacroCompetenceDTO).distinct().toList();
-        log.info("MacroCompetences : {}", d.size());
+        coreReferentielService.saveMacroCompetences(
+                datasets.stream()
+                        .map(referentielMapper::toMacroCompetenceDTO)
+                        .distinct()
+                        .map(referentielTransformer::toMacroCompetenceEntity)
+                        .toList());
         // 5. Competence
         coreReferentielService.saveCompetences(
                 datasets.stream()
@@ -154,6 +168,27 @@ public class ShellReferencielServiceImpl implements ShellReferencielService {
                         .filter(dto -> dto.getCode() > 0)
                         .map(referentielTransformer::toCompetenceEntity)
                         .toList());
+    }
+
+    @Override
+    public void createOrUpdateRome(@NonNull List<SavoirDataset> savoirDatasetList, @NonNull List<RomeSavoirDataset> savoirRubriqueDatasetList) {
+        List<MetierSavoirEntity> savoirs = savoirDatasetList.stream()
+                .map(referentielTransformer::toMetierSavoirEntity)
+                .toList();
+        coreReferentielService.saveSavoirs(savoirs);
+
+        coreReferentielService.saveMetierSavoirLien(savoirRubriqueDatasetList.stream()
+                .filter(dataset -> dataset.getCodeRome().equals("M1805")) // todo : remove filter when all data is available
+                .map(referentielTransformer::toMetierSavoirLienEntity)
+                .filter(Objects::nonNull)
+                .toList());
+
+        coreReferentielService.saveMetierCompetenceLien(savoirRubriqueDatasetList.stream()
+                .filter(dataset -> dataset.getCodeRome().equals("M1805")) // todo : remove filter when all data is available
+                .map(referentielTransformer::toMetierCompetenceEntity)
+                .filter(Objects::nonNull)
+                .toList());
+
 
     }
 }

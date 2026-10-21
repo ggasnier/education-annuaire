@@ -2,7 +2,7 @@ package com.guillaumegasnier.education.core.domains;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -26,6 +26,6 @@ public abstract class AbstractSourcesEntity extends AbstractEntity {
     public void addSource(@NonNull String source) {
         Set<String> sourcesSet = getSources();
         sourcesSet.add(source);
-        this.sources = String.join("|", sourcesSet);
+        this.sources = String.join("|", sourcesSet.stream().sorted().toList());
     }
 }

@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -46,25 +46,34 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         String expectedKey = appProperties.getApiKey();
 
         if (!StringUtils.hasText(expectedKey)) {
-            log.warn("Aucune clef d'API configurée (app.properties.api-key) — accès refusé par défaut.");
-            sendUnauthorized(response, "Clef d'API non configurée sur le serveur.");
+            log.warn("[ERR-401-UNAUTHORIZED][{}] Aucune clef d'API configurée (app.properties.api-key) — accès refusé par défaut.",
+                    CorrelationIdFilter.resolveOrCreateCorrelationId(request));
+            sendUnauthorized(request, response, "Clef d'API non configurée sur le serveur.");
             return;
         }
 
         if (!expectedKey.equals(providedKey)) {
-            log.warn("Tentative d'accès refusée sur {} {} — clef invalide ou absente.", request.getMethod(), request.getRequestURI());
-            sendUnauthorized(response, "Clef d'API invalide ou absente. Fournissez le header X-API-Key.");
+            log.warn("[ERR-401-UNAUTHORIZED][{}] Tentative d'accès refusée sur {} {} — clef invalide ou absente.",
+                    CorrelationIdFilter.resolveOrCreateCorrelationId(request), request.getMethod(), request.getRequestURI());
+            sendUnauthorized(request, response, "Clef d'API invalide ou absente. Fournissez le header X-API-Key.");
             return;
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private void sendUnauthorized(HttpServletResponse response, String message) throws IOException {
+    private void sendUnauthorized(HttpServletRequest request, HttpServletResponse response, String message) throws IOException {
+        String correlationId = CorrelationIdFilter.resolveOrCreateCorrelationId(request);
+        response.setHeader(CorrelationIdFilter.HEADER_NAME, correlationId);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"error\": \"" + message + "\"}");
+        response.getWriter().write(
+                "{\"errorCode\":\"ERR-401-UNAUTHORIZED\",\"correlationId\":\""
+                        + correlationId
+                        + "\",\"message\":\""
+                        + message
+                        + "\"}");
     }
 }
 

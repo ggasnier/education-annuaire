@@ -4,6 +4,10 @@ public interface ImportRechercheShell {
 
     void recreateEtablissementsIndex();
 
+    void recreateMetiersIndex();
+
+    void recreateFormationsIndex();
+
     void importRechercheEtablissements();
 
     void importRechercheMetiers();

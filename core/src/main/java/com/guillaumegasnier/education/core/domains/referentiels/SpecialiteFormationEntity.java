@@ -15,7 +15,7 @@ public class SpecialiteFormationEntity extends AbstractEntity {
     @Column(columnDefinition = "BPCHAR(4)", length = 4, unique = true)
     private String code;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "groupe_code", foreignKey = @ForeignKey(name = "fk_formations_specialites_groupes"))
     private GroupeSpecialiteFormationEntity groupe;
 

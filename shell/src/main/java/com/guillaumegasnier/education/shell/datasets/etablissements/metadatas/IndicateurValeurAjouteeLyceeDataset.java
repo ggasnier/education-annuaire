@@ -1,8 +1,9 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
-import com.guillaumegasnier.education.core.dto.ResultatFiliereDto;
+import com.guillaumegasnier.education.core.domains.etablissements.ResultatFiliereDto;
 import com.guillaumegasnier.education.core.enums.Filiere;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
+import com.guillaumegasnier.education.core.validations.etablissements.ResultatFiliere;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -174,8 +175,8 @@ public class IndicateurValeurAjouteeLyceeDataset implements IndicateurValeurAjou
     }
 
     @Override
-    public Set<ResultatFiliereDto> getResultats() {
-        Set<ResultatFiliereDto> resultats = new HashSet<>();
+    public Set<ResultatFiliere> getResultats() {
+        Set<ResultatFiliere> resultats = new HashSet<>();
 
         // L
         if (presentsL != null && presentsL > 0) {

@@ -23,11 +23,11 @@ public class CommuneEntity extends AbstractEntity {
     @NotBlank
     private String nom;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "code_pays", foreignKey = @ForeignKey(name = "fk_communes_pays"))
     private PaysEntity pays;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code_departement", foreignKey = @ForeignKey(name = "fk_communes_departements"))
     private DepartementEntity departement;
 }

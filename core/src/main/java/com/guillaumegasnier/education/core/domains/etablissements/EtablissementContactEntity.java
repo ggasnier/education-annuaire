@@ -20,7 +20,7 @@ public class EtablissementContactEntity extends AbstractSourcesEntity {
     private EtablissementContactPK pk;
 
     @MapsId("uai")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_contacts_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 

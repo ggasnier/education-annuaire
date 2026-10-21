@@ -12,6 +12,7 @@ import com.guillaumegasnier.education.core.dto.recherche.RechercheFormationDTO;
 import com.guillaumegasnier.education.core.enums.FacetteFormation;
 import com.guillaumegasnier.education.core.repositories.RechercheFormationRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchAggregations;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
@@ -19,7 +20,6 @@ import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -257,6 +257,17 @@ public class FormationRechercheService {
 
     public void saveFormations(List<RechercheFormationEntity> entities) {
         rechercheFormationRepository.saveAll(entities);
+    }
+
+    public void recreateIndex() {
+        var indexOps = elasticsearchOperations.indexOps(RechercheFormationEntity.class);
+        if (indexOps.exists()) {
+            log.info("Index 'formations' existant détecté — suppression...");
+            indexOps.delete();
+        }
+        log.info("Création de l'index 'formations' avec le mapping courant...");
+        indexOps.createWithMapping();
+        log.info("Index 'formations' recréé avec succès.");
     }
 }
 

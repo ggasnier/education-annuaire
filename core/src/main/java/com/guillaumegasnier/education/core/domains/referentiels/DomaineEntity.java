@@ -17,7 +17,7 @@ public class DomaineEntity extends AbstractEntity {
      * 1, 2, 3
      */
     @Id
-    private int code;
+    private Integer code;
 
     private String nom;
 }

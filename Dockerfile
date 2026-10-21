@@ -14,11 +14,11 @@ COPY shell/src shell/src
 
 # Build the application
 RUN mvn -B clean package -DskipTests
-ARG VERSION=1.0.5
+ARG VERSION=1.0.6
 RUN mkdir -p web/target/extracted && (cd web/target/extracted; jar -xf ../web-${VERSION}.jar)
 RUN mkdir -p shell/target/extracted && (cd shell/target/extracted; jar -xf ../shell-${VERSION}.jar)
 
-FROM eclipse-temurin:21-jre-alpine AS web
+FROM eclipse-temurin:25-jre-alpine AS web
 WORKDIR /app
 
 # Add non-root user for security
@@ -31,7 +31,7 @@ COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/META-INF ./META-INF
 COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/BOOT-INF/classes ./
 
 # Add metadata
-ARG VERSION=1.0.5
+ARG VERSION=1.0.6
 LABEL version="${VERSION}" \
     description="Formakoi - Web Service" \
     maintainer="Guillaume Gasnier"
@@ -47,7 +47,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
 
 ENTRYPOINT ["java", "-cp", ".:lib/*", "com.guillaumegasnier.education.web.WebApplication"]
 
-FROM eclipse-temurin:21-jre-alpine AS shell
+FROM eclipse-temurin:25-jre-alpine AS shell
 WORKDIR /app
 
 # Add non-root user for security
@@ -60,7 +60,7 @@ COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/META-INF ./META-INF
 COPY --chown=appuser:appgroup --from=build ${EXTRACTED}/BOOT-INF/classes ./
 
 # Add metadata
-ARG VERSION=1.0.5
+ARG VERSION=1.0.6
 LABEL version="${VERSION}" \
     description="Formakoi - Shell CLI" \
     maintainer="Guillaume Gasnier"

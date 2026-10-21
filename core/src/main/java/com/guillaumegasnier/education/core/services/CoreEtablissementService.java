@@ -4,7 +4,7 @@ import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.enums.*;
 import com.guillaumegasnier.education.core.validations.etablissements.ValidUai;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDate;
 import java.util.List;

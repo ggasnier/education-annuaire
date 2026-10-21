@@ -1,14 +1,15 @@
 package com.guillaumegasnier.education.web.api;
 
 import com.guillaumegasnier.education.web.dto.ApiError;
-import com.guillaumegasnier.education.web.dto.EtablissementDto;
-import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
-import com.guillaumegasnier.education.web.dto.etablissements.NatureDto;
+import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDTO;
+import com.guillaumegasnier.education.web.dto.etablissements.EtablissementRequestDTO;
+import com.guillaumegasnier.education.web.dto.etablissements.NatureDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public interface ApiEtablissementController {
             tags = {"Etablissement"}
     )
     @GetMapping("/natures")
-    default ResponseEntity<List<NatureDto>> getNatureList() {
+    default ResponseEntity<@NonNull List<NatureDTO>> getNatureList() {
         return ResponseEntity.status(NOT_IMPLEMENTED).build();
 
     }
@@ -40,7 +41,7 @@ public interface ApiEtablissementController {
                     required = true,
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = EtablissementRequestDto.class)
+                            schema = @Schema(implementation = EtablissementRequestDTO.class)
                     )
             )
     )
@@ -49,7 +50,7 @@ public interface ApiEtablissementController {
             description = "Établissement créé avec succès",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = EtablissementDto.class)
+                    schema = @Schema(implementation = EtablissementDTO.class)
             )
     )
     @ApiResponse(
@@ -69,7 +70,7 @@ public interface ApiEtablissementController {
             )
     )
     @PostMapping("")
-    default ResponseEntity<EtablissementDto> createEtablissement(@RequestBody EtablissementRequestDto dto) {
+    default ResponseEntity<@NonNull EtablissementDTO> createEtablissement(@RequestBody EtablissementRequestDTO dto) {
         return ResponseEntity.status(NOT_IMPLEMENTED).build();
     }
 
@@ -78,7 +79,7 @@ public interface ApiEtablissementController {
             tags = {"Etablissement"}
     )
     @PutMapping("")
-    default ResponseEntity<EtablissementDto> updateEtablissement(@RequestBody EtablissementRequestDto dto) {
+    default ResponseEntity<@NonNull EtablissementDTO> updateEtablissement(@RequestBody EtablissementRequestDTO dto) {
         return ResponseEntity.status(NOT_IMPLEMENTED).build();
     }
 }

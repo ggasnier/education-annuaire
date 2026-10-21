@@ -3,8 +3,6 @@ package com.guillaumegasnier.education.shell.mappers;
 import com.guillaumegasnier.education.core.domains.etablissements.*;
 import com.guillaumegasnier.education.core.domains.formations.OrganismeEntity;
 import com.guillaumegasnier.education.core.domains.recherche.RechercheEtablissementEntity;
-import com.guillaumegasnier.education.core.dto.IndicateurValeurAjouteeDto;
-import com.guillaumegasnier.education.core.dto.IndicePositionSocialeDto;
 import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.Sport;
@@ -13,11 +11,11 @@ import com.guillaumegasnier.education.shell.datasets.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.metadatas.InternatDataset;
 import com.guillaumegasnier.education.shell.dto.etablissements.*;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.lang.NonNull;
 
 import java.util.*;
 
@@ -34,7 +32,7 @@ public abstract class EtablissementMapper {
         };
     }
 
-    public List<SportDTO> toSportDTO(@NonNull SportDataset dataset, @NonNull Sport.Categorie categorie) {
+    public List<SportDTO> toSportDTO(@NonNull SportDataset dataset, Sport.Categorie categorie) {
         return dataset.getSectionList()
                 .stream()
                 .map(String::toUpperCase)
@@ -127,7 +125,6 @@ public abstract class EtablissementMapper {
 
     // Les entitées JPA
     @Mapping(target = "langues", ignore = true)
-    @Mapping(target = "masa", ignore = true)
     @Mapping(target = "identifiants", ignore = true)
     @Mapping(target = "organisme", ignore = true)
     @Mapping(target = "nature", ignore = true)
@@ -194,7 +191,10 @@ public abstract class EtablissementMapper {
     public <T extends IndicateurValeurAjoutee & Metadata> IndicateurValeurAjouteeDto toIndicateurValeurAjouteeDto(@NonNull T dataset) {
         IndicateurValeurAjouteeDto iva = new IndicateurValeurAjouteeDto();
         iva.setTauxAcces(dataset.getTauxAcces());
-        iva.setResultats(dataset.getResultats());
+        iva.setResultats(dataset.getResultats().stream()
+                .filter(ResultatFiliereDto.class::isInstance)
+                .map(ResultatFiliereDto.class::cast)
+                .collect(java.util.stream.Collectors.toSet()));
         return iva;
     }
 

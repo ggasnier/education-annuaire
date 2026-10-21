@@ -1,9 +1,6 @@
 package com.guillaumegasnier.education.shell.shells.impl;
 
-import com.guillaumegasnier.education.shell.datasets.referentiels.ArborescenceCompetenceDataset;
-import com.guillaumegasnier.education.shell.datasets.referentiels.RomeAppellationDataset;
-import com.guillaumegasnier.education.shell.datasets.referentiels.RomeBlocDataset;
-import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
+import com.guillaumegasnier.education.shell.datasets.referentiels.*;
 import com.guillaumegasnier.education.shell.services.FileService;
 import com.guillaumegasnier.education.shell.services.ShellReferencielService;
 import com.guillaumegasnier.education.shell.shells.ImportReferentielShell;
@@ -13,6 +10,8 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.guillaumegasnier.education.shell.enums.SourcesDatasets.*;
 
@@ -52,7 +51,29 @@ public class ImportReferentiel implements ImportReferentielShell {
         List<RomeBlocDataset> romeBlocDatasetList = fileService.importRomeData(ROME, "unix_texte_v461_utf8.csv", RomeBlocDataset.class);
         List<ArborescenceCompetenceDataset> arborescenceCompetenceDatasetList = fileService.importRomeData(ROME, "unix_arborescence_competences_v461_utf8.csv", ArborescenceCompetenceDataset.class);
 
+
+        // Savoirs
+        List<SavoirDataset> savoirDatasetList = fileService.importRomeData(ROME, "unix_referentiel_savoir_v461_utf8.csv", SavoirDataset.class);
+        // Savoirs <-> Rubriques
+        List<SavoirRubriqueDataset> savoirRubriqueDatasetList = fileService.importRomeData(ROME, "unix_item_v461_utf8.csv", SavoirRubriqueDataset.class);
+
+        Map<Integer, Integer> codeOgrToCodeRubrique = savoirRubriqueDatasetList.stream()
+                .collect(Collectors.toMap(
+                        SavoirRubriqueDataset::getCodeOgr,
+                        SavoirRubriqueDataset::getCodeRubrique
+                ));
+
+        savoirDatasetList.forEach(savoirDataset -> savoirDataset.setCodeRubrique(
+                codeOgrToCodeRubrique.getOrDefault(savoirDataset.getCodeOgr(), 0)
+        ));
+
+        // Savoirs <-> Metiers
+        List<RomeSavoirDataset> romeSavoirDatasetList = fileService.importRomeData(ROME, "unix_coherence_item_v461_utf8.csv", RomeSavoirDataset.class);
+
+
         shellReferencielService.createOrUpdateRome(arborescenceCompetenceDatasetList);
         shellReferencielService.createOrUpdateRome(romeDatasetList, romeAppellationDatasetList, romeBlocDatasetList);
+        shellReferencielService.createOrUpdateRome(savoirDatasetList, romeSavoirDatasetList);
+
     }
 }

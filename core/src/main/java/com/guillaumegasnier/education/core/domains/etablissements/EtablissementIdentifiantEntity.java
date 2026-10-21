@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class EtablissementIdentifiantEntity extends AbstractEntity {
     private EtablissementIdentifiantPK pk;
 
     @MapsId("uai")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "uai", columnDefinition = "BPCHAR(8)", foreignKey = @ForeignKey(name = "fk_identifiants_etablissements"), nullable = false)
     private EtablissementEntity etablissement;
 

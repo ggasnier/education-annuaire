@@ -32,6 +32,18 @@ public class ShellRechercheServiceImpl implements ShellRechercheService {
     }
 
     @Override
+    public void recreateMetiersIndex() {
+        log.info("Recréation de l'index metiers dans ES");
+        coreRechercheService.recreateMetiersIndex();
+    }
+
+    @Override
+    public void recreateFormationsIndex() {
+        log.info("Recréation de l'index formations dans ES");
+        coreRechercheService.recreateFormationsIndex();
+    }
+
+    @Override
     public void importEtablissementsRecherche() {
         log.info("Début import établissements dans ES");
 

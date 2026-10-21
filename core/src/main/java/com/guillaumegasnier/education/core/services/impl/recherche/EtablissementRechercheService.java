@@ -12,6 +12,7 @@ import com.guillaumegasnier.education.core.dto.recherche.RechercheEtablissementD
 import com.guillaumegasnier.education.core.enums.FacetteEtablissement;
 import com.guillaumegasnier.education.core.repositories.RechercheEtablissementRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchAggregations;
@@ -20,7 +21,6 @@ import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -228,7 +228,7 @@ public class EtablissementRechercheService {
     // -------------------------------------------------------------------------
 
     void extractBuckets(Aggregate aggregate, FacetteEtablissement facette,
-                                RechercheCriteria criteria, List<RechercheFacetteValeurDTO> valeurs) {
+                        RechercheCriteria criteria, List<RechercheFacetteValeurDTO> valeurs) {
         // Pour les champs nested, on descend d'un niveau supplémentaire (nested → terms)
         Aggregate termsAgg = aggregate;
         if (facette.isNested() && aggregate.isNested()) {

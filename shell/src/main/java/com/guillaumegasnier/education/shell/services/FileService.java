@@ -7,7 +7,7 @@ import com.guillaumegasnier.education.shell.datasets.etablissements.CarifEtablis
 import com.guillaumegasnier.education.shell.datasets.formations.CarifFormationDataset;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
 import com.guillaumegasnier.education.shell.enums.SourcesDatasets;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.io.BufferedReader;
 import java.nio.charset.Charset;

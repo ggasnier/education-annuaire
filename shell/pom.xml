@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.guillaumegasnier.education</groupId>
         <artifactId>annuaire</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>shell</artifactId>
@@ -27,7 +27,7 @@
         <url/>
     </scm>
     <properties>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
     </properties>
     <dependencies>
         <dependency>

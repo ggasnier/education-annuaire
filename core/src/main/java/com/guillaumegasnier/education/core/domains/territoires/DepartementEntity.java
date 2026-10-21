@@ -20,11 +20,11 @@ public class DepartementEntity extends AbstractEntity {
     @Column(columnDefinition = "VARCHAR(50)", length = 50)
     private String nom;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "code_region", foreignKey = @ForeignKey(name = "fk_departements_regions"))
     private RegionEntity region;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "code_academie", foreignKey = @ForeignKey(name = "fk_departements_academies"))
     private AcademieEntity academie;
 }

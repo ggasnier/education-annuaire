@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.web.controllers;
 
-import com.guillaumegasnier.education.web.dto.formations.ActionFormationDto;
-import com.guillaumegasnier.education.web.dto.formations.FormationDto;
+import com.guillaumegasnier.education.web.dto.formations.ActionFormationDTO;
+import com.guillaumegasnier.education.web.dto.formations.FormationDTO;
 import com.guillaumegasnier.education.web.services.WebFormationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +22,7 @@ public class FormationController {
     @GetMapping("/{id}")
     public String getFormation(@PathVariable long id, Model model) {
 
-        FormationDto formation = webFormationService.getFormation(id);
+        FormationDTO formation = webFormationService.getFormation(id);
 
         model.addAttribute("formation", formation);
 
@@ -35,11 +35,10 @@ public class FormationController {
     @GetMapping("/{id}/actions/{actionId}")
     public String getAction(@PathVariable long id, @PathVariable long actionId, Model model) {
 
-        ActionFormationDto action = webFormationService.getActionFormation(id, actionId);
+        ActionFormationDTO action = webFormationService.getActionFormation(id, actionId);
 
         model.addAttribute("action", action);
-
-
+        
         return "formations/action";
     }
 }

@@ -2,18 +2,18 @@ package com.guillaumegasnier.education.shell.mappers;
 
 import com.guillaumegasnier.education.core.domains.recherche.RechercheMetierEntity;
 import com.guillaumegasnier.education.core.domains.referentiels.CertificationNationaleEntity;
+import com.guillaumegasnier.education.core.domains.referentiels.MetierAppellationDto;
 import com.guillaumegasnier.education.core.domains.referentiels.MetierEntity;
-import com.guillaumegasnier.education.core.dto.MetierAppellationDto;
 import com.guillaumegasnier.education.core.enums.GrandDomaine;
 import com.guillaumegasnier.education.shell.datasets.*;
 import com.guillaumegasnier.education.shell.datasets.referentiels.ArborescenceCompetenceDataset;
 import com.guillaumegasnier.education.shell.datasets.referentiels.RomeDataset;
 import com.guillaumegasnier.education.shell.dto.referentiels.*;
+import org.jspecify.annotations.NonNull;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.Set;

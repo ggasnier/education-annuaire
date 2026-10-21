@@ -1,8 +1,9 @@
 package com.guillaumegasnier.education.shell.datasets.etablissements.metadatas;
 
-import com.guillaumegasnier.education.core.dto.ResultatFiliereDto;
+import com.guillaumegasnier.education.core.domains.etablissements.ResultatFiliereDto;
 import com.guillaumegasnier.education.core.enums.Filiere;
 import com.guillaumegasnier.education.core.validations.etablissements.IndicateurValeurAjouteeLycee;
+import com.guillaumegasnier.education.core.validations.etablissements.ResultatFiliere;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.Setter;
@@ -188,8 +189,8 @@ public class IndicateurValeurAjouteeLyceeProDataset implements IndicateurValeurA
     private Integer nbrMentionsAB;
 
     @Override
-    public Set<ResultatFiliereDto> getResultats() {
-        Set<ResultatFiliereDto> resultats = new HashSet<>();
+    public Set<ResultatFiliere> getResultats() {
+        Set<ResultatFiliere> resultats = new HashSet<>();
 
         addIfPresent(resultats, Filiere.PRO_NSF20, presentsNsf20, tauxReussiteNsf20, valeurAjouteeTauxReussiteNsf20, tauxMentionsNsf20, valeurAjouteeTauxMentionsNsf20);
         addIfPresent(resultats, Filiere.PRO_NSF22, presentsNsf22, tauxReussiteNsf22, valeurAjouteeTauxReussiteNsf22, tauxMentionsNsf22, valeurAjouteeTauxMentionsNsf22);
@@ -207,7 +208,7 @@ public class IndicateurValeurAjouteeLyceeProDataset implements IndicateurValeurA
         return resultats;
     }
 
-    private void addIfPresent(Set<ResultatFiliereDto> resultats, Filiere filiere,
+    private void addIfPresent(Set<ResultatFiliere> resultats, Filiere filiere,
                               Integer presents, String tauxReussite, String valeurAjouteeReussite,
                               String tauxMentions, String valeurAjouteeMentions) {
         if (presents != null && presents > 0) {

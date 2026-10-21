@@ -5,7 +5,7 @@ import com.guillaumegasnier.education.core.validations.etablissements.*;
 import com.guillaumegasnier.education.shell.datasets.etablissements.EtablissementDataset;
 import com.guillaumegasnier.education.shell.datasets.etablissements.JPODataset;
 import com.guillaumegasnier.education.shell.dto.etablissements.*;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 public interface EtablissementTransformer {
 

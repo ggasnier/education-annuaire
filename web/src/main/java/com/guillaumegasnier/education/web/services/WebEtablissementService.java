@@ -1,23 +1,26 @@
 package com.guillaumegasnier.education.web.services;
 
-import com.guillaumegasnier.education.web.dto.EtablissementDto;
-import com.guillaumegasnier.education.web.dto.EtablissementRequestDto;
-import com.guillaumegasnier.education.web.dto.etablissements.EtablissementDetailsDto;
-import com.guillaumegasnier.education.web.dto.etablissements.NatureDto;
-import org.springframework.lang.NonNull;
+import com.guillaumegasnier.education.web.dto.etablissements.*;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface WebEtablissementService {
 
-    Optional<EtablissementDto> findEtablissementByUai(String uai);
+    Optional<EtablissementDTO> findEtablissementByUai(String uai);
 
-    Optional<EtablissementDto> createEtablissement(EtablissementRequestDto dto);
+    Optional<EtablissementDTO> createEtablissement(EtablissementRequestDTO dto);
 
-    Optional<EtablissementDto> updateEtablissement(EtablissementRequestDto dto);
+    Optional<EtablissementDTO> updateEtablissement(EtablissementRequestDTO dto);
 
-    EtablissementDetailsDto findEtablissementDetailsDtoByUai(@NonNull String uai);
+    EtablissementDetailsDTO findEtablissementDetailsDtoByUai(@NonNull String uai);
 
-    List<NatureDto> getNatureList();
+    List<NatureDTO> getNatureList();
+
+    int getNbrEtablissements();
+
+    List<EtablissementDTO> findEtablissementListByCommune(String code);
+
+    List<NatureWithEtablissementsDTO> getNatureWithEtablissementsList(String code);
 }

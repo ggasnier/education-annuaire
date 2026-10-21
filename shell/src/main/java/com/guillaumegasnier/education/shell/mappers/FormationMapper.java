@@ -11,11 +11,11 @@ import com.guillaumegasnier.education.shell.datasets.formations.OnisepFormationD
 import com.guillaumegasnier.education.shell.datasets.formations.ParcoursupFormationDataset;
 import com.guillaumegasnier.education.shell.dto.formations.ActionFormationDTO;
 import com.guillaumegasnier.education.shell.dto.formations.FormationDTO;
+import org.jspecify.annotations.NonNull;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.lang.NonNull;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package com.guillaumegasnier.education.core.domains.referentiels;
 
 import com.guillaumegasnier.education.core.domains.AbstractEntity;
-import com.guillaumegasnier.education.core.dto.MetierMetadataDto;
 import com.guillaumegasnier.education.core.enums.GrandDomaine;
 import com.guillaumegasnier.education.core.enums.OuiNon;
 import com.guillaumegasnier.education.core.enums.TransitionEcologique;

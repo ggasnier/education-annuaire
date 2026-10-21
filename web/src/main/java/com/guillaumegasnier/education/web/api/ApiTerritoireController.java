@@ -1,7 +1,7 @@
 package com.guillaumegasnier.education.web.api;
 
-import com.guillaumegasnier.education.web.dto.CommuneDto;
-import com.guillaumegasnier.education.web.dto.CommuneRequestDto;
+import com.guillaumegasnier.education.web.dto.territoires.CommuneDTO;
+import com.guillaumegasnier.education.web.dto.territoires.CommuneRequestDTO;
 import com.guillaumegasnier.education.web.dto.territoires.PaysDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +32,7 @@ public interface ApiTerritoireController {
             tags = {"Territoire"}
     )
     @PostMapping("/communes")
-    default ResponseEntity<CommuneDto> createCommune(@RequestBody CommuneRequestDto communeRequestDto) {
+    default ResponseEntity<CommuneDTO> createCommune(@RequestBody CommuneRequestDTO communeRequestDto) {
         return ResponseEntity.status(NOT_IMPLEMENTED).build();
     }
 

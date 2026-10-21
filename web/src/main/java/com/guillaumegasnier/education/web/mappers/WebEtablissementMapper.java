@@ -7,16 +7,15 @@ import com.guillaumegasnier.education.core.enums.Langue;
 import com.guillaumegasnier.education.core.enums.OptionEtablissement;
 import com.guillaumegasnier.education.core.enums.SpecialiteBac;
 import com.guillaumegasnier.education.core.enums.Sport;
-import com.guillaumegasnier.education.web.dto.CommuneDto;
-import com.guillaumegasnier.education.web.dto.EtablissementDto;
-import com.guillaumegasnier.education.web.dto.LangueDto;
 import com.guillaumegasnier.education.web.dto.etablissements.*;
-import com.guillaumegasnier.education.web.dto.formations.ActionFormationDto;
+import com.guillaumegasnier.education.web.dto.formations.ActionFormationDTO;
+import com.guillaumegasnier.education.web.dto.formations.FormationDTO;
+import com.guillaumegasnier.education.web.dto.territoires.CommuneDTO;
+import org.jspecify.annotations.NonNull;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.lang.NonNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "nomRegion", source = "commune.departement.region.nom")
     @Mapping(target = "codeAcademie", source = "commune.departement.academie.code")
     @Mapping(target = "nomAcademie", source = "commune.departement.academie.nom")
-    public abstract EtablissementDto toEtablissementDto(EtablissementEntity entity);
+    public abstract EtablissementDTO toEtablissementDTO(EtablissementEntity entity);
 
     @Mapping(target = "emoji", source = "pk.option.emoji")
     @Mapping(target = "nom", source = "pk.option.nom")
@@ -51,26 +50,26 @@ public abstract class WebEtablissementMapper {
         return entity.getPk().getSpecialite();
     }
 
-    public List<NatureWithEtablissementsDto> groupbyNature(List<EtablissementEntity> etablissements) {
+    public List<NatureWithEtablissementsDTO> groupbyNature(List<EtablissementDTO> etablissements) {
         if (etablissements == null) return Collections.emptyList();
 
-        Map<NatureEntity, List<EtablissementEntity>> grouped = etablissements.stream()
-                .filter(e -> e != null && e.getNature() != null)
-                .collect(Collectors.groupingBy(EtablissementEntity::getNature, LinkedHashMap::new, Collectors.toList()));
+
+        Map<String, List<EtablissementDTO>> grouped = etablissements.stream()
+                .filter(e -> e != null && e.getCodeNature() != null)
+                .collect(Collectors.groupingBy(EtablissementDTO::getNomNature, LinkedHashMap::new, Collectors.toList()));
 
         return grouped.entrySet().stream()
                 .map(entry -> {
-                    NatureDto natureDto = toNatureDto(entry.getKey());
-                    List<EtablissementDto> etablissementDtoList = entry.getValue().stream()
+                    String nomNature = entry.getKey();
+                    List<EtablissementDTO> etablissementDtoList = entry.getValue().stream()
                             .filter(Objects::nonNull)
-                            .map(this::toEtablissementDto)
                             .toList();
-                    return new NatureWithEtablissementsDto(natureDto, etablissementDtoList);
+                    return new NatureWithEtablissementsDTO(nomNature, etablissementDtoList);
                 })
                 .toList();
     }
 
-    public List<CommuneWithEtablissementsDto> groupByCommune(List<EtablissementEntity> etablissements) {
+    public List<CommuneWithEtablissementsDTO> groupByCommune(List<EtablissementEntity> etablissements) {
         if (etablissements == null) return Collections.emptyList();
 
         Map<CommuneEntity, List<EtablissementEntity>> grouped = etablissements.stream()
@@ -79,21 +78,21 @@ public abstract class WebEtablissementMapper {
 
         return grouped.entrySet().stream()
                 .map(entry -> {
-                    CommuneDto communeDto = toCommuneDto(entry.getKey());
-                    List<EtablissementDto> etablissementDtoList = entry.getValue().stream()
+                    CommuneDTO communeDto = toCommuneDto(entry.getKey());
+                    List<EtablissementDTO> etablissementDtoList = entry.getValue().stream()
                             .filter(Objects::nonNull)
-                            .map(this::toEtablissementDto)
+                            .map(this::toEtablissementDTO)
                             .toList();
-                    return new CommuneWithEtablissementsDto(communeDto, etablissementDtoList);
+                    return new CommuneWithEtablissementsDTO(communeDto, etablissementDtoList);
                 })
                 .toList();
     }
 
-    public abstract CommuneDto toCommuneDto(CommuneEntity key);
+    public abstract CommuneDTO toCommuneDto(CommuneEntity key);
 
-    public abstract NatureDto toNatureDto(NatureEntity key);
+    public abstract NatureDTO toNatureDTO(NatureEntity key);
 
-    public List<LangueWithCategorieDto> toLangueWithCategorieDtoList(List<EtablissementLangueEntity> entities) {
+    public List<LangueWithCategorieDTO> toLangueWithCategorieDtoList(List<EtablissementLangueEntity> entities) {
         if (entities == null) return Collections.emptyList();
 
         Map<Langue.Categorie, List<EtablissementLangueEntity>> grouped = entities.stream()
@@ -106,24 +105,24 @@ public abstract class WebEtablissementMapper {
         return grouped.entrySet().stream()
                 .map(entry -> {
                     Langue.Categorie categorie = entry.getKey();
-                    List<LangueDto> langues = entry.getValue().stream()
+                    List<LangueDTO> langues = entry.getValue().stream()
                             .filter(Objects::nonNull)
-                            .map(this::toLangueDto)
+                            .map(this::toLangueDTO)
                             .toList();
-                    return new LangueWithCategorieDto(categorie, langues);
+                    return new LangueWithCategorieDTO(categorie, langues);
                 })
                 .toList();
     }
 
-    private LangueDto toLangueDto(EtablissementLangueEntity entity) {
-        LangueDto l = new LangueDto();
+    private LangueDTO toLangueDTO(EtablissementLangueEntity entity) {
+        LangueDTO l = new LangueDTO();
         l.setNom(entity.getPk().getLangue().getNom());
         l.setEmoji(entity.getPk().getLangue().getEmoji());
         l.setEnseignement(entity.getPk().getEnseignement());
         return l;
     }
 
-    public List<SportWithCategorieDto> toSportWithCategorieDtoList(List<EtablissementSportEntity> entities) {
+    public List<SportWithCategorieDTO> toSportWithCategorieDtoList(List<EtablissementSportEntity> entities) {
 
         if (entities.isEmpty()) {
             return List.of();
@@ -139,7 +138,7 @@ public abstract class WebEtablissementMapper {
                             .filter(Objects::nonNull)
                             .map(e -> e.getPk().getSport())
                             .toList();
-                    return new SportWithCategorieDto(entry.getKey(), sports);
+                    return new SportWithCategorieDTO(entry.getKey(), sports);
                 })
                 .toList();
     }
@@ -147,9 +146,9 @@ public abstract class WebEtablissementMapper {
     @Mapping(target = "code", source = "pk.contact")
     @Mapping(target = "valeur", source = "pk.valeur")
     @Mapping(target = "nom", source = "pk.contact.nom")
-    public abstract ContactDto toContactDto(EtablissementContactEntity entity);
+    public abstract ContactDTO toContactDto(EtablissementContactEntity entity);
 
-    public List<OptionWithCategorieDto> toOptionWithCategorieDto(List<EtablissementOptionEntity> entities) {
+    public List<OptionWithCategorieDTO> toOptionWithCategorieDto(List<EtablissementOptionEntity> entities) {
         if (entities == null) return Collections.emptyList();
 
         Map<OptionEtablissement.Categorie, List<EtablissementOptionEntity>> grouped = entities.stream()
@@ -166,7 +165,7 @@ public abstract class WebEtablissementMapper {
                             .filter(Objects::nonNull)
                             .map(this::toOptionDto)
                             .toList();
-                    return new OptionWithCategorieDto(categorie, options);
+                    return new OptionWithCategorieDTO(categorie, options);
                 })
                 .sorted(Comparator.comparing(c -> c.getCategorie().getOrdre()))
                 .toList();
@@ -182,14 +181,22 @@ public abstract class WebEtablissementMapper {
         return "";
     }
 
+    @Mapping(target = "resultats", ignore = true)
+    @Mapping(target = "positionnement", ignore = true)
+    @Mapping(target = "parcoursDeFormation", ignore = true)
+    @Mapping(target = "objectif", ignore = true)
+    @Mapping(target = "identifiantModule", ignore = true)
+    @Mapping(target = "contenu", ignore = true)
+    @Mapping(target = "codeNiveauSortie", ignore = true)
+    @Mapping(target = "codeNiveauEntree", ignore = true)
     @Mapping(target = "nom", source = "formation.nom")
     @Mapping(target = "certifiante", source = "formation.certifiante", qualifiedByName = "toCertifiante")
-    public abstract FormationDto toFormationDto(ActionFormationEntity entity);
+    public abstract FormationDTO toFormationDTO(ActionFormationEntity entity);
 
     @Mapping(target = "certifiante", source = "formation.certifiante")
     @Mapping(target = "formationId", source = "formation.id")
     @Mapping(target = "nom", source = "formation.nom")
-    public abstract ActionFormationDto toActionFormationDto(ActionFormationEntity entity);
+    public abstract ActionFormationDTO toActionFormationDTO(ActionFormationEntity entity);
 
     @Mapping(target = "indiceNational", source = "metadatas.ips.indiceNational")
     @Mapping(target = "indiceDepartement", source = "metadatas.ips.indiceDepartement")

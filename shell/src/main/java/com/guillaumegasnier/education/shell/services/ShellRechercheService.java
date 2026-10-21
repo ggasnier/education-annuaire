@@ -9,4 +9,8 @@ public interface ShellRechercheService {
     void importMetiersRecherche();
 
     void importFormationsRecherche();
+
+    void recreateMetiersIndex();
+
+    void recreateFormationsIndex();
 }
